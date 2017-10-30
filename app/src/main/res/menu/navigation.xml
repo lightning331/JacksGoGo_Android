@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/tab_home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/tab_search"
+        android:title="@string/title_search" />
+    <item
+        android:id="@+id/navigation_appointments"
+        android:icon="@drawable/tab_appointment"
+        android:title="@string/title_appointments" />
+
+    <item
+        android:id="@+id/navigation_favourite"
+        android:icon="@drawable/tab_favourite"
+        android:title="@string/title_favourite" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/tab_profile"
+        android:title="@string/title_profile" />
+
+</menu>
