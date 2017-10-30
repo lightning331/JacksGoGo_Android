@@ -2,110 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.kelvin.jacksgogo.Fragments.AppointmentsFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:gravity="right"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:id="@+id/pending_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/pendingTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pending"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/button_size"
-                    android:fontFamily="@font/mulibold"
-                    android:textColor="@color/color_main"/>
-                <ImageView
-                    android:id="@+id/pending_cirle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/dot"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/confirm_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/confirmTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/button_size"
-                    android:fontFamily="@font/mulibold"
-                    android:textColor="@color/color_icon_seg"/>
-                <ImageView
-                    android:id="@+id/confirm_circle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/dot"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/history_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/historyTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/history"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/button_size"
-                    android:fontFamily="@font/mulibold"
-                    android:textColor="@color/color_icon_seg"/>
-                <ImageView
-                    android:id="@+id/history_circle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/dot"/>
-            </LinearLayout>
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                android:paddingRight="4dp"
-                android:layout_margin="4dp"
-                android:src="@drawable/button_filter_green"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"/>
-        </LinearLayout>
-
         <!-- TODO: Update blank fragment layout -->
         <LinearLayout
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <!--<ImageView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:layout_marginBottom="5dp"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_height="32dp"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_weight="0"-->
-                <!--android:background="@drawable/textfield_filled_grey"/>-->
             <android.support.v7.widget.SearchView
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
@@ -114,15 +22,23 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
-                android:layout_weight="0"
                 android:gravity="center"
-                android:textAlignment="center">
-            </android.support.v7.widget.SearchView>
-            <ListView
-                android:id="@+id/appointment_list_view"
+                android:hint="@string/pending_search_placeholder"
+                app:queryHint="@string/pending_search_placeholder"
+                android:textAlignment="center"></android.support.v7.widget.SearchView>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </ListView>
+                <ListView
+                    android:id="@+id/appointment_list_view"
+                    android:background="@color/color_bg_nav"
+                    android:clipToPadding="false"
+                    android:divider="@null"
+                    android:dividerHeight="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </ListView>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

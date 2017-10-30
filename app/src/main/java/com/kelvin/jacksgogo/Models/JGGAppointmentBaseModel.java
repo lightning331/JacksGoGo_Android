@@ -1,5 +1,8 @@
 package com.kelvin.jacksgogo.Models;
 
+import com.kelvin.jacksgogo.Models.Base.JGGBaseModel;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -7,7 +10,7 @@ import java.util.Date;
  */
 
 
-public class Appointment {
+public class JGGAppointmentBaseModel extends JGGBaseModel {
 
     public enum AppointmentStatus {
         NONE,
@@ -20,18 +23,59 @@ public class Appointment {
         WAITINGFORREVIEW
     }
 
-    Date appointmentDate;
-    String title;
-    AppointmentStatus status;
-    String comment;
-    Integer badgeNumber;
+    private Date appointmentDate;
+    private String title;
+    private AppointmentStatus status;
+    private String comment;
+    private Integer badgeNumber;
+    private String appointmentMonth;
+    private String appointmentDay;
 
-    public Appointment(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
+    public JGGAppointmentBaseModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
         this.title=title;
         this.status = status;
         this.comment = comment;
         this.badgeNumber = badgeNumber;
         this.appointmentDate = appointmentDate;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        // set appointment Day
+        simpleDateFormat.applyPattern("dd");
+        if (this.appointmentDate != null) {
+            String appointmentDay = simpleDateFormat.format(this.appointmentDate);
+            setAppointmentDay(appointmentDay);
+        } else {
+            setAppointmentDay(null);
+        }
+
+        // set appointment Month
+        simpleDateFormat.applyPattern("MMM");
+        if (this.appointmentDate != null) {
+            String appointmentMonth = simpleDateFormat.format(this.appointmentDate);
+            setAppointmentMonth(appointmentMonth);
+        } else {
+            setAppointmentMonth(null);
+        }
+    }
+
+    public void setAppointmentMonth(String appointmentMonth) {
+        this.appointmentMonth = appointmentMonth;
+    }
+
+    public String getAppointmentDay() {
+        return appointmentDay;
+    }
+
+    public void setAppointmentDay(String appointmentDay) {
+        this.appointmentDay = appointmentDay;
+    }
+
+    public void setBadgeNumber(Integer badgeNumber) {
+        this.badgeNumber = badgeNumber;
+    }
+
+    public String getAppointmentMonth() {
+        return appointmentMonth;
     }
 
     public String getTitle() {
@@ -46,8 +90,16 @@ public class Appointment {
         return comment;
     }
 
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public AppointmentStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
     }
 
     public int getBadgeNumber() {
@@ -58,10 +110,6 @@ public class Appointment {
         this.badgeNumber = badgeNumber;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public Date getAppointmentDate() {
         return appointmentDate;
     }
@@ -70,7 +118,4 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
     }
 
-    public void setStatus(AppointmentStatus status) {
-        this.status = status;
-    }
 }

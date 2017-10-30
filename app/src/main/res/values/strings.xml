@@ -10,6 +10,10 @@
     <string name="confirmed">Confirmed</string>
     <string name="history">History</string>
 
+    <string name="pending_search_placeholder">Search through Pending list</string>
+    <string name="confirmed_search_placeholder">Search through Confirmed list</string>
+    <string name="history_search_placeholder">Search through History list</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

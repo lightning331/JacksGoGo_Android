@@ -5,4 +5,5 @@ package com.kelvin.jacksgogo.Interfaces;
  */
 
 public interface OnFragmentInteractionListener {
+
 }

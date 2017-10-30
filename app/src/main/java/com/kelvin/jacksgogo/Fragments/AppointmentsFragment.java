@@ -9,11 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.kelvin.jacksgogo.Adapters.JGGSeparatedListAdapter;
+import com.kelvin.jacksgogo.Models.JGGEventModel;
+import com.kelvin.jacksgogo.Models.JGGJobModel;
+import com.kelvin.jacksgogo.Models.JGGServiceModel;
+import com.kelvin.jacksgogo.Models.JGGServicePackageModel;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Adapters.AppointmentsListAdapter;
-import com.kelvin.jacksgogo.Mmodels.Appointment;
+import com.kelvin.jacksgogo.Adapters.JGGAppointmentsListAdapter;
+import com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.CANCELLED;
+import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.NONE;
+import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.PENDING;
+import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.WITHDRAWN;
 
 
 /**
@@ -37,8 +48,13 @@ public class AppointmentsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ListView listView;
-    ArrayList<Appointment> appointments;
-    private static AppointmentsListAdapter adapter;
+    ArrayList<JGGAppointmentBaseModel> arrayQuickJobs;
+    ArrayList<JGGAppointmentBaseModel> arrayServicePackages;
+    ArrayList<JGGAppointmentBaseModel> arrayPendingJobs;
+
+    private static JGGAppointmentsListAdapter quickJobsAdapter;
+    private static JGGAppointmentsListAdapter servicePackagesAdapter;
+    private static JGGAppointmentsListAdapter pendingJobsAdapter;
 
     public AppointmentsFragment() {
         // Required empty public constructor
@@ -78,12 +94,35 @@ public class AppointmentsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_appointments, container, false);
         listView = (ListView) view.findViewById(R.id.appointment_list_view);
 
-        appointments= new ArrayList<>();
-        appointments.add(new Appointment("Apple Pie"));
-        appointments.add(new Appointment("Banana Bread"));
+        arrayQuickJobs = new ArrayList<>();
+        arrayServicePackages = new ArrayList<>();
+        arrayPendingJobs = new ArrayList<>();
+        // Quick Jobs
+        arrayQuickJobs.add(new JGGServicePackageModel(new Date(), "Fast Food Delivery", NONE, "Needed before 12:00 PM", 0));
+        // Service Packages
+        arrayServicePackages.add(new JGGJobModel(null, "Group Swimming Class", NONE, "1 slot remaining", 0));
+        // Pending Jobs
+        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
+        arrayPendingJobs.add(new JGGJobModel(new Date(), "Maid Needed", NONE, "Needed on 18 Dec, 2017", 3));
+        arrayPendingJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 25 Dec, 2017", 0));
+        arrayPendingJobs.add(new JGGJobModel(new Date(), "Gardening", NONE, "Needed on 18 Dec, 2017", 99));
+        arrayPendingJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
+        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Help With The Garden", NONE, "We love Badminton\\nEvent on 19 Jul, 2017 10:00 AM - 12:00 PM", 0));
+        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Gardening", CANCELLED, "Needed on 29 Dec, 2017", 7));
 
-        adapter= new AppointmentsListAdapter(appointments, getContext());
+        quickJobsAdapter = new JGGAppointmentsListAdapter(arrayQuickJobs, getContext());
+        servicePackagesAdapter = new JGGAppointmentsListAdapter(arrayServicePackages, getContext());
+        pendingJobsAdapter = new JGGAppointmentsListAdapter(arrayPendingJobs, getContext());
+
+        // create our list and custom adapter
+        JGGSeparatedListAdapter adapter = new JGGSeparatedListAdapter(this.getContext());
+
+        adapter.addSection("Quick Jobs", quickJobsAdapter);
+        adapter.addSection("Service Packages", servicePackagesAdapter);
+        adapter.addSection("Pending Jobs", pendingJobsAdapter);
+
         listView.setAdapter(adapter);
+
         return view;
     }
 

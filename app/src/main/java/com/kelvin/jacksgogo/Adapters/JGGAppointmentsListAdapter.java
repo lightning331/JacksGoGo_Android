@@ -1,6 +1,8 @@
 package com.kelvin.jacksgogo.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +13,24 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Models.JGGEventModel;
+import com.kelvin.jacksgogo.Models.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Models.Appointment;
+import com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel;
 
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.R.color.color_jobs;
 
 /**
  * Created by PUMA on 10/26/2017.
  */
 
-public class AppointmentsListAdapter extends ArrayAdapter<Appointment> {
-    private ArrayList<Appointment> dataSet;
+public class JGGAppointmentsListAdapter extends ArrayAdapter<JGGAppointmentBaseModel> {
+    private ArrayList<JGGAppointmentBaseModel> dataSet;
     Context mContext;
 
-    private static class ViewHolder {
+    private static class AppointmentList {
         TextView lbl_Day;
         TextView lbl_Month;
         TextView lbl_Title;
@@ -36,7 +42,7 @@ public class AppointmentsListAdapter extends ArrayAdapter<Appointment> {
         RelativeLayout mViewStatusBar;
     }
 
-    public AppointmentsListAdapter(ArrayList<Appointment> data, Context context) {
+    public JGGAppointmentsListAdapter(ArrayList<JGGAppointmentBaseModel> data, Context context) {
         super(context, R.layout.appointment_list_item, data);
         this.dataSet = data;
         this.mContext=context;
@@ -48,54 +54,67 @@ public class AppointmentsListAdapter extends ArrayAdapter<Appointment> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Appointment dataModel = getItem(position);
+        JGGAppointmentBaseModel dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         // view lookup cache stored in tag
-        ViewHolder viewHolder;
+        AppointmentList appointmentList;
 
         final View result;
 
         if (convertView == null) {
 
-            viewHolder = new ViewHolder();
+            appointmentList = new AppointmentList();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.appointment_list_item, parent, false);
 
-            viewHolder.lbl_Day = (TextView) convertView.findViewById(R.id.lblDay);
-            viewHolder.lbl_Month = (TextView) convertView.findViewById(R.id.lblMonth);
-            viewHolder.lbl_Title = (TextView) convertView.findViewById(R.id.lblTitle);
-            viewHolder.lbl_Comment = (TextView) convertView.findViewById(R.id.lblComment);
-            viewHolder.lbl_Status = (TextView) convertView.findViewById(R.id.lblStatus);
-            viewHolder.lbl_BadgeNumber = (TextView) convertView.findViewById(R.id.lblBadgeCount);
-            viewHolder.mViewBadgeGroup = (RelativeLayout) convertView.findViewById(R.id.appointment_badgeLayout);
-            viewHolder.mViewStatusBar = (RelativeLayout) convertView.findViewById(R.id.appointment_statusLayout);
+            appointmentList.lbl_Day = (TextView) convertView.findViewById(R.id.lblDay);
+            appointmentList.lbl_Month = (TextView) convertView.findViewById(R.id.lblMonth);
+            appointmentList.lbl_Title = (TextView) convertView.findViewById(R.id.lblTitle);
+            appointmentList.lbl_Comment = (TextView) convertView.findViewById(R.id.lblComment);
+            appointmentList.lbl_Status = (TextView) convertView.findViewById(R.id.lblStatus);
+            appointmentList.lbl_BadgeNumber = (TextView) convertView.findViewById(R.id.lblBadgeCount);
+            appointmentList.mViewBadgeGroup = (RelativeLayout) convertView.findViewById(R.id.appointment_badgeLayout);
+            appointmentList.mViewStatusBar = (RelativeLayout) convertView.findViewById(R.id.appointment_statusLayout);
 
-            viewHolder.lbl_Title.setText(dataModel.getTitle());
-            viewHolder.lbl_Comment.setText(dataModel.getComment());
-            if (dataModel.getStatus() == Appointment.AppointmentStatus.CANCELLED) {
-                viewHolder.lbl_Status.setText("Cancelled");
-            } else if (dataModel.getStatus() == Appointment.AppointmentStatus.WITHDRAWN) {
-                viewHolder.lbl_Status.setText("Withdrawn");
+            appointmentList.lbl_Title.setText(dataModel.getTitle());
+            appointmentList.lbl_Comment.setText(dataModel.getComment());
+            appointmentList.lbl_Day.setText(dataModel.getAppointmentDay());
+            appointmentList.lbl_Month.setText(dataModel.getAppointmentMonth());
+
+            if (dataModel.getStatus() == JGGAppointmentBaseModel.AppointmentStatus.CANCELLED) {
+                appointmentList.lbl_Status.setText("Cancelled");
+            } else if (dataModel.getStatus() == JGGAppointmentBaseModel.AppointmentStatus.WITHDRAWN) {
+                appointmentList.lbl_Status.setText("Withdrawn");
             } else {
-                viewHolder.lbl_Status.setText("");
+                appointmentList.lbl_Status.setText("");
             }
             if (dataModel.getBadgeNumber() < 1) {
                 // Badge view hide when count is less than 1
-                viewHolder.mViewBadgeGroup.setVisibility(View.INVISIBLE);
-                viewHolder.mViewStatusBar.setVisibility(View.INVISIBLE);
+                appointmentList.mViewBadgeGroup.setVisibility(View.INVISIBLE);
+                appointmentList.mViewStatusBar.setVisibility(View.INVISIBLE);
             } else {
-                viewHolder.mViewBadgeGroup.setVisibility(View.VISIBLE);
-                viewHolder.mViewStatusBar.setVisibility(View.VISIBLE);
+                appointmentList.mViewBadgeGroup.setVisibility(View.VISIBLE);
+                appointmentList.mViewStatusBar.setVisibility(View.VISIBLE);
                 // Show Badge Count
                 Integer badgeCount = dataModel.getBadgeNumber();
-                viewHolder.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
+                appointmentList.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
+            }
+
+            appointmentList.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.color_jobs));
+            appointmentList.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.color_jobs));
+            if (dataModel instanceof JGGServiceModel) {
+                appointmentList.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.color_services));
+                appointmentList.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.color_services));
+            } else if (dataModel instanceof JGGEventModel){
+                appointmentList.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.color_goclub));
+                appointmentList.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.color_goclub));
             }
 
             result=convertView;
 
-            convertView.setTag(viewHolder);
+            convertView.setTag(appointmentList);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            appointmentList = (AppointmentList) convertView.getTag();
             result = convertView;
         }
 
