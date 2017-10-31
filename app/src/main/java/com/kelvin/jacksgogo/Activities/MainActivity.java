@@ -11,13 +11,16 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Fragments.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.HomeFragment;
@@ -29,6 +32,7 @@ import com.kelvin.jacksgogo.Fragments.AppointmentsFragment;
 public class MainActivity extends AppCompatActivity implements AppointmentsFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
+    private Toolbar mToolbar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -54,15 +58,18 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
 
     private void selectFragment(MenuItem item) {
         Fragment frag = null;
+        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         // init corresponding fragment
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 frag = HomeFragment.newInstance(null,
                         null);
+                mToolbar.setTitle(R.string.title_home);
                 break;
             case R.id.navigation_search:
                 frag = SearchFragment.newInstance(null,
                         null);
+                mToolbar.setTitle(R.string.title_search);
                 break;
             case R.id.navigation_appointments:
                 frag = AppointmentsFragment.newInstance();
@@ -70,10 +77,12 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
             case R.id.navigation_favourite:
                 frag = FavouriteFragment.newInstance(null,
                         null);
+                mToolbar.setTitle(R.string.title_favourite);
                 break;
             case R.id.navigation_profile:
                 frag = ProfileFragment.newInstance(null,
                         null);
+                mToolbar.setTitle(R.string.title_profile);
                 break;
         }
 
@@ -84,21 +93,18 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
             if (frag instanceof AppointmentsFragment) {
                 this.addTopActionBarForAppointment();
             } else {
-                getSupportActionBar().setDisplayShowCustomEnabled(false);
+                mToolbar.getMenu().clear();
             }
         }
     }
 
     private void addTopActionBarForAppointment() {
-        android.support.v7.app.ActionBar mActionBar = getSupportActionBar();
+
+        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
+        setSupportActionBar(mToolbar);
         LayoutInflater mInflater = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mCustomView = mInflater.inflate(R.layout.appointment_custom_actionbar, null);
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
-        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        mActionBar.setDisplayShowHomeEnabled(false);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setCustomView(mCustomView);
+        View mCustomMenuView = mInflater.inflate(R.layout.appointment_custom_actionbar, null);
+        mToolbar.addView(mCustomMenuView);
     }
 
     @Override
@@ -109,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     @Override
