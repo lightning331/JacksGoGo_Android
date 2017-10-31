@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapters.AppointmentListAdapter;
+import com.kelvin.jacksgogo.Adapters.AppointmentRecyclerViewAdapter;
 import com.kelvin.jacksgogo.Models.JGGEventModel;
 import com.kelvin.jacksgogo.Models.JGGJobModel;
 import com.kelvin.jacksgogo.Models.JGGServiceModel;
@@ -39,13 +39,12 @@ public class AppointmentsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-//    ListView listView;
     RecyclerView appointmentRecyclerView;
     ArrayList<JGGAppointmentBaseModel> arrayQuickJobs;
     ArrayList<JGGAppointmentBaseModel> arrayServicePackages;
     ArrayList<JGGAppointmentBaseModel> arrayPendingJobs;
 
-    private static AppointmentListAdapter appointmentListAdapter;
+    private static AppointmentRecyclerViewAdapter appointmentListAdapter;
 
     public AppointmentsFragment() {
         // Required empty public constructor
@@ -67,6 +66,7 @@ public class AppointmentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
         }
     }
 
@@ -110,7 +110,7 @@ public class AppointmentsFragment extends Fragment {
         arrayPendingJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
 
         // create our list and custom adapter
-        appointmentListAdapter = new AppointmentListAdapter(getContext());
+        appointmentListAdapter = new AppointmentRecyclerViewAdapter(getContext());
         appointmentListAdapter.addSection("Quick Jobs", arrayQuickJobs);
         appointmentListAdapter.addSection("Service Packages", arrayServicePackages);
         appointmentListAdapter.addSection("Pending Jobs", arrayPendingJobs);

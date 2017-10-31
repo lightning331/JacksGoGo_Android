@@ -1,9 +1,5 @@
 package com.kelvin.jacksgogo.Activities;
 
-import android.app.ActionBar;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +18,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
+import com.kelvin.jacksgogo.Fragments.AppointmentsActionbar;
 import com.kelvin.jacksgogo.Fragments.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.ProfileFragment;
@@ -31,8 +28,8 @@ import com.kelvin.jacksgogo.Fragments.AppointmentsFragment;
 
 public class MainActivity extends AppCompatActivity implements AppointmentsFragment.OnFragmentInteractionListener {
 
-    private TextView mTextMessage;
     private Toolbar mToolbar;
+    private AppointmentsActionbar appointmentsActionbar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -93,19 +90,23 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
             if (frag instanceof AppointmentsFragment) {
                 this.addTopActionBarForAppointment();
             } else {
-                mToolbar.getMenu().clear();
+                this.removeTopActionBarForAppointment();
             }
         }
     }
 
     private void addTopActionBarForAppointment() {
-
-        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
-        setSupportActionBar(mToolbar);
-        LayoutInflater mInflater = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mCustomMenuView = mInflater.inflate(R.layout.appointment_custom_actionbar, null);
-        mToolbar.addView(mCustomMenuView);
+        mToolbar.removeView(appointmentsActionbar);
+        if (appointmentsActionbar == null) {
+            appointmentsActionbar = new AppointmentsActionbar(this);
+        }
+        mToolbar.addView(appointmentsActionbar);
     }
+
+    private void removeTopActionBarForAppointment() {
+        mToolbar.removeView(appointmentsActionbar);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +116,16 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
+        // Hide Bottom NavigationView and ToolBar
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
+
+        appointmentsActionbar = new AppointmentsActionbar(this);
+        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
+        setSupportActionBar(mToolbar);
+
     }
 
     @Override

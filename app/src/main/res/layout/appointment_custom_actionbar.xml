@@ -30,6 +30,7 @@
                     android:textColor="@color/color_main"/>
                 <ImageView
                     android:id="@+id/img_pending_cirle"
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/dot"/>
@@ -125,6 +126,7 @@
         </LinearLayout>
 
         <ImageButton
+            android:id="@+id/btn_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"

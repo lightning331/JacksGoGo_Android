@@ -27,7 +27,7 @@ import java.util.Map;
  * https://rajeshandroiddeveloper.blogspot.jp/2013/05/sectioned-list-view-list-with-headers.html
  */
 
-public class AppointmentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppointmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<JGGAppointmentBaseModel> dataSet;
     public final Map<String, ArrayList<JGGAppointmentBaseModel>> sections = new LinkedHashMap<>();
@@ -36,7 +36,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     Context mContext;
 
-    public AppointmentListAdapter(Context context) {
+    public AppointmentRecyclerViewAdapter(Context context) {
         this.mContext = context;
         headers = new ArrayAdapter<String>(context, R.layout.appointment_header); // this is the header desing page.
     }
