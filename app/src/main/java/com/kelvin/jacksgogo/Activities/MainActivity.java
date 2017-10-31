@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
                         null);
                 break;
             case R.id.navigation_appointments:
-                frag = AppointmentsFragment.newInstance(null,
-                        null);
+                frag = AppointmentsFragment.newInstance();
                 break;
             case R.id.navigation_favourite:
                 frag = FavouriteFragment.newInstance(null,
@@ -91,16 +90,13 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
     }
 
     private void addTopActionBarForAppointment() {
-
         android.support.v7.app.ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setDisplayShowHomeEnabled(false);
-        mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View mCustomView = mInflater.inflate(R.layout.appointment_custom_actionbar, null);
-
         mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setCustomView(mCustomView);
     }
@@ -112,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
