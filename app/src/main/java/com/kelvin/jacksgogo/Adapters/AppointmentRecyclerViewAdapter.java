@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -38,7 +37,7 @@ public class AppointmentRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
     public AppointmentRecyclerViewAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.appointment_header); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.appointments_header); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList<JGGAppointmentBaseModel> arrayList) {
@@ -50,10 +49,10 @@ public class AppointmentRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointment_header, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_header, parent, false);
             return new ListSectionHeaderView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointment_list_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_list_cell, parent, false);
             return new AppointmentListView(view);
         }
     }
@@ -92,14 +91,14 @@ public class AppointmentRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                 cellView.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
             }
 
-            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.color_jobs));
-            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.color_jobs));
+            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
             if (appointment instanceof JGGServiceModel) {
-                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.color_services));
-                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.color_services));
+                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             } else if (appointment instanceof JGGEventModel){
-                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.color_goclub));
-                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.color_goclub));
+                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
             }
         }
     }

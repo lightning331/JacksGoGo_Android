@@ -1,6 +1,5 @@
-package com.kelvin.jacksgogo.Fragments;
+package com.kelvin.jacksgogo.CustomView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -46,7 +45,7 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View actionbarView  = mLayoutInflater.inflate(R.layout.appointment_custom_actionbar, this);
+        View actionbarView  = mLayoutInflater.inflate(R.layout.appointments_custom_actionbar, this);
 
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);
@@ -71,18 +70,18 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
             confirmDotImageView.setVisibility(View.INVISIBLE);
             historyDotImageView.setVisibility(View.INVISIBLE);
 
-            pendingTextView.setTextColor(getResources().getColor(R.color.color_icon_seg));
-            confirmTextView.setTextColor(getResources().getColor(R.color.color_icon_seg));
-            historyTextView.setTextColor(getResources().getColor(R.color.color_icon_seg));
+            pendingTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
+            confirmTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
+            historyTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
 
             if (view.getId() == R.id.lbl_pending) {
-                pendingTextView.setTextColor(getResources().getColor(R.color.color_main));
+                pendingTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 pendingDotImageView.setVisibility(View.VISIBLE);
             } else if (view.getId() == R.id.lbl_confirmed) {
-                confirmTextView.setTextColor(getResources().getColor(R.color.color_main));
+                confirmTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 confirmDotImageView.setVisibility(View.VISIBLE);
             } else if (view.getId() == R.id.lbl_history) {
-                historyTextView.setTextColor(getResources().getColor(R.color.color_main));
+                historyTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 historyDotImageView.setVisibility(View.VISIBLE);
             }
         }

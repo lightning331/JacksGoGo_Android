@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kelvin.jacksgogo.Fragments.AppointmentsFragment">
+    tools:context="com.kelvin.jacksgogo.Fragments.Appointments.AppointmentsFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +25,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textAlignment="center"
-                app:queryHint="@string/pending_search_placeholder"></android.support.v7.widget.SearchView>
+                app:queryHint="@string/pending_search_placeholder">
+            </android.support.v7.widget.SearchView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -33,7 +34,7 @@
                     android:id="@+id/appointment_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/color_bg_nav"
+                    android:background="@color/JGGGrey5"
                     android:orientation="vertical">
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>

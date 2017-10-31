@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments;
+package com.kelvin.jacksgogo.Fragments.Appointments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,12 +13,12 @@ import com.kelvin.jacksgogo.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FavouriteFragment.OnFragmentInteractionListener} interface
+ * {@link AppointmentsFilterFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FavouriteFragment#newInstance} factory method to
+ * Use the {@link AppointmentsFilterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FavouriteFragment extends Fragment {
+public class AppointmentsFilterFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class FavouriteFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FavouriteFragment() {
+    public AppointmentsFilterFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class FavouriteFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FavouriteFragment.
+     * @return A new instance of fragment AppointmentsFilterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FavouriteFragment newInstance(String param1, String param2) {
-        FavouriteFragment fragment = new FavouriteFragment();
+    public static AppointmentsFilterFragment newInstance(String param1, String param2) {
+        AppointmentsFilterFragment fragment = new AppointmentsFilterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +65,7 @@ public class FavouriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.favourite_fragment, container, false);
+        return inflater.inflate(R.layout.appointments_filter_fragment, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,12 +78,12 @@ public class FavouriteFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override

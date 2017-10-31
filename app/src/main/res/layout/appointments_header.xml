@@ -6,7 +6,7 @@
     android:paddingTop="10dip"
     android:paddingBottom="2dip"
     android:paddingLeft="15dp"
-    android:background="@color/color_bg_nav"
-    android:textColor="@color/color_text"
+    android:background="@color/JGGGrey5"
+    android:textColor="@color/JGGBlack"
     android:fontFamily="@font/mulibold"
     android:textSize="@dimen/button_font_size"/>

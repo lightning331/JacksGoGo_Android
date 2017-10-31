@@ -4,19 +4,21 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="color_services">#20BF3B</color>
-    <color name="color_main">#F26513</color>
-    <color name="color_error">#FF3B30</color>
-    <color name="color_goclub">#8D66C9</color>
-    <color name="color_focus">#FFE63E</color>
-    <color name="color_text">#000000</color>
-    <color name="color_icon_seg">#666666</color>
-    <color name="color_cat_bottom_tab">#8A8A8F</color>
-    <color name="color_line">#C8C7CC</color>
-    <color name="color_disabled_btn">#EAEAEA</color>
-    <color name="color_bg_nav">#F9F9F9</color>
-    <color name="color_jobs">#14B1F8</color>
-    <color name="color_icon_text">#FFFFFF</color>
+    <color name="JGGOrange">#F26513</color>
+    <color name="JGGGreen">#20BF3B</color>
+    <color name="JGGGreen10Percent">#E3F1E5</color>
+    <color name="JGGCyan">#14B1F8</color>
+    <color name="JGGPurple">#8D66C9</color>
+    <color name="JGGYellow">#FFE63E</color>
+    <color name="JGGRed">#FF3B30</color>
+    <color name="JGGRed10Percecnt">#F1D2CC</color>
+    <color name="JGGBlack">#000000</color>
+    <color name="JGGGrey1">#666666</color>
+    <color name="JGGGrey2">#8A8A8F</color>
+    <color name="JGGGrey3">#C8C7CC</color>
+    <color name="JGGGrey4">#EAEAEA</color>
+    <color name="JGGGrey5">#F9F9F9</color>
+    <color name="JGGWhite">#FFFFFF</color>
     <color name="transparent">#00000000</color>
 
 </resources>

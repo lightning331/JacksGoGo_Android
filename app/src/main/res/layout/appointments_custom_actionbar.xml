@@ -27,7 +27,7 @@
                     android:textAlignment="center"
                     android:textSize="@dimen/body_font_size"
                     android:fontFamily="@font/mulibold"
-                    android:textColor="@color/color_main"/>
+                    android:textColor="@color/JGGOrange"/>
                 <ImageView
                     android:id="@+id/img_pending_cirle"
                     android:visibility="visible"
@@ -74,7 +74,7 @@
                     android:textAlignment="center"
                     android:textSize="@dimen/body_font_size"
                     android:fontFamily="@font/mulibold"
-                    android:textColor="@color/color_icon_seg"/>
+                    android:textColor="@color/JGGGrey1"/>
                 <ImageView
                     android:id="@+id/img_confirmed_circle"
                     android:visibility="invisible"
@@ -116,7 +116,7 @@
                 android:textAlignment="center"
                 android:textSize="@dimen/body_font_size"
                 android:fontFamily="@font/mulibold"
-                android:textColor="@color/color_icon_seg"/>
+                android:textColor="@color/JGGGrey1"/>
             <ImageView
                 android:id="@+id/img_history_circle"
                 android:visibility="invisible"

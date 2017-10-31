@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments;
+package com.kelvin.jacksgogo.Fragments.Appointments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -74,7 +74,7 @@ public class AppointmentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_appointments, container, false);
+        View view = inflater.inflate(R.layout.appointments_fragment, container, false);
 
         appointmentRecyclerView = (RecyclerView) view.findViewById(R.id.appointment_recycler_view);
         if (appointmentRecyclerView != null) {

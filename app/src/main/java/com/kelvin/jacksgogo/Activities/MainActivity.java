@@ -7,24 +7,19 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Fragments.AppointmentsActionbar;
+import com.kelvin.jacksgogo.CustomView.AppointmentsActionbar;
 import com.kelvin.jacksgogo.Fragments.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.ProfileFragment;
 import com.kelvin.jacksgogo.Fragments.SearchFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Fragments.AppointmentsFragment;
+import com.kelvin.jacksgogo.Fragments.Appointments.AppointmentsFragment;
 
 public class MainActivity extends AppCompatActivity implements AppointmentsFragment.OnFragmentInteractionListener {
 
