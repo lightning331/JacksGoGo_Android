@@ -56,9 +56,8 @@ public class AppointmentsFilterActivity extends AppCompatActivity {
             }
         });
 
-        closeButton = (ImageButton) findViewById(R.id.btn_close);
-
         // Close button clicked
+        closeButton = (ImageButton) findViewById(R.id.btn_close);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){

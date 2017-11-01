@@ -1,23 +1,18 @@
 package com.kelvin.jacksgogo.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputContentInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity;
 import com.kelvin.jacksgogo.CustomView.ListSectionHeaderView;
-import com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,11 +31,15 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
 
     Context mContext;
 
+    private OnItemClickListener listener;
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    private OnItemClickListener listener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public AppointmentsFilterRecyclerViewAdapter(Context context) {
         this.mContext = context;
@@ -50,10 +49,6 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
     public void addSection(String section, ArrayList arrayList) {
         this.headers.add(section);
         this.sections.put(section, arrayList);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 
     @Override

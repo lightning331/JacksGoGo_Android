@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity;
+import com.kelvin.jacksgogo.Adapters.AppointmentsFilterRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Adapters.AppointmentsRecyclerViewAdapter;
 import com.kelvin.jacksgogo.R;
 
 
@@ -26,6 +28,9 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     ImageView confirmDotImageView;
     ImageView historyDotImageView;
     ImageButton filterButton;
+
+    private static AppointmentsRecyclerViewAdapter recyclerViewAdapter;
+    private Context context;
 
     public AppointmentsActionbar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
