@@ -1,6 +1,8 @@
 package com.kelvin.jacksgogo.CustomView;
 
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity;
 import com.kelvin.jacksgogo.R;
 public class AppointmentsActionbar extends RelativeLayout implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
@@ -23,6 +26,7 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     ImageView confirmDotImageView;
     ImageView historyDotImageView;
     ImageButton filterButton;
+    private FragmentManager fragmentManager;
 
     public AppointmentsActionbar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -58,13 +62,15 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
         pendingTextView.setOnClickListener(this);
         confirmTextView.setOnClickListener(this);
         historyTextView.setOnClickListener(this);
+        filterButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
         if (view.getId() == R.id.btn_filter) {
-
+            Intent intent = new Intent(view.getContext(), AppointmentsFilterActivity.class);
+            mContext.startActivity(intent);
         } else {
             pendingDotImageView.setVisibility(View.INVISIBLE);
             confirmDotImageView.setVisibility(View.INVISIBLE);

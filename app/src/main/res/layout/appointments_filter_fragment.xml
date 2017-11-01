@@ -1,10 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Fragments.Appointments.AppointmentsFilterFragment">
-
+    tools:context="com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity">
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
@@ -35,7 +35,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="100dp">
+                android:layout_marginBottom="15dp">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/appointment_filter_recycler_view"
                     android:layout_width="match_parent"
@@ -46,4 +46,4 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

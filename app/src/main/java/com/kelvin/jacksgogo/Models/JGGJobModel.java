@@ -8,17 +8,7 @@ import java.util.Date;
 
 public class JGGJobModel extends JGGAppointmentBaseModel {
 
-    String jobTitle;
-
     public JGGJobModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
         super(appointmentDate, title, status, comment, badgeNumber);
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
     }
 }
