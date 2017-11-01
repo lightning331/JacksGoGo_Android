@@ -1,9 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Appointment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Adapters.AppointmentsFilterRecyclerViewAdapter;
 import com.kelvin.jacksgogo.R;
-import com.makeramen.roundedimageview.RoundedImageView;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

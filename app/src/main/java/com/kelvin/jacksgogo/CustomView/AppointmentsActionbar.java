@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity;
 import com.kelvin.jacksgogo.R;
+
+
 public class AppointmentsActionbar extends RelativeLayout implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -26,7 +26,6 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     ImageView confirmDotImageView;
     ImageView historyDotImageView;
     ImageButton filterButton;
-    private FragmentManager fragmentManager;
 
     public AppointmentsActionbar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -69,6 +68,7 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     public void onClick(View view) {
 
         if (view.getId() == R.id.btn_filter) {
+            // go to the appointments filter view
             Intent intent = new Intent(view.getContext(), AppointmentsFilterActivity.class);
             mContext.startActivity(intent);
         } else {

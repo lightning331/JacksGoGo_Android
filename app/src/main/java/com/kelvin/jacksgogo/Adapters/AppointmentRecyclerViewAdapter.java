@@ -16,6 +16,7 @@ import com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel;
 import com.kelvin.jacksgogo.Models.JGGEventModel;
 import com.kelvin.jacksgogo.Models.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -59,11 +60,15 @@ public class AppointmentRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
         Object itemData = getItem(position);
+
         if (itemData instanceof String) {
+            // RecyclerView Header
             ListSectionHeaderView sectionView = (ListSectionHeaderView)holder;
             sectionView.setTitle((String)itemData);
         } else if (itemData instanceof JGGAppointmentBaseModel) {
+            // RecyclerView Cell
             AppointmentListView cellView = (AppointmentListView)holder;
             JGGAppointmentBaseModel appointment = (JGGAppointmentBaseModel)itemData;
 
@@ -169,9 +174,8 @@ public class AppointmentRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             lbl_Comment = (TextView) itemView.findViewById(R.id.lblComment);
             lbl_Status = (TextView) itemView.findViewById(R.id.lblStatus);
             lbl_BadgeNumber = (TextView) itemView.findViewById(R.id.lblBadgeCount);
+            img_Profile = (RoundedImageView) itemView.findViewById(R.id.imgAvatar);
             mViewStatusBar = (RelativeLayout) itemView.findViewById(R.id.appointment_statusLayout);
         }
     }
-
-
 }

@@ -92,15 +92,6 @@ public class AppointmentsFragment extends Fragment {
         arrayPendingJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
         arrayPendingJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
         arrayPendingJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
-        arrayPendingJobs.add(new JGGJobModel(new Date(), "Maid Needed", NONE, "Needed on 18 Dec, 2017", 3));
-        arrayPendingJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 25 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGJobModel(new Date(), "Gardening", NONE, "Needed on 18 Dec, 2017", 99));
-        arrayPendingJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Help With The Garden", WITHDRAWN, "We love Badminton\\nEvent on 19 Jul, 2017 10:00 AM - 12:00 PM", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
-        arrayPendingJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
 
         // create our list and custom adapter
         appointmentListAdapter = new AppointmentRecyclerViewAdapter(getContext());
