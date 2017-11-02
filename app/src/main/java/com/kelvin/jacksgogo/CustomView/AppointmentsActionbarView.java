@@ -1,10 +1,8 @@
 package com.kelvin.jacksgogo.CustomView;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,12 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity;
-import com.kelvin.jacksgogo.Adapters.AppointmentsFilterRecyclerViewAdapter;
 import com.kelvin.jacksgogo.Adapters.AppointmentsRecyclerViewAdapter;
 import com.kelvin.jacksgogo.R;
 
 
-public class AppointmentsActionbar extends RelativeLayout implements View.OnClickListener {
+public class AppointmentsActionbarView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -34,19 +31,19 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     private static AppointmentsRecyclerViewAdapter recyclerViewAdapter;
     private Context context;
 
-    public AppointmentsActionbar(Context context, AttributeSet attrs, int defStyle) {
+    public AppointmentsActionbarView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
         initView();
     }
 
-    public AppointmentsActionbar(Context context, AttributeSet attrs) {
+    public AppointmentsActionbarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initView();
     }
 
-    public AppointmentsActionbar(Context context) {
+    public AppointmentsActionbarView(Context context) {
         super(context);
         mContext = context;
         initView();
@@ -55,7 +52,7 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.appointments_custom_actionbar, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.appointments_actionbar_view, this);
 
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);

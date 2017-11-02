@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.AppointmentsActionbar;
+import com.kelvin.jacksgogo.CustomView.AppointmentsActionbarView;
 import com.kelvin.jacksgogo.Fragments.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.ProfileFragment;
@@ -27,7 +27,7 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity implements AppointmentsFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
-    private AppointmentsActionbar appointmentsActionbar;
+    private AppointmentsActionbarView appointmentsActionbarView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
-        mToolbar.removeView(appointmentsActionbar);
-        if (appointmentsActionbar == null) {
-            appointmentsActionbar = new AppointmentsActionbar(this);
+        mToolbar.removeView(appointmentsActionbarView);
+        if (appointmentsActionbarView == null) {
+            appointmentsActionbarView = new AppointmentsActionbarView(this);
         }
-        mToolbar.addView(appointmentsActionbar);
+        mToolbar.addView(appointmentsActionbarView);
 
-        appointmentsActionbar.setTabbarItemClickListener(new AppointmentsActionbar.OnTabbarItemClickListener() {
+        appointmentsActionbarView.setTabbarItemClickListener(new AppointmentsActionbarView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
                 if (frag instanceof AppointmentsFragment) {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
     }
 
     private void removeTopActionBarForAppointment() {
-        mToolbar.removeView(appointmentsActionbar);
+        mToolbar.removeView(appointmentsActionbarView);
     }
 
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
-        appointmentsActionbar = new AppointmentsActionbar(this);
+        appointmentsActionbarView = new AppointmentsActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
 

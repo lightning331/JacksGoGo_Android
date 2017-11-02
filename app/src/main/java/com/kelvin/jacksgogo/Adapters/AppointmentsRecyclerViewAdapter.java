@@ -6,18 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.ListSectionHeaderView;
-import com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel;
-import com.kelvin.jacksgogo.Models.JGGEventModel;
-import com.kelvin.jacksgogo.Models.JGGServiceModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -41,7 +38,7 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public AppointmentsRecyclerViewAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.appointments_header); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.list_section_header_view); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList<JGGAppointmentBaseModel> arrayList) {
@@ -52,10 +49,10 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_header, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_section_header_view, parent, false);
             return new ListSectionHeaderView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_list_cell, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_home_list_cell, parent, false);
             return new AppointmentListView(view);
         }
     }

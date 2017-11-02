@@ -43,7 +43,7 @@
         android:orientation="vertical"
         android:gravity="left|center_vertical"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="6dp"
         android:layout_weight="70">
         <TextView
             android:id="@+id/lblTitle"
@@ -69,14 +69,13 @@
             android:text="Cancelled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="2"
             android:textColor="@color/JGGOrange"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/caption_font_size"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="15"
         android:gravity="center"
         android:layout_marginRight="10dp"

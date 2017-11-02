@@ -28,7 +28,7 @@ public class AppointmentsFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.appointments_filter_fragment);
+        setContentView(R.layout.appointments_filter_activity);
 
         recyclerView = (RecyclerView) findViewById(R.id.appointment_filter_recycler_view);
         if (recyclerView != null) {

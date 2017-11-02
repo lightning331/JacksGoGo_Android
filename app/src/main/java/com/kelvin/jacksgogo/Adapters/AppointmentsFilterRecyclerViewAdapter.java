@@ -43,7 +43,7 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
 
     public AppointmentsFilterRecyclerViewAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.appointments_header); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.list_section_header_view); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList arrayList) {
@@ -54,7 +54,7 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_header, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_section_header_view, parent, false);
             return new ListSectionHeaderView(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_filter_option_cell, parent, false);

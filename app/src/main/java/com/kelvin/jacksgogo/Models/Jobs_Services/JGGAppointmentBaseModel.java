@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Models;
+package com.kelvin.jacksgogo.Models.Jobs_Services;
 
 import com.kelvin.jacksgogo.Models.Base.JGGBaseModel;
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -13,22 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Adapters.AppointmentsRecyclerViewAdapter;
-import com.kelvin.jacksgogo.Models.JGGEventModel;
-import com.kelvin.jacksgogo.Models.JGGJobModel;
-import com.kelvin.jacksgogo.Models.JGGServiceModel;
-import com.kelvin.jacksgogo.Models.JGGServicePackageModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServicePackageModel;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.CANCELLED;
-import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.NONE;
-import static com.kelvin.jacksgogo.Models.JGGAppointmentBaseModel.AppointmentStatus.WITHDRAWN;
+import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel.AppointmentStatus.CANCELLED;
+import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel.AppointmentStatus.NONE;
+import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel.AppointmentStatus.WITHDRAWN;
 
 
 /**
@@ -77,7 +75,7 @@ public class AppointmentsFragment extends Fragment implements SearchView.OnQuery
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.appointments_fragment, container, false);
+        view = inflater.inflate(R.layout.appointments_home_fragment, container, false);
         searchView = (SearchView) view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
 
