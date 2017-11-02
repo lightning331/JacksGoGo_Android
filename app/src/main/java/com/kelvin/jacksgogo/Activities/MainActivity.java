@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
@@ -22,6 +21,8 @@ import com.kelvin.jacksgogo.Fragments.ProfileFragment;
 import com.kelvin.jacksgogo.Fragments.SearchFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Fragments.Appointments.AppointmentsFragment;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements AppointmentsFragment.OnFragmentInteractionListener {
 
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);

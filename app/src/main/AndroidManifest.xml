@@ -18,7 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="4c4c8f28eae15e6e6ce08356f2f84af7172e1d57"
+            />
         <activity android:name=".Activities.Appointment.AppointmentsFilterActivity"></activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

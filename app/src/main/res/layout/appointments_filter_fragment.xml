@@ -27,7 +27,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/JGGWhite"
                 android:src="@mipmap/button_close_round_orange"/>
             <RelativeLayout
                 android:layout_width="match_parent"
