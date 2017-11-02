@@ -42,6 +42,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="left|center_vertical"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:layout_weight="70">
         <TextView
             android:id="@+id/lblTitle"
@@ -59,7 +61,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:maxLines="2"
             android:textColor="@color/JGGGrey1"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/caption_font_size"/>

@@ -6,7 +6,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:gravity="left|center_vertical">
+        android:gravity="left|center_vertical"
+        android:background="@color/JGGWhite">
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/view_filter_bg"
             android:layout_width="match_parent"

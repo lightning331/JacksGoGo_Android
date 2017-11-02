@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
@@ -83,19 +85,28 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
             ft.replace(R.id.container, frag, frag.getTag());
             ft.commit();
             if (frag instanceof AppointmentsFragment) {
-                this.addTopActionBarForAppointment();
+                this.addTopActionBarForAppointment(frag);
             } else {
                 this.removeTopActionBarForAppointment();
             }
         }
     }
 
-    private void addTopActionBarForAppointment() {
+    private void addTopActionBarForAppointment(final Fragment frag) {
         mToolbar.removeView(appointmentsActionbar);
         if (appointmentsActionbar == null) {
             appointmentsActionbar = new AppointmentsActionbar(this);
         }
         mToolbar.addView(appointmentsActionbar);
+
+        appointmentsActionbar.setTabbarItemClickListener(new AppointmentsActionbar.OnTabbarItemClickListener() {
+            @Override
+            public void onTabbarItemClick(TextView item) {
+                if (frag instanceof AppointmentsFragment) {
+                    ((AppointmentsFragment)frag).refreshFragment(item.getTag());
+                }
+            }
+        });
     }
 
     private void removeTopActionBarForAppointment() {

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.CustomView;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -32,4 +33,7 @@ public class ListSectionHeaderView extends RecyclerView.ViewHolder {
         txtTitle.setText(resid);
     }
 
+    public void setBackgroundColor(int color) {
+        txtTitle.setBackgroundColor(color);
+    }
 }

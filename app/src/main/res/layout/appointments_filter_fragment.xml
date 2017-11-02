@@ -16,7 +16,8 @@
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/JGGWhite">
 
             <ImageButton
                 android:id="@+id/btn_close"
@@ -35,12 +36,12 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="100dp">
+                android:layout_marginBottom="15dp">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/appointment_filter_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/JGGGrey5"
+                    android:background="@color/JGGWhite"
                     android:orientation="vertical">
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>

@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -28,6 +29,7 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     ImageView confirmDotImageView;
     ImageView historyDotImageView;
     ImageButton filterButton;
+    View actionbarView;
 
     private static AppointmentsRecyclerViewAdapter recyclerViewAdapter;
     private Context context;
@@ -53,7 +55,7 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View actionbarView  = mLayoutInflater.inflate(R.layout.appointments_custom_actionbar, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.appointments_custom_actionbar, this);
 
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);
@@ -66,6 +68,9 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
         pendingTextView.setOnClickListener(this);
         confirmTextView.setOnClickListener(this);
         historyTextView.setOnClickListener(this);
+        confirmTextView.setTag("CONFIRM");
+        pendingTextView.setTag("PENDING");
+        historyTextView.setTag("HISTORY");
         filterButton.setOnClickListener(this);
     }
 
@@ -88,13 +93,26 @@ public class AppointmentsActionbar extends RelativeLayout implements View.OnClic
             if (view.getId() == R.id.lbl_pending) {
                 pendingTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 pendingDotImageView.setVisibility(View.VISIBLE);
+                listener.onTabbarItemClick(pendingTextView);
             } else if (view.getId() == R.id.lbl_confirmed) {
                 confirmTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 confirmDotImageView.setVisibility(View.VISIBLE);
+                listener.onTabbarItemClick(confirmTextView);
             } else if (view.getId() == R.id.lbl_history) {
                 historyTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 historyDotImageView.setVisibility(View.VISIBLE);
+                listener.onTabbarItemClick(historyTextView);
             }
         }
+    }
+
+    private OnTabbarItemClickListener listener;
+
+    public interface OnTabbarItemClickListener {
+        void onTabbarItemClick(TextView item);
+    }
+
+    public void setTabbarItemClickListener(OnTabbarItemClickListener listener) {
+        this.listener = listener;
     }
 }

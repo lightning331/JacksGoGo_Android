@@ -66,9 +66,10 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         Object itemData = getItem(position);
-        System.out.print(itemData);
+
         if (position == 0) {
             ListSectionHeaderView sectionView = (ListSectionHeaderView)holder;
+            sectionView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGWhite));
             sectionView.setTitle((String)itemData);
         } else {
             AppointmentsFilterRecyclerViewAdapter.AppointmentFilterListView cellView = (AppointmentsFilterRecyclerViewAdapter.AppointmentFilterListView) holder;
@@ -137,6 +138,7 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
         }
 
         public void bind(final int position, final OnItemClickListener listener) {
+
             title.setOnClickListener(new View.OnClickListener() {
 
                 @Override

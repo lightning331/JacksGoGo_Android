@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +48,6 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         this.headers.add(section);
         this.sections.put(section, arrayList);
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -151,6 +153,13 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     private Context getContext() {
         return this.mContext;
+    }
+
+    // Search Filter
+    public void setFilter(ArrayList<JGGAppointmentBaseModel> filteredArray) {
+        dataSet = new ArrayList<>();
+        dataSet.addAll(filteredArray);
+        notifyDataSetChanged();
     }
 
     public class AppointmentListView extends RecyclerView.ViewHolder {
