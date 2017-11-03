@@ -1,43 +1,48 @@
 package com.kelvin.jacksgogo.Fragments.Appointments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapters.AppointmentsRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Activities.Appointment.AppDetailActivity;
+import com.kelvin.jacksgogo.Adapters.AppRecyclerViewAdapter;
+import com.kelvin.jacksgogo.CustomView.AppDetailActionbarView;
+import com.kelvin.jacksgogo.CustomView.AppHomeActionbarView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServicePackageModel;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel.AppointmentStatus.CANCELLED;
-import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel.AppointmentStatus.NONE;
-import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel.AppointmentStatus.WITHDRAWN;
+import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel.AppointmentStatus.CANCELLED;
+import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel.AppointmentStatus.NONE;
+import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel.AppointmentStatus.WITHDRAWN;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AppointmentsFragment.OnFragmentInteractionListener} interface
+ * {@link AppHomeRecyclerViewFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AppointmentsFragment#newInstance} factory method to
+ * Use the {@link AppHomeRecyclerViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AppointmentsFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,23 +51,24 @@ public class AppointmentsFragment extends Fragment implements SearchView.OnQuery
     SearchView searchView;
     Object searchTag;
 
-    ArrayList<JGGAppointmentBaseModel> arrayQuickJobs = new ArrayList<>();
-    ArrayList<JGGAppointmentBaseModel> arrayServicePackages = new ArrayList<>();
-    ArrayList<JGGAppointmentBaseModel> arrayPendingJobs = new ArrayList<>();
-    ArrayList<JGGAppointmentBaseModel> arrayConfirmedJobs = new ArrayList<>();
-    ArrayList<JGGAppointmentBaseModel> arrayHistoryJobs = new ArrayList<>();
-    ArrayList<JGGAppointmentBaseModel> filteredArrayList = new ArrayList<>();
+    ArrayList<JGGAppBaseModel> arrayQuickJobs = new ArrayList<>();
+    ArrayList<JGGAppBaseModel> arrayServicePackages = new ArrayList<>();
+    ArrayList<JGGAppBaseModel> arrayPendingJobs = new ArrayList<>();
+    ArrayList<JGGAppBaseModel> arrayConfirmedJobs = new ArrayList<>();
+    ArrayList<JGGAppBaseModel> arrayHistoryJobs = new ArrayList<>();
+    ArrayList<JGGAppBaseModel> filteredArrayList = new ArrayList<>();
 
-    private static AppointmentsRecyclerViewAdapter pendingListAdapter;
-    private static AppointmentsRecyclerViewAdapter confirmedListAdapter;
-    private static AppointmentsRecyclerViewAdapter historyListAdapter;
+    private static AppRecyclerViewAdapter pendingListAdapter;
+    private static AppRecyclerViewAdapter confirmedListAdapter;
+    private static AppRecyclerViewAdapter historyListAdapter;
 
-    public AppointmentsFragment() {
+
+    public AppHomeRecyclerViewFragment() {
         // Required empty public constructor
     }
 
-    public static AppointmentsFragment newInstance() {
-        AppointmentsFragment fragment = new AppointmentsFragment();
+    public static AppHomeRecyclerViewFragment newInstance() {
+        AppHomeRecyclerViewFragment fragment = new AppHomeRecyclerViewFragment();
         return fragment;
     }
 
@@ -75,7 +81,7 @@ public class AppointmentsFragment extends Fragment implements SearchView.OnQuery
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.appointments_home_fragment, container, false);
+        view = inflater.inflate(R.layout.app_home_fragment, container, false);
         searchView = (SearchView) view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
 
@@ -138,32 +144,59 @@ public class AppointmentsFragment extends Fragment implements SearchView.OnQuery
         if (textView == "PENDING") {
             searchView.setQueryHint("Search through Pending list");
 
-            pendingListAdapter = new AppointmentsRecyclerViewAdapter(getContext());
+            pendingListAdapter = new AppRecyclerViewAdapter(getContext());
             if (arrayQuickJobs.size() > 0) pendingListAdapter.addSection("Quick Jobs", arrayQuickJobs);
             if (arrayServicePackages.size() > 0) pendingListAdapter.addSection("Service Packages", arrayServicePackages);
             if (arrayPendingJobs.size() > 0) pendingListAdapter.addSection("Pending Jobs", arrayPendingJobs);
             recyclerView.setAdapter(pendingListAdapter);
             recyclerView.refreshDrawableState();
 
+            pendingListAdapter.setOnItemClickListener(new AppRecyclerViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position, Object object) {
+                    Log.d("Home Item Selected", "==========" + object + "============");
+
+                    Intent intent = new Intent(getActivity(), AppDetailActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
         } else if (textView == "CONFIRM") {
             searchView.setQueryHint("Search through Confirmed list");
-
-            setDataToAdapter(confirmedListAdapter, "Confirmed", arrayConfirmedJobs);
+            setDataToAdapter(confirmedListAdapter, "Confirmed",
+                    arrayConfirmedJobs, false);
 
         } else if (textView == "HISTORY") {
             searchView.setQueryHint("Search through History list");
-
-            setDataToAdapter(historyListAdapter, "History", arrayHistoryJobs);
+            setDataToAdapter(historyListAdapter, "History",
+                    arrayHistoryJobs, false);
         }
     }
 
-    public void setDataToAdapter(AppointmentsRecyclerViewAdapter adapter, String sectionTitle, ArrayList<JGGAppointmentBaseModel> arrayList) {
-        adapter = new AppointmentsRecyclerViewAdapter(getContext());
+    public void setDataToAdapter(AppRecyclerViewAdapter adapter, String sectionTitle,
+                                 ArrayList<JGGAppBaseModel> arrayList, Boolean isFilter) {
+        adapter = new AppRecyclerViewAdapter(getContext());
+
         if (arrayList.size() > 0) {
             adapter.addSection(sectionTitle, arrayList);
         }
+        if (isFilter) {
+            adapter.setFilter(filteredArrayList);
+        }
         recyclerView.setAdapter(adapter);
         recyclerView.refreshDrawableState();
+
+        // RecyclerView Item select
+        adapter.setOnItemClickListener(new AppRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, Object object) {
+                Log.d("Home Item Selected", "==========" + object + "============");
+
+                Intent intent = new Intent(getActivity(), AppDetailActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -196,36 +229,43 @@ public class AppointmentsFragment extends Fragment implements SearchView.OnQuery
         if (searchTag == "PENDING") {
             filteredArrayList = filter(arrayPendingJobs, newText);
 
-            pendingListAdapter = new AppointmentsRecyclerViewAdapter(getContext());
+            pendingListAdapter = new AppRecyclerViewAdapter(getContext());
             pendingListAdapter.addSection("Pending Jobs", filteredArrayList);
             pendingListAdapter.setFilter(filteredArrayList);
             recyclerView.setAdapter(pendingListAdapter);
             recyclerView.refreshDrawableState();
+
+            pendingListAdapter.setOnItemClickListener(new AppRecyclerViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position, Object object) {
+                    Log.d("Home Item Selected", "==========" + object + "============");
+
+                    Intent intent = new Intent(getActivity(), AppDetailActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
         } else if (searchTag == "CONFIRM") {
             filteredArrayList = filter(arrayConfirmedJobs, newText);
 
-            confirmedListAdapter = new AppointmentsRecyclerViewAdapter(getContext());
-            confirmedListAdapter.addSection("Confirmed", filteredArrayList);
-            confirmedListAdapter.setFilter(filteredArrayList);
-            recyclerView.setAdapter(confirmedListAdapter);
-            recyclerView.refreshDrawableState();
+            setDataToAdapter(confirmedListAdapter, "Confirmed",
+                    filteredArrayList, true);
+
         } else if (searchTag == "HISTORY") {
             filteredArrayList = filter(arrayHistoryJobs, newText);
 
-            historyListAdapter = new AppointmentsRecyclerViewAdapter(getContext());
-            historyListAdapter.addSection("History", filteredArrayList);
-            historyListAdapter.setFilter(filteredArrayList);
-            recyclerView.setAdapter(historyListAdapter);
-            recyclerView.refreshDrawableState();
+            setDataToAdapter(historyListAdapter, "History",
+                    filteredArrayList, true);
         }
 
         return true;
     }
 
-    private ArrayList<JGGAppointmentBaseModel> filter(ArrayList<JGGAppointmentBaseModel> models, String query) {
+    private ArrayList<JGGAppBaseModel> filter(ArrayList<JGGAppBaseModel> models, String query) {
         query = query.toLowerCase();
-        final ArrayList<JGGAppointmentBaseModel> filteredModelList = new ArrayList<>();
-        for (JGGAppointmentBaseModel model : models) {
+        final ArrayList<JGGAppBaseModel> filteredModelList = new ArrayList<>();
+        for (JGGAppBaseModel model : models) {
             final String text = model.getTitle().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);

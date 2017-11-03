@@ -10,15 +10,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppointmentsFilterActivity;
-import com.kelvin.jacksgogo.Adapters.AppointmentsRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Activities.Appointment.AppFilterActivity;
 import com.kelvin.jacksgogo.R;
 
 
-public class AppointmentsActionbarView extends RelativeLayout implements View.OnClickListener {
+public class AppHomeActionbarView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
+
     TextView pendingTextView;
     TextView confirmTextView;
     TextView historyTextView;
@@ -28,22 +28,9 @@ public class AppointmentsActionbarView extends RelativeLayout implements View.On
     ImageButton filterButton;
     View actionbarView;
 
-    private static AppointmentsRecyclerViewAdapter recyclerViewAdapter;
-    private Context context;
 
-    public AppointmentsActionbarView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        mContext = context;
-        initView();
-    }
 
-    public AppointmentsActionbarView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mContext = context;
-        initView();
-    }
-
-    public AppointmentsActionbarView(Context context) {
+    public AppHomeActionbarView(Context context) {
         super(context);
         mContext = context;
         initView();
@@ -52,7 +39,7 @@ public class AppointmentsActionbarView extends RelativeLayout implements View.On
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.appointments_actionbar_view, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.app_home_actionbar_view, this);
 
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);
@@ -75,8 +62,8 @@ public class AppointmentsActionbarView extends RelativeLayout implements View.On
     public void onClick(View view) {
 
         if (view.getId() == R.id.btn_filter) {
-            // go to the appointments filter view
-            Intent intent = new Intent(view.getContext(), AppointmentsFilterActivity.class);
+            // back to previous view
+            Intent intent = new Intent(view.getContext(), AppFilterActivity.class);
             mContext.startActivity(intent);
         } else {
             pendingDotImageView.setVisibility(View.INVISIBLE);

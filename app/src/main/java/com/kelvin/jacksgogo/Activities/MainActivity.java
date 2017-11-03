@@ -14,20 +14,20 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.AppointmentsActionbarView;
+import com.kelvin.jacksgogo.CustomView.AppHomeActionbarView;
 import com.kelvin.jacksgogo.Fragments.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.ProfileFragment;
 import com.kelvin.jacksgogo.Fragments.SearchFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Fragments.Appointments.AppointmentsFragment;
+import com.kelvin.jacksgogo.Fragments.Appointments.AppHomeRecyclerViewFragment;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity implements AppointmentsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements AppHomeRecyclerViewFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
-    private AppointmentsActionbarView appointmentsActionbarView;
+    private AppHomeActionbarView appHomeActionbarView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
                 mToolbar.setTitle(R.string.title_search);
                 break;
             case R.id.navigation_appointments:
-                frag = AppointmentsFragment.newInstance();
+                frag = AppHomeRecyclerViewFragment.newInstance();
                 break;
             case R.id.navigation_favourite:
                 frag = FavouriteFragment.newInstance(null,
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container, frag, frag.getTag());
             ft.commit();
-            if (frag instanceof AppointmentsFragment) {
+            if (frag instanceof AppHomeRecyclerViewFragment) {
                 this.addTopActionBarForAppointment(frag);
             } else {
                 this.removeTopActionBarForAppointment();
@@ -94,24 +94,24 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
-        mToolbar.removeView(appointmentsActionbarView);
-        if (appointmentsActionbarView == null) {
-            appointmentsActionbarView = new AppointmentsActionbarView(this);
+        mToolbar.removeView(appHomeActionbarView);
+        if (appHomeActionbarView == null) {
+            appHomeActionbarView = new AppHomeActionbarView(this);
         }
-        mToolbar.addView(appointmentsActionbarView);
+        mToolbar.addView(appHomeActionbarView);
 
-        appointmentsActionbarView.setTabbarItemClickListener(new AppointmentsActionbarView.OnTabbarItemClickListener() {
+        appHomeActionbarView.setTabbarItemClickListener(new AppHomeActionbarView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
-                if (frag instanceof AppointmentsFragment) {
-                    ((AppointmentsFragment)frag).refreshFragment(item.getTag());
+                if (frag instanceof AppHomeRecyclerViewFragment) {
+                    ((AppHomeRecyclerViewFragment)frag).refreshFragment(item.getTag());
                 }
             }
         });
     }
 
     private void removeTopActionBarForAppointment() {
-        mToolbar.removeView(appointmentsActionbarView);
+        mToolbar.removeView(appHomeActionbarView);
     }
 
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements AppointmentsFragm
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
-        appointmentsActionbarView = new AppointmentsActionbarView(this);
+        appHomeActionbarView = new AppHomeActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
 

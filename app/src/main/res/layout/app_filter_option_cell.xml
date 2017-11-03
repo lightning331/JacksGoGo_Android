@@ -11,7 +11,7 @@
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/view_filter_bg"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
@@ -30,7 +30,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="15dp"
                 android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/headline_font_size"
+                android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"/>
     </RelativeLayout>
 </LinearLayout>

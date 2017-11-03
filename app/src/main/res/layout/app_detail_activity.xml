@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Activities.MainActivity">
-
+    android:orientation="vertical"
+    tools:context="com.kelvin.jacksgogo.Activities.Appointment.AppDetailActivity">
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/myAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:descendantFocusability="beforeDescendants"
@@ -20,7 +19,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/myToolbar"
+                android:id="@+id/app_detail_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -30,9 +29,8 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
-
         <FrameLayout
-            android:id="@+id/container"
+            android:id="@+id/app_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
@@ -41,14 +39,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </FrameLayout>
-
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/JGGWhite"
-            android:layout_gravity="bottom"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/navigation" />
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>

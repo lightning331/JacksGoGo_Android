@@ -10,7 +10,7 @@ import java.util.Date;
  */
 
 
-public class JGGAppointmentBaseModel extends JGGBaseModel {
+public class JGGAppBaseModel extends JGGBaseModel {
 
     public enum AppointmentStatus {
         NONE,
@@ -31,7 +31,7 @@ public class JGGAppointmentBaseModel extends JGGBaseModel {
     private String appointmentMonth;
     private String appointmentDay;
 
-    public JGGAppointmentBaseModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
+    public JGGAppBaseModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
         this.title=title;
         this.status = status;
         this.comment = comment;

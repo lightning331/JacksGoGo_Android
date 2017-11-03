@@ -10,25 +10,25 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapters.AppointmentsFilterRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Adapters.AppFilterRecyclerViewAdapter;
 import com.kelvin.jacksgogo.R;
 
 
 import java.util.ArrayList;
 
-public class AppointmentsFilterActivity extends AppCompatActivity {
+public class AppFilterActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImageButton closeButton;
     ArrayList arrayFilterTypes;
 
-    private static AppointmentsFilterRecyclerViewAdapter filterRecyclerViewAdapter;
+    private static AppFilterRecyclerViewAdapter filterRecyclerViewAdapter;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.appointments_filter_activity);
+        setContentView(R.layout.app_filter_activity);
 
         recyclerView = (RecyclerView) findViewById(R.id.appointment_filter_recycler_view);
         if (recyclerView != null) {
@@ -44,12 +44,12 @@ public class AppointmentsFilterActivity extends AppCompatActivity {
         arrayFilterTypes.add("Events posted.");
 
         // create our list and custom adapter
-        filterRecyclerViewAdapter = new AppointmentsFilterRecyclerViewAdapter(this);
+        filterRecyclerViewAdapter = new AppFilterRecyclerViewAdapter(this);
         filterRecyclerViewAdapter.addSection("Show Only", arrayFilterTypes);
 
         recyclerView.setAdapter(filterRecyclerViewAdapter);
         // RecyclerView Item select
-        filterRecyclerViewAdapter.setOnItemClickListener(new AppointmentsFilterRecyclerViewAdapter.OnItemClickListener() {
+        filterRecyclerViewAdapter.setOnItemClickListener(new AppFilterRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("Item Selected", "==========" + position + "============");

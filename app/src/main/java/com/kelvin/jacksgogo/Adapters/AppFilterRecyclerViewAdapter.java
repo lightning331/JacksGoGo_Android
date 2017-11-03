@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.ListSectionHeaderView;
+import com.kelvin.jacksgogo.CustomView.SectionHeaderView;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by PUMA on 11/1/2017.
  */
 
-public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppFilterRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList dataSet;
     public final Map<String, ArrayList> sections = new LinkedHashMap<>();
@@ -41,7 +41,7 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
         this.listener = listener;
     }
 
-    public AppointmentsFilterRecyclerViewAdapter(Context context) {
+    public AppFilterRecyclerViewAdapter(Context context) {
         this.mContext = context;
         headers = new ArrayAdapter<String>(context, R.layout.list_section_header_view); // this is the header desing page.
     }
@@ -55,9 +55,9 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_section_header_view, parent, false);
-            return new ListSectionHeaderView(view);
+            return new SectionHeaderView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_filter_option_cell, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
             return new AppointmentFilterListView(view);
         }
     }
@@ -68,11 +68,11 @@ public class AppointmentsFilterRecyclerViewAdapter extends RecyclerView.Adapter<
         Object itemData = getItem(position);
 
         if (position == 0) {
-            ListSectionHeaderView sectionView = (ListSectionHeaderView)holder;
+            SectionHeaderView sectionView = (SectionHeaderView)holder;
             sectionView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGWhite));
             sectionView.setTitle((String)itemData);
         } else {
-            AppointmentsFilterRecyclerViewAdapter.AppointmentFilterListView cellView = (AppointmentsFilterRecyclerViewAdapter.AppointmentFilterListView) holder;
+            AppFilterRecyclerViewAdapter.AppointmentFilterListView cellView = (AppFilterRecyclerViewAdapter.AppointmentFilterListView) holder;
             cellView.title.setText((String) itemData);
 
             cellView.bind(position, listener);

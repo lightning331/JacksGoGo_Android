@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.ListSectionHeaderView;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppointmentBaseModel;
+import com.kelvin.jacksgogo.CustomView.SectionHeaderView;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
@@ -27,21 +28,31 @@ import java.util.Map;
  * https://rajeshandroiddeveloper.blogspot.jp/2013/05/sectioned-list-view-list-with-headers.html
  */
 
-public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<JGGAppointmentBaseModel> dataSet;
-    public final Map<String, ArrayList<JGGAppointmentBaseModel>> sections = new LinkedHashMap<>();
+    private ArrayList<JGGAppBaseModel> dataSet;
+    public final Map<String, ArrayList<JGGAppBaseModel>> sections = new LinkedHashMap<>();
     public final ArrayAdapter<String> headers;
     public final static int TYPE_SECTION_HEADER = 0;
 
     Context mContext;
 
-    public AppointmentsRecyclerViewAdapter(Context context) {
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position, Object object);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public AppRecyclerViewAdapter(Context context) {
         this.mContext = context;
         headers = new ArrayAdapter<String>(context, R.layout.list_section_header_view); // this is the header desing page.
     }
 
-    public void addSection(String section, ArrayList<JGGAppointmentBaseModel> arrayList) {
+    public void addSection(String section, ArrayList<JGGAppBaseModel> arrayList) {
         this.headers.add(section);
         this.sections.put(section, arrayList);
     }
@@ -50,35 +61,35 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_section_header_view, parent, false);
-            return new ListSectionHeaderView(view);
+            return new SectionHeaderView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointments_home_list_cell, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_home_list_cell, parent, false);
             return new AppointmentListView(view);
         }
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        Object itemData = getItem(position);
+        final Object itemData = getItem(position);
 
         if (itemData instanceof String) {
             // RecyclerView Header
-            ListSectionHeaderView sectionView = (ListSectionHeaderView)holder;
-            sectionView.setTitle((String)itemData);
-        } else if (itemData instanceof JGGAppointmentBaseModel) {
+            SectionHeaderView sectionView = (SectionHeaderView) holder;
+            sectionView.setTitle((String) itemData);
+        } else if (itemData instanceof JGGAppBaseModel) {
             // RecyclerView Cell
-            AppointmentListView cellView = (AppointmentListView)holder;
-            JGGAppointmentBaseModel appointment = (JGGAppointmentBaseModel)itemData;
+            AppointmentListView cellView = (AppointmentListView) holder;
+            JGGAppBaseModel appointment = (JGGAppBaseModel) itemData;
 
             cellView.lbl_Title.setText(appointment.getTitle());
             cellView.lbl_Comment.setText(appointment.getComment());
             cellView.lbl_Day.setText(appointment.getAppointmentDay());
             cellView.lbl_Month.setText(appointment.getAppointmentMonth());
 
-            if (appointment.getStatus() == JGGAppointmentBaseModel.AppointmentStatus.CANCELLED) {
+            if (appointment.getStatus() == JGGAppBaseModel.AppointmentStatus.CANCELLED) {
                 cellView.lbl_Status.setText("Cancelled");
-            } else if (appointment.getStatus() == JGGAppointmentBaseModel.AppointmentStatus.WITHDRAWN) {
+            } else if (appointment.getStatus() == JGGAppBaseModel.AppointmentStatus.WITHDRAWN) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
                 cellView.lbl_Status.setText("");
@@ -100,9 +111,18 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             if (appointment instanceof JGGServiceModel) {
                 cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
                 cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-            } else if (appointment instanceof JGGEventModel){
+            } else if (appointment instanceof JGGEventModel) {
                 cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
                 cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+            }
+
+            if (cellView != null) {
+                cellView.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onItemClick(position, itemData);
+                    }
+                });
             }
         }
     }
@@ -110,19 +130,19 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public int getItemCount() {
         int total = 0;
-        for(ArrayList<JGGAppointmentBaseModel> arrayList : this.sections.values())
+        for (ArrayList<JGGAppBaseModel> arrayList : this.sections.values())
             total += arrayList.size() + 1;
         return total;
     }
 
     public Object getItem(int position) {
-        for(Object section : this.sections.keySet()) {
-            ArrayList<JGGAppointmentBaseModel> arrayList = sections.get(section);
+        for (Object section : this.sections.keySet()) {
+            ArrayList<JGGAppBaseModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
-            if(position == 0) return section;
-            if(position < size) return arrayList.get(position - 1);
+            if (position == 0) return section;
+            if (position < size) return arrayList.get(position - 1);
 
             // otherwise jump into next section
             position -= size;
@@ -133,13 +153,13 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public int getItemViewType(int position) {
         int type = 1;
-        for(Object section : this.sections.keySet()) {
-            ArrayList<JGGAppointmentBaseModel> arrayList = sections.get(section);
+        for (Object section : this.sections.keySet()) {
+            ArrayList<JGGAppBaseModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
-            if(position == 0) return TYPE_SECTION_HEADER;
-            if(position < size) return 1;
+            if (position == 0) return TYPE_SECTION_HEADER;
+            if (position < size) return 1;
 
             // otherwise jump into next section
             position -= size;
@@ -153,7 +173,7 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     }
 
     // Search Filter
-    public void setFilter(ArrayList<JGGAppointmentBaseModel> filteredArray) {
+    public void setFilter(ArrayList<JGGAppBaseModel> filteredArray) {
         dataSet = new ArrayList<>();
         dataSet.addAll(filteredArray);
         notifyDataSetChanged();
@@ -169,6 +189,7 @@ public class AppointmentsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         TextView lbl_BadgeNumber;
         ImageView img_Profile;
         RelativeLayout mViewStatusBar;
+        LinearLayout mAppointmentsHomeListCell;
 
         public AppointmentListView(View itemView) {
             super(itemView);

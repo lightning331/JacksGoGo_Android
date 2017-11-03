@@ -11,11 +11,11 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 10/31/2017.
  */
 
-public class ListSectionHeaderView extends RecyclerView.ViewHolder {
+public class SectionHeaderView extends RecyclerView.ViewHolder {
 
     public TextView txtTitle;
 
-    public ListSectionHeaderView(View itemView) {
+    public SectionHeaderView(View itemView) {
         super(itemView);
 
         txtTitle = (TextView) itemView.findViewById(R.id.list_header_title);
