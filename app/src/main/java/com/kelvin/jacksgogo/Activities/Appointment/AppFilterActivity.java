@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapters.AppFilterRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Adapter.AppFilterRecyclerViewAdapter;
 import com.kelvin.jacksgogo.R;
 
 

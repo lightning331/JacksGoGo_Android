@@ -1,12 +1,13 @@
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_header_title"
+    android:id="@+id/lbl_detail_type_header"
     android:layout_width="fill_parent"
-    android:layout_height="32dp"
-    android:paddingTop="10dip"
+    android:layout_height="45dp"
+    android:paddingTop="15dip"
     android:paddingBottom="2dip"
     android:paddingLeft="15dp"
     android:background="@color/JGGGrey5"
     android:textColor="@color/JGGBlack"
     android:fontFamily="@font/mulibold"
-    android:textSize="@dimen/button_font_size"/>
+    android:textSize="@dimen/button_font_size"
+    android:text="Provider"/>

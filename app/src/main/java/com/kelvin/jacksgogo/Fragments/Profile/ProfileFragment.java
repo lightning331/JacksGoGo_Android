@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments;
+package com.kelvin.jacksgogo.Fragments.Profile;
 
 import android.content.Context;
 import android.net.Uri;

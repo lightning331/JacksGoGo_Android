@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="60dp">
     <TextView
-        android:text="Job posted on 7 Jul, 2017 8:15PM"
+        android:id="@+id/detail_info_footer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

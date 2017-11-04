@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapters;
+package com.kelvin.jacksgogo.Adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -28,7 +28,7 @@ import java.util.Map;
  * https://rajeshandroiddeveloper.blogspot.jp/2013/05/sectioned-list-view-list-with-headers.html
  */
 
-public class AppRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppHomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<JGGAppBaseModel> dataSet;
     public final Map<String, ArrayList<JGGAppBaseModel>> sections = new LinkedHashMap<>();
@@ -47,9 +47,9 @@ public class AppRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.listener = listener;
     }
 
-    public AppRecyclerViewAdapter(Context context) {
+    public AppHomeRecyclerViewAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.list_section_header_view); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.app_home_section_header_view); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList<JGGAppBaseModel> arrayList) {
@@ -60,7 +60,7 @@ public class AppRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_section_header_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_home_section_header_view, parent, false);
             return new SectionHeaderView(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_home_list_cell, parent, false);

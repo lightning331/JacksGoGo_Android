@@ -1,19 +1,14 @@
 package com.kelvin.jacksgogo.CustomView;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppDetailActivity;
-import com.kelvin.jacksgogo.Activities.Appointment.AppFilterActivity;
-import com.kelvin.jacksgogo.Activities.MainActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.AppClientServiceDetailActivity;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -38,7 +33,7 @@ public class AppDetailActionbarView extends RelativeLayout implements View.OnCli
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.app_detail_actionbar_view, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.detail_info_actionbar_view, this);
 
         backButton = (LinearLayout) actionbarView.findViewById(R.id.btn_back);
         moreDetailButton = (LinearLayout) actionbarView.findViewById(R.id.btn_more);
@@ -54,7 +49,7 @@ public class AppDetailActionbarView extends RelativeLayout implements View.OnCli
 
         } else {
             // back to previous view
-            ((AppDetailActivity)mContext).finish();
+            ((AppClientServiceDetailActivity)mContext).finish();
         }
     }
 

@@ -26,7 +26,7 @@
             android:value="4c4c8f28eae15e6e6ce08356f2f84af7172e1d57" />
 
         <activity android:name=".Activities.Appointment.AppFilterActivity" />
-        <activity android:name=".Activities.Appointment.AppDetailActivity"></activity>
+        <activity android:name=".Activities.Appointment.AppClientServiceDetailActivity"></activity>
     </application>
 
 </manifest>
