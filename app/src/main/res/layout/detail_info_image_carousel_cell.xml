@@ -4,7 +4,7 @@
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.synnapps.carouselview.CarouselView
-        android:id="@+id/cell_slot_images_carousel_view"
+        android:id="@+id/detail_images_carousel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:fillColor="#EFEFEFFF"
