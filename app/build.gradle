@@ -56,11 +56,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
 
-    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.makeramen:roundedimageview:2.3.0'
-    compile 'com.synnapps:carouselview:0.1.4'
-    compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
+    compile 'de.hdodenhof:circleimageview:2.1.0'                    // Round Image
+    compile 'com.makeramen:roundedimageview:2.3.0'                  // Round Image
+    compile 'com.synnapps:carouselview:0.1.4'                       // Page view
+    compile 'me.zhanghai.android.materialratingbar:library:1.0.2'   //
+    compile 'co.lujun:androidtagview:1.1.4'                         // Tag List View
+
+    compile 'com.google.android.gms:play-services:11.4.2'           // Google play service
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }

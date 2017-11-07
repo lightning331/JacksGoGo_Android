@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/JGGGrey5"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <co.lujun.androidtagview.TagContainerLayout
+        android:id="@+id/original_post_tag_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        app:tag_theme="none"
+        app:container_background_color="@color/JGGGrey5"
+        app:container_border_color="@color/JGGGrey4"
+        app:container_enable_drag="false"
+        app:horizontal_interval="10dp"
+        app:tag_background_color="@color/JGGWhite"
+        app:tag_border_color="@color/JGGGrey3"
+        app:tag_text_color="@color/JGGGreen"
+        app:tag_text_size="@dimen/caption_font_size"
+        app:vertical_interval="10dp" />
+</LinearLayout>
