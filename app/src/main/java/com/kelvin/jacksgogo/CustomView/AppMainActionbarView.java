@@ -2,7 +2,6 @@ package com.kelvin.jacksgogo.CustomView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,7 +13,7 @@ import com.kelvin.jacksgogo.Activities.Appointment.AppFilterActivity;
 import com.kelvin.jacksgogo.R;
 
 
-public class AppHomeActionbarView extends RelativeLayout implements View.OnClickListener {
+public class AppMainActionbarView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -30,7 +29,7 @@ public class AppHomeActionbarView extends RelativeLayout implements View.OnClick
 
 
 
-    public AppHomeActionbarView(Context context) {
+    public AppMainActionbarView(Context context) {
         super(context);
         mContext = context;
         initView();
@@ -39,7 +38,7 @@ public class AppHomeActionbarView extends RelativeLayout implements View.OnClick
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.app_home_actionbar_view, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.app_main_actionbar_view, this);
 
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);

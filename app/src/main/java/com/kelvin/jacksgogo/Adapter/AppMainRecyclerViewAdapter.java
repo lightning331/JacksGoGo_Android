@@ -28,7 +28,7 @@ import java.util.Map;
  * https://rajeshandroiddeveloper.blogspot.jp/2013/05/sectioned-list-view-list-with-headers.html
  */
 
-public class AppHomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<JGGAppBaseModel> dataSet;
     public final Map<String, ArrayList<JGGAppBaseModel>> sections = new LinkedHashMap<>();
@@ -47,9 +47,9 @@ public class AppHomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.listener = listener;
     }
 
-    public AppHomeRecyclerViewAdapter(Context context) {
+    public AppMainRecyclerViewAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.app_home_section_header_view); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.app_main_section_header_view); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList<JGGAppBaseModel> arrayList) {
@@ -60,10 +60,10 @@ public class AppHomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_home_section_header_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_main_section_header_view, parent, false);
             return new SectionHeaderView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_home_list_cell, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_main_list_cell, parent, false);
             return new AppointmentListView(view);
         }
     }
@@ -92,7 +92,8 @@ public class AppHomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             } else if (appointment.getStatus() == JGGAppBaseModel.AppointmentStatus.WITHDRAWN) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
-                cellView.lbl_Status.setText("");
+//                cellView.lbl_Status.setText("");
+                cellView.lbl_Status.setVisibility(View.GONE);
             }
             if (appointment.getBadgeNumber() < 1) {
                 // Badge view hide when count is less than 1

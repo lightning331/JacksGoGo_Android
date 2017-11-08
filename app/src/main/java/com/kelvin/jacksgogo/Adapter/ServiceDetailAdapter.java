@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Fragments.Appointments.AppOriginalPostFragment;
+import com.kelvin.jacksgogo.Fragments.Appointments.ServiceDetailFragment;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
  * Created by PUMA on 11/7/2017.
  */
 
-public class AppOriginalPostDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    AppOriginalPostFragment mContext;
+    ServiceDetailFragment mContext;
 
     int ITEM_COUNT = 11;
 
-    public AppOriginalPostDetailAdapter(AppOriginalPostFragment context) {
+    public ServiceDetailAdapter(ServiceDetailFragment context) {
         this.mContext = context;
     }
 
@@ -36,7 +36,7 @@ public class AppOriginalPostDetailAdapter extends RecyclerView.Adapter<RecyclerV
 
         switch (viewType) {
             case 0:
-                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_image_carousel_cell, parent, false);
+                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_image_carousel_cell, parent, false);
                 PageViewHolder pageViewHolder = new PageViewHolder(imgPageView);
 
                 int[] array = {R.drawable.carousel03, R.drawable.carousel01,
@@ -47,48 +47,48 @@ public class AppOriginalPostDetailAdapter extends RecyclerView.Adapter<RecyclerV
                 pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
                 return pageViewHolder;
             case 1:
-                View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_detail_category_cell, parent, false);
+                View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_category_cell, parent, false);
                 PostCategoryViewHolder postCategoryViewHolder = new PostCategoryViewHolder(postCategoryView);
                 return postCategoryViewHolder;
             case 2:
-                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
+                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
                 PriceViewHolder priceViewHolder = new PriceViewHolder(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setText("$50-$100");
                 return priceViewHolder;
             case 3:
-                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
+                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
                 DescriptionViewHolder descriptionViewHolder = new DescriptionViewHolder(descriptionView);
                 descriptionViewHolder.descriptionImage.setImageResource(R.mipmap.icon_info);
                 descriptionViewHolder.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
                         "what tasks you need deon, and any special requirements.");
                 return descriptionViewHolder;
             case 4:
-                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
+                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
                 PostAddressViewHolder addressViewHolder = new PostAddressViewHolder(addressView);
                 addressViewHolder.descriptionImage.setImageResource(R.mipmap.icon_location);
                 addressViewHolder.description.setText("Smith Street, 0.4km away");
                 return addressViewHolder;
             case 5:
-                View timeSlotsView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_time_slots_cell, parent, false);
+                View timeSlotsView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_time_slots_cell, parent, false);
                 TimeSlotsViewHolder timeSlotsViewHolder = new TimeSlotsViewHolder(timeSlotsView);
                 return timeSlotsViewHolder;
             case 6:
-                View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_total_review_cell, parent, false);
+                View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_total_review_cell, parent, false);
                 ReviewViewHolder reviewViewHolder = new ReviewViewHolder(reviewView);
                 reviewViewHolder.ratingBar.setRating((float)4.6);
                 return reviewViewHolder;
             case 7:
-                View posterInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_user_name_rating_cell, parent, false);
+                View posterInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_user_name_rating_cell, parent, false);
                 UserInfoViewHolder posterInfoViewHolder = new UserInfoViewHolder(posterInfoView);
                 posterInfoViewHolder.ratingBar.setRating((float)4.8);
                 return posterInfoViewHolder;
             case 8:
-                View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_tag_list_cell, parent, false);
+                View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_tag_list_cell, parent, false);
                 TagListViewHolder tagListViewHolder = new TagListViewHolder(tagListView);
                 return tagListViewHolder;
             case 9:
-                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_detail_booked_info_cell, parent, false);
+                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_booked_info_cell, parent, false);
                 BookedInfoViewHolder bookedInfoViewHolder = new BookedInfoViewHolder(bookedInfoView);
                 return bookedInfoViewHolder;
             case 10:

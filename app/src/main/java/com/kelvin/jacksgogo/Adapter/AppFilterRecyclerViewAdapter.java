@@ -34,7 +34,7 @@ public class AppFilterRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 
     public AppFilterRecyclerViewAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.app_home_section_header_view); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.app_main_section_header_view); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList arrayList) {
@@ -45,7 +45,7 @@ public class AppFilterRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_home_section_header_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_main_section_header_view, parent, false);
             return new SectionHeaderView(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);

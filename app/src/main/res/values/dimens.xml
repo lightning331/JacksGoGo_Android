@@ -19,7 +19,7 @@
     <dimen name="circle_image_radius">10dp</dimen>
 
     <!--Appointment-->
-    <dimen name="avatar_size">45dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
     <dimen name="avatar_smal_size">25dp</dimen>
     <dimen name="badge_number_size">19dp</dimen>
     <dimen name="badge_number_radius">9dp</dimen>

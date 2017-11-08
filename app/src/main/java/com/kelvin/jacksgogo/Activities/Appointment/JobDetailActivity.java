@@ -12,55 +12,55 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.AppDetailActionbarView;
-import com.kelvin.jacksgogo.Fragments.Appointments.AppClientServiceDetailFragment;
+import com.kelvin.jacksgogo.CustomView.JobDetailActionbarView;
+import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
 
 import java.lang.reflect.Field;
 
-public class AppClientServiceDetailActivity extends AppCompatActivity {
+public class JobDetailActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    AppDetailActionbarView appDetailActionbarView;
+    JobDetailActionbarView jobDetailActionbarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_info_activity);
+        setContentView(R.layout.job_detail_activity);
 
-        appDetailActionbarView = new AppDetailActionbarView(this);
+        jobDetailActionbarView = new JobDetailActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.app_detail_actionbar);
-        mToolbar.addView(appDetailActionbarView);
+        mToolbar.addView(jobDetailActionbarView);
         setSupportActionBar(mToolbar);
 
-        appDetailActionbarView.setTabbarItemClickListener(new AppDetailActionbarView.OnTabbarItemClickListener() {
+        jobDetailActionbarView.setTabbarItemClickListener(new JobDetailActionbarView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(View item) {
 
                 if (item.getId() == R.id.btn_more) {
 
                     PopupWindow mPopupWindow = new PopupWindow();
-                    PopupMenu popupMenu = new PopupMenu(AppClientServiceDetailActivity.this, item);
+                    PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, item);
                     popupMenu.inflate(R.menu.menu_option);
 
-                    appDetailActionbarView.setSelected(!appDetailActionbarView.isMenuOpenStatus());
+                    jobDetailActionbarView.setSelected(!jobDetailActionbarView.isMenuOpenStatus());
                     optionMenuIconChange();
 
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
 
-                            appDetailActionbarView.setSelected(!appDetailActionbarView.isMenuOpenStatus());
+                            jobDetailActionbarView.setSelected(!jobDetailActionbarView.isMenuOpenStatus());
                             optionMenuIconChange();
 
                             if (menuItem.getItemId() == R.id.menu_option_delete) {
 
-                                final AlertDialog.Builder builder = new AlertDialog.Builder(AppClientServiceDetailActivity.this);
-                                LayoutInflater inflater = (AppClientServiceDetailActivity.this).getLayoutInflater();
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(JobDetailActivity.this);
+                                LayoutInflater inflater = (JobDetailActivity.this).getLayoutInflater();
                                 // Inflate and set the layout for the dialog
                                 // Pass null as the parent view because its going in the
                                 // dialog layout
-                                View dialogView = inflater.inflate(R.layout.jgg_custom_alert_view, null);
+                                View dialogView = inflater.inflate(R.layout.custom_alert_view, null);
                                 builder.setView(dialogView);
                                 TextView cancelButton = (TextView) dialogView.findViewById(R.id.dialog_cancel);
                                 TextView deleteButton = (TextView) dialogView.findViewById(R.id.dialog_ok);
@@ -74,7 +74,7 @@ public class AppClientServiceDetailActivity extends AppCompatActivity {
                                 deleteButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        AppClientServiceDetailActivity.this.finish();
+                                        JobDetailActivity.this.finish();
                                     }
                                 });
                                 alertDialog.show();
@@ -102,20 +102,20 @@ public class AppClientServiceDetailActivity extends AppCompatActivity {
                     popupMenu.show();
                 } else {
                     // back to previous view
-                    AppClientServiceDetailActivity.this.finish();
+                    JobDetailActivity.this.finish();
                 }
             }
         });
 
-        AppClientServiceDetailFragment frag = new AppClientServiceDetailFragment();
+        JobDetailFragment frag = new JobDetailFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, frag, frag.getTag());
         ft.commit();
     }
 
     public void optionMenuIconChange() {
-        if (!appDetailActionbarView.isMenuOpenStatus()) appDetailActionbarView.moreMenuImage.setImageResource(R.mipmap.button_more_orange);
-        else appDetailActionbarView.moreMenuImage.setImageResource(R.mipmap.button_more_orange_active);
+        if (!jobDetailActionbarView.isMenuOpenStatus()) jobDetailActionbarView.moreMenuImage.setImageResource(R.mipmap.button_more_orange);
+        else jobDetailActionbarView.moreMenuImage.setImageResource(R.mipmap.button_more_orange_active);
 
     }
 }

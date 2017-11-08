@@ -6,14 +6,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.view.View;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppOriginalPostDetailActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.ServiceDetailActivity;
 import com.kelvin.jacksgogo.R;
 
 /**
  * Created by PUMA on 11/7/2017.
  */
 
-public class AppOriginalPostActionbarView extends RelativeLayout implements View.OnClickListener {
+public class ServiceActionbarView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -23,7 +23,7 @@ public class AppOriginalPostActionbarView extends RelativeLayout implements View
     LinearLayout likeButton;
     View actionbarView;
 
-    public AppOriginalPostActionbarView(Context context) {
+    public ServiceActionbarView(Context context) {
         super(context);
         mContext = context;
 
@@ -33,7 +33,7 @@ public class AppOriginalPostActionbarView extends RelativeLayout implements View
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.original_post_detail_actionbar_view, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.service_detail_actionbar_view, this);
 
         backButton = (LinearLayout) actionbarView.findViewById(R.id.btn_back_original_post);
         likeButton = (LinearLayout) actionbarView.findViewById(R.id.btn_like_original);
@@ -51,7 +51,7 @@ public class AppOriginalPostActionbarView extends RelativeLayout implements View
 
         } else {
             // back to previous view
-            ((AppOriginalPostDetailActivity)mContext).finish();
+            ((ServiceDetailActivity)mContext).finish();
         }
     }
 }

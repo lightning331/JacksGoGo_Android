@@ -18,16 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppOriginalPostDetailActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Appointment.JGGMapViewActivity;
-import com.kelvin.jacksgogo.Fragments.Appointments.AppClientServiceDetailFragment;
+import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
-
-import java.lang.reflect.Type;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -36,9 +34,9 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
  * Created by PUMA on 11/3/2017.
  */
 
-public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    AppClientServiceDetailFragment mContext;
+    JobDetailFragment mContext;
     private boolean expandState = false; // true: expanded, false: not expanded
 
     public void setExpandState(boolean expandState) {
@@ -50,7 +48,7 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    public AppClientServiceDetailAdapter(AppClientServiceDetailFragment context) {
+    public JobDetailAdapter(JobDetailFragment context) {
         this.mContext = context;
     }
 
@@ -59,27 +57,27 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
 
         switch (viewType) {
             case 0:
-                View nextStepTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_next_step_title_cell, parent, false);
+                View nextStepTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_next_step_title_cell, parent, false);
                 NextStepTitleViewHolder nextStepTitleViewHolder = new NextStepTitleViewHolder(nextStepTitleView);
                 nextStepTitleViewHolder.title.setText("Waiting for service provider...");
                 return nextStepTitleViewHolder;
             case 1:
-                View typeTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_type_header_view, parent, false);
+                View typeTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_header_view, parent, false);
                 SectionTitleViewHolder sectionTitleViewHolder = new SectionTitleViewHolder(typeTitleView);
                 sectionTitleViewHolder.title.setText("Invited service provider:");
                 return sectionTitleViewHolder;
             case 2:
-                View sectionTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_user_name_rating_cell, parent, false);
+                View sectionTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_user_name_rating_cell, parent, false);
                 UserInfoViewHolder userInfoViewHolder = new UserInfoViewHolder(sectionTitleView);
                 userInfoViewHolder.ratingBar.setRating((float)4.8);
                 return userInfoViewHolder;
             case 3:
-                View expandableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_expandable_header_view, parent, false);
+                View expandableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_expandable_cell, parent, false);
                 ExpandableViewHolder expandableViewHolder = new ExpandableViewHolder(expandableView);
                 expandableViewHolder.bind(this);
                 return expandableViewHolder;
             case 4:
-                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_image_carousel_cell, parent, false);
+                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_image_carousel_cell, parent, false);
                 PageViewHolder pageViewHolder = new PageViewHolder(imgPageView);
 
                 int[] array = {R.drawable.carousel01, R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel01,
@@ -90,20 +88,20 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
                 pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
                 return pageViewHolder;
             case 5:
-                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
+                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
                 PriceViewHolder priceViewHolder = new PriceViewHolder(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setText("$50-$100");
                 return priceViewHolder;
             case 6:
-                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
+                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
                 DescriptionViewHolder descriptionViewHolder = new DescriptionViewHolder(descriptionView);
                 descriptionViewHolder.descriptionImage.setImageResource(R.mipmap.icon_info);
                 descriptionViewHolder.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
                         "what tasks you need deon, and any special requirements.");
                 return descriptionViewHolder;
             case 7:
-                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_location_button_cell, parent, false);
+                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_location_cell, parent, false);
                 AddressViewHolder addressViewHolder = new AddressViewHolder(addressView);
                 addressViewHolder.description.setText("2 Jurong West Avenue 5 64386");
                 addressViewHolder.location.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +112,7 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
                 });
                 return addressViewHolder;
             case 8:
-                View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
+                View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
                 StatusViewHolder statusViewHolder = new StatusViewHolder(statusView);
                 statusViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
 
@@ -131,7 +129,7 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
                 statusViewHolder.description.append(normalText);
                 return statusViewHolder;
             case 9:
-                View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_job_no_cell, parent, false);
+                View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_job_no_cell, parent, false);
                 ReferenceNoViewHolder referenceNoViewHolder = new ReferenceNoViewHolder(referenceView);
                 return referenceNoViewHolder;
             case 10:
@@ -141,12 +139,12 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
                 originalViewHolder.btnOriginal.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mContext.getActivity().startActivity(new Intent(mContext.getActivity(), AppOriginalPostDetailActivity.class));
+                        mContext.getActivity().startActivity(new Intent(mContext.getActivity(), ServiceDetailActivity.class));
                     }
                 });
                 return originalViewHolder;
             case 11:
-                View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_footer_cell, parent, false);
+                View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_footer_cell, parent, false);
                 HooterViewHolder footerViewHolder = new HooterViewHolder(footerView);
                 footerViewHolder.title.setText("Job posted on 7 Jul, 2017 8:15PM");
                 return footerViewHolder;
@@ -274,7 +272,7 @@ class ExpandableViewHolder extends RecyclerView.ViewHolder {
         this.imgExpand = itemView.findViewById(R.id.img_expand);
     }
 
-    public void bind(final AppClientServiceDetailAdapter adapter) {
+    public void bind(final JobDetailAdapter adapter) {
 
         btnExpand.setOnClickListener(new View.OnClickListener() {
 

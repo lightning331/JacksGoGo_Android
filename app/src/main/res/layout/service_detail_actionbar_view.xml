@@ -28,24 +28,24 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/btn_like_original"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@mipmap/button_favourite_outline_green"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/btn_more_original"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@mipmap/button_more_green"/>
         </LinearLayout>
     </LinearLayout>

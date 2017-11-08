@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppClientServiceDetailActivity;
-import com.kelvin.jacksgogo.Adapter.AppHomeRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
+import com.kelvin.jacksgogo.Adapter.AppMainRecyclerViewAdapter;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
@@ -47,9 +47,9 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
     ArrayList<JGGAppBaseModel> arrayHistoryJobs = new ArrayList<>();
     ArrayList<JGGAppBaseModel> filteredArrayList = new ArrayList<>();
 
-    private static AppHomeRecyclerViewAdapter pendingListAdapter;
-    private static AppHomeRecyclerViewAdapter confirmedListAdapter;
-    private static AppHomeRecyclerViewAdapter historyListAdapter;
+    private static AppMainRecyclerViewAdapter pendingListAdapter;
+    private static AppMainRecyclerViewAdapter confirmedListAdapter;
+    private static AppMainRecyclerViewAdapter historyListAdapter;
 
 
     public AppHomeRecyclerViewFragment() {
@@ -70,7 +70,7 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.app_home_fragment, container, false);
+        View view = inflater.inflate(R.layout.app_main_fragment, container, false);
         searchView = (SearchView) view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
 
@@ -133,7 +133,7 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
         if (textView == "PENDING") {
             searchView.setQueryHint("Search through Pending list");
 
-            pendingListAdapter = new AppHomeRecyclerViewAdapter(getContext());
+            pendingListAdapter = new AppMainRecyclerViewAdapter(getContext());
             if (arrayQuickJobs.size() > 0) pendingListAdapter.addSection("Quick Jobs", arrayQuickJobs);
             if (arrayServicePackages.size() > 0) pendingListAdapter.addSection("Service Packages", arrayServicePackages);
             if (arrayPendingJobs.size() > 0) pendingListAdapter.addSection("Pending Jobs", arrayPendingJobs);
@@ -141,12 +141,12 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.refreshDrawableState();
 
-            pendingListAdapter.setOnItemClickListener(new AppHomeRecyclerViewAdapter.OnItemClickListener() {
+            pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
                     Log.d("Home Item Selected", "==========" + object + "============");
 
-                    Intent intent = new Intent(getActivity(), AppClientServiceDetailActivity.class);
+                    Intent intent = new Intent(getActivity(), JobDetailActivity.class);
                     startActivity(intent);
 
                 }
@@ -164,9 +164,9 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
         }
     }
 
-    public void setDataToAdapter(AppHomeRecyclerViewAdapter adapter, String sectionTitle,
+    public void setDataToAdapter(AppMainRecyclerViewAdapter adapter, String sectionTitle,
                                  ArrayList<JGGAppBaseModel> arrayList, Boolean isFilter) {
-        adapter = new AppHomeRecyclerViewAdapter(getContext());
+        adapter = new AppMainRecyclerViewAdapter(getContext());
 
         if (arrayList.size() > 0) {
             adapter.addSection(sectionTitle, arrayList);
@@ -179,12 +179,12 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
         recyclerView.refreshDrawableState();
 
         // RecyclerView Item select
-        adapter.setOnItemClickListener(new AppHomeRecyclerViewAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Object object) {
                 Log.d("Home Item Selected", "==========" + object + "============");
 
-                Intent intent = new Intent(getActivity(), AppClientServiceDetailActivity.class);
+                Intent intent = new Intent(getActivity(), JobDetailActivity.class);
                 startActivity(intent);
             }
         });
@@ -218,19 +218,19 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
         if (searchTag == "PENDING") {
             filteredArrayList = filter(arrayPendingJobs, newText);
 
-            pendingListAdapter = new AppHomeRecyclerViewAdapter(getContext());
+            pendingListAdapter = new AppMainRecyclerViewAdapter(getContext());
             pendingListAdapter.addSection("Pending Jobs", filteredArrayList);
             pendingListAdapter.setFilter(filteredArrayList);
             recyclerView.setAdapter(pendingListAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.refreshDrawableState();
 
-            pendingListAdapter.setOnItemClickListener(new AppHomeRecyclerViewAdapter.OnItemClickListener() {
+            pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
                     Log.d("Home Item Selected", "==========" + object + "============");
 
-                    Intent intent = new Intent(getActivity(), AppClientServiceDetailActivity.class);
+                    Intent intent = new Intent(getActivity(), JobDetailActivity.class);
                     startActivity(intent);
 
                 }

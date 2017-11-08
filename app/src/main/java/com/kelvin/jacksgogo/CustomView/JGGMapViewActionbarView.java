@@ -33,7 +33,7 @@ public class JGGMapViewActionbarView extends RelativeLayout implements View.OnCl
     private void initView() {
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        toolBarView = mLayoutInflater.inflate(R.layout.jgg_map_actionbar_view, this);
+        toolBarView = mLayoutInflater.inflate(R.layout.map_actionbar_view, this);
         backButton = (LinearLayout) toolBarView.findViewById(R.id.btn_back_map_view);
 
         backButton.setOnClickListener(this);

@@ -34,8 +34,8 @@
             android:value="4c4c8f28eae15e6e6ce08356f2f84af7172e1d57" />
 
         <activity android:name=".Activities.Appointment.AppFilterActivity" />
-        <activity android:name=".Activities.Appointment.AppClientServiceDetailActivity" />
-        <activity android:name=".Activities.Appointment.AppOriginalPostDetailActivity" />
+        <activity android:name=".Activities.Appointment.JobDetailActivity" />
+        <activity android:name=".Activities.Appointment.ServiceDetailActivity" />
         <activity android:name=".Activities.Appointment.JGGMapViewActivity"></activity>
 
         <meta-data

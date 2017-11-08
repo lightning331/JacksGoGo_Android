@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.AppHomeActionbarView;
+import com.kelvin.jacksgogo.CustomView.AppMainActionbarView;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment;
@@ -27,7 +27,7 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity implements AppHomeRecyclerViewFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
-    private AppHomeActionbarView appHomeActionbarView;
+    private AppMainActionbarView appMainActionbarView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements AppHomeRecyclerVi
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
-        mToolbar.removeView(appHomeActionbarView);
-        if (appHomeActionbarView == null) {
-            appHomeActionbarView = new AppHomeActionbarView(this);
+        mToolbar.removeView(appMainActionbarView);
+        if (appMainActionbarView == null) {
+            appMainActionbarView = new AppMainActionbarView(this);
         }
-        mToolbar.addView(appHomeActionbarView);
+        mToolbar.addView(appMainActionbarView);
 
-        appHomeActionbarView.setTabbarItemClickListener(new AppHomeActionbarView.OnTabbarItemClickListener() {
+        appMainActionbarView.setTabbarItemClickListener(new AppMainActionbarView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
                 if (frag instanceof AppHomeRecyclerViewFragment) {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AppHomeRecyclerVi
     }
 
     private void removeTopActionBarForAppointment() {
-        mToolbar.removeView(appHomeActionbarView);
+        mToolbar.removeView(appMainActionbarView);
     }
 
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements AppHomeRecyclerVi
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
-        appHomeActionbarView = new AppHomeActionbarView(this);
+        appMainActionbarView = new AppMainActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
     }
