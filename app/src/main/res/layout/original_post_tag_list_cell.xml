@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:background="@color/JGGGrey5"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <co.lujun.androidtagview.TagContainerLayout
@@ -13,8 +14,9 @@
         android:paddingRight="15dp"
         android:paddingTop="15dp"
         app:tag_theme="none"
+        app:tag_clickable="true"
         app:container_background_color="@color/JGGGrey5"
-        app:container_border_color="@color/JGGGrey4"
+        app:container_border_color="@color/JGGGrey5"
         app:container_enable_drag="false"
         app:horizontal_interval="10dp"
         app:tag_background_color="@color/JGGWhite"
@@ -22,4 +24,9 @@
         app:tag_text_color="@color/JGGGreen"
         app:tag_text_size="@dimen/caption_font_size"
         app:vertical_interval="10dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:orientation="vertical">
+    </LinearLayout>
 </LinearLayout>

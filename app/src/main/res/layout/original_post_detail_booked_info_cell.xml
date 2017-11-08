@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="35dp"
     android:gravity="center"
     android:orientation="vertical">
     <LinearLayout
@@ -14,14 +14,14 @@
             android:layout_weight="6"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@color/JGGPaleGreen">
+            android:background="@color/JGGGreen10Percent">
             <TextView
                 android:id="@+id/lbl_booked_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/JGGBlack"
-                android:textSize="@dimen/list_title_font_size"
+                android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/mulibold"
                 android:text="21k"/>
             <TextView
@@ -41,7 +41,7 @@
             android:layout_weight="4"
             android:gravity="end|center"
             android:orientation="horizontal"
-            android:background="@color/JGGPaleGreen">
+            android:background="@color/JGGGreen10Percent">
             <TextView
                 android:id="@+id/lbl_viewing_count"
                 android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                 android:textAlignment="viewEnd"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/JGGBlack"
-                android:textSize="@dimen/button_font_size"
+                android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/mulibold"
                 android:text="3"
                 android:gravity="end" />

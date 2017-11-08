@@ -23,7 +23,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_gravity="right"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginRight="20dp"
                 android:src="@mipmap/icon_budget"/>
         </LinearLayout>
@@ -45,7 +45,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:textColor="@color/JGGBlack"
-                    android:fontFamily="@font/mulibold"
+                    android:fontFamily="@font/muliregular"
                     android:textSize="@dimen/list_title_font_size"/>
             </LinearLayout>
         </LinearLayout>

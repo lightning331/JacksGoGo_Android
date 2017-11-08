@@ -19,5 +19,8 @@
 
     <string name="google_maps_key">AIzaSyASWl8FiFk2_VkOSd6pOvsbkS1nWn903cY</string>
 
+    <string name="menu_option_edit">Edit</string>
+    <string name="menu_option_delete">Delete</string>
+
 
 </resources>

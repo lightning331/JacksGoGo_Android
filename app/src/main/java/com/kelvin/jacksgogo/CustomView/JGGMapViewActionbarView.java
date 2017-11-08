@@ -7,11 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.view.View;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppClientServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Appointment.JGGMapViewActivity;
 import com.kelvin.jacksgogo.R;
-
-import static com.kelvin.jacksgogo.R.*;
 
 /**
  * Created by PUMA on 11/7/2017.
@@ -36,7 +33,7 @@ public class JGGMapViewActionbarView extends RelativeLayout implements View.OnCl
     private void initView() {
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        toolBarView = mLayoutInflater.inflate(layout.jgg_map_actionbar_view, this);
+        toolBarView = mLayoutInflater.inflate(R.layout.jgg_map_actionbar_view, this);
         backButton = (LinearLayout) toolBarView.findViewById(R.id.btn_back_map_view);
 
         backButton.setOnClickListener(this);

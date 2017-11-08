@@ -18,9 +18,9 @@
             android:gravity="center"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/icon_info"/>
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_cat_exploration"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -53,7 +53,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
-                android:text="Eunos Swim Club 10 Eunos Road 8 #05-33-4-8345"
+                android:text="Eunos Swim Club
+10 Eunos Road 8 #05-33-4-8345"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/mulibold"

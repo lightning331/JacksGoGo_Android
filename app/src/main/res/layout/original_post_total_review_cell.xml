@@ -14,6 +14,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:background="@color/JGGWhite">
+
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/user_ratingbar"
@@ -21,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="20dp"
-                android:stepSize="0.01"
                 android:isIndicator="true"
+                android:stepSize="0.01"
                 app:mrb_progressBackgroundTint="@color/JGGGrey3"
                 app:mrb_progressTint="@color/JGGYellow"
                 app:mrb_secondaryProgressTint="@color/JGGYellow" />

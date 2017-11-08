@@ -3,8 +3,13 @@ package com.kelvin.jacksgogo.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.TypefaceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +24,10 @@ import com.kelvin.jacksgogo.Fragments.Appointments.AppClientServiceDetailFragmen
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 
+
+import java.lang.reflect.Type;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -62,8 +70,9 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
                 return sectionTitleViewHolder;
             case 2:
                 View sectionTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_user_name_rating_cell, parent, false);
-                UserInfoViewHolder userAvatarNameRateViewHolder = new UserInfoViewHolder(sectionTitleView);
-                return userAvatarNameRateViewHolder;
+                UserInfoViewHolder userInfoViewHolder = new UserInfoViewHolder(sectionTitleView);
+                userInfoViewHolder.ratingBar.setRating((float)4.8);
+                return userInfoViewHolder;
             case 3:
                 View expandableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_expandable_header_view, parent, false);
                 ExpandableViewHolder expandableViewHolder = new ExpandableViewHolder(expandableView);
@@ -72,6 +81,13 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
             case 4:
                 View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_image_carousel_cell, parent, false);
                 PageViewHolder pageViewHolder = new PageViewHolder(imgPageView);
+
+                int[] array = {R.drawable.carousel01, R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel01,
+                        R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel02, R.drawable.carousel01};
+
+                pageViewHolder.imageArray = array;
+                pageViewHolder.carouselView.setPageCount(array.length);
+                pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
                 return pageViewHolder;
             case 5:
                 View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
@@ -101,7 +117,18 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
                 View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_description_cell, parent, false);
                 StatusViewHolder statusViewHolder = new StatusViewHolder(statusView);
                 statusViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
-                statusViewHolder.description.setText("Requests:Before & After photos");
+
+                statusViewHolder.description.setText("");
+
+                String boldText = "Requests: ";
+                String normalText = "Before & After photos";
+
+                Typeface muliBold = Typeface.create("mulibold", Typeface.BOLD);
+                SpannableString spannableString = new SpannableString(boldText);
+                spannableString.setSpan(new CustomTypefaceSpan("", muliBold), 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                statusViewHolder.description.append(spannableString);
+                statusViewHolder.description.append(normalText);
                 return statusViewHolder;
             case 9:
                 View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_job_no_cell, parent, false);
@@ -147,6 +174,46 @@ public class AppClientServiceDetailAdapter extends RecyclerView.Adapter<Recycler
         } else {
             return position;
         }
+    }
+}
+
+class CustomTypefaceSpan extends TypefaceSpan {
+    private final Typeface newType;
+
+    public CustomTypefaceSpan(String family, Typeface type) {
+        super(family);
+        newType = type;
+    }
+
+    @Override
+    public void updateDrawState(TextPaint ds) {
+        applyCustomTypeFace(ds, newType);
+    }
+
+    @Override
+    public void updateMeasureState(TextPaint paint) {
+        applyCustomTypeFace(paint, newType);
+    }
+
+    private static void applyCustomTypeFace(Paint paint, Typeface tf) {
+        int oldStyle;
+        Typeface old = paint.getTypeface();
+        if (old == null) {
+            oldStyle = 0;
+        } else {
+            oldStyle = old.getStyle();
+        }
+
+        int fake = oldStyle & ~tf.getStyle();
+        if ((fake & Typeface.BOLD) != 0) {
+            paint.setFakeBoldText(true);
+        }
+
+        if ((fake & Typeface.ITALIC) != 0) {
+            paint.setTextSkewX(-0.25f);
+        }
+
+        paint.setTypeface(tf);
     }
 }
 
@@ -227,22 +294,30 @@ class HooterViewHolder extends RecyclerView.ViewHolder {
 
     TextView title;
 
+
     public HooterViewHolder(View itemView) {
         super(itemView);
-
         this.title = itemView.findViewById(R.id.detail_info_footer_title);
     }
 }
 
 class PageViewHolder extends RecyclerView.ViewHolder {
 
-    CarouselView pageView;
+    CarouselView carouselView;
+    int[] imageArray = {};
 
     public PageViewHolder(View itemView) {
         super(itemView);
 
-        pageView = itemView.findViewById(R.id.detail_images_carousel_view);
+        carouselView = itemView.findViewById(R.id.detail_images_carousel_view);
     }
+
+    ImageListener imageListener = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            imageView.setImageResource(imageArray[position]);
+        }
+    };
 }
 
 class PriceViewHolder extends RecyclerView.ViewHolder {
@@ -255,6 +330,7 @@ class PriceViewHolder extends RecyclerView.ViewHolder {
 
         descriptionImage = itemView.findViewById(R.id.img_description);
         description = itemView.findViewById(R.id.lbl_description);
+        description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
     }
 }
 
@@ -268,7 +344,6 @@ class DescriptionViewHolder extends RecyclerView.ViewHolder {
 
         descriptionImage = itemView.findViewById(R.id.img_description);
         description = itemView.findViewById(R.id.lbl_description);
-        description.setTypeface(Typeface.create("muliregular", Typeface.NORMAL));
     }
 }
 

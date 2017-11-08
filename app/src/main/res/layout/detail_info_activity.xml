@@ -33,10 +33,6 @@
             android:id="@+id/app_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>

@@ -121,19 +121,18 @@ public class MainActivity extends AppCompatActivity implements AppHomeRecyclerVi
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        mbtmView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mbtmView.setSelectedItemId(R.id.navigation_home);
 
         // Hide Bottom NavigationView and ToolBar
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
         appHomeActionbarView = new AppHomeActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
-
     }
 
     @Override

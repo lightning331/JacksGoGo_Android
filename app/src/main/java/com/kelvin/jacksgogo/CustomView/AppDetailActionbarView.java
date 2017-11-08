@@ -2,13 +2,14 @@ package com.kelvin.jacksgogo.CustomView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppClientServiceDetailActivity;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -19,10 +20,19 @@ public class AppDetailActionbarView extends RelativeLayout implements View.OnCli
 
     Context mContext;
     LayoutInflater mLayoutInflater;
-
     LinearLayout backButton;
     LinearLayout moreDetailButton;
+    public ImageView moreMenuImage;
     View actionbarView;
+    private boolean isSelected = false;
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isMenuOpenStatus() {
+        return isSelected;
+    }
 
     public AppDetailActionbarView(Context context) {
         super(context);
@@ -37,6 +47,7 @@ public class AppDetailActionbarView extends RelativeLayout implements View.OnCli
 
         backButton = (LinearLayout) actionbarView.findViewById(R.id.btn_back);
         moreDetailButton = (LinearLayout) actionbarView.findViewById(R.id.btn_more);
+        moreMenuImage = (ImageView) actionbarView.findViewById(R.id.img_more_menu);
 
         backButton.setOnClickListener(this);
         moreDetailButton.setOnClickListener(this);
@@ -45,19 +56,13 @@ public class AppDetailActionbarView extends RelativeLayout implements View.OnCli
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_more) {
-
-        } else {
-            // back to previous view
-            ((AppClientServiceDetailActivity)mContext).finish();
-        }
+        listener.onTabbarItemClick(view);
     }
-
 
     private OnTabbarItemClickListener listener;
 
     public interface OnTabbarItemClickListener {
-        void onTabbarItemClick(LinearLayout item);
+        void onTabbarItemClick(View item);
     }
 
     public void setTabbarItemClickListener(OnTabbarItemClickListener listener) {

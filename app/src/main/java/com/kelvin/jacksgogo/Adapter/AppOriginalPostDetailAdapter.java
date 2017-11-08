@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
  * Created by PUMA on 11/7/2017.
@@ -37,6 +38,13 @@ public class AppOriginalPostDetailAdapter extends RecyclerView.Adapter<RecyclerV
             case 0:
                 View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_image_carousel_cell, parent, false);
                 PageViewHolder pageViewHolder = new PageViewHolder(imgPageView);
+
+                int[] array = {R.drawable.carousel03, R.drawable.carousel01,
+                        R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel02, R.drawable.carousel01, R.drawable.carousel03, R.drawable.carousel02};
+
+                pageViewHolder.imageArray = array;
+                pageViewHolder.carouselView.setPageCount(array.length);
+                pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
                 return pageViewHolder;
             case 1:
                 View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_detail_category_cell, parent, false);
@@ -68,10 +76,12 @@ public class AppOriginalPostDetailAdapter extends RecyclerView.Adapter<RecyclerV
             case 6:
                 View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_total_review_cell, parent, false);
                 ReviewViewHolder reviewViewHolder = new ReviewViewHolder(reviewView);
+                reviewViewHolder.ratingBar.setRating((float)4.6);
                 return reviewViewHolder;
             case 7:
                 View posterInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_info_user_name_rating_cell, parent, false);
                 UserInfoViewHolder posterInfoViewHolder = new UserInfoViewHolder(posterInfoView);
+                posterInfoViewHolder.ratingBar.setRating((float)4.8);
                 return posterInfoViewHolder;
             case 8:
                 View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.original_post_tag_list_cell, parent, false);
@@ -130,7 +140,6 @@ class PostAddressViewHolder extends RecyclerView.ViewHolder {
 
         descriptionImage = itemView.findViewById(R.id.img_description);
         description = itemView.findViewById(R.id.lbl_description);
-        description.setTypeface(Typeface.create("muliregular", Typeface.NORMAL));
     }
 }
 
@@ -143,8 +152,10 @@ class TimeSlotsViewHolder extends RecyclerView.ViewHolder {
 
 class ReviewViewHolder extends RecyclerView.ViewHolder {
 
+    MaterialRatingBar ratingBar;
     public ReviewViewHolder(View itemView) {
         super(itemView);
+        ratingBar = (MaterialRatingBar) itemView.findViewById(R.id.user_ratingbar);
     }
 }
 
@@ -170,6 +181,12 @@ class TagListViewHolder extends RecyclerView.ViewHolder {
         tags.add("landscaping");
         tags.add("horticulture");
         tags.add("plants");
+        tags.add("landscaping");
+        tags.add("horticulture");
+        tags.add("gardener");
+        tags.add("plants");
+        tags.add("landscaping");
+        tags.add("horticulture");
         tags.add("gardener");
         tagList.setTags(tags);
     }

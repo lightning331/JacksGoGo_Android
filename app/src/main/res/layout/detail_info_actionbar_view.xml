@@ -17,21 +17,21 @@
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical">
+                android:gravity="center">
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@mipmap/button_backarrow_orange"/>
+                    android:background="@mipmap/button_backarrow_orange"
+                    android:adjustViewBounds="true"/>
                 <TextView
                     android:id="@+id/lbl_back"
                     android:text="Appointment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
                     android:textColor="@color/JGGOrange"
                     android:fontFamily="@font/muliregular"
-                    android:textSize="@dimen/body_font_size"
-                    android:paddingBottom="4dp"/>
+                    android:textSize="@dimen/body_font_size"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -41,6 +41,7 @@
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
+                android:id="@+id/img_more_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/button_more_orange"/>

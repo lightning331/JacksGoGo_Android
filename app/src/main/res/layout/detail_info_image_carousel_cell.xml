@@ -7,10 +7,11 @@
         android:id="@+id/detail_images_carousel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:fillColor="#EFEFEFFF"
+        app:fillColor="@color/JGGGrey4"
         app:pageColor="#00000000"
-        app:radius="6dp"
-        app:slideInterval="4000"
-        app:strokeColor="#FF777777"
+        app:radius="5dp"
+        app:slideInterval="6000"
+        app:pageTransformInterval="1000"
+        app:strokeColor="@color/JGGGrey2"
         app:strokeWidth="1dp" />
 </LinearLayout>
