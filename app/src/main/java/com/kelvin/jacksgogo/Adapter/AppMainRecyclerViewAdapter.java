@@ -92,7 +92,6 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             } else if (appointment.getStatus() == JGGAppBaseModel.AppointmentStatus.WITHDRAWN) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
-//                cellView.lbl_Status.setText("");
                 cellView.lbl_Status.setVisibility(View.GONE);
             }
             if (appointment.getBadgeNumber() < 1) {
@@ -107,11 +106,11 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 cellView.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
             }
 
-            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             if (appointment instanceof JGGServiceModel) {
-                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
             } else if (appointment instanceof JGGEventModel) {
                 cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
                 cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));

@@ -32,7 +32,7 @@ import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel.Appointm
 import static com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel.AppointmentStatus.WITHDRAWN;
 
 
-public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,12 +52,12 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
     private static AppMainRecyclerViewAdapter historyListAdapter;
 
 
-    public AppHomeRecyclerViewFragment() {
+    public AppMainFragment() {
         // Required empty public constructor
     }
 
-    public static AppHomeRecyclerViewFragment newInstance() {
-        AppHomeRecyclerViewFragment fragment = new AppHomeRecyclerViewFragment();
+    public static AppMainFragment newInstance() {
+        AppMainFragment fragment = new AppMainFragment();
         return fragment;
     }
 
@@ -144,11 +144,15 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
             pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
-                    Log.d("Home Item Selected", "==========" + object + "============");
-
-                    Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-                    startActivity(intent);
-
+                    if (object instanceof JGGJobModel) {
+                        Log.d("Job Model Selected", "==========" + object + "============");
+                        Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+                        startActivity(intent);
+                    } else if (object instanceof JGGServiceModel) {
+                        Log.d("Service Model Selected", "==========" + object + "============");
+                    } else if (object instanceof JGGEventModel) {
+                        Log.d("Event Model Selected", "==========" + object + "============");
+                    }
                 }
             });
 
@@ -182,10 +186,15 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
         adapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Object object) {
-                Log.d("Home Item Selected", "==========" + object + "============");
-
-                Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-                startActivity(intent);
+                if (object instanceof JGGJobModel) {
+                    Log.d("Job Model Selected", "==========" + object + "============");
+                    Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+                    startActivity(intent);
+                } else if (object instanceof JGGServiceModel) {
+                    Log.d("Service Model Selected", "==========" + object + "============");
+                } else if (object instanceof JGGEventModel) {
+                    Log.d("Event Model Selected", "==========" + object + "============");
+                }
             }
         });
     }
@@ -228,11 +237,15 @@ public class AppHomeRecyclerViewFragment extends Fragment implements SearchView.
             pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
-                    Log.d("Home Item Selected", "==========" + object + "============");
-
-                    Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-                    startActivity(intent);
-
+                    if (object instanceof JGGJobModel) {
+                        Log.d("Job Model Selected", "==========" + object + "============");
+                        Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+                        startActivity(intent);
+                    } else if (object instanceof JGGServiceModel) {
+                        Log.d("Service Model Selected", "==========" + object + "============");
+                    } else if (object instanceof JGGEventModel) {
+                        Log.d("Event Model Selected", "==========" + object + "============");
+                    }
                 }
             });
 
