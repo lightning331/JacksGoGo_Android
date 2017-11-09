@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.CustomView.SectionHeaderView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -108,7 +109,7 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
             cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-            if (appointment instanceof JGGServiceModel) {
+            if (appointment instanceof JGGJobModel) {
                 cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
                 cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
             } else if (appointment instanceof JGGEventModel) {

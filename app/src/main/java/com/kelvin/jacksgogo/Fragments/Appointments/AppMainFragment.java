@@ -86,14 +86,14 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         arrayPendingJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
         arrayPendingJobs.add(new JGGJobModel(new Date(), "Maid Needed", NONE, "Needed on 18 Dec, 2017", 3));
         arrayPendingJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 25 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGJobModel(new Date(), "Gardening", NONE, "Needed on 18 Dec, 2017", 99));
+        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 18 Dec, 2017", 99));
         arrayPendingJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
         arrayPendingJobs.add(new JGGServiceModel(new Date(), "Help With The Garden", WITHDRAWN, "We love Badminton\\nEvent on 19 Jul, 2017 10:00 AM - 12:00 PM", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
+        arrayPendingJobs.add(new JGGJobModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
         arrayPendingJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
         arrayPendingJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
+        arrayPendingJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
+        arrayPendingJobs.add(new JGGEventModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
 
         // Confirmed Jobs
         arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
@@ -101,12 +101,12 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
         arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
         arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
+        arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
         arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
         arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
         arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
         arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
+        arrayConfirmedJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
 
         // History Jobs
         arrayHistoryJobs.add(new JGGJobModel(new Date(), "Maid Needed", NONE, "Needed on 18 Dec, 2017", 3));
@@ -117,7 +117,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         arrayHistoryJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
         arrayHistoryJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
         arrayHistoryJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayHistoryJobs.add(new JGGServicePackageModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
+        arrayHistoryJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
 
         // create list and custom adapter
         refreshFragment("PENDING");
@@ -144,15 +144,8 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
-                    if (object instanceof JGGJobModel) {
-                        Log.d("Job Model Selected", "==========" + object + "============");
-                        Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-                        startActivity(intent);
-                    } else if (object instanceof JGGServiceModel) {
-                        Log.d("Service Model Selected", "==========" + object + "============");
-                    } else if (object instanceof JGGEventModel) {
-                        Log.d("Event Model Selected", "==========" + object + "============");
-                    }
+                    // ListView item select
+                    onSelectListViewItem(position, object);
                 }
             });
 
@@ -186,15 +179,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         adapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Object object) {
-                if (object instanceof JGGJobModel) {
-                    Log.d("Job Model Selected", "==========" + object + "============");
-                    Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-                    startActivity(intent);
-                } else if (object instanceof JGGServiceModel) {
-                    Log.d("Service Model Selected", "==========" + object + "============");
-                } else if (object instanceof JGGEventModel) {
-                    Log.d("Event Model Selected", "==========" + object + "============");
-                }
+                onSelectListViewItem(position, object);
             }
         });
     }
@@ -237,15 +222,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
-                    if (object instanceof JGGJobModel) {
-                        Log.d("Job Model Selected", "==========" + object + "============");
-                        Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-                        startActivity(intent);
-                    } else if (object instanceof JGGServiceModel) {
-                        Log.d("Service Model Selected", "==========" + object + "============");
-                    } else if (object instanceof JGGEventModel) {
-                        Log.d("Event Model Selected", "==========" + object + "============");
-                    }
+                    onSelectListViewItem(position, object);
                 }
             });
 
@@ -263,6 +240,18 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         }
 
         return true;
+    }
+
+    private void onSelectListViewItem(int position, Object object) {
+        if (object instanceof JGGServiceModel) {
+            Log.d("Service Model Selected", "==========" + object + "============");
+            Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+            startActivity(intent);
+        } else if (object instanceof JGGJobModel) {
+            Log.d("Job Model Selected", "==========" + object + "============");
+        } else if (object instanceof JGGEventModel) {
+            Log.d("Event Model Selected", "==========" + object + "============");
+        }
     }
 
     private ArrayList<JGGAppBaseModel> filter(ArrayList<JGGAppBaseModel> models, String query) {

@@ -20,29 +20,39 @@ public class JobDetailActionbarView extends RelativeLayout implements View.OnCli
 
     Context mContext;
     LayoutInflater mLayoutInflater;
-    LinearLayout backButton;
-    LinearLayout moreDetailButton;
-    View actionbarView;
+    LinearLayout mBackButton;
+    LinearLayout mDetailMoreButton;
+    View mActionbarView;
 
     public ImageView moreMenuImage;
-
-    public TextView getTitle() {
-        return title;
-    }
-
-    public void setTitle(TextView title) {
-        this.title = title;
-    }
-
     public TextView title;
-    private boolean isSelected = false;
+    private EditStatus editStatus;
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
+    public enum EditStatus {
+        NONE,
+        EDIT,
+        DELETE;
     }
 
-    public boolean isMenuOpenStatus() {
-        return isSelected;
+    public void setStatus(EditStatus status) {
+        this.editStatus = status;
+        switch (status) {
+            case NONE:
+                title.setText("");
+                moreMenuImage.setImageResource(R.mipmap.button_more_orange);
+                break;
+            case EDIT:
+                title.setText("Edit");
+                moreMenuImage.setImageResource(R.mipmap.button_tick_orange);
+                break;
+            case DELETE:
+                break;
+            default:
+                break;
+        }
+    }
+    public EditStatus getEditStatus() {
+        return this.editStatus;
     }
 
     public JobDetailActionbarView(Context context) {
@@ -54,30 +64,30 @@ public class JobDetailActionbarView extends RelativeLayout implements View.OnCli
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.job_detail_actionbar_view, this);
+        mActionbarView = mLayoutInflater.inflate(R.layout.job_detail_actionbar_view, this);
 
-        backButton = (LinearLayout) actionbarView.findViewById(R.id.btn_back);
-        moreDetailButton = (LinearLayout) actionbarView.findViewById(R.id.btn_more);
-        moreMenuImage = (ImageView) actionbarView.findViewById(R.id.img_more_menu);
-        title = (TextView) actionbarView.findViewById(R.id.lbl_detail_info_actionbar_title);
+        mBackButton = (LinearLayout) mActionbarView.findViewById(R.id.btn_back);
+        mDetailMoreButton = (LinearLayout) mActionbarView.findViewById(R.id.btn_more);
+        moreMenuImage = (ImageView) mActionbarView.findViewById(R.id.img_more_menu);
+        title = (TextView) mActionbarView.findViewById(R.id.lbl_detail_info_actionbar_title);
 
-        backButton.setOnClickListener(this);
-        moreDetailButton.setOnClickListener(this);
+        mBackButton.setOnClickListener(this);
+        mDetailMoreButton.setOnClickListener(this);
     }
 
     @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
-        listener.onTabbarItemClick(view);
+        listener.onDetailActionbarItemClick(view);
     }
 
-    private OnTabbarItemClickListener listener;
+    private OnJobDetailActionbarItemClickListener listener;
 
-    public interface OnTabbarItemClickListener {
-        void onTabbarItemClick(View item);
+    public interface OnJobDetailActionbarItemClickListener {
+        void onDetailActionbarItemClick(View item);
     }
 
-    public void setTabbarItemClickListener(OnTabbarItemClickListener listener) {
+    public void setJobDetailActionbarItemClickListener(OnJobDetailActionbarItemClickListener listener) {
         this.listener = listener;
     }
 }
