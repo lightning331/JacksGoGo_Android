@@ -65,7 +65,7 @@
                 android:src="@mipmap/button_backarrow_green"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/btn_like_original"
+            android:id="@+id/btn_location"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:gravity="center"

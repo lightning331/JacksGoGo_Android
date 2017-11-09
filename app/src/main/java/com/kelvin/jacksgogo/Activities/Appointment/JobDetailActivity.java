@@ -12,7 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.JobDetailActionbarView;
+import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
 import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 public class JobDetailActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    JobDetailActionbarView jobDetailActionbarView;
+    JGGActionbarView actionbarView;
     JobDetailFragment jobDetailFragment;
     EditJobFragment editJobFragment;
 
@@ -31,77 +31,74 @@ public class JobDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_detail_activity);
 
-        jobDetailActionbarView = new JobDetailActionbarView(this);
+        actionbarView = new JGGActionbarView(this);
+        /* ---------    Custom view add to TopToolbar     --------- */
         mToolbar = (Toolbar) findViewById(R.id.app_detail_actionbar);
-        mToolbar.addView(jobDetailActionbarView);
+        mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        jobDetailActionbarView.setStatus(JobDetailActionbarView.EditStatus.NONE);
+        showJobDetailFragment();
 
-        jobDetailFragment = new JobDetailFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, jobDetailFragment, jobDetailFragment.getTag());
-        ft.commit();
-
-        jobDetailActionbarView.setJobDetailActionbarItemClickListener(new JobDetailActionbarView.OnJobDetailActionbarItemClickListener() {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+        actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
-            public void onDetailActionbarItemClick(View item) {
-
-                if (item.getId() == R.id.btn_more) {
-                    switch (jobDetailActionbarView.getEditStatus()) {
-                        case NONE:
-                            setMoreButtonClicked(true);
-
-                            PopupWindow mPopupWindow = new PopupWindow();
-                            PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, item);
-                            popupMenu.inflate(R.menu.menu_option);
-                            popupMenu.setOnDismissListener(new OnDismissListener());
-                            popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
-
-                            // Force icons to show in Custom Overflow Menu
-                            Object menuHelper;
-                            Class[] argTypes;
-                            try {
-                                Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-                                fMenuHelper.setAccessible(true);
-                                menuHelper = fMenuHelper.get(popupMenu);
-                                argTypes = new Class[] { boolean.class };
-                                menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
-                            } catch (Exception e) {
-                                popupMenu.show();
-                                return;
-                            }
-                            popupMenu.show();
-                            break;
-                        case EDIT: // when click check button
-                            showJobDetailFragment();
-                            break;
-                        case DELETE:
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    // back to previous view
-                    switch (jobDetailActionbarView.getEditStatus()) {
-                        case NONE:
-                            JobDetailActivity.this.finish();
-                            break;
-                        case EDIT:
-                            showJobDetailFragment();
-                            break;
-                        case DELETE:
-                            break;
-                        default:
-                            break;
-                    }
-                }
+            public void onActionbarItemClick(View view) {
+                actionbarViewItemClick(view);
             }
         });
     }
 
+    private void actionbarViewItemClick(View view) {
+        if (view.getId() == R.id.btn_more) {
+            /* ---------    More button pressed     --------- */
+            switch (actionbarView.getEditStatus()) {
+                case NONE:
+                    actionbarView.setDetailMoreButtonClicked(true);
+
+                    PopupWindow mPopupWindow = new PopupWindow();
+                    PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, view);
+                    popupMenu.inflate(R.menu.menu_option);
+                    popupMenu.setOnDismissListener(new OnDismissListener());
+                    popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
+
+                    // Force icons to show in Custom Overflow Menu
+                    Object menuHelper;
+                    Class[] argTypes;
+                    try {
+                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+                        fMenuHelper.setAccessible(true);
+                        menuHelper = fMenuHelper.get(popupMenu);
+                        argTypes = new Class[] { boolean.class };
+                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+                    } catch (Exception e) {
+                        popupMenu.show();
+                        return;
+                    }
+                    popupMenu.show();
+                    break;
+                case EDIT:
+                    showJobDetailFragment();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            /* ---------    Back button pressed     --------- */
+            switch (actionbarView.getEditStatus()) {
+                case NONE:
+                    JobDetailActivity.this.finish();
+                    break;
+                case EDIT:
+                    showJobDetailFragment();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     private void showJobDetailFragment() {
-        jobDetailActionbarView.setStatus(JobDetailActionbarView.EditStatus.NONE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
 
         jobDetailFragment = new JobDetailFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -110,7 +107,7 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void openEditJobFragment() {
-        jobDetailActionbarView.setStatus(JobDetailActionbarView.EditStatus.EDIT);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT);
 
         editJobFragment = new EditJobFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -119,7 +116,6 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void showDeleteJobDialog() {
-        jobDetailActionbarView.setStatus(JobDetailActionbarView.EditStatus.DELETE);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(JobDetailActivity.this);
         LayoutInflater inflater = (JobDetailActivity.this).getLayoutInflater();
@@ -134,7 +130,7 @@ public class JobDetailActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                jobDetailActionbarView.setStatus(JobDetailActionbarView.EditStatus.NONE);
+                actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
                 alertDialog.dismiss();
             }
         });
@@ -147,24 +143,15 @@ public class JobDetailActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void setMoreButtonClicked(boolean isSelected) {
-        if (isSelected) {
-            jobDetailActionbarView.moreMenuImage.setImageResource(R.mipmap.button_more_orange_active);
-        } else {
-            jobDetailActionbarView.moreMenuImage.setImageResource(R.mipmap.button_more_orange);
-        }
-    }
-
     private class OnDismissListener implements PopupMenu.OnDismissListener {
         @Override
         public void onDismiss(PopupMenu menu) {
-            if (jobDetailActionbarView.getEditStatus() == JobDetailActionbarView.EditStatus.NONE)
-                setMoreButtonClicked(false);
+            if (actionbarView.getEditStatus() == JGGActionbarView.EditStatus.NONE)
+                actionbarView.setDetailMoreButtonClicked(false);
         }
-
     }
 
-    private class OnMenuItemClickListener implements  PopupMenu.OnMenuItemClickListener {
+    private class OnMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 

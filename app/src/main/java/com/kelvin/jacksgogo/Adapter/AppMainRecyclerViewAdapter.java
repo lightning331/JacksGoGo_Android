@@ -16,7 +16,6 @@ import com.kelvin.jacksgogo.CustomView.SectionHeaderView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 

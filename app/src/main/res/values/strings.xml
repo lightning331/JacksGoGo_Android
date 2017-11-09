@@ -1,26 +1,30 @@
 <resources>
     <string name="app_name">Jacks GoGo</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Bottom Navigationbar title -->
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_appointments">Appointments</string>
     <string name="title_favourite">Favourite</string>
     <string name="title_profile">Profile</string>
 
+    <!-- TODO: Appointments Actionbar/Searchbar title -->
     <string name="pending">Pending</string>
     <string name="confirmed">Confirmed</string>
     <string name="history">History</string>
-
     <string name="pending_search_placeholder">Search through Pending list</string>
     <string name="confirmed_search_placeholder">Search through Confirmed list</string>
     <string name="history_search_placeholder">Search through History list</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <!-- TODO: Google Map API Key -->
     <string name="google_maps_key">AIzaSyASWl8FiFk2_VkOSd6pOvsbkS1nWn903cY</string>
 
+    <!-- TODO: JGG Actionbar title -->
     <string name="menu_option_edit">Edit</string>
     <string name="menu_option_delete">Delete</string>
-
+    <string name="title_appointment">Appointment</string>
+    <string name="title_map">Map</string>
 
 </resources>
