@@ -242,18 +242,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         return true;
     }
 
-    private void onSelectListViewItem(int position, Object object) {
-        if (object instanceof JGGServiceModel) {
-            Log.d("Service Model Selected", "==========" + object + "============");
-            Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-            startActivity(intent);
-        } else if (object instanceof JGGJobModel) {
-            Log.d("Job Model Selected", "==========" + object + "============");
-        } else if (object instanceof JGGEventModel) {
-            Log.d("Event Model Selected", "==========" + object + "============");
-        }
-    }
-
     private ArrayList<JGGAppBaseModel> filter(ArrayList<JGGAppBaseModel> models, String query) {
         query = query.toLowerCase();
         final ArrayList<JGGAppBaseModel> filteredModelList = new ArrayList<>();
@@ -264,6 +252,18 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             }
         }
         return filteredModelList;
+    }
+
+    private void onSelectListViewItem(int position, Object object) {
+        if (object instanceof JGGServiceModel) {
+            Log.d("Service Model Selected", "==========" + object + "============");
+            Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+            startActivity(intent);
+        } else if (object instanceof JGGJobModel) {
+            Log.d("Job Model Selected", "==========" + object + "============");
+        } else if (object instanceof JGGEventModel) {
+            Log.d("Event Model Selected", "==========" + object + "============");
+        }
     }
 
     /**

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal"
+    android:background="@color/JGGWhite">
+    <LinearLayout
+        android:id="@+id/btn_edit_job_tag1"
+        android:layout_width="0dp"
+        android:layout_weight="25"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@mipmap/counter_greenactive"/>
+        <TextView
+            android:id="@+id/lbl_edit_job_tag_title1"
+            android:text="Describe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/JGGGreen"
+            android:fontFamily="@font/muliregular"
+            android:textSize="@dimen/caption_font_size"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="75">
+        <TextView
+            android:id="@+id/lbl_edit_job_description_title1"
+            android:text="One-time Job"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textColor="@color/JGGBlack"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/button_font_size" />
+        <TextView
+            android:id="@+id/lbl_edit_job_description1"
+            android:text="21 Jul, 2017 10:00AM - 12:00PM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textColor="@color/JGGBlack"
+            android:fontFamily="@font/muliregular"
+            android:textSize="@dimen/list_text_font_size"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>

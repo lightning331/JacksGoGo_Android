@@ -1,13 +1,24 @@
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lbl_detail_type_header"
-    android:layout_width="fill_parent"
-    android:layout_height="45dp"
-    android:paddingTop="15dip"
-    android:paddingBottom="2dip"
-    android:paddingLeft="15dp"
-    android:background="@color/JGGGrey5"
-    android:textColor="@color/JGGBlack"
-    android:fontFamily="@font/mulibold"
-    android:textSize="@dimen/button_font_size"
-    android:text="Provider"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/section_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+        <TextView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/lbl_detail_type_header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/JGGBlack"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/button_font_size"
+            android:text="Provider"/>
+    </LinearLayout>
+</LinearLayout>

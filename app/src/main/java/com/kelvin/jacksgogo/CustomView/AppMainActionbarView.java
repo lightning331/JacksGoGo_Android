@@ -48,13 +48,13 @@ public class AppMainActionbarView extends RelativeLayout implements View.OnClick
         historyDotImageView = (ImageView) actionbarView.findViewById(R.id.img_history_circle);
         filterButton = (ImageButton) actionbarView.findViewById(R.id.btn_filter);
 
+        filterButton.setOnClickListener(this);
         pendingTextView.setOnClickListener(this);
         confirmTextView.setOnClickListener(this);
         historyTextView.setOnClickListener(this);
         confirmTextView.setTag("CONFIRM");
         pendingTextView.setTag("PENDING");
         historyTextView.setTag("HISTORY");
-        filterButton.setOnClickListener(this);
     }
 
     @Override

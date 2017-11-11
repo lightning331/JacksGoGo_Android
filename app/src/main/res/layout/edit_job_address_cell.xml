@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/grey_border_background">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            tools:ignore="Suspicious0dp"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/lbl_edit_job_address_hint"
+                android:text="Postcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/JGGGrey3"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7">
+            <EditText
+                android:id="@+id/txt_edit_job_address"
+                android:text="Jurong West"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/JGGBlack"
+                android:background="@color/transparent"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

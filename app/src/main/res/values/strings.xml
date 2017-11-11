@@ -10,7 +10,7 @@
     <string name="title_favourite">Favourite</string>
     <string name="title_profile">Profile</string>
 
-    <!-- TODO: Appointments Actionbar/Searchbar title -->
+    <!-- TODO: Appointments -->
     <string name="pending">Pending</string>
     <string name="confirmed">Confirmed</string>
     <string name="history">History</string>
@@ -27,4 +27,22 @@
     <string name="title_appointment">Appointment</string>
     <string name="title_map">Map</string>
 
+    <!-- TODO: Edit Job -->
+    <string name="edit_job_tag_describe">Describe</string>
+    <string name="edit_job_tag_time">Time</string>
+    <string name="edit_job_tag_address">Address</string>
+    <string name="edit_job_tag_report">Report</string>
+
+    <!-- TODO: Address Job -->
+    <string name="edit_job_address_title">Where do you need the services?</string>
+    <string name="edit_job_address_desc">We will only show the full address to the service provider you have awarded the job to.</string>
+
+    <!-- TODO: Repor Job -->
+    <string name="edit_job_report_title">Choose how you want to verify the completed work(optional).</string>
+    <string name="edit_job_report_before_title">Before &amp; After Photo.</string>
+    <string name="edit_job_report_before_desc">Take photos before the start of your work, and then after the end to show the work result.</string>
+    <string name="edit_job_report_geo_titles">Geotracking</string>
+    <string name="edit_job_report_geo_desc">Track where you begin at the start of your work, and every 10 minutes, until you reach your destination.</string>
+    <string name="edit_job_report_pin_titles">PIN Code</string>
+    <string name="edit_job_report_pin_desc">Useful for delivery jobs. The recipient should be given the code before hand to confirm.</string>
 </resources>

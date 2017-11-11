@@ -71,8 +71,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 return addressViewHolder;
             case 5:
                 View timeSlotsView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_time_slots_cell, parent, false);
-                TimeSlotsViewHolder timeSlotsViewHolder = new TimeSlotsViewHolder(timeSlotsView);
-                return timeSlotsViewHolder;
+                TimeSlotsAvailableViewHolder timeSlotsAvailableViewHolder = new TimeSlotsAvailableViewHolder(timeSlotsView);
+                return timeSlotsAvailableViewHolder;
             case 6:
                 View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_total_review_cell, parent, false);
                 ReviewViewHolder reviewViewHolder = new ReviewViewHolder(reviewView);
@@ -143,9 +143,9 @@ class PostAddressViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
-class TimeSlotsViewHolder extends RecyclerView.ViewHolder {
+class TimeSlotsAvailableViewHolder extends RecyclerView.ViewHolder {
 
-    public TimeSlotsViewHolder (View itemView) {
+    public TimeSlotsAvailableViewHolder(View itemView) {
         super(itemView);
     }
 }

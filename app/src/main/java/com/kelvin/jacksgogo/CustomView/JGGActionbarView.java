@@ -37,7 +37,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         NONE,
         EDIT,
         MAP,
-        SERVICE
+        SERVICE,
+        FULLEDIT
     }
 
     public JGGActionbarView(Context context) {
@@ -92,6 +93,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 mLikeButtonImage.setImageResource(R.mipmap.button_favourite_outline_green);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
+                break;
+            case FULLEDIT:
+
                 break;
             default:
                 break;

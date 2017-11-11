@@ -13,7 +13,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
+import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
 import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
 
@@ -24,7 +24,7 @@ public class JobDetailActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
     JobDetailFragment jobDetailFragment;
-    EditJobFragment editJobFragment;
+    EditJobMainFragment editJobMainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +109,9 @@ public class JobDetailActivity extends AppCompatActivity {
     private void openEditJobFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT);
 
-        editJobFragment = new EditJobFragment();
+        editJobMainFragment = new EditJobMainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, editJobFragment, editJobFragment.getTag());
+        ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
         ft.commit();
     }
 
@@ -122,7 +122,7 @@ public class JobDetailActivity extends AppCompatActivity {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the
         // dialog layout
-        View dialogView = inflater.inflate(R.layout.custom_alert_view, null);
+        View dialogView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(dialogView);
         TextView cancelButton = (TextView) dialogView.findViewById(R.id.dialog_cancel);
         TextView deleteButton = (TextView) dialogView.findViewById(R.id.dialog_ok);

@@ -39,17 +39,16 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     JobDetailFragment mContext;
     private boolean expandState = false; // true: expanded, false: not expanded
 
+    public JobDetailAdapter(JobDetailFragment context) {
+        this.mContext = context;
+    }
+
     public void setExpandState(boolean expandState) {
         this.expandState = expandState;
     }
 
     public boolean isExpandState() {
         return expandState;
-    }
-
-
-    public JobDetailAdapter(JobDetailFragment context) {
-        this.mContext = context;
     }
 
     @Override
@@ -237,11 +236,13 @@ class SectionTitleViewHolder extends RecyclerView.ViewHolder {
     }
 
     TextView title;
+    LinearLayout background;
 
     public SectionTitleViewHolder(View itemView) {
         super(itemView);
 
         this.title = itemView.findViewById(R.id.lbl_detail_type_header);
+        background = itemView.findViewById(R.id.section_background);
     }
 }
 
@@ -291,7 +292,6 @@ class ExpandableViewHolder extends RecyclerView.ViewHolder {
 class HooterViewHolder extends RecyclerView.ViewHolder {
 
     TextView title;
-
 
     public HooterViewHolder(View itemView) {
         super(itemView);
