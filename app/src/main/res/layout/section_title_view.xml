@@ -17,7 +17,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="15dp"
             android:textColor="@color/JGGBlack"
-            android:fontFamily="@font/mulibold"
+            android:fontFamily="@font/muliregular"
             android:textSize="@dimen/button_font_size"
             android:text="Provider"/>
     </LinearLayout>

@@ -4,10 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.JGGTabbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobMainListImageCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobMainListCell;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
 import com.kelvin.jacksgogo.R;
 
@@ -19,7 +19,7 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     EditJobMainFragment mContext;
     int ITEM_COUNT = 4;
-    JGGTabbarView tabbarView;
+    EditJobTabbarView tabbarView;
 
 
     public EditJobMainAdapter(EditJobMainFragment context) {
@@ -29,23 +29,23 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
 
-        tabbarView = new JGGTabbarView(mContext.getContext());
+        tabbarView = new EditJobTabbarView(mContext.getContext());
         switch (viewType) {
             case 0:
                 View imageCellView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_image_cell, parent, false);
-                EditJobMainListImageViewHolder imageViewHolder = new EditJobMainListImageViewHolder(imageCellView);
+                EditJobMainListImageCell imageViewHolder = new EditJobMainListImageCell(imageCellView);
                 imageViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_describe);
 
                 imageViewHolder.tagButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(JGGTabbarView.EditTabStatus.DESCRIBE);
+                        listener.onItemClick(EditJobTabbarView.EditTabStatus.DESCRIBE);
                     }
                 });
                 return imageViewHolder;
             case 1:
                 View timeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_cell, parent, false);
-                EditJobMainListViewHolder timeViewHolder = new EditJobMainListViewHolder(timeView);
+                EditJobMainListCell timeViewHolder = new EditJobMainListCell(timeView);
                 timeViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_time);
                 timeViewHolder.jobDescTitleTextView.setText("One-Time Job");
                 timeViewHolder.jobDescriptionTextView.setText("21 Jul,2017 10:00AM - 12:00PM");
@@ -53,13 +53,13 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 timeViewHolder.tagButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(JGGTabbarView.EditTabStatus.TIME);
+                        listener.onItemClick(EditJobTabbarView.EditTabStatus.TIME);
                     }
                 });
                 return timeViewHolder;
             case 2:
                 View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_cell, parent, false);
-                EditJobMainListViewHolder addressViewHolder = new EditJobMainListViewHolder(addressView);
+                EditJobMainListCell addressViewHolder = new EditJobMainListCell(addressView);
                 addressViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_address);
                 addressViewHolder.jobDescTitleTextView.setVisibility(View.GONE);
                 addressViewHolder.jobDescriptionTextView.setText("Jurong West Avenue 5 23412424");
@@ -67,13 +67,13 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 addressViewHolder.tagButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(JGGTabbarView.EditTabStatus.ADDRESS);
+                        listener.onItemClick(EditJobTabbarView.EditTabStatus.ADDRESS);
                     }
                 });
                 return addressViewHolder;
             case 3:
                 View reportView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_cell, parent, false);
-                EditJobMainListViewHolder reportViewHolder = new EditJobMainListViewHolder(reportView);
+                EditJobMainListCell reportViewHolder = new EditJobMainListCell(reportView);
                 reportViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_report);
                 reportViewHolder.jobDescTitleTextView.setVisibility(View.GONE);
                 reportViewHolder.jobDescriptionTextView.setText("Before & After Photo");
@@ -81,7 +81,7 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 reportViewHolder.tagButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(JGGTabbarView.EditTabStatus.REPORT);
+                        listener.onItemClick(EditJobTabbarView.EditTabStatus.REPORT);
                     }
                 });
                 return reportViewHolder;
@@ -108,45 +108,11 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(JGGTabbarView.EditTabStatus status);
+        void onItemClick(EditJobTabbarView.EditTabStatus status);
     }
 
     public void setItemClickLietener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-}
-
-class EditJobMainListImageViewHolder extends RecyclerView.ViewHolder {
-
-    LinearLayout tagButton;
-    TextView tagTitleTextView;
-    TextView jobDescTitleTextView;
-    TextView jobDescriptionTextView;
-
-    public EditJobMainListImageViewHolder(View itemView) {
-        super(itemView);
-
-        this.tagButton = itemView.findViewById(R.id.btn_edit_job_tag);
-        this.tagTitleTextView = itemView.findViewById(R.id.lbl_edit_job_tag_title);
-        this.jobDescTitleTextView = itemView.findViewById(R.id.lbl_edit_job_description_title);
-        this.jobDescriptionTextView = itemView.findViewById(R.id.lbl_edit_job_description);
-    }
-}
-
-class EditJobMainListViewHolder extends RecyclerView.ViewHolder {
-
-    LinearLayout tagButton;
-    TextView tagTitleTextView;
-    TextView jobDescTitleTextView;
-    TextView jobDescriptionTextView;
-
-    public EditJobMainListViewHolder(View itemView) {
-        super(itemView);
-
-        this.tagButton = itemView.findViewById(R.id.btn_edit_job_tag1);
-        this.tagTitleTextView = itemView.findViewById(R.id.lbl_edit_job_tag_title1);
-        this.jobDescTitleTextView = itemView.findViewById(R.id.lbl_edit_job_description_title1);
-        this.jobDescriptionTextView = itemView.findViewById(R.id.lbl_edit_job_description1);
-    }
 }

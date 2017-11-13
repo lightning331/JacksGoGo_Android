@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobAddressCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
 import com.kelvin.jacksgogo.R;
 
@@ -27,31 +27,31 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0:
-                View sectionTitle1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_header_view, parent, false);
-                SectionTitleViewHolder sectionTitleViewHolder = new SectionTitleViewHolder(sectionTitle1);
-                sectionTitleViewHolder.title.setText(R.string.edit_job_address_title);
-                return sectionTitleViewHolder;
+                View sectionTitle1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                SectionTitleView sectionTitleView = new SectionTitleView(sectionTitle1);
+                sectionTitleView.txtTitle.setText(R.string.edit_job_address_title);
+                sectionTitleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+                return sectionTitleView;
             case 1:
-                View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_header_view, parent, false);
-                SectionTitleViewHolder descTitleViewHolder = new SectionTitleViewHolder(descTitleView);
-                descTitleViewHolder.title.setTypeface(Typeface.create("muliregular", Typeface.NORMAL));
-                descTitleViewHolder.title.setText(R.string.edit_job_address_desc);
+                View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                SectionTitleView descTitleViewHolder = new SectionTitleView(descTitleView);
+                descTitleViewHolder.txtTitle.setText(R.string.edit_job_address_desc);
                 return descTitleViewHolder;
             case 2:
                 View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
-                AddressDetailViewHolder unitTextViewHolder = new AddressDetailViewHolder(unitTextView);
+                EditJobAddressCell unitTextViewHolder = new EditJobAddressCell(unitTextView);
                 unitTextViewHolder.hint.setText("Unit");
                 unitTextViewHolder.title.setText("2");
                 return unitTextViewHolder;
             case 3:
                 View streetTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
-                AddressDetailViewHolder streetTextViewHolder = new AddressDetailViewHolder(streetTextView);
+                EditJobAddressCell streetTextViewHolder = new EditJobAddressCell(streetTextView);
                 streetTextViewHolder.hint.setText("Street");
                 streetTextViewHolder.title.setText("Jurong West Avenune 5");
                 return streetTextViewHolder;
             case 4:
                 View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
-                AddressDetailViewHolder takePhotoViewHolder = new AddressDetailViewHolder(takePhotoView);
+                EditJobAddressCell takePhotoViewHolder = new EditJobAddressCell(takePhotoView);
                 takePhotoViewHolder.hint.setText("Postcode");
                 takePhotoViewHolder.title.setText("34534");
                 return takePhotoViewHolder;
@@ -72,17 +72,5 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemViewType(int position) {
         return position;
-    }
-}
-
-class AddressDetailViewHolder extends RecyclerView.ViewHolder {
-
-    TextView hint;
-    EditText title;
-
-    public AddressDetailViewHolder(View itemView) {
-        super(itemView);
-        hint = itemView.findViewById(R.id.lbl_edit_job_address_hint);
-        title = itemView.findViewById(R.id.txt_edit_job_address);
     }
 }

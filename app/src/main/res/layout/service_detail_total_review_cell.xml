@@ -17,7 +17,7 @@
 
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/user_ratingbar"
+                android:id="@+id/user_total_review_ratingbar"
                 style="@style/Widget.MaterialRatingBar.RatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"

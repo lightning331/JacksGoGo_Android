@@ -16,7 +16,7 @@ import com.kelvin.jacksgogo.Adapter.EditJobAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.EditJobDescribeAdapter;
 import com.kelvin.jacksgogo.Adapter.EditJobReportAdapter;
 import com.kelvin.jacksgogo.Adapter.EditJobTimeAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGTabbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
 public class EditJobFragment extends Fragment {
@@ -25,14 +25,14 @@ public class EditJobFragment extends Fragment {
     private String status;
 
     RecyclerView recyclerView;
-    JGGTabbarView tabbarView;
+    EditJobTabbarView tabbarView;
 
 
     public EditJobFragment() {
         // Required empty public constructor
     }
 
-    public static EditJobFragment newInstance(JGGTabbarView.EditTabStatus status) {
+    public static EditJobFragment newInstance(EditJobTabbarView.EditTabStatus status) {
         EditJobFragment fragment = new EditJobFragment();
         Bundle args = new Bundle();
         args.putString("status", status.toString());
@@ -55,7 +55,7 @@ public class EditJobFragment extends Fragment {
         View view = inflater.inflate(R.layout.edit_job_fragment, container, false);
 
         LinearLayout tabbarLayout = (LinearLayout)view.findViewById(R.id.edit_job_tabbar_view);
-        tabbarView = new JGGTabbarView(getContext());
+        tabbarView = new EditJobTabbarView(getContext());
         tabbarLayout.addView(tabbarView);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.descibe_recycler_view);
@@ -65,17 +65,17 @@ public class EditJobFragment extends Fragment {
 
         initializeTabbarView();
 
-        tabbarView.setTabItemClickLietener(new JGGTabbarView.OnTabItemClickListener() {
+        tabbarView.setTabItemClickLietener(new EditJobTabbarView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 if (view.getId() == R.id.btn_describe) {
-                    tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.DESCRIBE);
+                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE);
                 } else if (view.getId() == R.id.btn_time) {
-                    tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.TIME);
+                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME);
                 } else if (view.getId() == R.id.btn_address) {
-                    tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.ADDRESS);
+                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS);
                 } else if (view.getId() == R.id.btn_report) {
-                    tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.REPORT);
+                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT);
                 }
                 refreshRecyclerView();
             }
@@ -87,28 +87,28 @@ public class EditJobFragment extends Fragment {
     public void initializeTabbarView() {
 
         if (status == "DESCRIBE") {
-            tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.DESCRIBE);
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE);
         } else if (status == "TIME") {
-            tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.TIME);
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME);
         } else if (status == "ADDRESS") {
-            tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.ADDRESS);
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS);
         } else if (status == "REPORT") {
-            tabbarView.setEditTabStatus(JGGTabbarView.EditTabStatus.REPORT);
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT);
         }
         refreshRecyclerView();
     }
 
     public void refreshRecyclerView() {
-        if (tabbarView.getEditTabStatus() == JGGTabbarView.EditTabStatus.DESCRIBE) {
+        if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.DESCRIBE) {
             EditJobDescribeAdapter mAdapter = new EditJobDescribeAdapter(this);
             recyclerView.setAdapter(mAdapter);
-        } else if (tabbarView.getEditTabStatus() == JGGTabbarView.EditTabStatus.TIME) {
+        } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.TIME) {
             EditJobTimeAdapter mTimeAdapter = new EditJobTimeAdapter(this);
             recyclerView.setAdapter(mTimeAdapter);
-        } else if (tabbarView.getEditTabStatus() == JGGTabbarView.EditTabStatus.ADDRESS) {
+        } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.ADDRESS) {
             EditJobAddressAdapter addressAdapter = new EditJobAddressAdapter(this);
             recyclerView.setAdapter(addressAdapter);
-        } else if (tabbarView.getEditTabStatus() == JGGTabbarView.EditTabStatus.REPORT) {
+        } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.REPORT) {
             EditJobReportAdapter reportAdapter = new EditJobReportAdapter(this);
             recyclerView.setAdapter(reportAdapter);
         }

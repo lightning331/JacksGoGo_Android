@@ -10,11 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.EditJobMainAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGTabbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
 public class EditJobMainFragment extends Fragment {
@@ -54,7 +52,7 @@ public class EditJobMainFragment extends Fragment {
         EditJobMainAdapter mAdapter = new EditJobMainAdapter(this);
         mAdapter.setItemClickLietener(new EditJobMainAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(JGGTabbarView.EditTabStatus status) {
+            public void onItemClick(EditJobTabbarView.EditTabStatus status) {
                 EditJobFragment editJobFragment = EditJobFragment.newInstance(status);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.app_detail_container, editJobFragment, null)

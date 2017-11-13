@@ -1,23 +1,20 @@
 package com.kelvin.jacksgogo.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.SectionHeaderView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
 import com.kelvin.jacksgogo.R;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,7 +25,7 @@ import java.util.Map;
  * https://rajeshandroiddeveloper.blogspot.jp/2013/05/sectioned-list-view-list-with-headers.html
  */
 
-public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<JGGAppBaseModel> dataSet;
     public final Map<String, ArrayList<JGGAppBaseModel>> sections = new LinkedHashMap<>();
@@ -47,9 +44,9 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.listener = listener;
     }
 
-    public AppMainRecyclerViewAdapter(Context context) {
+    public AppointmentMainAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.app_main_section_header_view); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.section_title_view); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList<JGGAppBaseModel> arrayList) {
@@ -60,11 +57,11 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_main_section_header_view, parent, false);
-            return new SectionHeaderView(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            return new SectionTitleView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_main_list_cell, parent, false);
-            return new AppointmentListView(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_history_list_cell, parent, false);
+            return new ApptHistoryListCell(view);
         }
     }
 
@@ -75,11 +72,12 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
         if (itemData instanceof String) {
             // RecyclerView Header
-            SectionHeaderView sectionView = (SectionHeaderView) holder;
+            SectionTitleView sectionView = (SectionTitleView) holder;
+            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle((String) itemData);
         } else if (itemData instanceof JGGAppBaseModel) {
             // RecyclerView Cell
-            AppointmentListView cellView = (AppointmentListView) holder;
+            ApptHistoryListCell cellView = (ApptHistoryListCell) holder;
             JGGAppBaseModel appointment = (JGGAppBaseModel) itemData;
 
             cellView.lbl_Title.setText(appointment.getTitle());
@@ -177,31 +175,5 @@ public class AppMainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         dataSet = new ArrayList<>();
         dataSet.addAll(filteredArray);
         notifyDataSetChanged();
-    }
-
-    public class AppointmentListView extends RecyclerView.ViewHolder {
-
-        TextView lbl_Day;
-        TextView lbl_Month;
-        TextView lbl_Title;
-        TextView lbl_Comment;
-        TextView lbl_Status;
-        TextView lbl_BadgeNumber;
-        ImageView img_Profile;
-        RelativeLayout mViewStatusBar;
-        LinearLayout mAppointmentsHomeListCell;
-
-        public AppointmentListView(View itemView) {
-            super(itemView);
-
-            lbl_Day = (TextView) itemView.findViewById(R.id.lblDay);
-            lbl_Month = (TextView) itemView.findViewById(R.id.lblMonth);
-            lbl_Title = (TextView) itemView.findViewById(R.id.lblTitle);
-            lbl_Comment = (TextView) itemView.findViewById(R.id.lblComment);
-            lbl_Status = (TextView) itemView.findViewById(R.id.lblStatus);
-            lbl_BadgeNumber = (TextView) itemView.findViewById(R.id.lblBadgeCount);
-            img_Profile = (RoundedImageView) itemView.findViewById(R.id.imgAvatar);
-            mViewStatusBar = (RelativeLayout) itemView.findViewById(R.id.appointment_statusLayout);
-        }
     }
 }

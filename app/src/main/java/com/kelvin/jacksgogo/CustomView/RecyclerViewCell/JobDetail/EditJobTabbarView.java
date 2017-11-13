@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.CustomView;
+package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 11/10/2017.
  */
 
-public class JGGTabbarView extends RelativeLayout implements View.OnClickListener {
+public class EditJobTabbarView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
 
@@ -44,7 +44,7 @@ public class JGGTabbarView extends RelativeLayout implements View.OnClickListene
         REPORT
     }
 
-    public JGGTabbarView(Context context) {
+    public EditJobTabbarView(Context context) {
         super(context);
         this.mContext = context;
 
@@ -54,7 +54,7 @@ public class JGGTabbarView extends RelativeLayout implements View.OnClickListene
     private void initView() {
 
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mTabbarView                 = mLayoutInflater.inflate(R.layout.jgg_tabbar_view, this);
+        View mTabbarView                 = mLayoutInflater.inflate(R.layout.edit_job_tabbar_view, this);
 
         mDescribeButton     = (LinearLayout) mTabbarView.findViewById(R.id.btn_describe);
         mTimeButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_time);

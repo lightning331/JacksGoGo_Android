@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.CustomView;
+package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import com.kelvin.jacksgogo.Activities.Appointment.AppFilterActivity;
 import com.kelvin.jacksgogo.R;
 
 
-public class AppMainActionbarView extends RelativeLayout implements View.OnClickListener {
+public class AppMainTabView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -28,8 +28,7 @@ public class AppMainActionbarView extends RelativeLayout implements View.OnClick
     View actionbarView;
 
 
-
-    public AppMainActionbarView(Context context) {
+    public AppMainTabView(Context context) {
         super(context);
         mContext = context;
         initView();
@@ -38,7 +37,7 @@ public class AppMainActionbarView extends RelativeLayout implements View.OnClick
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.app_main_actionbar_view, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.app_main_tab_view, this);
 
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);

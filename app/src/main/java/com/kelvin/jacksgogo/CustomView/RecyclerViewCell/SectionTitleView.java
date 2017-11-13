@@ -1,24 +1,26 @@
-package com.kelvin.jacksgogo.CustomView;
+package com.kelvin.jacksgogo.CustomView.RecyclerViewCell;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
 /**
- * Created by PUMA on 10/31/2017.
+ * Created by PUMA on 11/13/2017.
  */
 
-public class SectionHeaderView extends RecyclerView.ViewHolder {
+public class SectionTitleView extends RecyclerView.ViewHolder {
 
     public TextView txtTitle;
+    public LinearLayout background;
 
-    public SectionHeaderView(View itemView) {
+    public SectionTitleView(View itemView) {
         super(itemView);
 
-        txtTitle = (TextView) itemView.findViewById(R.id.list_header_title);
+        this.txtTitle = itemView.findViewById(R.id.lbl_detail_type_header);
+        background = itemView.findViewById(R.id.section_background);
     }
 
     public void setTitle(String title) {

@@ -13,6 +13,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.JGGAlertView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
 import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
@@ -124,8 +125,8 @@ public class JobDetailActivity extends AppCompatActivity {
         // dialog layout
         View dialogView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(dialogView);
-        TextView cancelButton = (TextView) dialogView.findViewById(R.id.dialog_cancel);
-        TextView deleteButton = (TextView) dialogView.findViewById(R.id.dialog_ok);
+        TextView cancelButton = (TextView) dialogView.findViewById(R.id.btn_alert_cancel);
+        TextView deleteButton = (TextView) dialogView.findViewById(R.id.btn_alert_ok);
         final AlertDialog alertDialog = builder.create();
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override

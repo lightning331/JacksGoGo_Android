@@ -10,7 +10,7 @@
         android:orientation="vertical">
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imgAvatar"
+            android:id="@+id/img_invite_provider_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@mipmap/nurse4"
@@ -25,7 +25,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="40"
+        android:layout_weight="60"
         android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/lbl_invite_provider_username"
                 android:text="Alan.Tam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
                 android:textSize="@dimen/button_font_size"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/cell_slot_casino_ratingBar"
+                android:id="@+id/invite_provider_ratingBar"
                 style="@style/Widget.MaterialRatingBar.RatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="13dp"
@@ -57,7 +58,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="18"
+        android:layout_weight="20"
         android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
@@ -65,49 +66,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:text="$ 100.00"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/JGGBlack"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"/>
-            <TextView
-                android:text="Declined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="right"
-                android:textColor="@color/JGGBlack"
-                android:fontFamily="@font/muliregular"
-                android:textSize="12dp"/>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="18"
-        android:gravity="center"
-        android:orientation="vertical">
-        <LinearLayout
+            android:text="Invite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="15dp"
-                android:src="@mipmap/icon_proposal_green"/>
-            <TextView
-                android:text="Invite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:layout_marginRight="15dp"
-                android:textColor="@color/JGGGreen"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"
-                android:gravity="end" />
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/JGGGreen"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/button_font_size"
+            android:gravity="end" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

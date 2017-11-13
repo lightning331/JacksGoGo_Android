@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.AppMainActionbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppMainTabView;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment;
@@ -27,7 +27,7 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
-    private AppMainActionbarView appMainActionbarView;
+    private AppMainTabView appMainTabView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
-        mToolbar.removeView(appMainActionbarView);
-        if (appMainActionbarView == null) {
-            appMainActionbarView = new AppMainActionbarView(this);
+        mToolbar.removeView(appMainTabView);
+        if (appMainTabView == null) {
+            appMainTabView = new AppMainTabView(this);
         }
-        mToolbar.addView(appMainActionbarView);
+        mToolbar.addView(appMainTabView);
 
-        appMainActionbarView.setTabbarItemClickListener(new AppMainActionbarView.OnTabbarItemClickListener() {
+        appMainTabView.setTabbarItemClickListener(new AppMainTabView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
                 if (frag instanceof AppMainFragment) {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     }
 
     private void removeTopActionBarForAppointment() {
-        mToolbar.removeView(appMainActionbarView);
+        mToolbar.removeView(appMainTabView);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
-        appMainActionbarView = new AppMainActionbarView(this);
+        appMainTabView = new AppMainTabView(this);
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
     }

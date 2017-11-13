@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center">
+    <TextView
+        android:id="@+id/btn_invite"
+        android:text="Invite Service Provider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="@dimen/edit_text_padding_size"
+        android:textAlignment="center"
+        android:fontFamily="@font/mulibold"
+        android:textSize="@dimen/list_title_font_size"
+        android:textColor="@color/JGGGreen"
+        android:background="@drawable/green_border_background">
+    </TextView>
+</LinearLayout>

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
-import com.kelvin.jacksgogo.Adapter.AppMainRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Adapter.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
@@ -47,9 +47,9 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     ArrayList<JGGAppBaseModel> arrayHistoryJobs = new ArrayList<>();
     ArrayList<JGGAppBaseModel> filteredArrayList = new ArrayList<>();
 
-    private static AppMainRecyclerViewAdapter pendingListAdapter;
-    private static AppMainRecyclerViewAdapter confirmedListAdapter;
-    private static AppMainRecyclerViewAdapter historyListAdapter;
+    private static AppointmentMainAdapter pendingListAdapter;
+    private static AppointmentMainAdapter confirmedListAdapter;
+    private static AppointmentMainAdapter historyListAdapter;
 
 
     public AppMainFragment() {
@@ -133,7 +133,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (textView == "PENDING") {
             searchView.setQueryHint("Search through Pending list");
 
-            pendingListAdapter = new AppMainRecyclerViewAdapter(getContext());
+            pendingListAdapter = new AppointmentMainAdapter(getContext());
             if (arrayQuickJobs.size() > 0) pendingListAdapter.addSection("Quick Jobs", arrayQuickJobs);
             if (arrayServicePackages.size() > 0) pendingListAdapter.addSection("Service Packages", arrayServicePackages);
             if (arrayPendingJobs.size() > 0) pendingListAdapter.addSection("Pending Jobs", arrayPendingJobs);
@@ -141,7 +141,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.refreshDrawableState();
 
-            pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
+            pendingListAdapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
                     // ListView item select
@@ -161,9 +161,9 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         }
     }
 
-    public void setDataToAdapter(AppMainRecyclerViewAdapter adapter, String sectionTitle,
+    public void setDataToAdapter(AppointmentMainAdapter adapter, String sectionTitle,
                                  ArrayList<JGGAppBaseModel> arrayList, Boolean isFilter) {
-        adapter = new AppMainRecyclerViewAdapter(getContext());
+        adapter = new AppointmentMainAdapter(getContext());
 
         if (arrayList.size() > 0) {
             adapter.addSection(sectionTitle, arrayList);
@@ -176,7 +176,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         recyclerView.refreshDrawableState();
 
         // RecyclerView Item select
-        adapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Object object) {
                 onSelectListViewItem(position, object);
@@ -212,14 +212,14 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (searchTag == "PENDING") {
             filteredArrayList = filter(arrayPendingJobs, newText);
 
-            pendingListAdapter = new AppMainRecyclerViewAdapter(getContext());
+            pendingListAdapter = new AppointmentMainAdapter(getContext());
             pendingListAdapter.addSection("Pending Jobs", filteredArrayList);
             pendingListAdapter.setFilter(filteredArrayList);
             recyclerView.setAdapter(pendingListAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.refreshDrawableState();
 
-            pendingListAdapter.setOnItemClickListener(new AppMainRecyclerViewAdapter.OnItemClickListener() {
+            pendingListAdapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position, Object object) {
                     onSelectListViewItem(position, object);

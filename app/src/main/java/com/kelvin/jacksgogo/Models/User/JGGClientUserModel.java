@@ -5,4 +5,5 @@ package com.kelvin.jacksgogo.Models.User;
  */
 
 public class JGGClientUserModel extends JGGUserBaseModel {
+
 }

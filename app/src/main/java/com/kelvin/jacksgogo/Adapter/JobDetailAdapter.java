@@ -1,33 +1,29 @@
 package com.kelvin.jacksgogo.Adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.style.TypefaceSpan;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Appointment.JGGMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.ServiceDetailActivity;
+import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailDescriptionCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailExpanableCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailFooterCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailImageCarouselCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailLocationCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailNextStepTitleCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailReferenceNoCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetailUserNameRatingCell;
 import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
-import com.makeramen.roundedimageview.RoundedImageView;
-import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
-
-
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 
 /**
@@ -57,62 +53,65 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         switch (viewType) {
             case 0:
                 View nextStepTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_next_step_title_cell, parent, false);
-                NextStepTitleViewHolder nextStepTitleViewHolder = new NextStepTitleViewHolder(nextStepTitleView);
-                nextStepTitleViewHolder.title.setText("Waiting for service provider...");
-                return nextStepTitleViewHolder;
+                JobDetailNextStepTitleCell jobDetailNextStepTitleCell = new JobDetailNextStepTitleCell(nextStepTitleView);
+                jobDetailNextStepTitleCell.title.setText("Waiting for service provider...");
+                return jobDetailNextStepTitleCell;
             case 1:
-                View typeTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_header_view, parent, false);
-                SectionTitleViewHolder sectionTitleViewHolder = new SectionTitleViewHolder(typeTitleView);
-                sectionTitleViewHolder.title.setText("Invited service provider:");
-                return sectionTitleViewHolder;
+                View typeTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                SectionTitleView sectionHeaderView = new SectionTitleView(typeTitleView);
+                sectionHeaderView.txtTitle.setText("Invited service provider:");
+                sectionHeaderView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+                return sectionHeaderView;
             case 2:
                 View sectionTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_user_name_rating_cell, parent, false);
-                UserInfoViewHolder userInfoViewHolder = new UserInfoViewHolder(sectionTitleView);
-                userInfoViewHolder.ratingBar.setRating((float)4.8);
-                return userInfoViewHolder;
+                JobDetailUserNameRatingCell jobDetailUserNameRatingCell;
+                jobDetailUserNameRatingCell = new JobDetailUserNameRatingCell(sectionTitleView);
+                jobDetailUserNameRatingCell.ratingBar.setRating((float)4.8);
+                return jobDetailUserNameRatingCell;
             case 3:
                 View expandableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_expandable_cell, parent, false);
-                ExpandableViewHolder expandableViewHolder = new ExpandableViewHolder(expandableView);
-                expandableViewHolder.bind(this);
-                return expandableViewHolder;
+                JobDetailExpanableCell jobDetailExpanableCell = new JobDetailExpanableCell(expandableView);
+                jobDetailExpanableCell.bind(this);
+                return jobDetailExpanableCell;
             case 4:
                 View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_image_carousel_cell, parent, false);
-                PageViewHolder pageViewHolder = new PageViewHolder(imgPageView);
+                JobDetailImageCarouselCell jobDetailImageCarouselCell = new JobDetailImageCarouselCell(imgPageView);
 
                 int[] array = {R.drawable.carousel01, R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel01,
                         R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel02, R.drawable.carousel01};
 
-                pageViewHolder.imageArray = array;
-                pageViewHolder.carouselView.setPageCount(array.length);
-                pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
-                return pageViewHolder;
+                jobDetailImageCarouselCell.imageArray = array;
+                jobDetailImageCarouselCell.carouselView.setPageCount(array.length);
+                jobDetailImageCarouselCell.carouselView.setImageListener(jobDetailImageCarouselCell.imageListener);
+                return jobDetailImageCarouselCell;
             case 5:
                 View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
-                PriceViewHolder priceViewHolder = new PriceViewHolder(priceView);
+                JobDetailDescriptionCell priceViewHolder = new JobDetailDescriptionCell(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setText("$50-$100");
+                priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 return priceViewHolder;
             case 6:
                 View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
-                DescriptionViewHolder descriptionViewHolder = new DescriptionViewHolder(descriptionView);
-                descriptionViewHolder.descriptionImage.setImageResource(R.mipmap.icon_info);
-                descriptionViewHolder.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
+                JobDetailDescriptionCell jobDetailDescriptionCell = new JobDetailDescriptionCell(descriptionView);
+                jobDetailDescriptionCell.descriptionImage.setImageResource(R.mipmap.icon_info);
+                jobDetailDescriptionCell.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
                         "what tasks you need deon, and any special requirements.");
-                return descriptionViewHolder;
+                return jobDetailDescriptionCell;
             case 7:
                 View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_location_cell, parent, false);
-                AddressViewHolder addressViewHolder = new AddressViewHolder(addressView);
-                addressViewHolder.description.setText("2 Jurong West Avenue 5 64386");
-                addressViewHolder.location.setOnClickListener(new View.OnClickListener() {
+                JobDetailLocationCell jobDetailLocationCell = new JobDetailLocationCell(addressView);
+                jobDetailLocationCell.description.setText("2 Jurong West Avenue 5 64386");
+                jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mContext.getActivity().startActivity(new Intent(mContext.getActivity(), JGGMapViewActivity.class));
                     }
                 });
-                return addressViewHolder;
+                return jobDetailLocationCell;
             case 8:
                 View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
-                StatusViewHolder statusViewHolder = new StatusViewHolder(statusView);
+                JobDetailDescriptionCell statusViewHolder = new JobDetailDescriptionCell(statusView);
                 statusViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
 
                 statusViewHolder.description.setText("");
@@ -128,12 +127,12 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 statusViewHolder.description.append(normalText);
                 return statusViewHolder;
             case 9:
-                View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_job_no_cell, parent, false);
-                ReferenceNoViewHolder referenceNoViewHolder = new ReferenceNoViewHolder(referenceView);
-                return referenceNoViewHolder;
+                View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_reference_no_cell, parent, false);
+                JobDetailReferenceNoCell jobDetailReferenceNoCell = new JobDetailReferenceNoCell(referenceView);
+                return jobDetailReferenceNoCell;
             case 10:
                 View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
-                OriginalServiceViewHolder originalViewHolder = new OriginalServiceViewHolder(originalView);
+                AppFilterOptionCell originalViewHolder = new AppFilterOptionCell(originalView);
                 originalViewHolder.title.setText("View Original Service Post");
                 originalViewHolder.btnOriginal.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -144,7 +143,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 return originalViewHolder;
             case 11:
                 View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_footer_cell, parent, false);
-                HooterViewHolder footerViewHolder = new HooterViewHolder(footerView);
+                JobDetailFooterCell footerViewHolder = new JobDetailFooterCell(footerView);
                 footerViewHolder.title.setText("Job posted on 7 Jul, 2017 8:15PM");
                 return footerViewHolder;
         }
@@ -171,232 +170,5 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             return position;
         }
-    }
-}
-
-class CustomTypefaceSpan extends TypefaceSpan {
-    private final Typeface newType;
-
-    public CustomTypefaceSpan(String family, Typeface type) {
-        super(family);
-        newType = type;
-    }
-
-    @Override
-    public void updateDrawState(TextPaint ds) {
-        applyCustomTypeFace(ds, newType);
-    }
-
-    @Override
-    public void updateMeasureState(TextPaint paint) {
-        applyCustomTypeFace(paint, newType);
-    }
-
-    private static void applyCustomTypeFace(Paint paint, Typeface tf) {
-        int oldStyle;
-        Typeface old = paint.getTypeface();
-        if (old == null) {
-            oldStyle = 0;
-        } else {
-            oldStyle = old.getStyle();
-        }
-
-        int fake = oldStyle & ~tf.getStyle();
-        if ((fake & Typeface.BOLD) != 0) {
-            paint.setFakeBoldText(true);
-        }
-
-        if ((fake & Typeface.ITALIC) != 0) {
-            paint.setTextSkewX(-0.25f);
-        }
-
-        paint.setTypeface(tf);
-    }
-}
-
-class NextStepTitleViewHolder extends RecyclerView.ViewHolder {
-
-    TextView title;
-    RoundedImageView avatar;
-    LinearLayout markLine;
-
-    public NextStepTitleViewHolder(View itemView) {
-        super(itemView);
-
-        this.title = itemView.findViewById(R.id.lbl_next_step_title);
-        this.avatar = itemView.findViewById(R.id.next_step_img_avatar);
-        this.markLine = itemView.findViewById(R.id.next_step_mark_line);
-    }
-}
-
-class SectionTitleViewHolder extends RecyclerView.ViewHolder {
-
-    public void setTitle(TextView title) {
-        this.title = title;
-    }
-
-    TextView title;
-    LinearLayout background;
-
-    public SectionTitleViewHolder(View itemView) {
-        super(itemView);
-
-        this.title = itemView.findViewById(R.id.lbl_detail_type_header);
-        background = itemView.findViewById(R.id.section_background);
-    }
-}
-
-class UserInfoViewHolder extends RecyclerView.ViewHolder {
-
-    TextView name;
-    MaterialRatingBar ratingBar;
-    RoundedImageView avatar;
-
-    public UserInfoViewHolder(View itemView) {
-        super(itemView);
-
-        this.name = itemView.findViewById(R.id.lbl_username);
-        this.ratingBar = itemView.findViewById(R.id.user_ratingbar);
-        this.avatar = itemView.findViewById(R.id.img_avatar);
-    }
-}
-
-class ExpandableViewHolder extends RecyclerView.ViewHolder {
-
-    LinearLayout btnExpand;
-    ImageView imgExpand;
-
-    public ExpandableViewHolder(View itemView) {
-        super(itemView);
-
-        this.btnExpand = itemView.findViewById(R.id.btn_expand);
-        this.imgExpand = itemView.findViewById(R.id.img_expand);
-    }
-
-    public void bind(final JobDetailAdapter adapter) {
-
-        btnExpand.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                adapter.setExpandState(!adapter.isExpandState());
-                if (!adapter.isExpandState()) imgExpand.setImageResource(R.mipmap.button_showless_green);
-                else imgExpand.setImageResource(R.mipmap.button_showmore_green);
-                adapter.notifyDataSetChanged();
-            }
-        });
-    }
-}
-
-class HooterViewHolder extends RecyclerView.ViewHolder {
-
-    TextView title;
-
-    public HooterViewHolder(View itemView) {
-        super(itemView);
-        this.title = itemView.findViewById(R.id.detail_info_footer_title);
-    }
-}
-
-class PageViewHolder extends RecyclerView.ViewHolder {
-
-    CarouselView carouselView;
-    int[] imageArray = {};
-
-    public PageViewHolder(View itemView) {
-        super(itemView);
-
-        carouselView = itemView.findViewById(R.id.detail_images_carousel_view);
-    }
-
-    ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(imageArray[position]);
-        }
-    };
-}
-
-class PriceViewHolder extends RecyclerView.ViewHolder {
-
-    ImageView descriptionImage;
-    TextView description;
-
-    public PriceViewHolder(View itemView) {
-        super(itemView);
-
-        descriptionImage = itemView.findViewById(R.id.img_description);
-        description = itemView.findViewById(R.id.lbl_description);
-        description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-    }
-}
-
-class DescriptionViewHolder extends RecyclerView.ViewHolder {
-
-    ImageView descriptionImage;
-    TextView description;
-
-    public DescriptionViewHolder(View itemView) {
-        super(itemView);
-
-        descriptionImage = itemView.findViewById(R.id.img_description);
-        description = itemView.findViewById(R.id.lbl_description);
-    }
-}
-
-class AddressViewHolder extends RecyclerView.ViewHolder {
-
-    TextView description;
-    LinearLayout location;
-
-    public AddressViewHolder(View itemView) {
-        super(itemView);
-
-        description = itemView.findViewById(R.id.lbl_location);
-        location = itemView.findViewById(R.id.btn_location);
-    }
-}
-
-class StatusViewHolder extends RecyclerView.ViewHolder {
-
-    ImageView descriptionImage;
-    TextView description;
-
-    public StatusViewHolder(View itemView) {
-        super(itemView);
-
-        descriptionImage = itemView.findViewById(R.id.img_description);
-        description = itemView.findViewById(R.id.lbl_description);
-    }
-}
-
-class ReferenceNoViewHolder extends RecyclerView.ViewHolder {
-
-    public ReferenceNoViewHolder(View itemView) {
-        super(itemView);
-    }
-}
-
-class OriginalServiceViewHolder extends RecyclerView.ViewHolder {
-
-    RoundedImageView btnOriginal;
-    TextView title;
-
-    @SuppressLint("RestrictedApi")
-    public OriginalServiceViewHolder(View itemView) {
-        super(itemView);
-
-        title = itemView.findViewById(R.id.lblFilterTitle);
-        title.setTextColor(Color.parseColor("#20BF3B"));
-        title.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-
-        btnOriginal = itemView.findViewById(R.id.view_filter_bg);
-        btnOriginal.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        btnOriginal.setBorderColor(Color.parseColor("#20BF3B"));
-        btnOriginal.setBorderWidth((float) 4);
-        btnOriginal.setCornerRadius((float) 5);
-        btnOriginal.setOval(false);
-        btnOriginal.mutateBackground(true);
     }
 }

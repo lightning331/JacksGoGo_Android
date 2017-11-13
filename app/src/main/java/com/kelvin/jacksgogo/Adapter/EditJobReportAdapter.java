@@ -1,6 +1,5 @@
 package com.kelvin.jacksgogo.Adapter;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
 import com.kelvin.jacksgogo.R;
 
@@ -33,9 +33,10 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
-            View sectionTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_header_view, parent, false);
-            SectionTitleViewHolder sectionTitleViewHolder = new SectionTitleViewHolder(sectionTitle);
-            sectionTitleViewHolder.title.setText(R.string.edit_job_report_title);
+            View sectionTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            SectionTitleView sectionTitleViewHolder = new SectionTitleView(sectionTitle);
+            sectionTitleViewHolder.txtTitle.setText(R.string.edit_job_report_title);
+            sectionTitleViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionTitleViewHolder;
         } else {
             View beforeViewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_repor_cell, parent, false);

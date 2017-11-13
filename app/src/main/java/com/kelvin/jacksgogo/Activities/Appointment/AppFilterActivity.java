@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.AppFilterRecyclerViewAdapter;
+import com.kelvin.jacksgogo.Adapter.AppointmentFilterAdapter;
 import com.kelvin.jacksgogo.R;
 
 
@@ -22,7 +22,7 @@ public class AppFilterActivity extends AppCompatActivity {
     ImageButton closeButton;
     ArrayList arrayFilterTypes;
 
-    private static AppFilterRecyclerViewAdapter filterRecyclerViewAdapter;
+    private static AppointmentFilterAdapter filterRecyclerViewAdapter;
     private Context context;
 
     @Override
@@ -44,12 +44,12 @@ public class AppFilterActivity extends AppCompatActivity {
         arrayFilterTypes.add("Events posted.");
 
         // create our list and custom adapter
-        filterRecyclerViewAdapter = new AppFilterRecyclerViewAdapter(this);
+        filterRecyclerViewAdapter = new AppointmentFilterAdapter(this);
         filterRecyclerViewAdapter.addSection("Show Only", arrayFilterTypes);
 
         recyclerView.setAdapter(filterRecyclerViewAdapter);
         // RecyclerView Item select
-        filterRecyclerViewAdapter.setOnItemClickListener(new AppFilterRecyclerViewAdapter.OnItemClickListener() {
+        filterRecyclerViewAdapter.setOnItemClickListener(new AppointmentFilterAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("Item Selected", "==========" + position + "============");

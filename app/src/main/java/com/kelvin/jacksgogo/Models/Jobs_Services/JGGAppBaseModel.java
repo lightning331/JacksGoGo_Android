@@ -23,6 +23,13 @@ public class JGGAppBaseModel extends JGGBaseModel {
         WAITINGFORREVIEW
     }
 
+    public enum AppointmentType {
+        JOBS,
+        SERVICES,
+        EVENT,
+        UNKNOWN
+    }
+
     private Date appointmentDate;
     private String title;
     private AppointmentStatus status;
@@ -30,8 +37,10 @@ public class JGGAppBaseModel extends JGGBaseModel {
     private Integer badgeNumber;
     private String appointmentMonth;
     private String appointmentDay;
+    private AppointmentType type = AppointmentType.UNKNOWN;
 
-    public JGGAppBaseModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
+
+    public JGGAppBaseModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber, AppointmentType type) {
         this.title=title;
         this.status = status;
         this.comment = comment;
@@ -116,6 +125,14 @@ public class JGGAppBaseModel extends JGGBaseModel {
 
     public void setAppointmentDate(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public AppointmentType getType() {
+        return type;
+    }
+
+    public void setType(AppointmentType type) {
+        this.type = type;
     }
 
 }

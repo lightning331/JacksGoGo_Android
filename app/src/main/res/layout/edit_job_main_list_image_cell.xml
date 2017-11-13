@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal"
             android:textColor="@color/JGGBlack"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/button_font_size" />
@@ -49,14 +48,15 @@
             android:text="Need help with moving the lawn and weeding the garden. Garden is 50sf."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:textColor="@color/JGGBlack"
             android:fontFamily="@font/muliregular"
             android:textSize="@dimen/list_text_font_size"/>
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"/>
 
     </LinearLayout>

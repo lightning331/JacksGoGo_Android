@@ -9,6 +9,6 @@ import java.util.Date;
 public class JGGServiceModel extends JGGAppBaseModel {
 
     public JGGServiceModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
-        super(appointmentDate, title, status, comment, badgeNumber);
+        super(appointmentDate, title, status, comment, badgeNumber, AppointmentType.SERVICES);
     }
 }

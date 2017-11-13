@@ -5,4 +5,5 @@ package com.kelvin.jacksgogo.Models.Base;
  */
 
 public class JGGBaseModel {
+
 }
