@@ -31,6 +31,7 @@
     <string name="menu_option_delete">Delete</string>
     <string name="title_appointment">Appointment</string>
     <string name="title_map">Map</string>
+    <string name="title_service_listing">Profile</string>
 
     <!-- TODO: Edit Job -->
     <string name="edit_job_tag_describe">Describe</string>
@@ -50,4 +51,7 @@
     <string name="edit_job_report_geo_desc">Track where you begin at the start of your work, and every 10 minutes, until you reach your destination.</string>
     <string name="edit_job_report_pin_titles">PIN Code</string>
     <string name="edit_job_report_pin_desc">Useful for delivery jobs. The recipient should be given the code before hand to confirm.</string>
+    <string name="post_service">Post A Service</string>
+    <string name="post_new_service">Post New Service</string>
+
 </resources>

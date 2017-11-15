@@ -16,7 +16,7 @@
     <dimen name="right_badge_font_size">12dp</dimen>
     <dimen name="edit_text_padding_size">12dp</dimen>
 
-    <dimen name="top_tapbar_height">70dp</dimen>
+    <dimen name="top_tapbar_height">60dp</dimen>
     <dimen name="circle_image_radius">10dp</dimen>
 
     <!--Appointment-->

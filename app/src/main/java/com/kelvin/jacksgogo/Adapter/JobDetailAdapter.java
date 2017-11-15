@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.Appointment.JGGMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Appointment.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
@@ -105,7 +105,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mContext.getActivity().startActivity(new Intent(mContext.getActivity(), JGGMapViewActivity.class));
+                        mContext.getActivity().startActivity(new Intent(mContext.getActivity(), AppMapViewActivity.class));
                     }
                 });
                 return jobDetailLocationCell;

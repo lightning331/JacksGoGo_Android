@@ -63,7 +63,7 @@ public class EditJobFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        initializeTabbarView();
+        initTabbarView();
 
         tabbarView.setTabItemClickLietener(new EditJobTabbarView.OnTabItemClickListener() {
             @Override
@@ -84,7 +84,7 @@ public class EditJobFragment extends Fragment {
         return view;
     }
 
-    public void initializeTabbarView() {
+    public void initTabbarView() {
 
         if (status == "DESCRIBE") {
             tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE);

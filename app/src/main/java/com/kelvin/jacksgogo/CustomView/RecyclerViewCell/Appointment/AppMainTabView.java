@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppFilterActivity;
 import com.kelvin.jacksgogo.R;
+
+import java.io.LineNumberReader;
 
 
 public class AppMainTabView extends RelativeLayout implements View.OnClickListener {
@@ -18,6 +21,9 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
     Context mContext;
     LayoutInflater mLayoutInflater;
 
+    LinearLayout pendingButton;
+    LinearLayout confirmButton;
+    LinearLayout historyButton;
     TextView pendingTextView;
     TextView confirmTextView;
     TextView historyTextView;
@@ -39,6 +45,9 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         actionbarView  = mLayoutInflater.inflate(R.layout.app_main_tab_view, this);
 
+        pendingButton = (LinearLayout) actionbarView.findViewById(R.id.pending_layout);
+        confirmButton = (LinearLayout) actionbarView.findViewById(R.id.confirm_layout);
+        historyButton = (LinearLayout) actionbarView.findViewById(R.id.history_layout);
         pendingTextView = (TextView) actionbarView.findViewById(R.id.lbl_pending);
         confirmTextView = (TextView) actionbarView.findViewById(R.id.lbl_confirmed);
         historyTextView = (TextView) actionbarView.findViewById(R.id.lbl_history);
@@ -48,9 +57,9 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
         filterButton = (ImageButton) actionbarView.findViewById(R.id.btn_filter);
 
         filterButton.setOnClickListener(this);
-        pendingTextView.setOnClickListener(this);
-        confirmTextView.setOnClickListener(this);
-        historyTextView.setOnClickListener(this);
+        pendingButton.setOnClickListener(this);
+        confirmButton.setOnClickListener(this);
+        historyButton.setOnClickListener(this);
         confirmTextView.setTag("CONFIRM");
         pendingTextView.setTag("PENDING");
         historyTextView.setTag("HISTORY");
@@ -72,15 +81,15 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
             confirmTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
             historyTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
 
-            if (view.getId() == R.id.lbl_pending) {
+            if (view.getId() == R.id.pending_layout) {
                 pendingTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 pendingDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(pendingTextView);
-            } else if (view.getId() == R.id.lbl_confirmed) {
+            } else if (view.getId() == R.id.confirm_layout) {
                 confirmTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 confirmDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(confirmTextView);
-            } else if (view.getId() == R.id.lbl_history) {
+            } else if (view.getId() == R.id.history_layout) {
                 historyTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 historyDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(historyTextView);

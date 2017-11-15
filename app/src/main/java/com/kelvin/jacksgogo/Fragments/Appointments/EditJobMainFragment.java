@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,10 +55,10 @@ public class EditJobMainFragment extends Fragment {
             @Override
             public void onItemClick(EditJobTabbarView.EditTabStatus status) {
                 EditJobFragment editJobFragment = EditJobFragment.newInstance(status);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.app_detail_container, editJobFragment, null)
-                        .addToBackStack(null)
-                        .commit();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.app_detail_container, editJobFragment, editJobFragment.getTag());
+                ft.addToBackStack("edit_job");
+                ft.commit();
             }
         });
 

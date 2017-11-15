@@ -14,7 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.kelvin.jacksgogo.Activities.Appointment.JGGMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.R;
 
 
@@ -22,7 +22,7 @@ public class JGGMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     private OnFragmentInteractionListener mListener;
 
-    private JGGMapViewActivity myContext;
+    private AppMapViewActivity myContext;
 
     public JGGMapViewFragment() {
         // Required empty public constructor
@@ -45,7 +45,7 @@ public class JGGMapViewFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.map_view_fragment, container, false);
+        View view = inflater.inflate(R.layout.app_map_view_fragment, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -62,7 +62,7 @@ public class JGGMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onAttach(Context context) {
-        myContext=(JGGMapViewActivity) context;
+        myContext=(AppMapViewActivity) context;
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

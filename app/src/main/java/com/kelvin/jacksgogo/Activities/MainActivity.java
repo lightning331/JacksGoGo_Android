@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppMainTabView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchMainTabView;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
     private Toolbar mToolbar;
     private AppMainTabView appMainTabView;
+    private SearchMainTabView searchTabView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,9 +64,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 mToolbar.setTitle(R.string.title_home);
                 break;
             case R.id.navigation_search:
-                frag = SearchFragment.newInstance(null,
-                        null);
-                mToolbar.setTitle(R.string.title_search);
+                frag = SearchFragment.newInstance();
                 break;
             case R.id.navigation_appointments:
                 frag = AppMainFragment.newInstance();
@@ -90,7 +90,34 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             } else {
                 this.removeTopActionBarForAppointment();
             }
+            if (frag instanceof SearchFragment) {
+                this.addTopActionBarForSearch(frag);
+            } else {
+                this.removeToActionBarForSearch();
+            }
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+        setContentView(R.layout.activity_main);
+
+        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        mbtmView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mbtmView.setSelectedItemId(R.id.navigation_home);
+
+        // Hide Bottom NavigationView and ToolBar
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+
+        appMainTabView = new AppMainTabView(this);
+        searchTabView = new SearchMainTabView(this);
+
+        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
+        setSupportActionBar(mToolbar);
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
@@ -114,24 +141,23 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         mToolbar.removeView(appMainTabView);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.activity_main);
+    private void addTopActionBarForSearch(final Fragment frag) {
+        mToolbar.removeView(searchTabView);
+        if (searchTabView == null) searchTabView = new SearchMainTabView(this);
+        mToolbar.addView(searchTabView);
 
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
-        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-        mbtmView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mbtmView.setSelectedItemId(R.id.navigation_home);
+        searchTabView.setTabbarItemClickListener(new SearchMainTabView.OnTabbarItemClickListener() {
+            @Override
+            public void onTabbarItemClick(TextView item) {
+                if (frag instanceof SearchFragment) {
+                    //((SearchFragment)frag).refreshFragment(item.getTag());
+                }
+            }
+        });
+    }
 
-        // Hide Bottom NavigationView and ToolBar
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
-
-        appMainTabView = new AppMainTabView(this);
-        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
-        setSupportActionBar(mToolbar);
+    private void removeToActionBarForSearch() {
+        mToolbar.removeView(searchTabView);
     }
 
     @Override

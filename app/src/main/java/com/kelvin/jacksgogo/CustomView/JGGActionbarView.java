@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.CustomView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +23,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     LinearLayout mBackButton;
     LinearLayout mMoreButton;
     LinearLayout mLikeButton;
+    LinearLayout moreButtonsLayout;
+    LinearLayout centerTitleTextLayout;
 
     public ImageView mBackButtonImage;
     public ImageView mMoreButtonImage;
@@ -38,7 +41,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         EDIT,
         MAP,
         SERVICE,
-        FULLEDIT
+        SERVICE_LISTING,
+        ACTIVE_SERVICE
     }
 
     public JGGActionbarView(Context context) {
@@ -52,14 +56,16 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View mActionbarView                 = mLayoutInflater.inflate(R.layout.jgg_actionbar_view, this);
 
-        mBackButton         = (LinearLayout) mActionbarView.findViewById(R.id.btn_back);
-        mBackButtonImage    = (ImageView) mActionbarView.findViewById(R.id.img_back);
-        mLikeButton         = (LinearLayout) mActionbarView.findViewById(R.id.btn_like_original);
-        mLikeButtonImage    = (ImageView) mActionbarView.findViewById(R.id.img_like);
-        mMoreButton         = (LinearLayout) mActionbarView.findViewById(R.id.btn_more);
-        mMoreButtonImage    = (ImageView) mActionbarView.findViewById(R.id.img_more_menu);
-        mTitleTextView      = (TextView) mActionbarView.findViewById(R.id.lbl_detail_info_actionbar_title);
-        mBackButtonTitleTextView      = (TextView) mActionbarView.findViewById(R.id.lbl_back_title);
+        mBackButton                     = (LinearLayout) mActionbarView.findViewById(R.id.btn_back);
+        moreButtonsLayout               = (LinearLayout) mActionbarView.findViewById(R.id.more_buttons_layout);
+        centerTitleTextLayout           = (LinearLayout) mActionbarView.findViewById(R.id.center_title_layout);
+        mBackButtonImage                = (ImageView) mActionbarView.findViewById(R.id.img_back);
+        mLikeButton                     = (LinearLayout) mActionbarView.findViewById(R.id.btn_like_original);
+        mLikeButtonImage                = (ImageView) mActionbarView.findViewById(R.id.img_like);
+        mMoreButton                     = (LinearLayout) mActionbarView.findViewById(R.id.btn_more);
+        mMoreButtonImage                = (ImageView) mActionbarView.findViewById(R.id.img_more_menu);
+        mTitleTextView                  = (TextView) mActionbarView.findViewById(R.id.lbl_detail_info_actionbar_title);
+        mBackButtonTitleTextView        = (TextView) mActionbarView.findViewById(R.id.lbl_back_title);
 
         mBackButton.setOnClickListener(this);
         mLikeButton.setOnClickListener(this);
@@ -70,6 +76,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         return this.editStatus;
     }
 
+    @SuppressLint("ResourceAsColor")
     public void setStatus(EditStatus status) {
         this.editStatus = status;
         switch (status) {
@@ -77,6 +84,19 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText(R.string.title_appointment);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT,
+                        3.0f
+                );
+                mBackButton.setLayoutParams(param);
+                moreButtonsLayout.setLayoutParams(param);
+                LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT,
+                        4.0f
+                );
+                centerTitleTextLayout.setLayoutParams(param1);
                 break;
             case EDIT:
                 mTitleTextView.setText(R.string.menu_option_edit);
@@ -94,8 +114,17 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mLikeButtonImage.setImageResource(R.mipmap.button_favourite_outline_green);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
                 break;
-            case FULLEDIT:
-
+            case SERVICE_LISTING:
+                mTitleTextView.setText("Service Listing");
+                mBackButtonTitleTextView.setText(R.string.title_service_listing);
+                mBackButtonTitleTextView.setTextColor(getResources().getColor(R.color.JGGGreen));
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case ACTIVE_SERVICE:
+                mTitleTextView.setText("Active Services Around");
+                mBackButtonTitleTextView.setText("");
+                mBackButtonTitleTextView.setTextColor(getResources().getColor(R.color.JGGGreen));
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;
             default:
                 break;
@@ -128,7 +157,6 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mMoreButtonSelected = !isSelected;
     }
 
-    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
         listener.onActionbarItemClick(view);

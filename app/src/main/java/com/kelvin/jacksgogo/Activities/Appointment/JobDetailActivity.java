@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Appointment;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -107,7 +108,7 @@ public class JobDetailActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    private void openEditJobFragment() {
+    private void openEditJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT);
 
         editJobMainFragment = new EditJobMainFragment();
@@ -159,7 +160,7 @@ public class JobDetailActivity extends AppCompatActivity {
             if (menuItem.getItemId() == R.id.menu_option_delete) {  // Delete Job
                 showDeleteJobDialog();
             } else if (menuItem.getItemId() == R.id.menu_option_edit) {    // Edit Job
-                openEditJobFragment();
+                openEditJobMainFragment();
             }
             return true;
         }

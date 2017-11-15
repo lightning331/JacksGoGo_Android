@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/JGGWhite"
     android:layout_height="?attr/actionBarSize"
     android:orientation="vertical">
     <LinearLayout
@@ -19,6 +20,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/lbl_active_service_distance"
                     android:text="By Distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -33,11 +35,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/lbl_active_service_rating"
                     android:text="By Ratings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:textColor="@color/JGGBlack"
+                    android:textColor="@color/JGGGrey1"
                     android:fontFamily="@font/mulibold"
                     android:textSize="@dimen/list_title_font_size" />
             </LinearLayout>
