@@ -39,8 +39,7 @@ public class JobDetailActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        // Init Fragment
-        initFragment();
+        showJobDetailFragment();
 
         actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
@@ -49,15 +48,6 @@ public class JobDetailActivity extends AppCompatActivity {
                 actionbarViewItemClick(view);
             }
         });
-    }
-
-    private void initFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
-
-        jobDetailFragment = new JobDetailFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, jobDetailFragment, jobDetailFragment.getTag());
-        ft.commit();
     }
 
     private void actionbarViewItemClick(View view) {
@@ -89,27 +79,48 @@ public class JobDetailActivity extends AppCompatActivity {
                     popupMenu.show();
                     break;
                 case EDIT_MAIN:
-                    backToPreviousFragment();
+                    showJobDetailFragment();
                     break;
                 case EDIT_DETAIL:
-                    backToPreviousFragment();
+                    backToEditJobMainFragment();
                     break;
                 default:
                     break;
             }
         } else {
             /* ---------    Back button pressed     --------- */
-            backToPreviousFragment();
+            switch (actionbarView.getEditStatus()) {
+                case NONE:
+                    JobDetailActivity.this.finish();
+                    break;
+                case EDIT_MAIN:
+                    showJobDetailFragment();
+                    break;
+                case EDIT_DETAIL:
+                    backToEditJobMainFragment();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    private void backToPreviousFragment() {
-        FragmentManager manager = getSupportFragmentManager();
-        if (manager.getBackStackEntryCount() == 0) {
-            super.onBackPressed();
-        } else {
-            manager.popBackStack();
-        }
+    private void showJobDetailFragment() {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+
+        jobDetailFragment = new JobDetailFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.app_detail_container, jobDetailFragment, jobDetailFragment.getTag());
+        ft.commit();
+    }
+
+    private void backToEditJobMainFragment() {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN);
+
+        editJobMainFragment = new EditJobMainFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
+        ft.commit();
     }
 
     public void setStatus() {
@@ -122,7 +133,6 @@ public class JobDetailActivity extends AppCompatActivity {
         editJobMainFragment = new EditJobMainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
-        ft.addToBackStack("edit_main");
         ft.commit();
     }
 
