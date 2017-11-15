@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.EditJobAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.EditJobDescribeAdapter;
 import com.kelvin.jacksgogo.Adapter.EditJobReportAdapter;
@@ -22,8 +23,14 @@ import com.kelvin.jacksgogo.R;
 public class EditJobFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private String status;
 
+    public void setmListener(OnFragmentInteractionListener mListener) {
+        this.mListener = mListener;
+    }
+
+    Context mContext;
+
+    private String status;
     RecyclerView recyclerView;
     EditJobTabbarView tabbarView;
 
@@ -119,6 +126,10 @@ public class EditJobFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
+
+        ((JobDetailActivity)context).setStatus();
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -136,4 +147,6 @@ public class EditJobFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

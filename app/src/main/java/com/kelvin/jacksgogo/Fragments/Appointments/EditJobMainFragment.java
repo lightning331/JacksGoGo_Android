@@ -16,7 +16,7 @@ import com.kelvin.jacksgogo.Adapter.EditJobMainAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
-public class EditJobMainFragment extends Fragment {
+public class EditJobMainFragment extends Fragment implements EditJobFragment.OnFragmentInteractionListener {
 
     RecyclerView recyclerView;
 
@@ -55,6 +55,9 @@ public class EditJobMainFragment extends Fragment {
             @Override
             public void onItemClick(EditJobTabbarView.EditTabStatus status) {
                 EditJobFragment editJobFragment = EditJobFragment.newInstance(status);
+
+                editJobFragment.setmListener(EditJobMainFragment.this);
+
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.app_detail_container, editJobFragment, editJobFragment.getTag());
                 ft.addToBackStack("edit_job");
@@ -81,6 +84,11 @@ public class EditJobMainFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     public interface OnFragmentInteractionListener {

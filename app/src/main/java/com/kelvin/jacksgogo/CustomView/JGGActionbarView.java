@@ -38,7 +38,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     private EditStatus editStatus;
     public enum EditStatus {
         NONE,
-        EDIT,
+        EDIT_MAIN,
+        EDIT_DETAIL,
         MAP,
         SERVICE,
         SERVICE_LISTING,
@@ -98,7 +99,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 );
                 centerTitleTextLayout.setLayoutParams(param1);
                 break;
-            case EDIT:
+            case EDIT_MAIN:
+                mTitleTextView.setText(R.string.menu_option_edit);
+                mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
+                break;
+            case EDIT_DETAIL:
                 mTitleTextView.setText(R.string.menu_option_edit);
                 mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
                 break;

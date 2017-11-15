@@ -39,7 +39,8 @@ public class JobDetailActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        showJobDetailFragment();
+        // Init Fragment
+        initFragment();
 
         actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
@@ -48,6 +49,15 @@ public class JobDetailActivity extends AppCompatActivity {
                 actionbarViewItemClick(view);
             }
         });
+    }
+
+    private void initFragment() {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+
+        jobDetailFragment = new JobDetailFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.app_detail_container, jobDetailFragment, jobDetailFragment.getTag());
+        ft.commit();
     }
 
     private void actionbarViewItemClick(View view) {
@@ -78,42 +88,41 @@ public class JobDetailActivity extends AppCompatActivity {
                     }
                     popupMenu.show();
                     break;
-                case EDIT:
-                    showJobDetailFragment();
+                case EDIT_MAIN:
+                    backToPreviousFragment();
+                    break;
+                case EDIT_DETAIL:
+                    backToPreviousFragment();
                     break;
                 default:
                     break;
             }
         } else {
             /* ---------    Back button pressed     --------- */
-            switch (actionbarView.getEditStatus()) {
-                case NONE:
-                    JobDetailActivity.this.finish();
-                    break;
-                case EDIT:
-                    showJobDetailFragment();
-                    break;
-                default:
-                    break;
-            }
+            backToPreviousFragment();
         }
     }
 
-    private void showJobDetailFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+    private void backToPreviousFragment() {
+        FragmentManager manager = getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+            manager.popBackStack();
+        }
+    }
 
-        jobDetailFragment = new JobDetailFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, jobDetailFragment, jobDetailFragment.getTag());
-        ft.commit();
+    public void setStatus() {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
     }
 
     private void openEditJobMainFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN);
 
         editJobMainFragment = new EditJobMainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
+        ft.addToBackStack("edit_main");
         ft.commit();
     }
 
