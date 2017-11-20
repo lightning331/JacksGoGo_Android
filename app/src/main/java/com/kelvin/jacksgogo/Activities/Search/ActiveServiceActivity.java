@@ -20,7 +20,7 @@ import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
 import com.kelvin.jacksgogo.R;
 
-public class ActiveServiceActivity extends AppCompatActivity{
+public class ActiveServiceActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     public JGGActionbarView actionbarView;
@@ -98,19 +98,11 @@ public class ActiveServiceActivity extends AppCompatActivity{
      */
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
+
         // Construct a PlaceDetectionClient.
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
+
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-//        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-//                android.Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mLocationPermissionGranted = true;
-//        } else {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-//                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-//        }
     }
 }
