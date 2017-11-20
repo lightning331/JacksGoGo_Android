@@ -12,17 +12,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppMainTabView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchMainTabView;
+import com.kelvin.jacksgogo.Fragments.Appointments.AppMainFragment;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Fragments.Appointments.AppMainFragment;
-import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {

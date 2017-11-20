@@ -1,8 +1,8 @@
 package com.kelvin.jacksgogo.Activities.Appointment;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Adapter.AppointmentFilterAdapter;
 import com.kelvin.jacksgogo.R;
-
 
 import java.util.ArrayList;
 

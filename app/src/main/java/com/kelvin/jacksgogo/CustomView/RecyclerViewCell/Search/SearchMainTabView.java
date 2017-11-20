@@ -21,6 +21,8 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
     Context mContext;
     LayoutInflater mLayoutInflater;
 
+    View searchTabView;
+
     LinearLayout servicesButton;
     LinearLayout jobsButton;
     LinearLayout goClubButton;
@@ -31,7 +33,6 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
     ImageView jobsDotImageView;
     ImageView goClubDotImageView;
     ImageButton searchButton;
-    View searchTabView;
 
 
     public SearchMainTabView(Context context) {

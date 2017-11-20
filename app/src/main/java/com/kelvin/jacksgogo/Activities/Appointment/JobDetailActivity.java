@@ -1,7 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Appointment;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.JGGAlertView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
 import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;

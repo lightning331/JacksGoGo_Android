@@ -18,19 +18,19 @@ import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.R;
 
 
-public class JGGMapViewFragment extends Fragment implements OnMapReadyCallback {
+public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     private OnFragmentInteractionListener mListener;
 
     private AppMapViewActivity myContext;
 
-    public JGGMapViewFragment() {
+    public AppMapViewFragment() {
         // Required empty public constructor
     }
 
 
-    public static JGGMapViewFragment newInstance(String param1, String param2) {
-        JGGMapViewFragment fragment = new JGGMapViewFragment();
+    public static AppMapViewFragment newInstance(String param1, String param2) {
+        AppMapViewFragment fragment = new AppMapViewFragment();
 
         return fragment;
     }
@@ -47,7 +47,7 @@ public class JGGMapViewFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.app_map_view_fragment, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.appointment_map_view);
         mapFragment.getMapAsync(this);
 
         return view;

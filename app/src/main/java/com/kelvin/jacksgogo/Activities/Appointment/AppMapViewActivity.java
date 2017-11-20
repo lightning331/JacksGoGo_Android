@@ -14,7 +14,7 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Appointments.JGGMapViewFragment;
+import com.kelvin.jacksgogo.Fragments.Appointments.AppMapViewFragment;
 import com.kelvin.jacksgogo.R;
 
 public class AppMapViewActivity extends AppCompatActivity {
@@ -32,7 +32,7 @@ public class AppMapViewActivity extends AppCompatActivity {
         setContentView(R.layout.app_map_view_activity);
 
         // Fragment Initialize
-        JGGMapViewFragment frag = new JGGMapViewFragment();
+        AppMapViewFragment frag = new AppMapViewFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.map_container, frag, frag.getTag());
         ft.commit();
