@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.Adapter.SearchActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
@@ -74,7 +76,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             @Override
             public void onTabbarItemClick(View view) {
                 if (view.getId() == R.id.btn_active_service_filter) {
-
+                    Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
+                    startActivity(intent);
                 } else if (view.getId() == R.id.btn_active_service_mapview) {
                     ActiveServiceMapFragment activeServiceMapFragment = new ActiveServiceMapFragment();
 

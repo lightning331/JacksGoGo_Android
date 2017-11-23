@@ -50,7 +50,8 @@
         <activity android:name=".Activities.Search.ServiceListingActivity" />
         <activity android:name=".Activities.Search.ActiveServiceActivity" />
         <activity android:name=".Activities.Search.PostServiceActivity" />
-        <activity android:name=".Activities.Search.ServiceSearchActivity"></activity>
+        <activity android:name=".Activities.Search.ServiceSearchActivity" />
+        <activity android:name=".Activities.Search.ServiceFilterActivity"></activity>
     </application>
 
 </manifest>

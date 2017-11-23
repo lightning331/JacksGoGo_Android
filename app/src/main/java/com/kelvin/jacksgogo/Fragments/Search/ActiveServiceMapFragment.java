@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.R;
 
 public class ActiveServiceMapFragment extends Fragment
@@ -110,7 +112,8 @@ public class ActiveServiceMapFragment extends Fragment
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_map_filter) {
-
+            Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
+            startActivity(intent);
         } else if (view.getId() == R.id.btn_user_location) {
 
         } else if (view.getId() == R.id.btn_list_view) {

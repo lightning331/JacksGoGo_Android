@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchCategoryListView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchHomeHeaderView;
@@ -94,6 +95,8 @@ public class SearchMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             view.getContext().startActivity(intent);
         } else if (view.getId() == R.id.btn_post_new) {
             Log.d(TAG, "post new ========= : ");
+            Intent intent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
+            view.getContext().startActivity(intent);
         }
     }
 }
