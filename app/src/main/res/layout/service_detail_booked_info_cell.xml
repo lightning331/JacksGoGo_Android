@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="35dp"
+    android:layout_height="32dp"
     android:gravity="center"
     android:orientation="vertical">
     <LinearLayout
@@ -19,7 +19,7 @@
                 android:id="@+id/lbl_booked_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="16dp"
                 android:textColor="@color/JGGBlack"
                 android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/mulibold"
@@ -60,7 +60,7 @@
                 android:textAlignment="viewEnd"
                 android:gravity="end"
                 android:textColor="@color/JGGBlack"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="16dp"
                 android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/muliregular"
                 android:text="viewing now "/>

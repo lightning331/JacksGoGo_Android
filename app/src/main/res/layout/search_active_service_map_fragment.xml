@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="56dp"
         android:background="@color/JGGGrey5">
         <LinearLayout
             android:layout_width="0dp"
@@ -23,7 +23,7 @@
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="16dp"
                 android:maxLines="2"
                 android:src="@mipmap/button_backarrow_green"/>
         </LinearLayout>

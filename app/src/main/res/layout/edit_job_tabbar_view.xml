@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_tabbar_view"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="56dp"
     android:background="@color/JGGWhite"
     android:gravity="center">
     <FrameLayout
@@ -16,26 +16,29 @@
             android:paddingTop="15dp">
 
             <ImageView
+                android:id="@+id/img_time_line"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="15dp"
-                android:src="@mipmap/line_full"
+                android:src="@mipmap/line_dotted"
                 android:scaleType="fitXY"/>
 
             <ImageView
+                android:id="@+id/img_address_line"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="15dp"
-                android:src="@mipmap/line_full"
+                android:src="@mipmap/line_dotted"
                 android:scaleType="fitXY"/>
 
             <ImageView
+                android:id="@+id/img_report_line"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@mipmap/line_full"
+                android:src="@mipmap/line_dotted"
                 android:scaleType="fitXY"/>
 
         </LinearLayout>

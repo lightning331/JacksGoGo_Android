@@ -3,16 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="80dp">
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="96dp"
         android:layout_height="match_parent"
-        android:layout_weight="20"
         android:gravity="center"
         android:orientation="vertical">
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_invite_provider_avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@mipmap/nurse4"
             android:background="@color/transparent"
             android:adjustViewBounds="true"
@@ -25,7 +24,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="60"
+        android:layout_weight="70"
         android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
@@ -58,7 +57,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="20"
+        android:layout_weight="30"
         android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
@@ -70,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="16dp"
             android:textColor="@color/JGGGreen"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/button_font_size"

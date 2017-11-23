@@ -22,6 +22,9 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
     LinearLayout mTimeButton;
     LinearLayout mAddressButton;
     LinearLayout mReportButton;
+    ImageView imgTimeLine;
+    ImageView imgAddressLine;
+    ImageView imgRreportLine;
     public ImageView mDescribeImage;
     public ImageView mTimeImage;
     public ImageView mAddressImage;
@@ -68,6 +71,9 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         mTimeText           = (TextView) mTabbarView.findViewById(R.id.lbl_time);
         mAddressText        = (TextView) mTabbarView.findViewById(R.id.lbl_address);
         mReportText         = (TextView) mTabbarView.findViewById(R.id.lbl_report);
+        imgTimeLine         = (ImageView) mTabbarView.findViewById(R.id.img_time_line);
+        imgAddressLine      = (ImageView) mTabbarView.findViewById(R.id.img_address_line);
+        imgRreportLine      = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
 
         mDescribeButton.setOnClickListener(this);
         mTimeButton.setOnClickListener(this);
@@ -89,6 +95,9 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         mTimeText.setTextColor(getResources().getColor(R.color.JGGGrey1));
         mReportImage.setImageResource(R.mipmap.counter_greytick);
         mReportText.setTextColor(getResources().getColor(R.color.JGGGrey1));
+        imgTimeLine.setImageResource(R.mipmap.line_dotted);
+        imgRreportLine.setImageResource(R.mipmap.line_dotted);
+        imgAddressLine.setImageResource(R.mipmap.line_dotted);
 
         switch (status) {
             case DESCRIBE:
@@ -96,14 +105,20 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
                 mDescribeText.setTextColor(getResources().getColor(R.color.JGGGreen));
                 break;
             case TIME:
+                imgTimeLine.setImageResource(R.mipmap.line_full);
                 mTimeImage.setImageResource(R.mipmap.counter_greentick);
                 mTimeText.setTextColor(getResources().getColor(R.color.JGGGreen));
                 break;
             case ADDRESS:
+                imgTimeLine.setImageResource(R.mipmap.line_full);
+                imgAddressLine.setImageResource(R.mipmap.line_full);
                 mAddressImage.setImageResource(R.mipmap.counter_greentick);
                 mAddressText.setTextColor(getResources().getColor(R.color.JGGGreen));
                 break;
             case REPORT:
+                imgTimeLine.setImageResource(R.mipmap.line_full);
+                imgAddressLine.setImageResource(R.mipmap.line_full);
+                imgRreportLine.setImageResource(R.mipmap.line_full);
                 mReportImage.setImageResource(R.mipmap.counter_greentick);
                 mReportText.setTextColor(getResources().getColor(R.color.JGGGreen));
                 break;

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="280dp"
-    android:layout_height="150dp"
+    android:layout_width="match_parent"
+    android:layout_height="152dp"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="104dp"
         android:orientation="horizontal"
         android:background="@color/JGGWhite">
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="104dp"
             android:layout_height="match_parent">
             <ImageView
                 android:src="@mipmap/nurse4"
@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="7"
+            android:layout_weight="1"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,7 +100,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="48dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -116,7 +116,7 @@
                     android:id="@+id/lbl_service_callout_booked_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="16dp"
                     android:textColor="@color/JGGBlack"
                     android:textSize="@dimen/caption_font_size"
                     android:fontFamily="@font/mulibold"
@@ -142,7 +142,7 @@
                     android:id="@+id/lbl_service_callout_viewing_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="5dp"
                     android:textColor="@color/JGGBlack"
                     android:textSize="@dimen/caption_font_size"

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="310dp"
+    android:layout_height="270dp"
     android:gravity="center"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_favourites"/>
             <TextView
                 android:text="Favourited Services"
@@ -33,14 +33,14 @@
             android:layout_height="match_parent">
         </LinearLayout>
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_cooking_baking"/>
             <TextView
                 android:text="Cooking &amp; Baking"
@@ -58,14 +58,14 @@
             android:layout_height="match_parent">
         </LinearLayout>
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_education"/>
             <TextView
                 android:text="Education"
@@ -87,14 +87,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_handyman"/>
             <TextView
                 android:text="Handyman"
@@ -112,14 +112,14 @@
             android:layout_height="match_parent">
         </LinearLayout>
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_householdchores"/>
             <TextView
                 android:text="Household Chores"
@@ -137,14 +137,14 @@
             android:layout_height="match_parent">
         </LinearLayout>
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_messenger"/>
             <TextView
                 android:text="Messenger"
@@ -166,14 +166,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_runningman"/>
             <TextView
                 android:text="Running Man"
@@ -191,14 +191,14 @@
             android:layout_height="match_parent">
         </LinearLayout>
         <LinearLayout
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_leisure"/>
             <TextView
                 android:text="Sports"
@@ -217,14 +217,14 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/btn_other_professions"
-            android:layout_width="94dp"
-            android:layout_height="94dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/icon_cat_other"/>
             <TextView
                 android:text="Other Professions"

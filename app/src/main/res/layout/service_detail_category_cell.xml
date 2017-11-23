@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="104dp"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,19 +10,18 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="104dp"
         android:gravity="center"
         android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="96dp"
             android:layout_height="match_parent"
-            android:layout_weight="25"
             android:orientation="vertical"
             android:background="@color/JGGWhite">
             <ImageView
                 android:id="@+id/img_original_post_title"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:src="@mipmap/icon_cat_householdchores"/>
@@ -37,15 +36,14 @@
                 android:text="Household Chores"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
             android:orientation="vertical">
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="78"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
             android:background="@color/JGGWhite">

@@ -9,7 +9,7 @@
         <LinearLayout
             android:id="@+id/detail_title"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="56dp"
             android:background="@color/JGGWhite"
             android:orientation="horizontal">
             <LinearLayout
@@ -65,7 +65,7 @@
         <LinearLayout
             android:id="@+id/edit_job_tabbar_view"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:background="@color/JGGWhite"
             android:gravity="center"
             android:orientation="horizontal">

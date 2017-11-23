@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="145dp"
+    android:layout_height="125dp"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="88dp"
         android:orientation="horizontal"
         android:background="@color/JGGWhite">
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent">
             <ImageView
                 android:src="@mipmap/nurse4"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="16dp"
                 android:textColor="@color/JGGBlack"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/body_font_size"
@@ -100,7 +100,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp">
+        android:layout_height="32dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -116,7 +116,7 @@
                     android:id="@+id/lbl_service_detail_booked_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="16dp"
                     android:textColor="@color/JGGBlack"
                     android:textSize="@dimen/caption_font_size"
                     android:fontFamily="@font/mulibold"
@@ -157,7 +157,7 @@
                     android:textAlignment="viewEnd"
                     android:gravity="end"
                     android:textColor="@color/JGGBlack"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="16dp"
                     android:textSize="@dimen/caption_font_size"
                     android:fontFamily="@font/muliregular"
                     android:text="viewing now "/>

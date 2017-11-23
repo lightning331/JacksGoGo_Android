@@ -6,12 +6,12 @@
     <RelativeLayout
         android:id="@+id/background_layout"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="66dp"
         android:gravity="left|center_vertical">
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/view_filter_bg"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="56dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
