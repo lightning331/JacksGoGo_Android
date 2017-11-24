@@ -32,7 +32,7 @@ public class ServiceCallOutContentView extends RelativeLayout {
         super(context);
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        callOutContentView  = mLayoutInflater.inflate(R.layout.search_service_callout_view, this);
+        callOutContentView  = mLayoutInflater.inflate(R.layout.service_info_window_adapter_view, this);
 
         lblServiceTitle = (TextView) callOutContentView.findViewById(R.id.lbl_callout_service_title);
         rateBar = (MaterialRatingBar) callOutContentView.findViewById(R.id.service_callout_user_ratingbar);

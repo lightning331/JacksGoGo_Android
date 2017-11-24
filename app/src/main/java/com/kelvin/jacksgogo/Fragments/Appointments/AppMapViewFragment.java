@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
@@ -83,7 +84,8 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
         // and move the map's camera to the same location.
         LatLng sydney = new LatLng(1.294595, 103.852089);
         googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Singapore"));
+                .title("Singapore")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
