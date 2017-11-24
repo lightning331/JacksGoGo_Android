@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
-import com.kelvin.jacksgogo.Activities.Appointment.ServiceDetailActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailDescriptionCell;
@@ -137,7 +137,9 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 originalViewHolder.btnOriginal.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mContext.getActivity().startActivity(new Intent(mContext.getActivity(), ServiceDetailActivity.class));
+                        Intent intent = new Intent(mContext.getActivity(), ServiceDetailActivity.class);
+                        intent.putExtra("is_service", false);
+                        mContext.getActivity().startActivity(intent);
                     }
                 });
                 return originalViewHolder;

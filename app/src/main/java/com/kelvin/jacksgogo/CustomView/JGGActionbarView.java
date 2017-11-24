@@ -44,7 +44,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         SERVICE,
         SERVICE_LISTING,
         ACTIVE_SERVICE,
-        POST_SERVICE
+        POST_SERVICE,
+        SERVICE_TIME_SLOTS,
+        SERVICE_REVIEWS
     }
 
     public JGGActionbarView(Context context) {
@@ -122,6 +124,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case SERVICE_LISTING:
                 mTitleTextView.setText("Service Listing");
+                mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;
             case ACTIVE_SERVICE:
@@ -131,6 +134,17 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case POST_SERVICE:
                 mTitleTextView.setText("Post A Service");
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case SERVICE_TIME_SLOTS:
+                mTitleTextView.setText("Time Slots");
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                mMoreButtonImage.setImageResource(R.mipmap.button_today_green);
+                break;
+            case SERVICE_REVIEWS:
+                mTitleTextView.setText("Reviews");
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;

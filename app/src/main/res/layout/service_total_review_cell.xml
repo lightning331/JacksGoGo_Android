@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/avatar_title_view"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="5dp">
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/JGGWhite">
         <LinearLayout
             android:layout_width="96dp"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
             <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_avatar"
+                android:id="@+id/img_service_review_avatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@mipmap/nurse4"
@@ -31,61 +36,52 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="45"
+            android:layout_weight="1"
+            android:layout_marginRight="16dp"
             android:gravity="center"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
                 <TextView
-                    android:text="Alan.Tam"
-                    android:id="@+id/lbl_username"
+                    android:text="By CYYong on 19 Jul, 2017"
+                    android:id="@+id/lbl_service_review_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:textColor="@color/JGGBlack"
-                    android:fontFamily="@font/mulibold"
-                    android:textSize="@dimen/button_font_size"/>
+                    android:textColor="@color/JGGGrey3"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/caption_font_size"/>
                 <me.zhanghai.android.materialratingbar.MaterialRatingBar
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/user_ratingbar"
+                    android:id="@+id/service_reviews_ratingbar"
                     style="@style/Widget.MaterialRatingBar.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="13dp"
+                    android:layout_marginTop="7dp"
                     android:stepSize="0.01"
                     android:isIndicator="true"
                     app:mrb_progressBackgroundTint="@color/JGGGrey3"
                     app:mrb_progressTint="@color/JGGYellow"
                     app:mrb_secondaryProgressTint="@color/JGGYellow" />
-
+                <TextView
+                    android:text="Very patient instructor."
+                    android:id="@+id/lbl_service_reviews_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/button_font_size"/>
             </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/btn_view_all_services"
-            android:visibility="invisible"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="55"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:background="@color/JGGWhite">
-            <TextView
-                android:text="View All Services"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/JGGGreen"
-                android:textSize="@dimen/button_font_size"
-                android:fontFamily="@font/mulibold"
-                android:gravity="end" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/JGGGrey4">
+        android:layout_height="5dp">
     </LinearLayout>
 </LinearLayout>

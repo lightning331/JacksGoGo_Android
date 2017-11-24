@@ -16,11 +16,13 @@ public class JobDetailDescriptionCell extends RecyclerView.ViewHolder {
 
     public ImageView descriptionImage;
     public TextView description;
+    public TextView title;
 
     public JobDetailDescriptionCell(View itemView) {
         super(itemView);
 
         descriptionImage = itemView.findViewById(R.id.img_description);
         description = itemView.findViewById(R.id.lbl_description);
+        title = itemView.findViewById(R.id.lbl_job_detail_title);
     }
 }

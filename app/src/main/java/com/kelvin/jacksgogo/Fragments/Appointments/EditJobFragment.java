@@ -110,7 +110,7 @@ public class EditJobFragment extends Fragment {
             EditJobDescribeAdapter mAdapter = new EditJobDescribeAdapter(this);
             recyclerView.setAdapter(mAdapter);
         } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.TIME) {
-            EditJobTimeAdapter mTimeAdapter = new EditJobTimeAdapter(this);
+            EditJobTimeAdapter mTimeAdapter = new EditJobTimeAdapter(mContext);
             recyclerView.setAdapter(mTimeAdapter);
         } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.ADDRESS) {
             EditJobAddressAdapter addressAdapter = new EditJobAddressAdapter(this);

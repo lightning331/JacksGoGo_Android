@@ -20,12 +20,11 @@ import com.kelvin.jacksgogo.R;
 
 public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    EditJobFragment mContext;
+    Context mContext;
 
-    int ITEM_COUNT = 7;
-    private Context context;
+    int ITEM_COUNT = 9;
 
-    public EditJobTimeAdapter(EditJobFragment context) {
+    public EditJobTimeAdapter(Context context) {
         this.mContext = context;
     }
 
@@ -54,17 +53,10 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             timeViewHolder.background.setBackgroundResource(R.color.JGGWhite);
             timeViewHolder.txtTitle.setGravity(Gravity.CENTER_HORIZONTAL);
             return timeViewHolder;
-        } else if (viewType == 4) {
-            View timesloatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_time_slots_cell, parent, false);
-            return new EditJobTimeSlotsCell(timesloatView);
-        } else if (viewType == 5) {
-            View timesloatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_time_slots_cell, parent, false);
-            return new EditJobTimeSlotsCell(timesloatView);
-        } else if (viewType == 6) {
+        } else {
             View timesloatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_time_slots_cell, parent, false);
             return new EditJobTimeSlotsCell(timesloatView);
         }
-        return null;
     }
 
     @Override

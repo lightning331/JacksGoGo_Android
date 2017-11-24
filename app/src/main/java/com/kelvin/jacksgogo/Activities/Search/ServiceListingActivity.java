@@ -20,7 +20,6 @@ public class ServiceListingActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
-
     RecyclerView recyclerView;
 
     @Override
@@ -58,7 +57,7 @@ public class ServiceListingActivity extends AppCompatActivity {
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
-            ServiceListingActivity.this.finish();
+            onBackPressed();
         }
     }
 }

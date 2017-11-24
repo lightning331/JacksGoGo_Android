@@ -35,7 +35,7 @@
 
         <activity android:name=".Activities.Appointment.AppFilterActivity" />
         <activity android:name=".Activities.Appointment.JobDetailActivity" />
-        <activity android:name=".Activities.Appointment.ServiceDetailActivity" />
+        <activity android:name=".Activities.Search.ServiceDetailActivity" />
         <activity android:name=".Activities.Appointment.AppMapViewActivity" />
 
         <meta-data
@@ -51,7 +51,9 @@
         <activity android:name=".Activities.Search.ActiveServiceActivity" />
         <activity android:name=".Activities.Search.PostServiceActivity" />
         <activity android:name=".Activities.Search.ServiceSearchActivity" />
-        <activity android:name=".Activities.Search.ServiceFilterActivity"></activity>
+        <activity android:name=".Activities.Search.ServiceFilterActivity" />
+        <activity android:name=".Activities.Search.ServiceTimeSlotsActivity" />
+        <activity android:name=".Activities.Search.ServiceReviewsActivity"></activity>
     </application>
 
 </manifest>

@@ -36,14 +36,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/lbl_description"
-                    android:text="$50.00-$100.00"
-                    android:layout_width="match_parent"
+                    android:id="@+id/lbl_job_detail_title"
+                    android:text="Package"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/list_title_font_size"/>
+                <TextView
+                    android:id="@+id/lbl_description"
+                    android:text="$50.00-$100.00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="16dp"
                     android:textColor="@color/JGGBlack"
                     android:fontFamily="@font/muliregular"
                     android:textSize="@dimen/list_title_font_size"/>

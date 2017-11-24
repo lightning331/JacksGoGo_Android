@@ -15,11 +15,13 @@ public class JobDetailLocationCell extends RecyclerView.ViewHolder {
 
     public TextView description;
     public LinearLayout location;
+    public TextView address;
 
     public JobDetailLocationCell(View itemView) {
         super(itemView);
 
         description = itemView.findViewById(R.id.lbl_location);
         location = itemView.findViewById(R.id.btn_location);
+        address = itemView.findViewById(R.id.lbl_job_detail_address);
     }
 }

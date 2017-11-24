@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Appointments;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
 import android.net.Uri;
@@ -18,6 +18,8 @@ import com.kelvin.jacksgogo.R;
 public class ServiceDetailFragment extends Fragment {
 
     RecyclerView recyclerView;
+
+    boolean serviceStatus;
 
     private OnFragmentInteractionListener mListener;
 
@@ -50,7 +52,7 @@ public class ServiceDetailFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        ServiceDetailAdapter mAdapter = new ServiceDetailAdapter(this);
+        ServiceDetailAdapter mAdapter = new ServiceDetailAdapter(this, serviceStatus);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -76,5 +78,9 @@ public class ServiceDetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void setFlagForServiceStatus(boolean isService) {
+        serviceStatus = isService;
     }
 }

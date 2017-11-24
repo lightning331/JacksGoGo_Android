@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchCategoryListView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchHomeHeaderView;
@@ -63,7 +64,16 @@ public class SearchMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return sectionView;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_service_detail_list_cell, parent, false);
-            return new ServiceDetailListCell(view);
+            ServiceDetailListCell cell = new ServiceDetailListCell(view);
+            cell.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                    intent.putExtra("is_service", true);
+                    mContext.startActivity(intent);
+                }
+            });
+            return cell;
         }
     }
 
