@@ -22,7 +22,7 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     Context mContext;
 
-    int ITEM_COUNT = 9;
+    int ITEM_COUNT = 7;
 
     public EditJobTimeAdapter(Context context) {
         this.mContext = context;

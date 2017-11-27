@@ -30,19 +30,21 @@ public class EditJobFragment extends Fragment {
 
     Context mContext;
 
-    private String status;
     RecyclerView recyclerView;
     EditJobTabbarView tabbarView;
 
+    private String status;
+    boolean isRequest; // Request Or Edit
 
     public EditJobFragment() {
         // Required empty public constructor
     }
 
-    public static EditJobFragment newInstance(EditJobTabbarView.EditTabStatus status) {
+    public static EditJobFragment newInstance(EditJobTabbarView.EditTabStatus status, boolean b) {
         EditJobFragment fragment = new EditJobFragment();
         Bundle args = new Bundle();
         args.putString("status", status.toString());
+        args.putBoolean("isRequest", b);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,9 +52,6 @@ public class EditJobFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            status = getArguments().getString("status");
-        }
     }
 
     @Override
@@ -128,12 +127,18 @@ public class EditJobFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
 
-        ((JobDetailActivity)context).setStatus();
+        if (getArguments() != null) {
+            status = getArguments().getString("status");
+            isRequest = getArguments().getBoolean("isRequest");
+        }
+        if (!isRequest) {
+            ((JobDetailActivity) context).setStatus();
 
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
+            if (context instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) context;
+            } else {
 
+            }
         }
     }
 

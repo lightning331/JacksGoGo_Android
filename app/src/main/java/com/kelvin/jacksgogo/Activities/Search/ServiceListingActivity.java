@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,7 +17,7 @@ import com.kelvin.jacksgogo.Adapter.SearchServiceListingAdapter;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
-public class ServiceListingActivity extends AppCompatActivity {
+public class ServiceListingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
@@ -32,6 +33,7 @@ public class ServiceListingActivity extends AppCompatActivity {
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        mbtmView.setOnClickListener(this);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_listing_actionbar);
@@ -58,6 +60,13 @@ public class ServiceListingActivity extends AppCompatActivity {
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
             onBackPressed();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.service_listing_navigation) {
+            startActivity(new Intent(this, PostServiceActivity.class));
         }
     }
 }

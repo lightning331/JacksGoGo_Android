@@ -21,7 +21,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailImage
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailNextStepTitleCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailReferenceNoCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetailUserNameRatingCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailUserNameRatingCell;
 import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
 

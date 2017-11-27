@@ -26,12 +26,46 @@
     <!-- TODO: Google Map API Key -->
     <string name="google_maps_key">AIzaSyASWl8FiFk2_VkOSd6pOvsbkS1nWn903cY</string>
 
-    <!-- TODO: JGG Actionbar title -->
+    <!-- TODO: JGG Appointment PopUp Menu -->
     <string name="menu_option_edit">Edit</string>
     <string name="menu_option_delete">Delete</string>
     <string name="title_appointment">Appointment</string>
     <string name="title_map">Map</string>
-    <string name="title_service_listing">Profile</string>
+    <string name="title_service_listing">Service Listing</string>
+    <string name="title_active_service_around">Active Services Around</string>
+    <string name="title_post_service">Post A Service</string>
+    <string name="title_time_slots">Time Slots</string>
+    <string name="title_review">Reviews</string>
+    <string name="title_buy_service">Buy Service</string>
+    <string name="title_credit_card">Credit Card</string>
+    <string name="title_jacks_wallet">Jacks Wallet</string>
+    <string name="title_request_quotation">Request A Quotation</string>
+
+    <!-- TODO: JGG Service PopUp Menu -->
+    <string name="menu_option_share">Share</string>
+    <string name="menu_option_report">Report Service</string>
+    <string name="setup_credit_card">Set Up Credit Card</string>
+    <string name="jacks_wallet">Top Up Jacks Wallet - balance $10.00</string>
+
+    <!-- TODO: JGG Alert View -->
+    <string name="alert_report_service_title">Report Service</string>
+    <string name="alert_report_service_desc">Mark this post as inappropriate or offensive.</string>
+    <string name="alert_report_service_thanks_title">Thank You!</string>
+    <string name="alert_report_service_thanks_desc">Our team will be looking into the matter.</string>
+    <string name="alert_done">Done</string>
+    <string name="alert_ok">OK</string>
+    <string name="alert_delete">Delete</string>
+    <string name="alert_report_service_ok">Report</string>
+    <string name="alert_payment_setup_success">Payment Set Up Successfully!</string>
+    <string name="alert_quit_quotation_title">Quit Requesting A Quotation?</string>
+    <string name="alert_quit_quotation_desc">All info will be lost.</string>
+    <string name="alert_quit_button">Quit</string>
+    <string name="alert_cancel">Cancel</string>
+
+
+    <!-- TODO: Share Dialog -->
+    <string name="share_dlg_title">Share with your friend</string>
+    <string name="share_dlg_actions">Actions</string>
 
     <!-- TODO: Edit Job -->
     <string name="edit_job_tag_describe">Describe</string>
@@ -43,7 +77,7 @@
     <string name="edit_job_address_title">Where do you need the services?</string>
     <string name="edit_job_address_desc">We will only show the full address to the service provider you have awarded the job to.</string>
 
-    <!-- TODO: Repor Job -->
+    <!-- TODO: Report Job -->
     <string name="edit_job_report_title">Choose how you want to verify the completed work(optional).</string>
     <string name="edit_job_report_before_title">Before &amp; After Photo.</string>
     <string name="edit_job_report_before_desc">Take photos before the start of your work, and then after the end to show the work result.</string>
@@ -53,5 +87,7 @@
     <string name="edit_job_report_pin_desc">Useful for delivery jobs. The recipient should be given the code before hand to confirm.</string>
     <string name="post_service">Post A Service</string>
     <string name="post_new_service">Post New Service</string>
+    <string name="request_quotation">Request A Quotation</string>
+    <string name="buy_service">Buy Service</string>
 
 </resources>

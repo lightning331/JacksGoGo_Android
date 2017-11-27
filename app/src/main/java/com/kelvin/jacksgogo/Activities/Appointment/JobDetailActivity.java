@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
@@ -53,11 +52,10 @@ public class JobDetailActivity extends AppCompatActivity {
             /* ---------    More button pressed     --------- */
             switch (actionbarView.getEditStatus()) {
                 case NONE:
-                    actionbarView.setDetailMoreButtonClicked(true);
+                    actionbarView.setEditMoreButtonClicked(true);
 
-                    PopupWindow mPopupWindow = new PopupWindow();
                     PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, view);
-                    popupMenu.inflate(R.menu.menu_option);
+                    popupMenu.inflate(R.menu.edit_menu_option);
                     popupMenu.setOnDismissListener(new OnDismissListener());
                     popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
 
@@ -156,7 +154,7 @@ public class JobDetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JobDetailActivity.this.finish();
+                onBackPressed();
             }
         });
         alertDialog.show();
@@ -166,7 +164,7 @@ public class JobDetailActivity extends AppCompatActivity {
         @Override
         public void onDismiss(PopupMenu menu) {
             if (actionbarView.getEditStatus() == JGGActionbarView.EditStatus.NONE)
-                actionbarView.setDetailMoreButtonClicked(false);
+                actionbarView.setEditMoreButtonClicked(false);
         }
     }
 

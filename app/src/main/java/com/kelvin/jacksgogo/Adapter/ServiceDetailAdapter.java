@@ -14,11 +14,10 @@ import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceReviewsActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceTimeSlotsActivity;
 import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.FullButtonCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailImageCarouselCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailLocationCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetailUserNameRatingCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailUserNameRatingCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.ServiceDetailBookedInfoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.ServiceDetailCategoryCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.ServiceDetailTagListCell;
@@ -37,7 +36,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     boolean isService;
 
-    int ITEM_COUNT = 12;
+    int ITEM_COUNT = 11;
 
     public ServiceDetailAdapter(ServiceDetailFragment context, boolean serviceStatus) {
         this.mContext = context;
@@ -111,6 +110,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 statusViewHolder.description.append(spannableString);
                 statusViewHolder.description.append(normalText);
+                //if (!isService) statusViewHolder.itemView.setVisibility(View.GONE);
                 return statusViewHolder;
             case 6:
                 View timeSlotsView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_time_slots_cell, parent, false);
@@ -140,11 +140,6 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_booked_info_cell, parent, false);
                 ServiceDetailBookedInfoCell bookedInfoViewHolder = new ServiceDetailBookedInfoCell(bookedInfoView);
                 return bookedInfoViewHolder;
-            case 11:
-                View quotationView = LayoutInflater.from(parent.getContext()).inflate(R.layout.full_button_cell, parent, false);
-                FullButtonCell quotationViewHolder = new FullButtonCell(quotationView);
-                if (isService) quotationViewHolder.title.setText("Buy Service");
-                return quotationViewHolder;
         }
         return null;
     }

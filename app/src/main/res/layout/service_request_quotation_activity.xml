@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity">
+    tools:context="com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity">
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/app_original_actionbar"
+                android:id="@+id/request_quotation_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -30,30 +29,11 @@
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
         <FrameLayout
-            android:id="@+id/app_original_container"
+            android:id="@+id/request_quotation_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </FrameLayout>
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/service_detail_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/JGGGreen"
-            android:layout_gravity="bottom"
-            app:itemTextColor="@color/JGGWhite"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:itemTextAppearance="@style/NavigationViewOwnStyle">
-            <TextView
-                android:id="@+id/service_detail_bottom_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/buy_service"
-                android:textAlignment="center"
-                android:textColor="@color/JGGWhite"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"
-                android:gravity="center"/>
-        </android.support.design.widget.BottomNavigationView>
     </android.support.design.widget.CoordinatorLayout>
+
 </android.support.constraint.ConstraintLayout>

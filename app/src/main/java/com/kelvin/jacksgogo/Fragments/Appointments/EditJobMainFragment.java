@@ -54,7 +54,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
         mAdapter.setItemClickLietener(new EditJobMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(EditJobTabbarView.EditTabStatus status) {
-                EditJobFragment editJobFragment = EditJobFragment.newInstance(status);
+                EditJobFragment editJobFragment = EditJobFragment.newInstance(status, false);
 
                 editJobFragment.setmListener(EditJobMainFragment.this);
 

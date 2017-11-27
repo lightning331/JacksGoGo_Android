@@ -46,7 +46,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         ACTIVE_SERVICE,
         POST_SERVICE,
         SERVICE_TIME_SLOTS,
-        SERVICE_REVIEWS
+        SERVICE_REVIEWS,
+        SERVICE_BUY,
+        SETUP_CARD,
+        JACKS_WALLET,
+        REQUEST_QUOTATION
     }
 
     public JGGActionbarView(Context context) {
@@ -123,28 +127,48 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
                 break;
             case SERVICE_LISTING:
-                mTitleTextView.setText("Service Listing");
+                mTitleTextView.setText(R.string.title_service_listing);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;
             case ACTIVE_SERVICE:
-                mTitleTextView.setText("Active Services Around");
+                mTitleTextView.setText(R.string.title_active_service_around);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;
             case POST_SERVICE:
-                mTitleTextView.setText("Post A Service");
+                mTitleTextView.setText(R.string.title_post_service);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;
             case SERVICE_TIME_SLOTS:
-                mTitleTextView.setText("Time Slots");
+                mTitleTextView.setText(R.string.title_time_slots);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 mMoreButtonImage.setImageResource(R.mipmap.button_today_green);
                 break;
             case SERVICE_REVIEWS:
-                mTitleTextView.setText("Reviews");
+                mTitleTextView.setText(R.string.title_review);
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case SERVICE_BUY:
+                mTitleTextView.setText(R.string.title_buy_service);
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case SETUP_CARD:
+                mTitleTextView.setText(R.string.title_credit_card);
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case JACKS_WALLET:
+                mTitleTextView.setText(R.string.title_jacks_wallet);
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case REQUEST_QUOTATION:
+                mTitleTextView.setText(R.string.title_request_quotation);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;
@@ -153,7 +177,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         }
     }
 
-    public void setDetailMoreButtonClicked(boolean isSelected) {
+    public void setEditMoreButtonClicked(boolean isSelected) {
         if (isSelected) {
             mMoreButtonImage.setImageResource(R.mipmap.button_more_orange_active);
         } else {
@@ -170,11 +194,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mLikeButtonSelected = !isSelected;
     }
 
-    public void setMoreButtonClicked(boolean isSelected) {
+    public void setShareMoreButtonClicked(boolean isSelected) {
         if (isSelected) {
-            mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
-        } else {
             mMoreButtonImage.setImageResource(R.mipmap.button_more_active_green);
+        } else {
+            mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
         }
         mMoreButtonSelected = !isSelected;
     }

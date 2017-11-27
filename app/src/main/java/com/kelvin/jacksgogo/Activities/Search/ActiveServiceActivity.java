@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -9,27 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
 import com.kelvin.jacksgogo.R;
 
-public class ActiveServiceActivity extends AppCompatActivity {
+public class ActiveServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
     public JGGActionbarView actionbarView;
     ActiveServiceMainFragment activeServiceMainFragment;
     private BottomNavigationView mbtmView;;
-
-    GeoDataClient mGeoDataClient;
-    PlaceDetectionClient mPlaceDetectionClient;
-    FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +29,6 @@ public class ActiveServiceActivity extends AppCompatActivity {
         setContentView(R.layout.search_active_service_activity);
 
         initializeView();
-        // Google MapView Initialize
-        getLocationPermission();
     }
 
     private void initializeView() {
@@ -48,6 +38,7 @@ public class ActiveServiceActivity extends AppCompatActivity {
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        mbtmView.setOnClickListener(this);
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);
@@ -90,19 +81,10 @@ public class ActiveServiceActivity extends AppCompatActivity {
         }
     }
 
-    private void getLocationPermission() {
-    /*
-     * Request location permission, so that we can get the location of the
-     * device. The result of the permission request is handled by a callback,
-     * onRequestPermissionsResult.
-     */
-        // Construct a GeoDataClient.
-        mGeoDataClient = Places.getGeoDataClient(this, null);
-
-        // Construct a PlaceDetectionClient.
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-
-        // Construct a FusedLocationProviderClient.
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.active_service_navigation) {
+            startActivity(new Intent(this, PostServiceActivity.class));
+        }
     }
 }
