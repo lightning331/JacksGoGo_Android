@@ -1,26 +1,46 @@
 package com.kelvin.jacksgogo.Adapter;
 
+import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobAddressCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 
 /**
  * Created by PUMA on 11/10/2017.
  */
 
-public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, TextWatcher {
 
-    int IMTE_COUNT = 5;
+    Context mContext;
+    int ITEM_COUNT = 5;
 
-    public EditJobAddressAdapter(EditJobFragment editJobFragment) {
+    JGGServiceModel serviceObject;
+    String strUnit;
+    String strStreet;
+    String strPostCode;
+    boolean isRequest;
 
+    AppFilterOptionCell nextButtonCell;
+    EditJobAddressCell unitCell;
+    EditJobAddressCell streetCell;
+    EditJobAddressCell postcodeCell;
+
+    public EditJobAddressAdapter(Context context, boolean b, JGGServiceModel data) {
+        this.mContext = context;
+        this.isRequest = b;
+        this.serviceObject = data;
     }
 
     @Override
@@ -39,38 +59,129 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 return descTitleViewHolder;
             case 2:
                 View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
-                EditJobAddressCell unitTextViewHolder = new EditJobAddressCell(unitTextView);
-                unitTextViewHolder.hint.setText("Unit");
-                unitTextViewHolder.title.setText("2");
-                return unitTextViewHolder;
+                unitCell = new EditJobAddressCell(unitTextView);
+                return unitCell;
             case 3:
                 View streetTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
-                EditJobAddressCell streetTextViewHolder = new EditJobAddressCell(streetTextView);
-                streetTextViewHolder.hint.setText("Street");
-                streetTextViewHolder.title.setText("Jurong West Avenune 5");
-                return streetTextViewHolder;
+                streetCell = new EditJobAddressCell(streetTextView);
+                return streetCell;
             case 4:
                 View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
-                EditJobAddressCell takePhotoViewHolder = new EditJobAddressCell(takePhotoView);
-                takePhotoViewHolder.hint.setText("Postcode");
-                takePhotoViewHolder.title.setText("34534");
-                return takePhotoViewHolder;
+                postcodeCell = new EditJobAddressCell(takePhotoView);
+                return postcodeCell;
+            case 5:
+                View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
+                nextButtonCell = new AppFilterOptionCell(originalView);
+                return nextButtonCell;
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        if (position == 2) {
+            unitCell = (EditJobAddressCell)holder;
+            unitCell.hint.setText(R.string.address_unit_title);
+            if (!isRequest) {
+                unitCell.title.setText("2");
+            } else {
+                if (serviceObject.getUnit() == null) {
+                    unitCell.title.setHint("e.g.2");
+                } else {
+                    unitCell.title.setText(serviceObject.getUnit());
+                }
+                unitCell.title.addTextChangedListener(this);
+            }
+        } else if (position == 3) {
+            streetCell = (EditJobAddressCell)holder;
+            streetCell.hint.setText(R.string.address_street_title);
+            if (!isRequest) {
+                streetCell.title.setText("Jurong West Avenune 5");
+            } else {
+                if (serviceObject.getStreet() == null) {
+                    streetCell.title.setHint("e.g.Jurong West Avenue 5");
+                } else {
+                    streetCell.title.setText(serviceObject.getStreet());
+                }
+                streetCell.title.addTextChangedListener(this);
+            }
+        } else if (position == 4) {
+            postcodeCell = (EditJobAddressCell)holder;
+            postcodeCell.hint.setText(R.string.address_postcode_title);
+            if (!isRequest) {
+                postcodeCell.title.setText("34534");
+            } else {
+                if (serviceObject.getPostcode() == null) {
+                    postcodeCell.title.setHint("e.g.34534");
+                } else {
+                    postcodeCell.title.setText(serviceObject.getPostcode());
+                }
+                postcodeCell.title.addTextChangedListener(this);
+            }
+        } else if (position == 5) {
+            nextButtonCell = (AppFilterOptionCell)holder;
+            nextButtonCell.title.setText("Next");
+            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey1));
+            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGrey3));
+            nextButtonCell.btnOriginal.setBorderWidth((float)0);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return IMTE_COUNT;
+        if (isRequest) return ITEM_COUNT = 6;
+        return ITEM_COUNT;
     }
 
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onNextButtonClick(EditJobTabbarView.EditTabStatus status, String unit, String street, String postcode);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.view_filter_bg) {
+            listener.onNextButtonClick(EditJobTabbarView.EditTabStatus.REPORT, strUnit, strStreet, strPostCode);
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (unitCell.title.length() > 0
+                && streetCell.title.length() > 0
+                && postcodeCell.title.length() > 0) {
+            strUnit = unitCell.title.getText().toString();
+            strStreet = streetCell.title.getText().toString();
+            strPostCode = postcodeCell.title.getText().toString();
+
+            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+            nextButtonCell.btnOriginal.setBorderWidth((float)0);
+            nextButtonCell.btnOriginal.setOnClickListener(this);
+        } else {
+            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
+            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGrey4));
+            nextButtonCell.btnOriginal.setBorderWidth((float) 0);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }

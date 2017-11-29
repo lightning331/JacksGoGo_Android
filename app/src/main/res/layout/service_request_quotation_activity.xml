@@ -34,6 +34,25 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </FrameLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/request_quotation_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/JGGGreen"
+            android:layout_gravity="bottom"
+            app:itemTextColor="@color/JGGWhite"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:itemTextAppearance="@style/NavigationViewOwnStyle">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/request_quotation"
+                android:textAlignment="center"
+                android:textColor="@color/JGGWhite"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/button_font_size"
+                android:gravity="center"/>
+        </android.support.design.widget.BottomNavigationView>
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>

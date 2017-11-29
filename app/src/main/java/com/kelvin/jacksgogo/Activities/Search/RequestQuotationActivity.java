@@ -1,6 +1,10 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
+import android.content.Intent;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
+import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
+import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
@@ -17,13 +24,23 @@ import com.kelvin.jacksgogo.R;
 public class RequestQuotationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
-    public JGGActionbarView actionbarView;
-    AlertDialog alertDialog;
+    private BottomNavigationView mbtmView;;
+    private JGGActionbarView actionbarView;
+    private android.app.AlertDialog alertDialog;
+
+    private boolean isViewJob = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service_request_quotation_activity);
+
+        // Hide Bottom NavigationView and ToolBar
+        mbtmView = (BottomNavigationView) findViewById(R.id.request_quotation_navigation);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        mbtmView.setOnClickListener(this);
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);
@@ -48,23 +65,7 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = (this).getLayoutInflater();
-
-            View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-            builder.setView(alertView);
-            alertDialog = builder.create();
-            TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-            TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-            TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-            TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-            title.setText(R.string.alert_quit_quotation_title);
-            desc.setText(R.string.alert_quit_quotation_desc);
-            okButton.setText(R.string.alert_quit_button);
-            okButton.setOnClickListener(this);
-            cancelButton.setOnClickListener(this);
-            alertDialog.show();
+            showAlertDialog(view);
         }
     }
 
@@ -73,7 +74,55 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
         if (view.getId() == R.id.btn_alert_cancel) {
             alertDialog.dismiss();
         } else if (view.getId() == R.id.btn_alert_ok) {
-            onBackPressed();
+            if (!isViewJob) onBackPressed();
+            else showMainActivity();
+        } else if (view.getId() == R.id.request_quotation_navigation) {
+            showAlertDialog(view);
         }
+    }
+
+    public void setBottomViewHidden(boolean isHidden) {
+        if (isHidden) {
+            this.mbtmView.setVisibility(View.GONE);
+        } else {
+            this.mbtmView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    private void showAlertDialog(View view) {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        if (view.getId() == R.id.btn_back) {
+            title.setText(R.string.alert_quit_quotation_title);
+            desc.setText(R.string.alert_quit_quotation_desc);
+            okButton.setText(R.string.alert_quit_button);
+            okButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGRed));
+            cancelButton.setOnClickListener(this);
+            isViewJob = false;
+        } else if (view.getId() == R.id.request_quotation_navigation) {
+            title.setText(R.string.alert_job_posted_title);
+            desc.setText(R.string.alert_job_posted_desc);
+            okButton.setText(R.string.alert_view_job_button);
+            okButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
+            cancelButton.setVisibility(View.GONE);
+            isViewJob = true;
+        }
+
+        okButton.setOnClickListener(this);
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
     }
 }

@@ -60,7 +60,7 @@ public class AppointmentFilterAdapter extends RecyclerView.Adapter<RecyclerView.
 
         if (position == 0) {
             SectionTitleView sectionView = (SectionTitleView) holder;
-            sectionView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGWhite));
+            sectionView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle((String)itemData);
         } else {
@@ -110,10 +110,6 @@ public class AppointmentFilterAdapter extends RecyclerView.Adapter<RecyclerView.
             type += arrayList.size();
         }
         return -1;
-    }
-
-    private Context getContext() {
-        return this.mContext;
     }
 
     private OnItemClickListener listener;

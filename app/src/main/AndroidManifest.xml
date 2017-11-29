@@ -57,7 +57,8 @@
         <activity android:name=".Activities.Search.ServiceBuyActivity" />
         <activity android:name=".Activities.Search.SetUpCreditCardActivity" />
         <activity android:name=".Activities.Search.RequestQuotationActivity" />
-        <activity android:name=".Activities.Search.JacksWalletActivity"></activity>
+        <activity android:name=".Activities.Search.JacksWalletActivity" />
+        <activity android:name=".Activities.Profile.VerifyNewSkillsActivity"></activity>
     </application>
 
 </manifest>

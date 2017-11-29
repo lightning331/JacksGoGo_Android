@@ -12,6 +12,16 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
 
     private JGGUserBaseModel user;
     private Double price = 0.0;
-    private Global.BiddingStatus status = Global.BiddingStatus.PENDING;
+    private Global.BiddingStatus status;
     private boolean isNew = false;
+
+    public JGGBiddingProviderModel() {
+        super();
+
+        init();
+    }
+
+    public void init() {
+        status = Global.BiddingStatus.PENDING;
+    }
 }

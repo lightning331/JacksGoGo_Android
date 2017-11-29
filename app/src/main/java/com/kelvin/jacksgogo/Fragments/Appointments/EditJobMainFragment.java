@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.EditJobMainAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
@@ -20,14 +21,20 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
 
     RecyclerView recyclerView;
 
+    EditJobFragment editJobFragment;
+    boolean isRequest; // Request Or Edit
+
     private OnFragmentInteractionListener mListener;
 
     public EditJobMainFragment() {
         // Required empty public constructor
     }
 
-    public static EditJobMainFragment newInstance(String param1, String param2) {
+    public static EditJobMainFragment newInstance(boolean b) {
         EditJobMainFragment fragment = new EditJobMainFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("isRequest", b);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -54,12 +61,17 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
         mAdapter.setItemClickLietener(new EditJobMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(EditJobTabbarView.EditTabStatus status) {
-                EditJobFragment editJobFragment = EditJobFragment.newInstance(status, false);
-
-                editJobFragment.setmListener(EditJobMainFragment.this);
 
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.app_detail_container, editJobFragment, editJobFragment.getTag());
+
+                if (isRequest) {
+                    editJobFragment = EditJobFragment.newInstance(status, true);
+                    ft.replace(R.id.request_quotation_container, editJobFragment, editJobFragment.getTag());
+                } else {
+                    editJobFragment = EditJobFragment.newInstance(status, false);
+                    ft.replace(R.id.app_detail_container, editJobFragment, editJobFragment.getTag());
+                }
+                editJobFragment.setmListener(EditJobMainFragment.this);
                 ft.addToBackStack("edit_job");
                 ft.commit();
             }
@@ -75,8 +87,12 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-
+        }
+        if (getArguments() != null) {
+            isRequest = getArguments().getBoolean("isRequest");
+            if (isRequest) {
+                ((RequestQuotationActivity)context).setBottomViewHidden(false);
+            }
         }
     }
 

@@ -113,7 +113,7 @@ public class JobDetailActivity extends AppCompatActivity {
     private void backToEditJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN);
 
-        editJobMainFragment = new EditJobMainFragment();
+        editJobMainFragment = EditJobMainFragment.newInstance(false);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
         ft.commit();
@@ -126,7 +126,7 @@ public class JobDetailActivity extends AppCompatActivity {
     private void openEditJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN);
 
-        editJobMainFragment = new EditJobMainFragment();
+        editJobMainFragment = EditJobMainFragment.newInstance(false);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
         ft.commit();

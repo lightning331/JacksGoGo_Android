@@ -96,7 +96,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 JobDetailDescriptionCell jobDetailDescriptionCell = new JobDetailDescriptionCell(descriptionView);
                 jobDetailDescriptionCell.descriptionImage.setImageResource(R.mipmap.icon_info);
                 jobDetailDescriptionCell.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
-                        "what tasks you need deon, and any special requirements.");
+                        "what tasks you need done, and any special requirements.");
                 return jobDetailDescriptionCell;
             case 7:
                 View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_location_cell, parent, false);
@@ -169,8 +169,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         if (!expandState && position == 4) {
             return  11;
-        } else {
-            return position;
         }
+        return position;
     }
 }

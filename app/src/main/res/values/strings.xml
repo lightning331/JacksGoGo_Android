@@ -40,6 +40,7 @@
     <string name="title_credit_card">Credit Card</string>
     <string name="title_jacks_wallet">Jacks Wallet</string>
     <string name="title_request_quotation">Request A Quotation</string>
+    <string name="title_verify_new_skill">Verify New Skills</string>
 
     <!-- TODO: JGG Service PopUp Menu -->
     <string name="menu_option_share">Share</string>
@@ -48,6 +49,8 @@
     <string name="jacks_wallet">Top Up Jacks Wallet - balance $10.00</string>
 
     <!-- TODO: JGG Alert View -->
+    <string name="jgg_alert_title">JacksGoGo!!!</string>
+    <string name="jgg_error_desc">Some of the data is missed.</string>
     <string name="alert_report_service_title">Report Service</string>
     <string name="alert_report_service_desc">Mark this post as inappropriate or offensive.</string>
     <string name="alert_report_service_thanks_title">Thank You!</string>
@@ -61,6 +64,12 @@
     <string name="alert_quit_quotation_desc">All info will be lost.</string>
     <string name="alert_quit_button">Quit</string>
     <string name="alert_cancel">Cancel</string>
+    <string name="alert_job_posted_title">Job Posted!</string>
+    <string name="alert_job_posted_desc">Job reference no: J38291-170721</string>
+    <string name="alert_view_job_button">View Job</string>
+    <string name="alert_verify_skill_title">Submission Sent!</string>
+    <string name="alert_verify_skill_desc">Thank you for verifying! Our team will contact you shortly.</string>
+    <string name="alert_verify_skill_button">Back To Service Listing</string>
 
 
     <!-- TODO: Share Dialog -->
@@ -76,6 +85,9 @@
     <!-- TODO: Address Job -->
     <string name="edit_job_address_title">Where do you need the services?</string>
     <string name="edit_job_address_desc">We will only show the full address to the service provider you have awarded the job to.</string>
+    <string name="address_unit_title">Unit</string>
+    <string name="address_street_title">Street</string>
+    <string name="address_postcode_title">Postcode</string>
 
     <!-- TODO: Report Job -->
     <string name="edit_job_report_title">Choose how you want to verify the completed work(optional).</string>
@@ -89,5 +101,6 @@
     <string name="post_new_service">Post New Service</string>
     <string name="request_quotation">Request A Quotation</string>
     <string name="buy_service">Buy Service</string>
+    <string name="go_to_summary">Go To Summary</string>
 
 </resources>

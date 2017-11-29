@@ -8,6 +8,7 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/JGGGrey5"
         android:orientation="vertical">
 
         <ImageButton
@@ -18,7 +19,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@color/JGGWhite"
+            android:background="@color/JGGGrey5"
             android:src="@mipmap/button_close_round_green"/>
         <TextView
             android:text="Show Only Services With The Keywords"

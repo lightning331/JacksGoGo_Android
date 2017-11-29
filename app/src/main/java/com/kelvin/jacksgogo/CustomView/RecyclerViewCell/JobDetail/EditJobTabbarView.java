@@ -85,8 +85,9 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         return this.editTabStatus;
     }
 
-    public void setEditTabStatus(EditTabStatus status) {
+    public void setEditTabStatus(EditTabStatus status, boolean isRequest) {
         this.editTabStatus = status;
+
         mDescribeImage.setImageResource(R.mipmap.counter_greytick);
         mDescribeText.setTextColor(getResources().getColor(R.color.JGGGrey1));
         mAddressImage.setImageResource(R.mipmap.counter_greytick);
@@ -98,22 +99,40 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         imgTimeLine.setImageResource(R.mipmap.line_dotted);
         imgRreportLine.setImageResource(R.mipmap.line_dotted);
         imgAddressLine.setImageResource(R.mipmap.line_dotted);
+        if (isRequest) {
+            mDescribeImage.setImageResource(R.mipmap.counter_grey);
+            mAddressImage.setImageResource(R.mipmap.counter_grey);
+            mTimeImage.setImageResource(R.mipmap.counter_grey);
+            mReportImage.setImageResource(R.mipmap.counter_grey);
+        }
 
         switch (status) {
             case DESCRIBE:
                 mDescribeImage.setImageResource(R.mipmap.counter_greentick);
                 mDescribeText.setTextColor(getResources().getColor(R.color.JGGGreen));
+                if (isRequest) {
+                    mDescribeImage.setImageResource(R.mipmap.counter_greenactive);
+                }
                 break;
             case TIME:
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 mTimeImage.setImageResource(R.mipmap.counter_greentick);
                 mTimeText.setTextColor(getResources().getColor(R.color.JGGGreen));
+                if (isRequest) {
+                    mTimeImage.setImageResource(R.mipmap.counter_greenactive);
+                    mDescribeImage.setImageResource(R.mipmap.counter_greytick);
+                }
                 break;
             case ADDRESS:
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 imgAddressLine.setImageResource(R.mipmap.line_full);
                 mAddressImage.setImageResource(R.mipmap.counter_greentick);
                 mAddressText.setTextColor(getResources().getColor(R.color.JGGGreen));
+                if (isRequest) {
+                    mAddressImage.setImageResource(R.mipmap.counter_greenactive);
+                    mDescribeImage.setImageResource(R.mipmap.counter_greytick);
+                    mTimeImage.setImageResource(R.mipmap.counter_greytick);
+                }
                 break;
             case REPORT:
                 imgTimeLine.setImageResource(R.mipmap.line_full);
@@ -121,6 +140,12 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
                 imgRreportLine.setImageResource(R.mipmap.line_full);
                 mReportImage.setImageResource(R.mipmap.counter_greentick);
                 mReportText.setTextColor(getResources().getColor(R.color.JGGGreen));
+                if (isRequest) {
+                    mReportImage.setImageResource(R.mipmap.counter_greenactive);
+                    mDescribeImage.setImageResource(R.mipmap.counter_greytick);
+                    mTimeImage.setImageResource(R.mipmap.counter_greytick);
+                    mAddressImage.setImageResource(R.mipmap.counter_greytick);
+                }
                 break;
             default:
                 break;

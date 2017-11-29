@@ -118,6 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <LinearLayout
+                        android:id="@+id/btn_post_cooking"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -143,6 +144,7 @@
                         android:layout_height="match_parent">
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/btn_post_education"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -168,6 +170,7 @@
                         android:layout_height="match_parent">
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/btn_post_handyman"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -193,6 +196,7 @@
                         android:layout_height="match_parent">
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/btn_post_household"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -222,6 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <LinearLayout
+                        android:id="@+id/btn_post_messenger"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -247,6 +252,7 @@
                         android:layout_height="match_parent">
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/btn_post_run"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -272,6 +278,7 @@
                         android:layout_height="match_parent">
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/btn_post_sports"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"
@@ -297,7 +304,7 @@
                         android:layout_height="match_parent">
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/btn_other_professions"
+                        android:id="@+id/btn_post_other"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@color/JGGWhite"

@@ -77,7 +77,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 JobDetailDescriptionCell descriptionViewHolder = new JobDetailDescriptionCell(descriptionView);
                 descriptionViewHolder.descriptionImage.setImageResource(R.mipmap.icon_info);
                 descriptionViewHolder.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
-                        "what tasks you need deon, and any special requirements.");
+                        "what tasks you need done, and any special requirements.");
                 return descriptionViewHolder;
             case 4:
                 View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_location_cell, parent, false);

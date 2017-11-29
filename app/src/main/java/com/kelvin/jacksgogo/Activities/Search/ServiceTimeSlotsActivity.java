@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.JGGCalendarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
 import com.kelvin.jacksgogo.R;

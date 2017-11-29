@@ -35,7 +35,7 @@
             android:layout_weight="7">
             <EditText
                 android:id="@+id/txt_edit_job_address"
-                android:text="Jurong West"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="@color/JGGBlack"

@@ -153,7 +153,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     private void showReportDialog(final boolean reportFlag) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = (this).getLayoutInflater();
-        //JGGAlertView alertView = new JGGAlertView(this);
+
         View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(alertView);
         alertDialog = builder.create();

@@ -30,7 +30,7 @@ public class JGGAppBaseModel extends JGGBaseModel {
         UNKNOWN
     }
 
-    private Date appointmentDate;
+    private Date date;
     private String title;
     private AppointmentStatus status;
     private String comment;
@@ -39,19 +39,22 @@ public class JGGAppBaseModel extends JGGBaseModel {
     private String appointmentDay;
     private AppointmentType type = AppointmentType.UNKNOWN;
 
+    public JGGAppBaseModel() {
+        super();
+    }
 
-    public JGGAppBaseModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber, AppointmentType type) {
+    public JGGAppBaseModel(Date date, String title, AppointmentStatus status, String comment, Integer badgeNumber, AppointmentType type) {
         this.title=title;
         this.status = status;
         this.comment = comment;
         this.badgeNumber = badgeNumber;
-        this.appointmentDate = appointmentDate;
+        this.date = date;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         // set appointment Day
         simpleDateFormat.applyPattern("dd");
-        if (this.appointmentDate != null) {
-            String appointmentDay = simpleDateFormat.format(this.appointmentDate);
+        if (this.date != null) {
+            String appointmentDay = simpleDateFormat.format(this.date);
             setAppointmentDay(appointmentDay);
         } else {
             setAppointmentDay(null);
@@ -59,8 +62,8 @@ public class JGGAppBaseModel extends JGGBaseModel {
 
         // set appointment Month
         simpleDateFormat.applyPattern("MMM");
-        if (this.appointmentDate != null) {
-            String appointmentMonth = simpleDateFormat.format(this.appointmentDate);
+        if (this.date != null) {
+            String appointmentMonth = simpleDateFormat.format(this.date);
             setAppointmentMonth(appointmentMonth);
         } else {
             setAppointmentMonth(null);
@@ -119,12 +122,12 @@ public class JGGAppBaseModel extends JGGBaseModel {
         this.badgeNumber = badgeNumber;
     }
 
-    public Date getAppointmentDate() {
-        return appointmentDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
-        this.appointmentDate = appointmentDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public AppointmentType getType() {

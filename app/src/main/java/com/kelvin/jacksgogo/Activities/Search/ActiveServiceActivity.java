@@ -19,8 +19,8 @@ import com.kelvin.jacksgogo.R;
 public class ActiveServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
-    public JGGActionbarView actionbarView;
-    ActiveServiceMainFragment activeServiceMainFragment;
+    private JGGActionbarView actionbarView;
+    private ActiveServiceMainFragment activeServiceMainFragment;
     private BottomNavigationView mbtmView;;
 
     @Override
@@ -63,7 +63,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
 
     public void setBottomViewHidden(boolean isHidden) {
         if (isHidden) {
-            this.mbtmView.setVisibility(View.INVISIBLE);
+            this.mbtmView.setVisibility(View.GONE);
         } else {
             this.mbtmView.setVisibility(View.VISIBLE);
         }
