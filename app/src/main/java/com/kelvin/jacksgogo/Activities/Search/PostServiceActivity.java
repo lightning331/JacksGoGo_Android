@@ -1,25 +1,32 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceNotVerifiedFragment;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceVerifiedFragment;
 import com.kelvin.jacksgogo.R;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
-    JGGActionbarView actionbarView;
+    private JGGActionbarView actionbarView;
+
+    PostServiceVerifiedFragment verifiedFragment;
+    private boolean alreadyVerifiedSkills = getRandomBoolean();
+
+    public static boolean getRandomBoolean() {
+        return Math.random() < 0.5;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_post_service_activity);
+        setContentView(R.layout.post_service_activity);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.post_service_actionbar);
@@ -34,26 +41,15 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        initView();
-    }
-
-    private void initView() {
-        LinearLayout btnOther = findViewById(R.id.btn_post_other);
-        btnOther.setOnClickListener(this);
-        LinearLayout btnCooking = findViewById(R.id.btn_post_cooking);
-        btnCooking.setOnClickListener(this);
-        LinearLayout btnEducation = findViewById(R.id.btn_post_education);
-        btnEducation.setOnClickListener(this);
-        LinearLayout btnHand = findViewById(R.id.btn_post_handyman);
-        btnHand.setOnClickListener(this);
-        LinearLayout btnHouse = findViewById(R.id.btn_post_household);
-        btnHouse.setOnClickListener(this);
-        LinearLayout btnMessenger = findViewById(R.id.btn_post_messenger);
-        btnMessenger.setOnClickListener(this);
-        LinearLayout btnRun = findViewById(R.id.btn_post_run);
-        btnRun.setOnClickListener(this);
-        LinearLayout btnSport = findViewById(R.id.btn_post_sports);
-        btnSport.setOnClickListener(this);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (alreadyVerifiedSkills) {
+            verifiedFragment = new PostServiceVerifiedFragment();
+            ft.replace(R.id.post_service_container, verifiedFragment, verifiedFragment.getTag());
+        } else {
+            PostServiceNotVerifiedFragment notVerifiedFragment = new PostServiceNotVerifiedFragment();
+            ft.replace(R.id.post_service_container, notVerifiedFragment, notVerifiedFragment.getTag());
+        }
+        ft.commit();
     }
 
     private void actionbarViewItemClick(View view) {
@@ -64,6 +60,6 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        startActivity(new Intent(this, VerifyNewSkillsActivity.class));
+
     }
 }

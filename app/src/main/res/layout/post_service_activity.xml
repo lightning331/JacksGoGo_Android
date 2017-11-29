@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity">
+    tools:context="com.kelvin.jacksgogo.Activities.Search.PostServiceActivity">
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/verify_skill_actionbar"
+                android:id="@+id/post_service_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -29,7 +29,7 @@
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
         <FrameLayout
-            android:id="@+id/verify_skill_container"
+            android:id="@+id/post_service_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -39,6 +39,6 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
 
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>
