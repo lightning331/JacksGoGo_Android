@@ -67,6 +67,9 @@
     <string name="alert_job_posted_title">Job Posted!</string>
     <string name="alert_job_posted_desc">Job reference no: J38291-170721</string>
     <string name="alert_view_job_button">View Job</string>
+    <string name="alert_service_posted_title">Service Posted!</string>
+    <string name="alert_service_posted_desc">Service reference no: S38291-170721</string>
+    <string name="alert_view_service_button">View Post</string>
     <string name="alert_verify_skill_title">Submission Sent!</string>
     <string name="alert_verify_skill_desc">Thank you for verifying! Our team will contact you shortly.</string>
     <string name="alert_verify_skill_button">Back To Service Listing</string>

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
-import com.kelvin.jacksgogo.Adapter.AppointmentMainAdapter;
+import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGEventModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGJobModel;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;

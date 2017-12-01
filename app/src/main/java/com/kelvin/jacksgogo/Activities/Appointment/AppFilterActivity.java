@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.AppointmentFilterAdapter;
+import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentFilterAdapter;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;

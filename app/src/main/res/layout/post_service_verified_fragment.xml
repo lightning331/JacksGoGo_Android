@@ -20,11 +20,12 @@
             android:layout_height="wrap_content" />
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="vertical">
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <LinearLayout
@@ -188,6 +189,7 @@
                     android:layout_height="match_parent">
                 </LinearLayout>
                 <LinearLayout
+                    android:visibility="invisible"
                     android:id="@+id/btn_post_sports"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -214,6 +216,7 @@
                     android:layout_height="match_parent">
                 </LinearLayout>
                 <LinearLayout
+                    android:visibility="invisible"
                     android:id="@+id/btn_post_other"
                     android:layout_width="80dp"
                     android:layout_height="80dp"

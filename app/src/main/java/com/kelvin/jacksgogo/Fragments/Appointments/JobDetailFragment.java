@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.JobDetailAdapter;
+import com.kelvin.jacksgogo.Adapter.Job.JobDetailAdapter;
 import com.kelvin.jacksgogo.R;
 
 

@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Profile;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +37,12 @@ public class VerifyNewSkillsActivity extends AppCompatActivity implements View.O
             @Override
             public void onActionbarItemClick(View view) {
                 if (view.getId() == R.id.btn_back) {
-                    onBackPressed();
+                    FragmentManager manager = getSupportFragmentManager();
+                    if (manager.getBackStackEntryCount() == 0) {
+                        onBackPressed();
+                    } else {
+                        manager.popBackStack();
+                    }
                 }
             }
         });

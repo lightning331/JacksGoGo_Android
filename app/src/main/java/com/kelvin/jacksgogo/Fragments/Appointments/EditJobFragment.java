@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,29 +18,27 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
-import com.kelvin.jacksgogo.Adapter.EditJobAddressAdapter;
-import com.kelvin.jacksgogo.Adapter.EditJobDescribeAdapter;
-import com.kelvin.jacksgogo.Adapter.EditJobReportAdapter;
-import com.kelvin.jacksgogo.Adapter.EditJobTimeAdapter;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
+import com.kelvin.jacksgogo.Adapter.Job.EditJobAddressAdapter;
+import com.kelvin.jacksgogo.Adapter.Job.EditJobDescribeAdapter;
+import com.kelvin.jacksgogo.Adapter.Job.EditJobReportAdapter;
+import com.kelvin.jacksgogo.Adapter.Job.EditJobTimeAdapter;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 
 import java.util.Date;
 
-import static android.content.ContentValues.TAG;
-
 public class EditJobFragment extends Fragment implements View.OnClickListener {
 
-    Context mContext;
+    private Context mContext;
 
-    RecyclerView recyclerView;
-    EditJobTabbarView tabbarView;
-    JGGServiceModel serviceModel = new JGGServiceModel();
-    AlertDialog alertDialog;
+    private RecyclerView recyclerView;
+    private EditJobTabbarView tabbarView;
+    private JGGServiceModel serviceModel = new JGGServiceModel();
+    private AlertDialog alertDialog;
 
     private String status;
-    boolean isRequest; // Request Or Edit
+    private boolean isRequest; // Request Or Edit
 
     public EditJobFragment() {
         // Required empty public constructor
@@ -81,23 +78,14 @@ public class EditJobFragment extends Fragment implements View.OnClickListener {
         tabbarView.setTabItemClickLietener(new EditJobTabbarView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
-                if (view.getId() == R.id.btn_describe) {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE, isRequest);
-                } else if (view.getId() == R.id.btn_time) {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME, isRequest);
-                } else if (view.getId() == R.id.btn_address) {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS, isRequest);
-                } else if (view.getId() == R.id.btn_report) {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT, isRequest);
-                }
-                refreshRecyclerView();
+                onTabbarViewClick(view);
             }
         });
 
         return view;
     }
 
-    public void initTabbarView() {
+    private void initTabbarView() {
 
         if (status == "DESCRIBE") {
             tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE, isRequest);
@@ -111,7 +99,22 @@ public class EditJobFragment extends Fragment implements View.OnClickListener {
         refreshRecyclerView();
     }
 
-    public void refreshRecyclerView() {
+    private void onTabbarViewClick(View view) {
+
+        if (view.getId() == R.id.btn_describe) {
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE, isRequest);
+        } else if (view.getId() == R.id.btn_time) {
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME, isRequest);
+        } else if (view.getId() == R.id.btn_address) {
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS, isRequest);
+        } else if (view.getId() == R.id.btn_report) {
+            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT, isRequest);
+        }
+        refreshRecyclerView();
+    }
+
+    private void refreshRecyclerView() {
+
         if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.DESCRIBE) {
             EditJobDescribeAdapter mAdapter = new EditJobDescribeAdapter(mContext, isRequest, serviceModel);
             mAdapter.setOnItemClickListener(new EditJobDescribeAdapter.OnItemClickListener() {

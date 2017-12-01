@@ -37,6 +37,7 @@ public class JGGAppBaseModel extends JGGBaseModel {
     private Integer badgeNumber;
     private String appointmentMonth;
     private String appointmentDay;
+    private String tags;
     private AppointmentType type = AppointmentType.UNKNOWN;
 
     public JGGAppBaseModel() {
@@ -72,6 +73,14 @@ public class JGGAppBaseModel extends JGGBaseModel {
 
     public void setAppointmentMonth(String appointmentMonth) {
         this.appointmentMonth = appointmentMonth;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public String getAppointmentDay() {

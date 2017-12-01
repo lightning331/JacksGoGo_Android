@@ -1,0 +1,215 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kelvin.jacksgogo.Adapter.Service.PostServicePriceAdapter">
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/JGGGrey5"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="What type of payment package is your service?"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="One-time service"
+                android:id="@+id/btn_post_service_one_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:textColor="@color/JGGGreen"
+                android:background="@drawable/green_border_background"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/lbl_post_service_price_range"
+                android:text="Set your service price range."
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:visibility="gone"
+                android:text="Fixed amount."
+                android:id="@+id/btn_post_service_fixed_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:textColor="@color/JGGGreen"
+                android:background="@drawable/green_border_background"/>
+            <EditText
+                android:visibility="gone"
+                android:hint="Amount  $1.00"
+                android:id="@+id/txt_post_service_fixed_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:visibility="gone"
+                android:text="From $... to $..."
+                android:id="@+id/btn_post_service_From"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:textColor="@color/JGGGreen"
+                android:background="@drawable/green_border_background"/>
+            <EditText
+                android:visibility="gone"
+                android:hint="Min.  $1.00"
+                android:id="@+id/txt_post_service_from_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <EditText
+                android:visibility="gone"
+                android:hint="Max.  $9999.00"
+                android:id="@+id/txt_post_service_from_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:text="Package service."
+                android:id="@+id/btn_post_service_package"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:textColor="@color/JGGGreen"
+                android:background="@drawable/green_border_background"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/lbl_post_service_package_num"
+                android:text="How many services is included in your package?"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:visibility="gone"
+                android:hint="No. of Services 2"
+                android:id="@+id/txt_post_service_package_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/lbl_post_service_package_amount"
+                android:text="How many services is included in your package?"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:visibility="gone"
+                android:hint="Amount             $1.00"
+                android:id="@+id/txt_post_service_package_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <RelativeLayout
+                android:visibility="invisible"
+                android:id="@+id/btn_post_service_price_next"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/grey_background"
+                android:gravity="left|center_vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                </LinearLayout>
+                <TextView
+                    android:text="Next"
+                    android:id="@+id/lbl_post_service_price_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/list_title_font_size"
+                    android:textColor="@color/JGGGrey2"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

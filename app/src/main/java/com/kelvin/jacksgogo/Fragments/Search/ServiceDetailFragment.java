@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.ServiceDetailAdapter;
+import com.kelvin.jacksgogo.Adapter.Service.ServiceDetailAdapter;
 import com.kelvin.jacksgogo.R;
 
 

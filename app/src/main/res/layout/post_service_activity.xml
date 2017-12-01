@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.kelvin.jacksgogo.Activities.Search.PostServiceActivity">
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,8 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/jgg_map_view_activity_appbar"
             app:layout_constraintBottom_toBottomOf="parent">
-
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

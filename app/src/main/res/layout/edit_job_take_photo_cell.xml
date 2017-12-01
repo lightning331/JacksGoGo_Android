@@ -4,44 +4,44 @@
     android:layout_height="76dp"
     android:orientation="vertical"
     android:gravity="center">
+    <LinearLayout
+        android:id="@+id/btn_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/green_border_background">
         <LinearLayout
-            android:id="@+id/btn_take_photo"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:background="@drawable/green_border_background">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
-                android:gravity="center">
-                <ImageView
-                    android:id="@+id/img_take_photo"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/icon_photo_green"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="60"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/lbl_take_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/JGGGreen"
-                    android:textSize="@dimen/list_text_font_size"
-                    android:fontFamily="@font/mulibold"
-                    android:text="Take Photos (Optional)"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20">
-            </LinearLayout>
-            </LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/img_take_photo"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/icon_photo_green"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/lbl_take_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/JGGGreen"
+                android:textSize="@dimen/list_text_font_size"
+                android:fontFamily="@font/mulibold"
+                android:text="Take Photos (Optional)"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20">
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

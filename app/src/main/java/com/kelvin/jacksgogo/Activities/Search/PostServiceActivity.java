@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -54,7 +55,12 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
-            onBackPressed();
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager.getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+            } else {
+                manager.popBackStack();
+            }
         }
     }
 

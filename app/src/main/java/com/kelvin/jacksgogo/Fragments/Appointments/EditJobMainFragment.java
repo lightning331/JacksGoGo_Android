@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
-import com.kelvin.jacksgogo.Adapter.EditJobMainAdapter;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
+import com.kelvin.jacksgogo.Adapter.Job.EditJobMainAdapter;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
 public class EditJobMainFragment extends Fragment implements EditJobFragment.OnFragmentInteractionListener {

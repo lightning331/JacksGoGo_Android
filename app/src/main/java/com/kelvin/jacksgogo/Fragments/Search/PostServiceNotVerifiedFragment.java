@@ -42,6 +42,7 @@ public class PostServiceNotVerifiedFragment extends Fragment implements View.OnC
     }
 
     private void initView(View view) {
+
         LinearLayout btnOther = view.findViewById(R.id.btn_post_other);
         btnOther.setOnClickListener(this);
         LinearLayout btnCooking = view.findViewById(R.id.btn_post_cooking);

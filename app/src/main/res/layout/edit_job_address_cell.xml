@@ -20,12 +20,11 @@
             android:gravity="center">
             <TextView
                 android:id="@+id/lbl_edit_job_address_hint"
-                android:text="Postcode"
+                android:hint="Postcode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:layout_marginLeft="15dp"
-                android:textColor="@color/JGGGrey3"
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/body_font_size"/>
         </LinearLayout>

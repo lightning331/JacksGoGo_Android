@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.Adapter.SearchActiveServiceAdapter;
+import com.kelvin.jacksgogo.Adapter.Service.SearchActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
 

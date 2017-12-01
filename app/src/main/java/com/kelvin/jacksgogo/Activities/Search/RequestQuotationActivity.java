@@ -5,7 +5,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +16,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
 import com.kelvin.jacksgogo.R;
 

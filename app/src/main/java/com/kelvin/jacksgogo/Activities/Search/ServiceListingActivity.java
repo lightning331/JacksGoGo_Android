@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Adapter.SearchServiceListingAdapter;
+import com.kelvin.jacksgogo.Adapter.Service.SearchServiceListingAdapter;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
