@@ -34,11 +34,15 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
     private LinearLayout chatLayout;
 
     private boolean isVerified = getRandomBoolean();
+    private boolean isPost = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.posted_service_activity);
+
+        Bundle bundle = getIntent().getExtras();
+        isPost = bundle.getBoolean("is_post");
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);
@@ -89,11 +93,20 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
-            Intent intent = new Intent(this, ServiceListingActivity.class);
-            startActivity(intent);
+            onBackClick();
         } else if (view.getId() == R.id.btn_more) {
             actionbarView.setShareMoreButtonClicked(true);
             onMorePopUpMenu(view);
+        }
+    }
+
+    private void onBackClick() {
+        if (isPost) {
+            Intent intent = new Intent(this, ServiceListingDetailActivity.class);
+            intent.putExtra("is_post", true);
+            startActivity(intent);
+        } else {
+            onBackPressed();
         }
     }
 
@@ -145,9 +158,13 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
             if (menuItem.getItemId() == R.id.posted_service_menu_share) {  // Share the Service
                 openShareDialog();
             } else if (menuItem.getItemId() == R.id.posted_service_menu_edit) {    // Edit Service
-
+                Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
+                intent.putExtra("EDIT_STATUS", "Edit");
+                startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_duplicate) {    // Duplicate Service
-
+                Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
+                intent.putExtra("EDIT_STATUS", "Duplicate");
+                startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_delete) {    // Delete Service
                 onDeleteButtonClick();
             }
@@ -181,6 +198,7 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
+                onBackClick();
             }
         });
         alertDialog.show();

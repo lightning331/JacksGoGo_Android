@@ -54,12 +54,13 @@
         <activity android:name=".Activities.Search.ServiceFilterActivity" />
         <activity android:name=".Activities.Search.ServiceTimeSlotsActivity" />
         <activity android:name=".Activities.Search.ServiceReviewsActivity" />
-        <activity android:name=".Activities.Search.ServiceBuyActivity" />
+        <activity android:name=".Activities.Search.BuyServiceActivity" />
         <activity android:name=".Activities.Search.SetUpCreditCardActivity" />
         <activity android:name=".Activities.Search.RequestQuotationActivity" />
         <activity android:name=".Activities.Search.JacksWalletActivity" />
         <activity android:name=".Activities.Profile.VerifyNewSkillsActivity" />
-        <activity android:name=".Activities.Search.PostedServiceActivity"></activity>
+        <activity android:name=".Activities.Search.PostedServiceActivity" />
+        <activity android:name=".Activities.Search.ServiceListingDetailActivity"></activity>
     </application>
 
 </manifest>

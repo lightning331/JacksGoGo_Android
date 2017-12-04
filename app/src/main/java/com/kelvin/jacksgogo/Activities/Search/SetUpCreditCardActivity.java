@@ -27,7 +27,7 @@ public class SetUpCreditCardActivity extends AppCompatActivity {
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
-                ServiceBuyActivity.setAlreadySetUp(true);
+                BuyServiceActivity.setAlreadySetUp(true);
                 onBackPressed();
             }
         });

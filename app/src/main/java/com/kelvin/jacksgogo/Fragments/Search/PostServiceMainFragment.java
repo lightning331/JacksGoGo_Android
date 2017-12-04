@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
@@ -42,6 +43,22 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
     private AlertDialog alertDialog;
 
     private PostServiceDetailFragment detailFragment;
+
+    private PostEditStatus editStatus;
+
+    public enum PostEditStatus {
+        NONE,
+        EDIT,
+        DUPLICATE
+    }
+
+    public PostEditStatus getEditStatus() {
+        return editStatus;
+    }
+
+    public void setEditStatus(PostEditStatus editStatus) {
+        this.editStatus = editStatus;
+    }
 
     public PostServiceMainFragment() {
         // Required empty public constructor
@@ -155,10 +172,24 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (view.getId() == R.id.btn_post_service) {
-            showAlertDialog(view);
+            switch (editStatus) {
+                case NONE:
+                    showAlertDialog(view);
+                    break;
+                case EDIT:
+                    showAlertDialog(view);
+                    break;
+                case DUPLICATE:
+                    Intent intent = new Intent(mContext, PostServiceActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
             Intent intent = new Intent(mContext, PostedServiceActivity.class);
+            intent.putExtra("is_post", true);
             mContext.startActivity(intent);
         } else if (view.getId() == R.id.btn_post_main_describe) {
             detailFragment = PostServiceDetailFragment.newInstance(EditJobTabbarView.EditTabStatus.DESCRIBE);

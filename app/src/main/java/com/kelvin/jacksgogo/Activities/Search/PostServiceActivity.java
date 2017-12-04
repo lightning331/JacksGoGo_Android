@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceVerifiedFragment;
 import com.kelvin.jacksgogo.R;
@@ -16,9 +17,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
-
-    PostServiceVerifiedFragment verifiedFragment;
     private boolean alreadyVerifiedSkills = getRandomBoolean();
+    private String status;
 
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;
@@ -28,6 +28,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_service_activity);
+
+        initFragment();
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.post_service_actionbar);
@@ -42,15 +44,44 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (alreadyVerifiedSkills) {
-            verifiedFragment = new PostServiceVerifiedFragment();
-            ft.replace(R.id.post_service_container, verifiedFragment, verifiedFragment.getTag());
+    }
+
+    private void initFragment() {
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            status = extra.getString("EDIT_STATUS");
         } else {
-            PostServiceNotVerifiedFragment notVerifiedFragment = new PostServiceNotVerifiedFragment();
-            ft.replace(R.id.post_service_container, notVerifiedFragment, notVerifiedFragment.getTag());
+            status = "None";
         }
-        ft.commit();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        PostServiceMainFragment frag;
+        switch (status) {
+            case "Edit":
+                frag = new PostServiceMainFragment();
+                ft.replace(R.id.post_service_container, frag, frag.getTag());
+                frag.setEditStatus(PostServiceMainFragment.PostEditStatus.EDIT);
+                ft.commit();
+                break;
+            case "Duplicate":
+                frag = new PostServiceMainFragment();
+                ft.replace(R.id.post_service_container, frag, frag.getTag());
+                frag.setEditStatus(PostServiceMainFragment.PostEditStatus.DUPLICATE);
+                ft.commit();
+                break;
+            case "None":
+                if (alreadyVerifiedSkills) {
+                    PostServiceVerifiedFragment verifiedFragment = new PostServiceVerifiedFragment();
+                    ft.replace(R.id.post_service_container, verifiedFragment, verifiedFragment.getTag());
+                } else {
+                    PostServiceNotVerifiedFragment notVerifiedFragment = new PostServiceNotVerifiedFragment();
+                    ft.replace(R.id.post_service_container, notVerifiedFragment, notVerifiedFragment.getTag());
+                }
+                ft.commit();
+                break;
+            default:
+                break;
+        }
     }
 
     private void actionbarViewItemClick(View view) {

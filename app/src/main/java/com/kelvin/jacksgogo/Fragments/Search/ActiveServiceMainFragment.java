@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.Adapter.Service.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ActiveServiceTabView;
@@ -64,6 +65,15 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         view.setLayoutParams(lp);
 
         ActiveServiceAdapter adapter = new ActiveServiceAdapter();
+        adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick() {
+                Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
+                intent.putExtra("is_post", false);
+                startActivity(intent);
+            }
+        });
+
         recyclerView.setAdapter(adapter);
     }
 

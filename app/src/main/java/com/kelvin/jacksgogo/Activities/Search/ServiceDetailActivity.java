@@ -123,7 +123,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             reportFlag = !reportFlag;
         } else if (view.getId() == R.id.service_detail_bottom) {
             if (isService) {
-                startActivity(new Intent(this, ServiceBuyActivity.class));
+                startActivity(new Intent(this, BuyServiceActivity.class));
             } else {
                 startActivity(new Intent(this, RequestQuotationActivity.class));
             }

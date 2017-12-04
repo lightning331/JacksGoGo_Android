@@ -15,7 +15,7 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchCategoryListView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchHomeHeaderView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailListCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 
@@ -63,8 +63,8 @@ public class SearchMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_service_detail_list_cell, parent, false);
-            ServiceDetailListCell cell = new ServiceDetailListCell(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_list_detail_cell, parent, false);
+            ServiceListDetailCell cell = new ServiceListDetailCell(view);
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,6 +106,7 @@ public class SearchMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (view.getId() == R.id.btn_post_new) {
             Log.d(TAG, "post new ========= : ");
             Intent intent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
+            //intent.putExtra("EDIT_STATUS", "None");
             view.getContext().startActivity(intent);
         }
     }

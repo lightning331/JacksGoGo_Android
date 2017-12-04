@@ -26,6 +26,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     LinearLayout moreButtonsLayout;
     LinearLayout centerTitleTextLayout;
 
+    LinearLayout.LayoutParams param;
+    LinearLayout.LayoutParams param1;
+
     public ImageView mBackButtonImage;
     public ImageView mMoreButtonImage;
     public ImageView mLikeButtonImage;
@@ -43,6 +46,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         MAP,
         SERVICE,
         SERVICE_LISTING,
+        SERVICE_LISTING_DETAIL,
         ACTIVE_SERVICE,
         POST_SERVICE,
         SERVICE_TIME_SLOTS,
@@ -94,14 +98,14 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText(R.string.title_appointment);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                param = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.MATCH_PARENT,
                         3.0f
                 );
                 mBackButton.setLayoutParams(param);
                 moreButtonsLayout.setLayoutParams(param);
-                LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
+                param1 = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.MATCH_PARENT,
                         4.0f
@@ -184,6 +188,23 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
+                break;
+            case SERVICE_LISTING_DETAIL:
+                mTitleTextView.setText("");
+                mBackButtonTitleTextView.setText(R.string.title_service_listing);
+                param = new LinearLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT,
+                        3.0f
+                );
+                param1 = new LinearLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT,
+                        4.0f
+                );
+                moreButtonsLayout.setLayoutParams(param);
+                mBackButton.setLayoutParams(param);
+                centerTitleTextLayout.setLayoutParams(param1);
                 break;
             default:
                 break;

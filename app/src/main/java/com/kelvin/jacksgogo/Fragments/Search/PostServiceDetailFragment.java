@@ -153,6 +153,7 @@ public class PostServiceDetailFragment extends Fragment {
                     PostServiceMainFragment fragment = new PostServiceMainFragment();
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.post_service_container, fragment, fragment.getTag());
+                    fragment.setEditStatus(PostServiceMainFragment.PostEditStatus.NONE);
                     ft.addToBackStack("post_service_main");
                     ft.commit();
                 }

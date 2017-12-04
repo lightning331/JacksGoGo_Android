@@ -34,10 +34,10 @@ public class ServiceCallOutContentView extends RelativeLayout {
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         callOutContentView  = mLayoutInflater.inflate(R.layout.service_info_window_adapter_view, this);
 
-        lblServiceTitle = (TextView) callOutContentView.findViewById(R.id.lbl_callout_service_title);
-        rateBar = (MaterialRatingBar) callOutContentView.findViewById(R.id.service_callout_user_ratingbar);
-        imgUserAvatar = (RoundedImageView) callOutContentView.findViewById(R.id.img_service_callout_user_avatar);
-        lblUserName = (TextView) callOutContentView.findViewById(R.id.lbl_service_callout_username);
-        lblPrice = (TextView) callOutContentView.findViewById(R.id.lbl_service_callout_price);
+        lblServiceTitle = (TextView) callOutContentView.findViewById(R.id.lbl_service_info_window_title);
+        rateBar = (MaterialRatingBar) callOutContentView.findViewById(R.id.service_info_window_user_ratingbar);
+        imgUserAvatar = (RoundedImageView) callOutContentView.findViewById(R.id.img_service_info_window_user_avatar);
+        lblUserName = (TextView) callOutContentView.findViewById(R.id.lbl_service_info_window_username);
+        lblPrice = (TextView) callOutContentView.findViewById(R.id.lbl_service_info_window_price);
     }
 }

@@ -3,12 +3,12 @@ package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.makeramen.roundedimageview.RoundedImageView;
 
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import org.w3c.dom.Text;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -16,21 +16,21 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class ServiceListCell extends RecyclerView.ViewHolder {
 
-    public ImageView imageViewPhoto;
-    public TextView serviceTitle;
-    public MaterialRatingBar rateBar;
-    public RoundedImageView userAvatar;
-    public TextView userName;
-    public TextView price;
+    public ImageView categoryIcon;
+    public TextView categoryName;
+    public TextView verifiedDate;
+    public TextView totalListedServices;
+    public TextView jobCompleted;
+    public LinearLayout btnServiceListDetail;
 
     public ServiceListCell(View itemView) {
         super(itemView);
 
-        imageViewPhoto = itemView.findViewById(R.id.img_service_photo);
-        serviceTitle = itemView.findViewById(R.id.lbl_service_title);
-        rateBar = itemView.findViewById(R.id.service_user_ratingbar);
-        userAvatar = itemView.findViewById(R.id.img_service_user_avatar);
-        userName = itemView.findViewById(R.id.lbl_service_username);
-        price = itemView.findViewById(R.id.lbl_service_price);
+        categoryIcon = itemView.findViewById(R.id.img_category_icon);
+        categoryName = itemView.findViewById(R.id.lbl_category_name);
+        verifiedDate = itemView.findViewById(R.id.lbl_verified_date);
+        totalListedServices = itemView.findViewById(R.id.lbl_total_listed_services);
+        jobCompleted = itemView.findViewById(R.id.lbl_job_completed);
+        btnServiceListDetail = itemView.findViewById(R.id.btn_service_listing_next);
     }
 }

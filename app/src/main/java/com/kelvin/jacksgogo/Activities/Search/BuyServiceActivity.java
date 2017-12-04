@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
-public class ServiceBuyActivity extends AppCompatActivity implements View.OnClickListener {
+public class BuyServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
