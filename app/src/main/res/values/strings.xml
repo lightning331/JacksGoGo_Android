@@ -42,6 +42,9 @@
     <string name="title_request_quotation">Request A Quotation</string>
     <string name="title_verify_new_skill">Verify New Skills</string>
 
+    <!-- TODO: Posted Service PopUp Menu -->
+    <string name="posted_service_duplicate">Duplicate</string>
+
     <!-- TODO: JGG Service PopUp Menu -->
     <string name="menu_option_share">Share</string>
     <string name="menu_option_report">Report Service</string>
@@ -67,12 +70,14 @@
     <string name="alert_job_posted_title">Job Posted!</string>
     <string name="alert_job_posted_desc">Job reference no: J38291-170721</string>
     <string name="alert_view_job_button">View Job</string>
-    <string name="alert_service_posted_title">Service Posted!</string>
-    <string name="alert_service_posted_desc">Service reference no: S38291-170721</string>
+    <string name="alert_service_posted_title">Submission Sent!</string>
+    <string name="alert_service_posted_desc">Service reference no: S38291-170721 \n Our team will verify your submission and get back to you soon!</string>
     <string name="alert_view_service_button">View Post</string>
     <string name="alert_verify_skill_title">Submission Sent!</string>
     <string name="alert_verify_skill_desc">Thank you for verifying! Our team will contact you shortly.</string>
     <string name="alert_verify_skill_button">Back To Service Listing</string>
+    <string name="alert_posted_service_delete_title">Delete Service?</string>
+    <string name="alert_posted_service_delete_desc">Deleted services can be found in Service Listing.</string>
 
 
     <!-- TODO: Share Dialog -->

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.Adapter.Service.SearchActiveServiceAdapter;
+import com.kelvin.jacksgogo.Adapter.Service.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
 
@@ -63,7 +63,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        SearchActiveServiceAdapter adapter = new SearchActiveServiceAdapter();
+        ActiveServiceAdapter adapter = new ActiveServiceAdapter();
         recyclerView.setAdapter(adapter);
     }
 

@@ -88,7 +88,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.share_menu_option);
+        popupMenu.inflate(R.menu.share_menu);
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
 

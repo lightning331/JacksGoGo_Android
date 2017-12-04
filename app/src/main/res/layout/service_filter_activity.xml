@@ -260,7 +260,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@mipmap/icon_cat_leisure"/>
+                        android:src="@mipmap/icon_cat_sports"/>
                     <TextView
                         android:text="Sports"
                         android:layout_width="wrap_content"

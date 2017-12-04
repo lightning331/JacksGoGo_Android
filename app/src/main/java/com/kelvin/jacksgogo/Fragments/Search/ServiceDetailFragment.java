@@ -17,7 +17,8 @@ import com.kelvin.jacksgogo.R;
 
 public class ServiceDetailFragment extends Fragment {
 
-    RecyclerView recyclerView;
+    private Context mContext;
+    private RecyclerView recyclerView;
 
     boolean serviceStatus;
 
@@ -52,7 +53,7 @@ public class ServiceDetailFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        ServiceDetailAdapter mAdapter = new ServiceDetailAdapter(this, serviceStatus);
+        ServiceDetailAdapter mAdapter = new ServiceDetailAdapter(mContext, serviceStatus);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -62,6 +63,7 @@ public class ServiceDetailFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

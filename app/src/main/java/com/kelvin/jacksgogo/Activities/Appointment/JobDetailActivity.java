@@ -55,7 +55,7 @@ public class JobDetailActivity extends AppCompatActivity {
                     actionbarView.setEditMoreButtonClicked(true);
 
                     PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, view);
-                    popupMenu.inflate(R.menu.edit_menu_option);
+                    popupMenu.inflate(R.menu.edit_menu);
                     popupMenu.setOnDismissListener(new OnDismissListener());
                     popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
 

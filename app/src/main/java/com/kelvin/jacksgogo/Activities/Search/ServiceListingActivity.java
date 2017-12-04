@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Adapter.Service.SearchServiceListingAdapter;
+import com.kelvin.jacksgogo.Adapter.Service.ServiceListingAdapter;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
@@ -53,13 +53,24 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
 
-        SearchServiceListingAdapter adapter = new SearchServiceListingAdapter();
+        ServiceListingAdapter adapter = new ServiceListingAdapter(this);
+        adapter.setOnItemClickListener(new ServiceListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick() {
+                onCellClick();
+            }
+        });
         recyclerView.setAdapter(adapter);
+    }
+
+    private void onCellClick() {
+        Intent intent = new Intent(this, PostedServiceActivity.class);
+        startActivity(intent);
     }
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
-            onBackPressed();
+            super.onBackPressed();
         }
     }
 

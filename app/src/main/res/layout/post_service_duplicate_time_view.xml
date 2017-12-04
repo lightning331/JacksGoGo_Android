@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:orientation="vertical"
+    android:background="@color/JGGWhite">
+    <TextView
+        android:text="Duplicate Time Slots to these days:"
+        android:fontFamily="@font/mulibold"
+        android:textSize="@dimen/list_title_font_size"
+        android:textColor="@color/JGGBlack"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/post_calendar_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:padding="5dp"
+        android:background="@color/JGGWhite">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/add_time_duplicate_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            app:mcv_calendarMode="month"
+            app:mcv_firstDayOfWeek="sunday"
+            app:mcv_arrowColor="@color/JGGGreen"
+            app:mcv_selectionColor="@color/JGGGreen"
+            app:mcv_leftArrowMask="@mipmap/button_previous_green"
+            app:mcv_rightArrowMask="@mipmap/button_right_green"
+            app:mcv_showOtherDates="none|other_months|out_of_range|decorated_disabled"
+            app:mcv_tileHeight="36dp"
+            app:mcv_tileSize="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/lbl_alert_description">
+
+        <TextView
+            android:id="@+id/btn_add_time_duplicate_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/JGGGreen10Percent"
+            android:textColor="@color/JGGGreen"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/list_title_font_size"
+            android:text="Cancel"/>
+
+        <TextView
+            android:id="@+id/btn_add_time_duplicate_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/JGGGrey4"
+            android:textColor="@color/JGGGrey2"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/list_title_font_size"
+            android:text="Duplicate"/>
+    </LinearLayout>
+
+</LinearLayout>

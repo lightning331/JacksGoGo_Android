@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="16dp"
         android:padding="15dp"
         android:textAlignment="center"
         android:textColor="@color/JGGBlack"
@@ -27,8 +27,8 @@
         android:id="@+id/lbl_alert_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/JGGBlack"
@@ -37,7 +37,6 @@
         android:text="Deleted jobs can be found in Appointment, under History tab."/>
 
     <LinearLayout
-        android:id="@+id/btn_done"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"

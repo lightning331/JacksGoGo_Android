@@ -13,7 +13,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 11/14/2017.
  */
 
-public class SearchActiveServiceAdapter extends RecyclerView.Adapter {
+public class ActiveServiceAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

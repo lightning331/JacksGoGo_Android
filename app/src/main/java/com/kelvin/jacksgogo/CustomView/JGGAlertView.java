@@ -1,11 +1,9 @@
 package com.kelvin.jacksgogo.CustomView;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,7 +21,6 @@ public class JGGAlertView extends RelativeLayout {
     public TextView description;
     public TextView cancelButton;
     public TextView okButton;
-    public LinearLayout doneButton;
 
     public JGGAlertView(Context context) {
         super(context);
@@ -41,7 +38,6 @@ public class JGGAlertView extends RelativeLayout {
         description = alertView.findViewById(R.id.lbl_alert_description);
         cancelButton = alertView.findViewById(R.id.btn_alert_cancel);
         okButton = alertView.findViewById(R.id.btn_alert_ok);
-        doneButton = alertView.findViewById(R.id.btn_done);
     }
 
     public RelativeLayout.LayoutParams getLayoutParams() {

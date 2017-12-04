@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Adapter.Service;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -32,13 +33,13 @@ import com.kelvin.jacksgogo.R;
 
 public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
-    ServiceDetailFragment mContext;
+    private Context mContext;
 
     boolean isService;
 
     int ITEM_COUNT = 11;
 
-    public ServiceDetailAdapter(ServiceDetailFragment context, boolean serviceStatus) {
+    public ServiceDetailAdapter(Context context, boolean serviceStatus) {
         this.mContext = context;
         isService = serviceStatus;
     }
@@ -162,13 +163,13 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_location) {
-            mContext.getActivity().startActivity(new Intent(mContext.getActivity(), AppMapViewActivity.class));
+            mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
         } else if (view.getId() == R.id.btn_time_slots) {
-            mContext.getActivity().startActivity(new Intent(mContext.getActivity(), ServiceTimeSlotsActivity.class));
+            mContext.startActivity(new Intent(mContext, ServiceTimeSlotsActivity.class));
         } else if (view.getId() == R.id.btn_see_all_reviews) {
-            mContext.getActivity().startActivity(new Intent(mContext.getActivity(), ServiceReviewsActivity.class));
+            mContext.startActivity(new Intent(mContext, ServiceReviewsActivity.class));
         } else if (view.getId() == R.id.btn_view_all_services) {
-            mContext.getActivity().startActivity(new Intent(mContext.getActivity(), ActiveServiceActivity.class));
+            mContext.startActivity(new Intent(mContext, ActiveServiceActivity.class));
         }
     }
 }

@@ -18,11 +18,14 @@ import java.util.List;
  * Created by PUMA on 11/14/2017.
  */
 
-public class SearchServiceListingAdapter extends RecyclerView.Adapter {
+public class ServiceListingAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private List itemModels;
-    private Context context;
+    private Context mContext;
 
+    public ServiceListingAdapter(Context context) {
+        this.mContext = context;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -78,7 +81,10 @@ public class SearchServiceListingAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        if (position == 1 || position == 2 || position == 4 || position == 5 || position == 7 || position == 8 || position == 9) {
+            ServiceListCell cell = (ServiceListCell)holder;
+            cell.itemView.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -89,5 +95,20 @@ public class SearchServiceListingAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    private OnItemClickListener listener;
+
+    @Override
+    public void onClick(View view) {
+        listener.onItemClick();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

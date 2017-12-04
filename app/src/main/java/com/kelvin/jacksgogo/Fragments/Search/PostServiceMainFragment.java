@@ -15,10 +15,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -160,7 +158,7 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
             showAlertDialog(view);
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-            Intent intent = new Intent(mContext, ServiceListingActivity.class);
+            Intent intent = new Intent(mContext, PostedServiceActivity.class);
             mContext.startActivity(intent);
         } else if (view.getId() == R.id.btn_post_main_describe) {
             detailFragment = PostServiceDetailFragment.newInstance(EditJobTabbarView.EditTabStatus.DESCRIBE);

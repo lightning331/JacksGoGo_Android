@@ -40,6 +40,5 @@
             app:layout_constraintTop_toBottomOf="@id/jgg_map_view_activity_appbar"
             app:layout_constraintBottom_toBottomOf="parent">
         </FrameLayout>
-
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

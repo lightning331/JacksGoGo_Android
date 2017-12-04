@@ -1,21 +1,20 @@
 package com.kelvin.jacksgogo.Adapter.Service;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebHistoryItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,10 +22,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
+
+import java.util.List;
+
+import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 
 
-public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClickListener, TextWatcher {
+public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClickListener, TextWatcher, OnDateSelectedListener {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -55,6 +61,35 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
     private TextView btnOnePersonLater;
     private TextView btnMultiPeople;
     private RelativeLayout btnNext;
+
+    private ImageView btnStartTimeUp;
+    private ImageView btnStartTimeDown;
+    private ImageView btnStartMinuteUp;
+    private ImageView btnStartMinuteDown;
+    private ImageView btnStartTimeAM;
+    private ImageView btnStartTimePM;
+    private EditText txtStartTime;
+    private EditText txtStartMinute;
+    private ImageView btnEndTimeUp;
+    private ImageView btnEndTimeDown;
+    private ImageView btnEndMinuteUp;
+    private ImageView btnEndMinuteDown;
+    private ImageView btnEndTimeAM;
+    private ImageView btnEndTimePM;
+    private EditText txtEndTime;
+    private EditText txtEndMinute;
+    private ImageView btnPaxLeft;
+    private ImageView btnPaxRight;
+    private EditText txtPax;
+    private LinearLayout paxBackground;
+    private TextView btnCancel;
+    private TextView btnOk;
+
+    private MaterialCalendarView duplicateTimeCalendar;
+    private TextView btnDuplicateCancel;
+    private TextView btnDuplicateOk;
+
+    private AlertDialog alertDialog;
 
     private String strTimeSlotTitle;
     private boolean isOnePerson = false;
@@ -158,20 +193,168 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
         } else if (view.getId() == R.id.btn_post_timeslot_title) {
             onEditTitleClick();
         } else if (view.getId() == R.id.btn_post_timeslot_add) {
-
+            onAddTimeClick();
         } else if (view.getId() == R.id.btn_post_timeslot_done) {
             onDoneClick();
         } else if (view.getId() == R.id.btn_post_timeslot_view_time) {
-            onViewTimeSlot();
+            onViewTimeSlotClick();
         } else if (view.getId() == R.id.btn_time_slot_next) {
             listener.onNextButtonClick();
         } else if (view.getId() == R.id.btn_post_service_multi_people) {
             isOnePerson = false;
             onOnePersonClick();
+        } else if (view.getId() == R.id.btn_add_start_time_up) {
+
+        } else if (view.getId() == R.id.btn_add_start_time_down) {
+
+        } else if (view.getId() == R.id.btn_add_start_time_minute_up) {
+
+        } else if (view.getId() == R.id.btn_add_start_time_minute_down) {
+
+        } else if (view.getId() == R.id.btn_add_end_time_up) {
+
+        } else if (view.getId() == R.id.btn_add_end_time_down) {
+
+        } else if (view.getId() == R.id.btn_add_end_time_minute_up) {
+
+        } else if (view.getId() == R.id.btn_add_end_time_minute_down) {
+
+        } else if (view.getId() == R.id.btn_add_start_time_am) {
+            onAmClick(view);
+        } else if (view.getId() == R.id.btn_add_start_time_pm) {
+            onPmClick(view);
+        } else if (view.getId() == R.id.btn_add_end_time_am) {
+            onAmClick(view);
+        } else if (view.getId() == R.id.btn_add_end_time_pm) {
+            onPmClick(view);
+        } else if (view.getId() == R.id.btn_add_time_cancel) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_add_time_ok) {
+            alertDialog.dismiss();
+            timeBG.setVisibility(View.VISIBLE);
+            btnDuplicate.setVisibility(View.VISIBLE);
+            btnDuplicate.setOnClickListener(this);
+            btnTimeEdit.setOnClickListener(this);
+            btnTimeDelete.setOnClickListener(this);
+            if (!isOnePerson) lblPax.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.btn_time_slots_edit) {
+            onAddTimeClick();
+        } else if (view.getId() == R.id.btn_time_slots_delete) {
+            timeBG.setVisibility(View.GONE);
+            btnDuplicate.setVisibility(View.GONE);
+        } else if (view.getId() == R.id.btn_post_timeslot_duplicate) {
+            onShowDuplicateTimeCalendarView();
+        } else if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
+            alertDialog.dismiss();
         }
     }
 
-    private void onViewTimeSlot() {
+    private void onAmClick(View view) {
+        if (view.getId() == R.id.btn_add_start_time_am) {
+            btnStartTimeAM.setBackgroundResource(R.mipmap.button_am_active_green);
+            btnStartTimePM.setBackgroundResource(R.mipmap.button_pm_green);
+        } else {
+            btnEndTimeAM.setBackgroundResource(R.mipmap.button_am_active_green);
+            btnEndTimePM.setBackgroundResource(R.mipmap.button_pm_green);
+        }
+    }
+
+    private void onPmClick(View view) {
+        if (view.getId() == R.id.btn_add_start_time_pm) {
+            btnStartTimeAM.setBackgroundResource(R.mipmap.button_am_green);
+            btnStartTimePM.setBackgroundResource(R.mipmap.button_pm_active_green);
+        } else {
+            btnEndTimeAM.setBackgroundResource(R.mipmap.button_am_green);
+            btnEndTimePM.setBackgroundResource(R.mipmap.button_pm_active_green);
+        }
+    }
+
+    private void onAddTimeClick() {
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.post_service_add_time_slot_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+
+        onShowAddTimeView(alertView);
+
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+
+    }
+
+    private void onShowAddTimeView(View view) {
+        btnStartTimeUp = (ImageView) view.findViewById(R.id.btn_add_start_time_up);
+        btnStartTimeUp.setOnClickListener(this);
+        txtStartTime = (EditText) view.findViewById(R.id.txt_add_start_time);
+        txtStartTime.addTextChangedListener(this);
+        btnStartTimeDown = (ImageView) view.findViewById(R.id.btn_add_start_time_down);
+        btnStartTimeDown.setOnClickListener(this);
+        btnStartMinuteUp = (ImageView) view.findViewById(R.id.btn_add_start_time_minute_up);
+        btnStartMinuteUp.setOnClickListener(this);
+        txtStartMinute = (EditText) view.findViewById(R.id.txt_add_start_minute_time);
+        txtStartMinute.addTextChangedListener(this);
+        btnStartMinuteDown = (ImageView) view.findViewById(R.id.btn_add_start_time_minute_down);
+        btnStartMinuteDown.setOnClickListener(this);
+        btnStartTimeAM = (ImageView) view.findViewById(R.id.btn_add_start_time_am);
+        btnStartTimeAM.setOnClickListener(this);
+        btnStartTimePM = (ImageView) view.findViewById(R.id.btn_add_start_time_pm);
+        btnStartTimePM.setOnClickListener(this);
+        btnEndTimeUp = (ImageView) view.findViewById(R.id.btn_add_end_time_up);
+        btnEndTimeUp.setOnClickListener(this);
+        txtEndTime = (EditText) view.findViewById(R.id.txt_add_end_time);
+        txtEndTime.addTextChangedListener(this);
+        btnEndTimeDown = (ImageView) view.findViewById(R.id.btn_add_end_time_down);
+        btnEndTimeDown.setOnClickListener(this);
+        btnEndMinuteUp = (ImageView) view.findViewById(R.id.btn_add_end_time_minute_up);
+        btnEndMinuteUp.setOnClickListener(this);
+        txtEndMinute = (EditText) view.findViewById(R.id.txt_add_end_minute_time);
+        txtEndMinute.addTextChangedListener(this);
+        btnEndMinuteDown = (ImageView) view.findViewById(R.id.btn_add_end_time_minute_down);
+        btnEndMinuteDown.setOnClickListener(this);
+        btnEndTimeAM = (ImageView) view.findViewById(R.id.btn_add_end_time_am);
+        btnEndTimeAM.setOnClickListener(this);
+        btnEndTimePM = (ImageView) view.findViewById(R.id.btn_add_end_time_pm);
+        btnEndTimePM.setOnClickListener(this);
+        btnPaxLeft = (ImageView) view.findViewById(R.id.btn_add_time_pax_left);
+        btnPaxLeft.setOnClickListener(this);
+        txtPax = (EditText) view.findViewById(R.id.txt_add_time_pax);
+        txtPax.addTextChangedListener(this);
+        btnPaxRight = (ImageView) view.findViewById(R.id.btn_add_time_pax_right);
+        btnPaxRight.setOnClickListener(this);
+        btnCancel = (TextView) view.findViewById(R.id.btn_add_time_cancel);
+        btnCancel.setOnClickListener(this);
+        btnOk = (TextView) view.findViewById(R.id.btn_add_time_ok);
+        btnOk.setOnClickListener(this);
+        paxBackground = (LinearLayout) view.findViewById(R.id.add_time_pax_background);
+        if (!isOnePerson) paxBackground.setVisibility(View.VISIBLE);
+    }
+
+    private void onShowDuplicateTimeCalendarView() {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View calendarView = inflater.inflate(R.layout.post_service_duplicate_time_view, null);
+        builder.setView(calendarView);
+        alertDialog = builder.create();
+
+        duplicateTimeCalendar = calendarView.findViewById(R.id.add_time_duplicate_calendar);
+        duplicateTimeCalendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
+        duplicateTimeCalendar.setOnDateChangedListener(this);
+        btnDuplicateCancel = calendarView.findViewById(R.id.btn_add_time_duplicate_cancel);
+        btnDuplicateCancel.setOnClickListener(this);
+        btnDuplicateOk = calendarView.findViewById(R.id.btn_add_time_duplicate_ok);
+
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+
+    }
+
+    private void onViewTimeSlotClick() {
         onNowClick();
         btnViewTime.setVisibility(View.GONE);
         btnNext.setVisibility(View.GONE);
@@ -272,6 +455,13 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        btnDuplicateOk.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+        btnDuplicateOk.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+        btnDuplicateOk.setOnClickListener(this);
     }
 
     /**
