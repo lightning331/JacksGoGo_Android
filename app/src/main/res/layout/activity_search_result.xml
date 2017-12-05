@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kelvin.jacksgogo.Activities.Search.ServiceTimeSlotsActivity">
-    <LinearLayout
+    tools:context="com.kelvin.jacksgogo.Activities.Search.SearchResultActivity">
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/service_time_slots_actionbar"
+                android:id="@+id/search_result_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -30,12 +29,11 @@
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
         <LinearLayout
-            android:id="@+id/service_time_slots_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/JGGGrey5"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
@@ -49,21 +47,51 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@mipmap/icon_cat_exploration"/>
+                        android:src="@mipmap/icon_search_grey"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="6"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/lbl_search_keyword"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:maxLines="1"
                         android:fontFamily="@font/mulibold"
                         android:textColor="@color/JGGBlack"
                         android:textSize="@dimen/caption_font_size"
-                        android:text="Group Swimming Class"/>
+                        android:text="Garden"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical|end">
+                    <TextView
+                        android:id="@+id/lbl_search_result_count"
+                        android:text="23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:maxLines="1"
+                        android:fontFamily="@font/mulibold"
+                        android:textColor="@color/JGGBlack"
+                        android:textSize="@dimen/caption_font_size"/>
+                    <TextView
+                        android:text="results found"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="16dp"
+                        android:maxLines="1"
+                        android:fontFamily="@font/muliregular"
+                        android:textColor="@color/JGGBlack"
+                        android:textSize="@dimen/caption_font_size"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -71,45 +99,13 @@
                 android:layout_height="1dp"
                 android:background="@color/JGGGrey4">
             </LinearLayout>
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/active_service_container"
                 android:layout_width="match_parent"
-                android:layout_height="290dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/JGGWhite">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="15dp">
-
-                    <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/calendarView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:foregroundGravity="center"
-                        app:mcv_calendarMode="month"
-                        app:mcv_firstDayOfWeek="sunday"
-                        app:mcv_arrowColor="@color/JGGGreen"
-                        app:mcv_selectionColor="@color/JGGGreen"
-                        app:mcv_leftArrowMask="@mipmap/button_previous_green"
-                        app:mcv_rightArrowMask="@mipmap/button_right_green"
-                        app:mcv_showOtherDates="none|other_months|out_of_range|decorated_disabled"
-                        app:mcv_tileHeight="36dp"
-                        app:mcv_tileSize="match_parent"/>
-                </LinearLayout>
-
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/service_time_slots_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                android:background="@color/JGGGrey5"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </FrameLayout>
         </LinearLayout>
-    </LinearLayout>
-
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>

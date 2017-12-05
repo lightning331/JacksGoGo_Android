@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/post_service"
+                android:text="@string/title_post_service"
                 android:textAlignment="center"
                 android:textColor="@color/JGGWhite"
                 android:fontFamily="@font/mulibold"

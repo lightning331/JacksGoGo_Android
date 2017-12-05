@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.SearchResultActivity;
 import com.kelvin.jacksgogo.R;
 
 public class ServiceSearchMainFragment extends Fragment implements View.OnClickListener {
@@ -112,7 +114,8 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
             ft.addToBackStack("advance_search");
             ft.commit();
         } else if (view.getId() == R.id.btn_service_search) {
-
+            Intent intent = new Intent(mContext, SearchResultActivity.class);
+            startActivity(intent);
         } else if (view.getId() == R.id.btn_service_search_jobs) {
 
         } else if (view.getId() == R.id.btn_service_search_go_club) {

@@ -57,7 +57,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         REQUEST_QUOTATION,
         VERIFY_SKILL,
         POSTED_SERVICE,
-        SERVICE_SEARCH
+        SERVICE_SEARCH,
+        SEARCH_RESULT
     }
 
     public JGGActionbarView(Context context) {
@@ -192,6 +193,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case SERVICE_SEARCH:
                 mTitleTextView.setText(R.string.title_search);
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                break;
+            case SEARCH_RESULT:
+                mTitleTextView.setText(R.string.search_result);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 break;

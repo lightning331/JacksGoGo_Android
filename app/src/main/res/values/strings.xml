@@ -2,6 +2,9 @@
     <string name="app_name">Jacks GoGo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- TODO: Google Map API Key -->
+    <string name="google_maps_key">AIzaSyASWl8FiFk2_VkOSd6pOvsbkS1nWn903cY</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Bottom Navigationbar title -->
     <string name="title_home">Home</string>
@@ -22,9 +25,7 @@
     <string name="services">Services</string>
     <string name="jobs">Jobs</string>
     <string name="go_club">GoClub</string>
-
-    <!-- TODO: Google Map API Key -->
-    <string name="google_maps_key">AIzaSyASWl8FiFk2_VkOSd6pOvsbkS1nWn903cY</string>
+    <string name="search_result">Search Results</string>
 
     <!-- TODO: JGG Appointment PopUp Menu -->
     <string name="menu_option_edit">Edit</string>
@@ -42,13 +43,13 @@
     <string name="title_request_quotation">Request A Quotation</string>
     <string name="title_verify_new_skill">Verify New Skills</string>
 
-    <string name="posted_service_duplicate">Duplicate</string>
 
     <!-- TODO: JGG Service PopUp Menu -->
     <string name="menu_option_share">Share</string>
     <string name="menu_option_report">Report Service</string>
     <string name="setup_credit_card">Set Up Credit Card</string>
     <string name="jacks_wallet">Top Up Jacks Wallet - balance $10.00</string>
+    <string name="posted_service_duplicate">Duplicate</string>
 
     <!-- TODO: JGG Alert View -->
     <string name="jgg_alert_title">JacksGoGo!!!</string>
@@ -104,7 +105,6 @@
     <string name="edit_job_report_geo_desc">Track where you begin at the start of your work, and every 10 minutes, until you reach your destination.</string>
     <string name="edit_job_report_pin_titles">PIN Code</string>
     <string name="edit_job_report_pin_desc">Useful for delivery jobs. The recipient should be given the code before hand to confirm.</string>
-    <string name="post_service">Post A Service</string>
     <string name="post_new_service">Post New Service</string>
     <string name="request_quotation">Request A Quotation</string>
     <string name="buy_service">Buy Service</string>

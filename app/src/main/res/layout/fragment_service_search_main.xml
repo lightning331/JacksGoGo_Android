@@ -20,7 +20,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/green_border_background">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -29,15 +30,18 @@
                         android:hint="Search Service"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="45dp"
                         android:padding="@dimen/edit_text_padding_size"
                         android:fontFamily="@font/muliregular"
                         android:textSize="@dimen/list_title_font_size"
-                        android:background="@drawable/green_border_background">
+                        android:background="@color/JGGWhite">
                     </EditText>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:padding="@dimen/edit_text_padding_size"
                         android:weightSum="100">
                         <LinearLayout

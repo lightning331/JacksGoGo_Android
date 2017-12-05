@@ -128,7 +128,9 @@ public class ActiveServiceMapFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        ((ActiveServiceActivity)context).setBottomViewHidden(true);
+        if (context instanceof ActiveServiceActivity) {
+            ((ActiveServiceActivity) context).setBottomViewHidden(true);
+        }
     }
 
     @Override
@@ -157,7 +159,9 @@ public class ActiveServiceMapFragment extends Fragment
         ft.replace(R.id.active_service_container, frag, frag.getTag());
         ft.remove(this);
         ft.commit();
-        ((ActiveServiceActivity)mContext).setBottomViewHidden(false);
+        if (mContext instanceof ActiveServiceActivity) {
+            ((ActiveServiceActivity) mContext).setBottomViewHidden(false);
+        }
 
         manager.popBackStack();
     }
