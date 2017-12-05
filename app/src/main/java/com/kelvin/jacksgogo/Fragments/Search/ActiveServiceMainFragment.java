@@ -48,7 +48,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.search_active_service_main_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_active_service_main, container, false);
 
         initRecyclerView(view);
         initTabView(view);

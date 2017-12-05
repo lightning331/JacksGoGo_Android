@@ -16,7 +16,7 @@ public class JacksWalletActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_jacks_wallet_activity);
+        setContentView(R.layout.activity_service_jacks_wallet);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.jacks_wallet_actionbar);

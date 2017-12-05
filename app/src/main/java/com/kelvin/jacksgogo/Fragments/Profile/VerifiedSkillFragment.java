@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMapFragment;
 import com.kelvin.jacksgogo.R;
 
 public class VerifiedSkillFragment extends Fragment implements View.OnClickListener {
@@ -39,7 +38,7 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.profile_verified_skill_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_verified_skill, container, false);
         initView(view);
         return view;
     }

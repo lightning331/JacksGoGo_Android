@@ -26,7 +26,7 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_listing_activity);
+        setContentView(R.layout.activity_service_listing);
 
         // Hide Bottom NavigationView and ToolBar
         BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_listing_navigation);

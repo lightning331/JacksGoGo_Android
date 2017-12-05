@@ -46,7 +46,7 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.app_map_view_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_app_map_view, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.appointment_map_view);
         mapFragment.getMapAsync(this);

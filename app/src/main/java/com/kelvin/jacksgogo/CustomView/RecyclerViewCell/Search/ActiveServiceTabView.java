@@ -1,14 +1,12 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search;
 
 import android.content.Context;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMapFragment;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -38,7 +36,7 @@ public class ActiveServiceTabView extends RelativeLayout implements View.OnClick
     public void initView() {
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        activeServiceTabView  = mLayoutInflater.inflate(R.layout.search_active_service_tab_view, this);
+        activeServiceTabView  = mLayoutInflater.inflate(R.layout.view_search_active_service_tab, this);
 
         distanceButton = (LinearLayout) activeServiceTabView.findViewById(R.id.btn_active_service_distance);
         ratingButton = (LinearLayout) activeServiceTabView.findViewById(R.id.btn_active_service_ratings);

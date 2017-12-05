@@ -46,7 +46,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public AppointmentMainAdapter(Context context) {
         this.mContext = context;
-        headers = new ArrayAdapter<String>(context, R.layout.section_title_view); // this is the header desing page.
+        headers = new ArrayAdapter<String>(context, R.layout.view_section_title); // this is the header desing page.
     }
 
     public void addSection(String section, ArrayList<JGGAppBaseModel> arrayList) {
@@ -57,10 +57,10 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             return new SectionTitleView(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_history_list_cell, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_history_list, parent, false);
             return new ApptHistoryListCell(view);
         }
     }

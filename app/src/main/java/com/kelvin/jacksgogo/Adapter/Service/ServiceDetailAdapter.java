@@ -24,7 +24,6 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailCate
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailTotalReviewCell;
-import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -49,7 +48,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         switch (viewType) {
             case 0:
-                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_image_carousel_cell, parent, false);
+                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
                 JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView);
 
                 int[] array = {R.drawable.carousel03, R.drawable.carousel01,
@@ -60,11 +59,11 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
                 return pageViewHolder;
             case 1:
-                View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_header_cell, parent, false);
+                View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_header, parent, false);
                 ServiceDetailCategoryCell postCategoryViewHolder = new ServiceDetailCategoryCell(postCategoryView);
                 return postCategoryViewHolder;
             case 2:
-                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
+                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell priceViewHolder = new JobDetailDescriptionCell(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
@@ -74,14 +73,14 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 return priceViewHolder;
             case 3:
-                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
+                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell descriptionViewHolder = new JobDetailDescriptionCell(descriptionView);
                 descriptionViewHolder.descriptionImage.setImageResource(R.mipmap.icon_info);
                 descriptionViewHolder.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
                         "what tasks you need done, and any special requirements.");
                 return descriptionViewHolder;
             case 4:
-                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_location_cell, parent, false);
+                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
                 JobDetailLocationCell jobDetailLocationCell = new JobDetailLocationCell(addressView);
                 jobDetailLocationCell.description.setText("2 Jurong West Avenue 5 64386");
                 jobDetailLocationCell.location.setOnClickListener(this);
@@ -96,7 +95,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 return jobDetailLocationCell;
             case 5:
-                View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
+                View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell statusViewHolder = new JobDetailDescriptionCell(statusView);
                 statusViewHolder.descriptionImage.setImageResource(R.mipmap.icon_reschedule);
 
@@ -114,18 +113,18 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 //if (!isService) statusViewHolder.itemView.setVisibility(View.GONE);
                 return statusViewHolder;
             case 6:
-                View timeSlotsView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_time_slots_cell, parent, false);
+                View timeSlotsView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_time_slots, parent, false);
                 ServiceDetailTimeSlotsCell timeSlotsAvailableViewHolder = new ServiceDetailTimeSlotsCell(timeSlotsView);
                 timeSlotsAvailableViewHolder.btnViewTimeSlots.setOnClickListener(this);
                 return timeSlotsAvailableViewHolder;
             case 7:
-                View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_total_review_cell, parent, false);
+                View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_total_review, parent, false);
                 ServiceDetailTotalReviewCell reviewViewHolder = new ServiceDetailTotalReviewCell(reviewView);
                 reviewViewHolder.ratingBar.setRating((float)4.6);
                 reviewViewHolder.btnReviews.setOnClickListener(this);
                 return reviewViewHolder;
             case 8:
-                View posterInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_user_name_rating_cell, parent, false);
+                View posterInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
                 JobDetailUserNameRatingCell posterInfoViewHolder = new JobDetailUserNameRatingCell(posterInfoView);
                 posterInfoViewHolder.ratingBar.setRating((float)4.8);
                 if (isService) {
@@ -134,11 +133,11 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
                 return posterInfoViewHolder;
             case 9:
-                View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_tag_list_cell, parent, false);
+                View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
                 ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
                 return tagListViewHolder;
             case 10:
-                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_detail_booked_info_cell, parent, false);
+                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_booked_info, parent, false);
                 ServiceDetailBookedInfoCell bookedInfoViewHolder = new ServiceDetailBookedInfoCell(bookedInfoView);
                 return bookedInfoViewHolder;
         }

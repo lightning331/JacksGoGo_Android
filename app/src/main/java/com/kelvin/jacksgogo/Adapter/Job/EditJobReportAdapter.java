@@ -57,17 +57,17 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
-            View sectionTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View sectionTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionTitleViewHolder = new SectionTitleView(sectionTitle);
             sectionTitleViewHolder.txtTitle.setText(R.string.edit_job_report_title);
             sectionTitleViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionTitleViewHolder;
         } else if (viewType > TYPE_SECTION_HEADER && viewType <= reportSet.size()){
-            View beforeViewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_repor_cell, parent, false);
+            View beforeViewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_repor, parent, false);
             ReportViewHolder descTitleViewHolder = new ReportViewHolder(beforeViewHolder);
             return descTitleViewHolder;
         } else if (viewType == reportSet.size() + 1){
-            View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
+            View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
             nextButtonCell = new AppFilterOptionCell(originalView);
             return nextButtonCell;
         }

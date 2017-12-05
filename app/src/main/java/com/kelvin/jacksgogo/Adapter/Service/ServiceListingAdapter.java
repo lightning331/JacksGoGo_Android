@@ -26,7 +26,7 @@ public class ServiceListingAdapter extends RecyclerView.Adapter implements View.
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_list_cell, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_list, parent, false);
         ServiceListCell categoryListView = new ServiceListCell(view);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);

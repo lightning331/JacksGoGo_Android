@@ -53,7 +53,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
     private void initView() {
 
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mTabbarView                 = mLayoutInflater.inflate(R.layout.edit_job_tabbar_view, this);
+        View mTabbarView                 = mLayoutInflater.inflate(R.layout.view_edit_job_tabbar, this);
 
         mDescribeButton     = (LinearLayout) mTabbarView.findViewById(R.id.btn_describe);
         mTimeButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_time);

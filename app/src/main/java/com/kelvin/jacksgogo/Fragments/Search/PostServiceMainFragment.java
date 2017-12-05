@@ -83,7 +83,7 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.post_service_main_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_main, container, false);
 
         initView(view);
 

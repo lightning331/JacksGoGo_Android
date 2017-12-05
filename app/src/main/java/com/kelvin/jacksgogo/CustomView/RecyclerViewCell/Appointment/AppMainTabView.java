@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Appointment.AppFilterActivity;
 import com.kelvin.jacksgogo.R;
 
-import java.io.LineNumberReader;
-
 
 public class AppMainTabView extends RelativeLayout implements View.OnClickListener {
 
@@ -43,7 +41,7 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        actionbarView  = mLayoutInflater.inflate(R.layout.app_main_tab_view, this);
+        actionbarView  = mLayoutInflater.inflate(R.layout.view_app_main_tab, this);
 
         pendingButton = (LinearLayout) actionbarView.findViewById(R.id.pending_layout);
         confirmButton = (LinearLayout) actionbarView.findViewById(R.id.confirm_layout);

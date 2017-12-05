@@ -28,7 +28,7 @@ public class JobDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.job_detail_activity);
+        setContentView(R.layout.activity_job_detail);
 
         actionbarView = new JGGActionbarView(this);
         /* ---------    Custom view add to TopToolbar     --------- */

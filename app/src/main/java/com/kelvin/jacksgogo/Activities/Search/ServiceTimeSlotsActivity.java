@@ -26,7 +26,7 @@ public class ServiceTimeSlotsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_time_slots_activity);
+        setContentView(R.layout.activity_service_time_slots);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_time_slots_actionbar);
@@ -63,7 +63,7 @@ class ServiceDetailTimeSlotsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
-            View timeSlotsTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View timeSlotsTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView timeViewHolder = new SectionTitleView(timeSlotsTitle);
             timeViewHolder.txtTitle.setText("Time Slots");
             timeViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
@@ -71,7 +71,7 @@ class ServiceDetailTimeSlotsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             timeViewHolder.txtTitle.setGravity(Gravity.CENTER_HORIZONTAL);
             return timeViewHolder;
         } else {
-            View timesloatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_time_slots_cell, parent, false);
+            View timesloatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_time_slots, parent, false);
 
             return new EditJobTimeSlotsCell(timesloatView);
         }

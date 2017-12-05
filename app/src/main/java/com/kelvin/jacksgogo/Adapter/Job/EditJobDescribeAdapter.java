@@ -49,38 +49,38 @@ public class EditJobDescribeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         switch (viewType) {
             case 0:
-                View jobTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                View jobTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
                 SectionTitleView sectionTitleView = new SectionTitleView(jobTitleView);
                 return sectionTitleView;
             case 1:
-                View titleBorderTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_text_view_cell, parent, false);
+                View titleBorderTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_text_view, parent, false);
                 serviceTitleCell = new EditJobTextViewCell(titleBorderTextView);
                 return serviceTitleCell;
             case 2:
-                View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
                 SectionTitleView descTitleViewHolder = new SectionTitleView(descTitleView);
                 return descTitleViewHolder;
             case 3:
-                View descBorderTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_text_view_cell, parent, false);
+                View descBorderTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_text_view, parent, false);
                 serviceDescCell = new EditJobTextViewCell(descBorderTextView);
                 return serviceDescCell;
             case 4:
                 if (!isRequest) {
-                    View photoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_phpto_image, parent, false);
+                    View photoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_phpto_image, parent, false);
                     EditJobPhotoImageCell photoViewHolder = new EditJobPhotoImageCell(photoView);
                     return photoViewHolder;
                 } else {
-                    View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_take_photo_cell, parent, false);
+                    View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_take_photo, parent, false);
                     EditJobTakePhotoCell editJobTakePhotoCell = new EditJobTakePhotoCell(takePhotoView);
                     return editJobTakePhotoCell;
                 }
             case 5:
                 if (!isRequest) {
-                    View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_take_photo_cell, parent, false);
+                    View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_take_photo, parent, false);
                     EditJobTakePhotoCell editJobTakePhotoCell = new EditJobTakePhotoCell(takePhotoView);
                     return editJobTakePhotoCell;
                 } else {
-                    View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
+                    View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
                     nextButtonCell = new AppFilterOptionCell(originalView);
                     return nextButtonCell;
                 }

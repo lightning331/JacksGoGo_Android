@@ -62,7 +62,7 @@ public class EditJobFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.edit_job_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_job, container, false);
 
         LinearLayout tabbarLayout = (LinearLayout)view.findViewById(R.id.edit_job_tabbar_view);
         tabbarView = new EditJobTabbarView(getContext());

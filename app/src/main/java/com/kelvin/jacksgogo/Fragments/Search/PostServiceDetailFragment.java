@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import com.kelvin.jacksgogo.Adapter.Service.PostServiceDescribeAdapter;
 import com.kelvin.jacksgogo.Adapter.Service.PostServicePriceAdapter;
 import com.kelvin.jacksgogo.Adapter.Service.PostServiceTimeSlotAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 
 public class PostServiceDetailFragment extends Fragment {
@@ -61,7 +58,7 @@ public class PostServiceDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.post_service_detail_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_detail, container, false);
 
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_service_tabbar_view);
         tabbarView = new EditJobTabbarView(getContext());

@@ -52,29 +52,29 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         switch (viewType) {
             case 0:
-                View nextStepTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_next_step_title_cell, parent, false);
+                View nextStepTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_next_step_title, parent, false);
                 JobDetailNextStepTitleCell jobDetailNextStepTitleCell = new JobDetailNextStepTitleCell(nextStepTitleView);
                 jobDetailNextStepTitleCell.title.setText("Waiting for service provider...");
                 return jobDetailNextStepTitleCell;
             case 1:
-                View typeTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                View typeTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
                 SectionTitleView sectionHeaderView = new SectionTitleView(typeTitleView);
                 sectionHeaderView.txtTitle.setText("Invited service provider:");
                 sectionHeaderView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 return sectionHeaderView;
             case 2:
-                View sectionTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_user_name_rating_cell, parent, false);
+                View sectionTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
                 JobDetailUserNameRatingCell jobDetailUserNameRatingCell;
                 jobDetailUserNameRatingCell = new JobDetailUserNameRatingCell(sectionTitleView);
                 jobDetailUserNameRatingCell.ratingBar.setRating((float)4.8);
                 return jobDetailUserNameRatingCell;
             case 3:
-                View expandableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_expandable_cell, parent, false);
+                View expandableView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_expandable, parent, false);
                 JobDetailExpanableCell jobDetailExpanableCell = new JobDetailExpanableCell(expandableView);
                 jobDetailExpanableCell.bind(this);
                 return jobDetailExpanableCell;
             case 4:
-                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_image_carousel_cell, parent, false);
+                View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
                 JobDetailImageCarouselCell jobDetailImageCarouselCell = new JobDetailImageCarouselCell(imgPageView);
 
                 int[] array = {R.drawable.carousel01, R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel01,
@@ -85,21 +85,21 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 jobDetailImageCarouselCell.carouselView.setImageListener(jobDetailImageCarouselCell.imageListener);
                 return jobDetailImageCarouselCell;
             case 5:
-                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
+                View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell priceViewHolder = new JobDetailDescriptionCell(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setText("$50-$100");
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 return priceViewHolder;
             case 6:
-                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
+                View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell jobDetailDescriptionCell = new JobDetailDescriptionCell(descriptionView);
                 jobDetailDescriptionCell.descriptionImage.setImageResource(R.mipmap.icon_info);
                 jobDetailDescriptionCell.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
                         "what tasks you need done, and any special requirements.");
                 return jobDetailDescriptionCell;
             case 7:
-                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_location_cell, parent, false);
+                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
                 JobDetailLocationCell jobDetailLocationCell = new JobDetailLocationCell(addressView);
                 jobDetailLocationCell.description.setText("2 Jurong West Avenue 5 64386");
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +110,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
                 return jobDetailLocationCell;
             case 8:
-                View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_description_cell, parent, false);
+                View statusView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell statusViewHolder = new JobDetailDescriptionCell(statusView);
                 statusViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
 
@@ -127,11 +127,11 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 statusViewHolder.description.append(normalText);
                 return statusViewHolder;
             case 9:
-                View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_reference_no_cell, parent, false);
+                View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_reference_no, parent, false);
                 JobDetailReferenceNoCell jobDetailReferenceNoCell = new JobDetailReferenceNoCell(referenceView);
                 return jobDetailReferenceNoCell;
             case 10:
-                View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
+                View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
                 AppFilterOptionCell originalViewHolder = new AppFilterOptionCell(originalView);
                 originalViewHolder.title.setText("View Original Service Post");
                 originalViewHolder.btnOriginal.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +144,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
                 return originalViewHolder;
             case 11:
-                View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_detail_footer_cell, parent, false);
+                View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_footer, parent, false);
                 JobDetailFooterCell footerViewHolder = new JobDetailFooterCell(footerView);
                 footerViewHolder.title.setText("Job posted on 7 Jul, 2017 8:15PM");
                 return footerViewHolder;

@@ -51,22 +51,22 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            View jobTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View jobTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView jobTitleViewHolder = new SectionTitleView(jobTitleView);
             return jobTitleViewHolder;
         } else if (viewType == 1) {
-            View dateTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View dateTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView dateTitleViewHolder = new SectionTitleView(dateTitleView);
             return dateTitleViewHolder;
         } else if (viewType == 2) {
             View dateTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.jgg_calendar_view, parent, false);
             return new JGGCalendarView(dateTitleView);
         } else if (viewType == 3) {
-            View timeSlotsTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View timeSlotsTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView timeViewHolder = new SectionTitleView(timeSlotsTitle);
             return timeViewHolder;
         } else {
-            View timeSlotView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_time_slots_cell, parent, false);
+            View timeSlotView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_time_slots, parent, false);
             return new EditJobTimeSlotsCell(timeSlotView);
         }
     }

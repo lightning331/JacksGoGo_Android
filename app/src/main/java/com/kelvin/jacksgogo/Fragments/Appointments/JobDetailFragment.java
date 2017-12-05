@@ -40,7 +40,7 @@ public class JobDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.job_detail_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_job_detail, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.detail_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));

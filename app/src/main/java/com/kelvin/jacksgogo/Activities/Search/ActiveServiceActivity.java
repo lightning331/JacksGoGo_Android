@@ -26,7 +26,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_active_service_activity);
+        setContentView(R.layout.activity_search_active_service);
 
         initializeView();
     }

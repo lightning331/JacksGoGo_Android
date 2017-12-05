@@ -2,7 +2,6 @@ package com.kelvin.jacksgogo.Adapter.Service;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,9 +24,6 @@ import com.kelvin.jacksgogo.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
-
-import java.util.List;
 
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 
@@ -118,7 +114,7 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.post_service_time_slot_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_time_slot, container, false);
 
         initView(view);
 
@@ -276,7 +272,7 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
 
-        View alertView = inflater.inflate(R.layout.post_service_add_time_slot_view, null);
+        View alertView = inflater.inflate(R.layout.view_post_service_add_time_slot, null);
         builder.setView(alertView);
         alertDialog = builder.create();
 
@@ -338,7 +334,7 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
 
-        View calendarView = inflater.inflate(R.layout.post_service_duplicate_time_view, null);
+        View calendarView = inflater.inflate(R.layout.view_post_service_duplicate_time, null);
         builder.setView(calendarView);
         alertDialog = builder.create();
 

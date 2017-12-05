@@ -54,7 +54,7 @@ public class PostServiceAddressAdapter extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.post_service_address_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_address, container, false);
 
         initView(view);
 

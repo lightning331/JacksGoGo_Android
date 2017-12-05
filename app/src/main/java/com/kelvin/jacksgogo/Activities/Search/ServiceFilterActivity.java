@@ -14,7 +14,7 @@ public class ServiceFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_filter_activity);
+        setContentView(R.layout.activity_service_filter);
 
         // Close button clicked
         closeButton = (ImageButton) findViewById(R.id.btn_filter_close);

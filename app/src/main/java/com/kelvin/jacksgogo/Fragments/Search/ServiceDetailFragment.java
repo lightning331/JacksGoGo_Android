@@ -44,7 +44,7 @@ public class ServiceDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.service_detail_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_service_detail, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.original_post_recycler_view);
 
         if (recyclerView != null) {

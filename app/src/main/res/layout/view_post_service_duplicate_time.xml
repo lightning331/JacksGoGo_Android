@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@color/JGGWhite">
     <TextView
+        android:id="@+id/lbl_duplicate_time_title"
         android:text="Duplicate Time Slots to these days:"
         android:fontFamily="@font/mulibold"
         android:textSize="@dimen/list_title_font_size"

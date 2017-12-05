@@ -29,7 +29,7 @@ public class AppMapViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_map_view_activity);
+        setContentView(R.layout.activity_app_map_view);
 
         // Fragment Initialize
         AppMapViewFragment frag = new AppMapViewFragment();

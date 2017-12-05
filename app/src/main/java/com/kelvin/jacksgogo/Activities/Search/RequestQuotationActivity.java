@@ -32,7 +32,7 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_request_quotation_activity);
+        setContentView(R.layout.activity_service_request_quotation);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = (BottomNavigationView) findViewById(R.id.request_quotation_navigation);

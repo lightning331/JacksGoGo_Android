@@ -27,7 +27,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.post_service_activity);
+        setContentView(R.layout.activity_post_service);
 
         initFragment();
 

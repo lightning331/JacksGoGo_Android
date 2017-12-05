@@ -38,7 +38,7 @@ public class PostServiceVerifiedFragment extends Fragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.post_service_verified_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_verified, container, false);
 
         TextView btnVerify = view.findViewById(R.id.btn_verify_new_skills);
         btnVerify.setOnClickListener(this);

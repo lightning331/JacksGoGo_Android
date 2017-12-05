@@ -25,7 +25,7 @@ public class BuyServiceActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_buy_activity);
+        setContentView(R.layout.activity_service_buy);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_buy_actionbar);

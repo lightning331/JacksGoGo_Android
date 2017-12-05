@@ -28,7 +28,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_listing_detail_activity);
+        setContentView(R.layout.activity_service_listing_detail);
 
         Bundle bundle = getIntent().getExtras();
         isPost = bundle.getBoolean("is_post");

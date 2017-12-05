@@ -16,7 +16,7 @@ public class SetUpCreditCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_set_up_credit_card_activity);
+        setContentView(R.layout.activity_service_set_up_credit_card);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.setup_credit_card_actionbar);

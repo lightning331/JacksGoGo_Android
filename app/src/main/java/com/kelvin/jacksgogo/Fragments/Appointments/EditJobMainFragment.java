@@ -49,7 +49,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.edit_job_main_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_job_main, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.edit_job_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));

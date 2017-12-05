@@ -36,7 +36,7 @@ public class ServiceInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     }
 
     private View getContentView(LayoutInflater inflater) {
-        return inflater.inflate(R.layout.service_info_window_adapter_view, null);
+        return inflater.inflate(R.layout.view_service_info_window_adapter, null);
     }
 
     private RelativeLayout.LayoutParams getLayoutParams() {

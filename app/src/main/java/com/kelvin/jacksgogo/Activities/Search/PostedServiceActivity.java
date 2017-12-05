@@ -39,7 +39,7 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.posted_service_activity);
+        setContentView(R.layout.activity_posted_service);
 
         Bundle bundle = getIntent().getExtras();
         isPost = bundle.getBoolean("is_post");

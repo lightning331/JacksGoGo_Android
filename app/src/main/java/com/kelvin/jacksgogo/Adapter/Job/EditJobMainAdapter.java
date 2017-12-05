@@ -32,7 +32,7 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         tabbarView = new EditJobTabbarView(mContext.getContext());
         switch (viewType) {
             case 0:
-                View imageCellView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_image_cell, parent, false);
+                View imageCellView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_main_list_image, parent, false);
                 EditJobMainListImageCell imageViewHolder = new EditJobMainListImageCell(imageCellView);
                 imageViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_describe);
 
@@ -44,7 +44,7 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 });
                 return imageViewHolder;
             case 1:
-                View timeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_cell, parent, false);
+                View timeView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_main_list, parent, false);
                 EditJobMainListCell timeViewHolder = new EditJobMainListCell(timeView);
                 timeViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_time);
                 timeViewHolder.jobDescTitleTextView.setText("One-Time Job");
@@ -58,7 +58,7 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 });
                 return timeViewHolder;
             case 2:
-                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_cell, parent, false);
+                View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_main_list, parent, false);
                 EditJobMainListCell addressViewHolder = new EditJobMainListCell(addressView);
                 addressViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_address);
                 addressViewHolder.jobDescTitleTextView.setVisibility(View.GONE);
@@ -72,7 +72,7 @@ public class EditJobMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 });
                 return addressViewHolder;
             case 3:
-                View reportView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_main_list_cell, parent, false);
+                View reportView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_main_list, parent, false);
                 EditJobMainListCell reportViewHolder = new EditJobMainListCell(reportView);
                 reportViewHolder.tagTitleTextView.setText(R.string.edit_job_tag_report);
                 reportViewHolder.jobDescTitleTextView.setVisibility(View.GONE);

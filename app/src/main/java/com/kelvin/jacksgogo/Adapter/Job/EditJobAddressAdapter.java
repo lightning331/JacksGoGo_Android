@@ -47,30 +47,30 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0:
-                View sectionTitle1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                View sectionTitle1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
                 SectionTitleView sectionTitleView = new SectionTitleView(sectionTitle1);
                 sectionTitleView.txtTitle.setText(R.string.edit_job_address_title);
                 sectionTitleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 return sectionTitleView;
             case 1:
-                View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+                View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
                 SectionTitleView descTitleViewHolder = new SectionTitleView(descTitleView);
                 descTitleViewHolder.txtTitle.setText(R.string.edit_job_address_desc);
                 return descTitleViewHolder;
             case 2:
-                View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
+                View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 unitCell = new EditJobAddressCell(unitTextView);
                 return unitCell;
             case 3:
-                View streetTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
+                View streetTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 streetCell = new EditJobAddressCell(streetTextView);
                 return streetCell;
             case 4:
-                View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.edit_job_address_cell, parent, false);
+                View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 postcodeCell = new EditJobAddressCell(takePhotoView);
                 return postcodeCell;
             case 5:
-                View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_filter_option_cell, parent, false);
+                View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
                 nextButtonCell = new AppFilterOptionCell(originalView);
                 return nextButtonCell;
         }

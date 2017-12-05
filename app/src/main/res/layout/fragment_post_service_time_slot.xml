@@ -127,7 +127,7 @@
                     app:mcv_tileSize="match_parent"/>
             </LinearLayout>
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/post_add_timeslot_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

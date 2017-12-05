@@ -38,7 +38,7 @@ public class NotVerifiedSkillFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.profile_not_verified_skill_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_not_verified_skill, container, false);
         btnSubmit = view.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

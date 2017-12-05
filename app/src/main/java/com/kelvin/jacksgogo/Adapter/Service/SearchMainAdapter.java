@@ -41,29 +41,29 @@ public class SearchMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == HEADER_TYPE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_home_headerview, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view);
             categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == CATEGORY_SECTION_TITLE_TYPE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
             sectionView.txtTitle.setText("All Categories");
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
-            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_category_list_view, parent, false);
+            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
             SearchCategoryListView categoryListView = new SearchCategoryListView(listView);
             categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_title_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
             sectionView.txtTitle.setText("Recommended For You");
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_list_detail_cell, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_list_detail, parent, false);
             ServiceListDetailCell cell = new ServiceListDetailCell(view);
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

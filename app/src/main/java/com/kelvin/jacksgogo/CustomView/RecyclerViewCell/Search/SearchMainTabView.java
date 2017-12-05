@@ -1,7 +1,7 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search;
 
 import android.content.Context;
-import android.media.Image;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.ServiceSearchActivity;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -45,7 +46,7 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
     private void initView(){
 
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        searchTabView  = mLayoutInflater.inflate(R.layout.search_main_tab_view, this);
+        searchTabView  = mLayoutInflater.inflate(R.layout.view_search_main_tab, this);
 
         servicesButton = (LinearLayout) searchTabView.findViewById(R.id.services_layout);
         jobsButton = (LinearLayout) searchTabView.findViewById(R.id.jobs_layout);
@@ -71,8 +72,8 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
     public void onClick(View view) {
         if (view.getId() == R.id.btn_search) {
             // back to previous view
-//            Intent intent = new Intent(view.getContext(), AppFilterActivity.class);
-//            mContext.startActivity(intent);
+            Intent intent = new Intent(view.getContext(), ServiceSearchActivity.class);
+            mContext.startActivity(intent);
         } else {
             servicesDotImageView.setVisibility(View.INVISIBLE);
             jobsDotImageView.setVisibility(View.INVISIBLE);

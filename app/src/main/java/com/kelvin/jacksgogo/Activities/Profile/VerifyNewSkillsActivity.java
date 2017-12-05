@@ -21,7 +21,7 @@ public class VerifyNewSkillsActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_verify_new_skills_activity);
+        setContentView(R.layout.activity_profile_verify_new_skills);
 
         Bundle bundle = getIntent().getExtras();
         alreadyVerifiedSkills = bundle.getBoolean("already_verified_skills");

@@ -40,7 +40,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_detail_activity);
+        setContentView(R.layout.activity_service_detail);
 
         Bundle bundle = getIntent().getExtras();
         isService = bundle.getBoolean("is_service");

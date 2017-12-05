@@ -33,7 +33,7 @@ public class ServiceReviewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_reviews_activity);
+        setContentView(R.layout.activity_service_reviews);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_reviews_actionbar);
@@ -98,7 +98,7 @@ class ServiceTotalReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_total_review_cell, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_total_review, parent, false);
 
         return new ServiceReviewCell(view);
     }
