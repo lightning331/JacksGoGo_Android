@@ -470,7 +470,7 @@
                         android:layout_height="35dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:src="@drawable/appicon_192"/>
+                        android:src="@drawable/appicon_512"/>
                     <TextView
                         android:text="JGG Approval Agent"
                         android:layout_width="0dp"
