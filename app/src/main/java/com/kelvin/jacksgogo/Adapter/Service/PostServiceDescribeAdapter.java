@@ -1,20 +1,36 @@
 package com.kelvin.jacksgogo.Adapter.Service;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
+import com.yanzhenjie.album.Action;
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.api.widget.Widget;
+import com.yanzhenjie.album.util.AlbumUtils;
+import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.album.widget.divider.Divider;
+
+import java.util.ArrayList;
 
 public class PostServiceDescribeAdapter extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -31,12 +47,17 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
 
     private Context mContext;
 
+    private RecyclerView recyclerView;
+    private JGGImageGalleryAdapter mAdapter;
+    private ArrayList<AlbumFile> mAlbumFiles;
+
     private EditText txtServiceTitle;
     private EditText txtServiceDesc;
     private EditText txtServiceTag;
     private LinearLayout btnTakePhoto;
     private LinearLayout btnNext;
     private TextView lblNext;
+
     private String strTitle;
     private String strDescription;
     private String strTags;
@@ -67,6 +88,7 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
         initiView(view);
+        initRecyclerView(view);
 
         return view;
     }
@@ -83,6 +105,39 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
         btnTakePhoto.setOnClickListener(this);
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.describe_photo_recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
+
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        int width = display.getWidth();
+
+        int itemSize = (width) / 4;
+        mAdapter = new JGGImageGalleryAdapter(mContext, itemSize, new com.yanzhenjie.album.impl.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (position < mAlbumFiles.size()) {
+                    Album.galleryAlbum(mContext)
+                            .checkable(true)
+                            .checkedList(mAlbumFiles)
+                            .currentPosition(position)
+                            .onResult(new Action<ArrayList<AlbumFile>>() {
+                                @Override
+                                public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                                    mAlbumFiles = result;
+                                    mAdapter.notifyDataSetChanged(mAlbumFiles);
+                                }
+                            })
+                            .start();
+                } else {
+                    selectImage();
+                }
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -114,8 +169,49 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
         if (view.getId() == R.id.btn_post_service_next) {
             listener.onNextButtonClick(strTitle, strDescription, strTags);
         } else if (view.getId() == R.id.btn_post_service_take_photo) {
-
+            selectImage();
         }
+    }
+
+    private void selectImage() {
+        Album.image(this)
+                .multipleChoice()
+                .requestCode(200)
+                .camera(true)
+                .columnCount(3)
+                .selectCount(7)
+                .checkedList(mAlbumFiles)
+                .widget(
+                        Widget.newLightBuilder(mContext)
+                                .title("Include Photos") // Title.
+                                .statusBarColor(ContextCompat.getColor(mContext, R.color.JGGGrey1)) // StatusBar color.
+                                .toolBarColor(Color.WHITE) // Toolbar color.
+                                .navigationBarColor(Color.GREEN) // Virtual NavigationBar color of Android5.0+.
+                                .mediaItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), Color.GREEN) // Image or video selection box.
+                                .bucketItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), ContextCompat.getColor(mContext, R.color.JGGGreen)) // Select the folder selection box.
+                                .buttonStyle( // Used to configure the style of button when the image/video is not found.
+                                        Widget.ButtonStyle.newLightBuilder(mContext) // With Widget's Builder model.
+                                                .setButtonSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), Color.WHITE) // Button selector.
+                                                .build()
+                                )
+                                .build()
+                )
+                .onResult(new Action<ArrayList<AlbumFile>>() {
+                    @Override
+                    public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                        mAlbumFiles = result;
+                        recyclerView.setVisibility(View.VISIBLE);
+                        mAdapter.notifyDataSetChanged(mAlbumFiles);
+                        btnTakePhoto.setVisibility(View.GONE);
+                    }
+                })
+                .onCancel(new Action<String>() {
+                    @Override
+                    public void onAction(int requestCode, @NonNull String result) {
+                        Toast.makeText(mContext, R.string.canceled, Toast.LENGTH_LONG).show();
+                    }
+                })
+                .start();
     }
 
     @Override

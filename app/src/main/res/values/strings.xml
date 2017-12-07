@@ -26,6 +26,7 @@
     <string name="jobs">Jobs</string>
     <string name="go_club">GoClub</string>
     <string name="search_result">Search Results</string>
+    <string name="canceled">Canceled</string>
 
     <!-- TODO: JGG Appointment PopUp Menu -->
     <string name="menu_option_edit">Edit</string>

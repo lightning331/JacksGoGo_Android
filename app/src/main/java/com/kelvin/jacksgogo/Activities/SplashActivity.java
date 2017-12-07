@@ -1,16 +1,9 @@
 package com.kelvin.jacksgogo.Activities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-
-import com.kelvin.jacksgogo.R;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
