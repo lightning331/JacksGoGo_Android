@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Service;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,7 +28,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 
 
-public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClickListener, TextWatcher, OnDateSelectedListener {
+public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher, OnDateSelectedListener {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -91,12 +91,12 @@ public class PostServiceTimeSlotAdapter extends Fragment implements View.OnClick
     private boolean isOnePerson = false;
     private boolean isTitleEdit = false;
 
-    public PostServiceTimeSlotAdapter() {
+    public PostServiceTimeSlotFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceTimeSlotAdapter newInstance(String param1, String param2) {
-        PostServiceTimeSlotAdapter fragment = new PostServiceTimeSlotAdapter();
+    public static PostServiceTimeSlotFragment newInstance(String param1, String param2) {
+        PostServiceTimeSlotFragment fragment = new PostServiceTimeSlotFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

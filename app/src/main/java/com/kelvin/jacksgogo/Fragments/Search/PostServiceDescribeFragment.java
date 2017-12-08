@@ -1,6 +1,7 @@
-package com.kelvin.jacksgogo.Adapter.Service;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,18 +22,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
+import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.theartofdev.edmodo.cropper.CropImage;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
-import com.yanzhenjie.album.util.AlbumUtils;
-import com.yanzhenjie.album.util.DisplayUtils;
-import com.yanzhenjie.album.widget.divider.Divider;
 
+import java.io.File;
 import java.util.ArrayList;
 
-public class PostServiceDescribeAdapter extends Fragment implements View.OnClickListener, TextWatcher {
+public class PostServiceDescribeFragment extends Fragment
+        implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
     private OnItemClickListener listener;
@@ -62,12 +65,12 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
     private String strDescription;
     private String strTags;
 
-    public PostServiceDescribeAdapter() {
+    public PostServiceDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceDescribeAdapter newInstance(String param1, String param2) {
-        PostServiceDescribeAdapter fragment = new PostServiceDescribeAdapter();
+    public static PostServiceDescribeFragment newInstance(String param1, String param2) {
+        PostServiceDescribeFragment fragment = new PostServiceDescribeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -120,57 +123,17 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
             @Override
             public void onItemClick(View view, int position) {
                 if (position < mAlbumFiles.size()) {
-                    Album.galleryAlbum(mContext)
-                            .checkable(true)
-                            .checkedList(mAlbumFiles)
-                            .currentPosition(position)
-                            .onResult(new Action<ArrayList<AlbumFile>>() {
-                                @Override
-                                public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
-                                    mAlbumFiles = result;
-                                    mAdapter.notifyDataSetChanged(mAlbumFiles);
-                                }
-                            })
-                            .start();
+                    String name = (String)mAlbumFiles.get(position).getPath();
+                    Uri imageUri = Uri.parse(new File(name).toString());
+                    Intent intent = new Intent(mContext, JGGImageCropActivity.class);
+                    intent.putExtra("imageUri", name);
+                    startActivityForResult(intent, 1);
                 } else {
                     selectImage();
                 }
             }
         });
         recyclerView.setAdapter(mAdapter);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_service_next) {
-            listener.onNextButtonClick(strTitle, strDescription, strTags);
-        } else if (view.getId() == R.id.btn_post_service_take_photo) {
-            selectImage();
-        }
     }
 
     private void selectImage() {
@@ -212,6 +175,39 @@ public class PostServiceDescribeAdapter extends Fragment implements View.OnClick
                     }
                 })
                 .start();
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_post_service_next) {
+            listener.onNextButtonClick(strTitle, strDescription, strTags);
+        } else if (view.getId() == R.id.btn_post_service_take_photo) {
+            selectImage();
+        }
     }
 
     @Override

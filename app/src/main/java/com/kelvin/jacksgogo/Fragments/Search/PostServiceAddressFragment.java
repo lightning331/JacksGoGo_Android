@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Service;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
 import android.net.Uri;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
-public class PostServiceAddressAdapter extends Fragment implements View.OnClickListener, TextWatcher {
+public class PostServiceAddressFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -31,12 +31,12 @@ public class PostServiceAddressAdapter extends Fragment implements View.OnClickL
 
     private boolean isChecked = false;
 
-    public PostServiceAddressAdapter() {
+    public PostServiceAddressFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceAddressAdapter newInstance(String param1, String param2) {
-        PostServiceAddressAdapter fragment = new PostServiceAddressAdapter();
+    public static PostServiceAddressFragment newInstance(String param1, String param2) {
+        PostServiceAddressFragment fragment = new PostServiceAddressFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

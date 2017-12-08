@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Service;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
-public class PostServicePriceAdapter extends Fragment implements View.OnClickListener, TextWatcher {
+public class PostServicePriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -40,12 +40,12 @@ public class PostServicePriceAdapter extends Fragment implements View.OnClickLis
     private boolean isFixedAmount = false;
     private boolean isFromAmount = false;
 
-    public PostServicePriceAdapter() {
+    public PostServicePriceFragment() {
         // Required empty public constructor
     }
 
-    public static PostServicePriceAdapter newInstance(String param1, String param2) {
-        PostServicePriceAdapter fragment = new PostServicePriceAdapter();
+    public static PostServicePriceFragment newInstance(String param1, String param2) {
+        PostServicePriceFragment fragment = new PostServicePriceFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

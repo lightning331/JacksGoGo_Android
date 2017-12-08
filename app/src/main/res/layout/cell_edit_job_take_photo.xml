@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="76dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center">
     <LinearLayout
         android:id="@+id/btn_take_photo"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/green_border_background">
         <LinearLayout
             android:layout_width="0dp"

@@ -11,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.Service.PostServiceAddressAdapter;
-import com.kelvin.jacksgogo.Adapter.Service.PostServiceDescribeAdapter;
-import com.kelvin.jacksgogo.Adapter.Service.PostServicePriceAdapter;
-import com.kelvin.jacksgogo.Adapter.Service.PostServiceTimeSlotAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
@@ -113,8 +109,8 @@ public class PostServiceDetailFragment extends Fragment {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.DESCRIBE) {
-            PostServiceDescribeAdapter frag = new PostServiceDescribeAdapter();
-            frag.setOnItemClickListener(new PostServiceDescribeAdapter.OnItemClickListener() {
+            PostServiceDescribeFragment frag = new PostServiceDescribeFragment();
+            frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick(String title, String comment, String tags) {
                     tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME, true);
@@ -123,8 +119,8 @@ public class PostServiceDetailFragment extends Fragment {
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
         } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.TIME) {
-            PostServicePriceAdapter frag = new PostServicePriceAdapter();
-            frag.setOnItemClickListener(new PostServicePriceAdapter.OnItemClickListener() {
+            PostServicePriceFragment frag = new PostServicePriceFragment();
+            frag.setOnItemClickListener(new PostServicePriceFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
                     tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS, true);
@@ -133,8 +129,8 @@ public class PostServiceDetailFragment extends Fragment {
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
         } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.ADDRESS) {
-            PostServiceTimeSlotAdapter frag = new PostServiceTimeSlotAdapter();
-            frag.setOnItemClickListener(new PostServiceTimeSlotAdapter.OnItemClickListener() {
+            PostServiceTimeSlotFragment frag = new PostServiceTimeSlotFragment();
+            frag.setOnItemClickListener(new PostServiceTimeSlotFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
                     tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT, true);
@@ -143,8 +139,8 @@ public class PostServiceDetailFragment extends Fragment {
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
         } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.REPORT) {
-            PostServiceAddressAdapter frag = new PostServiceAddressAdapter();
-            frag.setOnItemClickListener(new PostServiceAddressAdapter.OnItemClickListener() {
+            PostServiceAddressFragment frag = new PostServiceAddressFragment();
+            frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
                     PostServiceMainFragment fragment = new PostServiceMainFragment();
