@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Job;
+package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
 import android.graphics.Typeface;

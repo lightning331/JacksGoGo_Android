@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.EditJobFragment;
 import com.kelvin.jacksgogo.R;
 
 public class RequestQuotationActivity extends AppCompatActivity implements View.OnClickListener {

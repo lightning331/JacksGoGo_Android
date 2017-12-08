@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Appointments;
+package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
-import com.kelvin.jacksgogo.Adapter.Job.EditJobMainAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.EditJobMainAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 

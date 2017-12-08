@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Job;
+package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListImageCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.EditJobMainFragment;
 import com.kelvin.jacksgogo.R;
 
 /**

@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Appointments;
+package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,12 +16,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
-import com.kelvin.jacksgogo.Adapter.Job.EditJobAddressAdapter;
-import com.kelvin.jacksgogo.Adapter.Job.EditJobDescribeAdapter;
-import com.kelvin.jacksgogo.Adapter.Job.EditJobReportAdapter;
-import com.kelvin.jacksgogo.Adapter.Job.EditJobTimeAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.EditJobAddressAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.EditJobDescribeAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.EditJobTimeAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;

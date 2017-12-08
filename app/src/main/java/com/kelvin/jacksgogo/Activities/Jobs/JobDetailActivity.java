@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Activities.Appointment;
+package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -12,8 +12,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Appointments.EditJobMainFragment;
-import com.kelvin.jacksgogo.Fragments.Appointments.JobDetailFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.EditJobMainFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
 
 import java.lang.reflect.Field;

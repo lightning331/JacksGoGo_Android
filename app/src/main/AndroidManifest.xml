@@ -54,7 +54,7 @@
             android:name=".Activities.Appointment.AppFilterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Appointment.JobDetailActivity"
+            android:name=".Activities.Jobs.JobDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Search.ServiceDetailActivity"

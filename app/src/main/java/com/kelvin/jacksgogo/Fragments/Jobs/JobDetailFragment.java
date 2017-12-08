@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Appointments;
+package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.Job.JobDetailAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.JobDetailAdapter;
 import com.kelvin.jacksgogo.R;
 
 
