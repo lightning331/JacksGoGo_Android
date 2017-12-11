@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Adapter.Jobs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -25,9 +26,9 @@ import com.kelvin.jacksgogo.R;
 
 public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    JobDetailFragment mContext;
+    private Context mContext;
 
-    public JobDetailAdapter(JobDetailFragment context) {
+    public JobDetailAdapter(Context context) {
         this.mContext = context;
     }
 
@@ -107,7 +108,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mContext.getActivity().startActivity(new Intent(mContext.getActivity(), AppMapViewActivity.class));
+                        mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
                     }
                 });
                 break;
@@ -138,9 +139,9 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 originalViewHolder.inviteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(mContext.getActivity(), ServiceDetailActivity.class);
+                        Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                         intent.putExtra("is_service", false);
-                        mContext.getActivity().startActivity(intent);
+                        mContext.startActivity(intent);
                     }
                 });
                 break;

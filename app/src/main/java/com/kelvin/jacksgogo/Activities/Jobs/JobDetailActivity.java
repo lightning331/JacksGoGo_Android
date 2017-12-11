@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.EditJobMainFragment;
-import com.kelvin.jacksgogo.Fragments.Jobs.JobDetailFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.JobMainFragment;
 import com.kelvin.jacksgogo.R;
 
 import java.lang.reflect.Field;
@@ -22,7 +23,7 @@ public class JobDetailActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
-    JobDetailFragment jobDetailFragment;
+    JobMainFragment jobMainFragment;
     EditJobMainFragment editJobMainFragment;
 
     @Override
@@ -36,7 +37,7 @@ public class JobDetailActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        showJobDetailFragment();
+        showJobMainFragment();
 
         actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
@@ -75,7 +76,7 @@ public class JobDetailActivity extends AppCompatActivity {
                     popupMenu.show();
                     break;
                 case EDIT_MAIN:
-                    showJobDetailFragment();
+                    showJobMainFragment();
                     break;
                 case EDIT_DETAIL:
                     backToEditJobMainFragment();
@@ -87,10 +88,15 @@ public class JobDetailActivity extends AppCompatActivity {
             /* ---------    Back button pressed     --------- */
             switch (actionbarView.getEditStatus()) {
                 case NONE:
-                    JobDetailActivity.this.finish();
+                    FragmentManager manager = getSupportFragmentManager();
+                    if (manager.getBackStackEntryCount() == 0) {
+                        super.onBackPressed();
+                    } else {
+                        manager.popBackStack();
+                    }
                     break;
                 case EDIT_MAIN:
-                    showJobDetailFragment();
+                    showJobMainFragment();
                     break;
                 case EDIT_DETAIL:
                     backToEditJobMainFragment();
@@ -101,12 +107,12 @@ public class JobDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void showJobDetailFragment() {
+    private void showJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
 
-        jobDetailFragment = new JobDetailFragment();
+        jobMainFragment = new JobMainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, jobDetailFragment, jobDetailFragment.getTag());
+        ft.replace(R.id.app_detail_container, jobMainFragment, jobMainFragment.getTag());
         ft.commit();
     }
 

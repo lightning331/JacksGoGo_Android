@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity">
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,5 +37,5 @@
             android:background="@color/JGGGrey5"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

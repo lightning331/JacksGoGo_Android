@@ -16,7 +16,8 @@ import com.kelvin.jacksgogo.R;
 
 public class JobDetailFragment extends Fragment {
 
-    RecyclerView recyclerView;
+    private Context mContext;
+    private RecyclerView recyclerView;
 
     public JobDetailFragment() {
         // Required empty public constructor
@@ -48,7 +49,7 @@ public class JobDetailFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        JobDetailAdapter mAdapter = new JobDetailAdapter(this);
+        JobDetailAdapter mAdapter = new JobDetailAdapter(mContext);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -57,6 +58,7 @@ public class JobDetailFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        mContext = context;
         super.onAttach(context);
     }
 

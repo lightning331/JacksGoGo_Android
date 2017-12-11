@@ -87,7 +87,7 @@
                 android:id="@+id/imgAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@mipmap/nurse4"
+                android:src="@drawable/nurse4"
                 android:background="@color/transparent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
