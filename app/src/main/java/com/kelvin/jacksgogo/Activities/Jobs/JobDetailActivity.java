@@ -39,7 +39,7 @@ public class JobDetailActivity extends AppCompatActivity {
 
         showJobMainFragment();
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -53,27 +53,10 @@ public class JobDetailActivity extends AppCompatActivity {
             /* ---------    More button pressed     --------- */
             switch (actionbarView.getEditStatus()) {
                 case NONE:
-                    actionbarView.setEditMoreButtonClicked(true);
-
-                    PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, view);
-                    popupMenu.inflate(R.menu.edit_menu);
-                    popupMenu.setOnDismissListener(new OnDismissListener());
-                    popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
-
-                    // Force icons to show in Custom Overflow Menu
-                    Object menuHelper;
-                    Class[] argTypes;
-                    try {
-                        Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-                        fMenuHelper.setAccessible(true);
-                        menuHelper = fMenuHelper.get(popupMenu);
-                        argTypes = new Class[] { boolean.class };
-                        menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
-                    } catch (Exception e) {
-                        popupMenu.show();
-                        return;
-                    }
-                    popupMenu.show();
+                    onShowEditPopUpMenu(view);
+                    break;
+                case APPOINTMENT:
+                    onShowEditPopUpMenu(view);
                     break;
                 case EDIT_MAIN:
                     showJobMainFragment();
@@ -86,14 +69,19 @@ public class JobDetailActivity extends AppCompatActivity {
             }
         } else {
             /* ---------    Back button pressed     --------- */
+            FragmentManager manager = getSupportFragmentManager();
+            int backStackCount = manager.getBackStackEntryCount();
             switch (actionbarView.getEditStatus()) {
                 case NONE:
-                    FragmentManager manager = getSupportFragmentManager();
-                    if (manager.getBackStackEntryCount() == 0) {
+                    if (backStackCount == 0) {
                         super.onBackPressed();
                     } else {
+                        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT);
                         manager.popBackStack();
                     }
+                    break;
+                case APPOINTMENT:
+                    super.finish();
                     break;
                 case EDIT_MAIN:
                     showJobMainFragment();
@@ -107,8 +95,32 @@ public class JobDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void onShowEditPopUpMenu(View view) {
+        actionbarView.setEditMoreButtonClicked(true);
+
+        PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, view);
+        popupMenu.inflate(R.menu.edit_menu);
+        popupMenu.setOnDismissListener(new OnDismissListener());
+        popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
+
+        // Force icons to show in Custom Overflow Menu
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[] { boolean.class };
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+            popupMenu.show();
+            return;
+        }
+        popupMenu.show();
+    }
+
     private void showJobMainFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT);
 
         jobMainFragment = new JobMainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -125,8 +137,8 @@ public class JobDetailActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void setStatus() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
+    public void setStatus(JGGActionbarView.EditStatus status) {
+        actionbarView.setStatus(status);
     }
 
     private void openEditJobMainFragment() {
@@ -142,9 +154,6 @@ public class JobDetailActivity extends AppCompatActivity {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(JobDetailActivity.this);
         LayoutInflater inflater = (JobDetailActivity.this).getLayoutInflater();
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the
-        // dialog layout
         View dialogView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(dialogView);
         TextView cancelButton = (TextView) dialogView.findViewById(R.id.btn_alert_cancel);
@@ -153,7 +162,7 @@ public class JobDetailActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionbarView.setStatus(JGGActionbarView.EditStatus.NONE);
+                actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT);
                 alertDialog.dismiss();
             }
         });
@@ -169,7 +178,7 @@ public class JobDetailActivity extends AppCompatActivity {
     private class OnDismissListener implements PopupMenu.OnDismissListener {
         @Override
         public void onDismiss(PopupMenu menu) {
-            if (actionbarView.getEditStatus() == JGGActionbarView.EditStatus.NONE)
+            if (actionbarView.getEditStatus() == JGGActionbarView.EditStatus.APPOINTMENT)
                 actionbarView.setEditMoreButtonClicked(false);
         }
     }

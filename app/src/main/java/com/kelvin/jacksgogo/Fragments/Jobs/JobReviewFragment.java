@@ -4,31 +4,28 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
-import com.kelvin.jacksgogo.Adapter.Jobs.QuotationAdapter;
 import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainFooterView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.ReviewCell;
 import com.kelvin.jacksgogo.R;
 
-public class QuotationFragment extends Fragment {
+public class JobReviewFragment extends Fragment {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
 
-    private RecyclerView mRecyclerView;
-
-    public QuotationFragment() {
+    public JobReviewFragment() {
         // Required empty public constructor
     }
 
-    public static QuotationFragment newInstance(String param1, String param2) {
-        QuotationFragment fragment = new QuotationFragment();
+    public static JobReviewFragment newInstance(String param1, String param2) {
+        JobReviewFragment fragment = new JobReviewFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -47,19 +44,29 @@ public class QuotationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_quotation, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.quotation_recycler_view);
-        if (mRecyclerView != null) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        }
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        view.setLayoutParams(lp);
+        View view = inflater.inflate(R.layout.fragment_job_review, container, false);
 
-        QuotationAdapter adapter = new QuotationAdapter(mContext);
-
-        mRecyclerView.setAdapter(adapter);
+        initView(view);
 
         return view;
+    }
+
+    private void initView(View view) {
+
+        LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_given_review_layout);
+        ReviewCell givenReviewView = new ReviewCell(mContext);
+        givenReviewView.ratingBar.setRating((float)5.0);
+        givenReviewView.lblDate.setText("By you on 25 Dec, 2017");
+        givenReviewView.avatar.setImageResource(R.drawable.nurse);
+        givenReviewLayout.addView(givenReviewView);
+
+        LinearLayout getReviewLayout = (LinearLayout)view.findViewById(R.id.job_get_review_layout);
+        ReviewCell getReviewView = new ReviewCell(mContext);
+        getReviewView.ratingBar.setRating((float)4.6);
+        getReviewView.lblDate.setText("By catherinedesilva on 25 Dec, 2017");
+        getReviewView.lblDescription.setText("Client is a wonder to work with. She gives clear instructions and makes decisions fast.");
+        getReviewLayout.addView(getReviewView);
+
     }
 
     public void onButtonPressed(Uri uri) {

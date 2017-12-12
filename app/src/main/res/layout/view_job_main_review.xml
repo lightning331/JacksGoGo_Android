@@ -33,6 +33,7 @@
             android:layout_marginBottom="32dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/lbl_job_main_review_date"
                 android:text="12 Jul 2017 8:15 PM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,11 +42,13 @@
                 android:fontFamily="@font/muliregular"
                 android:textSize="12dp"/>
             <LinearLayout
+                android:id="@+id/btn_job_main_review"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:layout_marginTop="8dp">
                 <TextView
+                    android:id="@+id/lbl_job_main_review_title"
                     android:text="you have given catherinedesilva a review."
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

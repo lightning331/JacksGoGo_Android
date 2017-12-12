@@ -2,7 +2,6 @@ package com.kelvin.jacksgogo.CustomView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,6 +40,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     private EditStatus editStatus;
     public enum EditStatus {
         NONE,
+        APPOINTMENT,
         EDIT_MAIN,
         EDIT_DETAIL,
         MAP,
@@ -98,6 +98,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         switch (status) {
             case NONE:
                 mTitleTextView.setText("");
+                mBackButtonTitleTextView.setText("");
+                mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
+                break;
+            case APPOINTMENT:
+                mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText(R.string.title_appointment);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
                 param = new LinearLayout.LayoutParams(
@@ -116,10 +121,12 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case EDIT_MAIN:
                 mTitleTextView.setText(R.string.menu_option_edit);
+                mBackButtonTitleTextView.setText(R.string.title_appointment);
                 mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
                 break;
             case EDIT_DETAIL:
                 mTitleTextView.setText(R.string.menu_option_edit);
+                mBackButtonTitleTextView.setText(R.string.title_appointment);
                 mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
                 break;
             case MAP:

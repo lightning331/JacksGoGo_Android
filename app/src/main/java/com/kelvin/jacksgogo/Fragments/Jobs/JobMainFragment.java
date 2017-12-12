@@ -12,8 +12,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainConfirmedView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainFooterView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainGetReview;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainGivenReview;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainReview;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainPaymentView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainQuotationView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainTipView;
@@ -65,12 +64,24 @@ public class JobMainFragment extends Fragment implements View.OnClickListener {
         footerLayout.addView(footerView);
 
         LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
-        JobMainGivenReview givenReviewView = new JobMainGivenReview(mContext);
+        JobMainReview givenReviewView = new JobMainReview(mContext);
         givenReviewLayout.addView(givenReviewView);
+        givenReviewView.setOnItemClickListener(new JobMainReview.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                onShowReviewFragment();
+            }
+        });
 
         LinearLayout getReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_get_review_layout);
-        JobMainGetReview getReviewView = new JobMainGetReview(mContext);
+        JobMainReview getReviewView = new JobMainReview(mContext);
         getReviewLayout.addView(getReviewView);
+        getReviewView.setOnItemClickListener(new JobMainReview.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                onShowReviewFragment();
+            }
+        });
 
         LinearLayout tipLayout = (LinearLayout)view.findViewById(R.id.job_main_tip_layout);
         JobMainTipView tipView = new JobMainTipView(mContext);
@@ -102,6 +113,14 @@ public class JobMainFragment extends Fragment implements View.OnClickListener {
         });
         quotationLayout.addView(quotationView);
 
+    }
+
+    private void onShowReviewFragment() {
+        JobReviewFragment frag = new JobReviewFragment();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.app_detail_container, frag, frag.getTag());
+        ft.addToBackStack("review_fragment");
+        ft.commit();
     }
 
     public void onButtonPressed(Uri uri) {

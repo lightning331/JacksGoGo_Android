@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.Adapter.Jobs.EditJobAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobDescribeAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobTimeAdapter;
+import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
 import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
@@ -210,7 +211,7 @@ public class EditJobFragment extends Fragment implements View.OnClickListener {
             status = getArguments().getString("status");
             isRequest = getArguments().getBoolean("isRequest");
             if (isRequest)((RequestQuotationActivity)context).setBottomViewHidden(true);
-            else ((JobDetailActivity) context).setStatus();
+            else ((JobDetailActivity) context).setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
         }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
