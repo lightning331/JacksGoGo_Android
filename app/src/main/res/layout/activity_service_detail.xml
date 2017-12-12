@@ -39,22 +39,89 @@
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/service_detail_bottom"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/JGGGreen"
+            android:layout_height="88dp"
             android:layout_gravity="bottom"
             app:itemTextColor="@color/JGGWhite"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:itemTextAppearance="@style/NavigationViewOwnStyle">
-            <TextView
-                android:id="@+id/service_detail_bottom_title"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/buy_service"
-                android:textAlignment="center"
-                android:textColor="@color/JGGWhite"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"
-                android:gravity="center"/>
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@color/JGGGreen10Percent">
+                        <TextView
+                            android:id="@+id/lbl_booked_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/mulibold"
+                            android:text="21k"/>
+                        <TextView
+                            android:id="@+id/lbl_booked_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:maxLines="1"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/muliregular"
+                            android:text="people have booked this service!"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:gravity="end|center"
+                        android:orientation="horizontal"
+                        android:background="@color/JGGGreen10Percent">
+                        <TextView
+                            android:id="@+id/lbl_viewing_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginRight="5dp"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/mulibold"
+                            android:text="3"
+                            android:gravity="end" />
+                        <TextView
+                            android:id="@+id/lbl_viewing_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewEnd"
+                            android:gravity="end"
+                            android:textColor="@color/JGGBlack"
+                            android:layout_marginRight="16dp"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/muliregular"
+                            android:text="viewing now "/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/service_detail_bottom_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="@string/buy_service"
+                    android:textAlignment="center"
+                    android:background="@color/JGGGreen"
+                    android:textColor="@color/JGGWhite"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/button_font_size"
+                    android:gravity="center"/>
+            </LinearLayout>
         </android.support.design.widget.BottomNavigationView>
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>

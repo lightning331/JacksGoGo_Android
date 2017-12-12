@@ -90,6 +90,16 @@ public class JobMainFragment extends Fragment implements View.OnClickListener {
 
         LinearLayout quotationLayout = (LinearLayout)view.findViewById(R.id.job_main_quotation_layout);
         JobMainQuotationView quotationView = new JobMainQuotationView(mContext);
+        quotationView.setOnItemClickListener(new JobMainQuotationView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                QuotationFragment frag = new QuotationFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.app_detail_container, frag, frag.getTag());
+                ft.addToBackStack("view_quotation_fragment");
+                ft.commit();
+            }
+        });
         quotationLayout.addView(quotationView);
 
     }

@@ -21,7 +21,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:background="@color/JGGGrey5"
-            android:src="@mipmap/button_close_round_green"/>
+            android:src="@mipmap/button_area_tick_round_green"/>
         <TextView
             android:text="Show Only Services With The Keywords"
             android:fontFamily="@font/mulibold"

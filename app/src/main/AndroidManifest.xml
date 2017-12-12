@@ -110,7 +110,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".Activities.Search.JGGImageCropActivity"></activity>
+        <activity android:name=".Activities.Search.JGGImageCropActivity" />
     </application>
 
 </manifest>

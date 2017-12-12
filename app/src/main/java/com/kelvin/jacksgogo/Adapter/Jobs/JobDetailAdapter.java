@@ -10,13 +10,11 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailImageCarouselCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailInviteButtonCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailReferenceNoCell;
-import com.kelvin.jacksgogo.Fragments.Jobs.JobDetailFragment;
 import com.kelvin.jacksgogo.R;
 
 

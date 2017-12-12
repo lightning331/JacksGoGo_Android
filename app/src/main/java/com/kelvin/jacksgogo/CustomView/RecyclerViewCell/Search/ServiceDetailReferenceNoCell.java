@@ -7,9 +7,9 @@ import android.view.View;
  * Created by PUMA on 11/13/2017.
  */
 
-public class ServiceDetailBookedInfoCell extends RecyclerView.ViewHolder {
+public class ServiceDetailReferenceNoCell extends RecyclerView.ViewHolder {
 
-    public ServiceDetailBookedInfoCell(View itemView) {
+    public ServiceDetailReferenceNoCell(View itemView) {
         super(itemView);
     }
 }

@@ -1,115 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="90dp"
+    android:orientation="vertical"
+    android:gravity="center">
     <LinearLayout
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-        <com.makeramen.roundedimageview.RoundedImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/img_bidding_provider_avatar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/nurse4"
-            android:background="@color/transparent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            app:riv_corner_radius="@dimen/circle_image_radius"
-            app:riv_mutate_background="true"
-            app:riv_oval="true"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="60"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/JGGWhite">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="96dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/lbl_bidding_provider_username"
-                android:text="Alan.Tam"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/JGGBlack"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"/>
-            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bidding_provider_ratingBar"
-                style="@style/Widget.MaterialRatingBar.RatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="13dp"
-                android:stepSize="0.01"
-                android:isIndicator="true"
-                app:mrb_progressBackgroundTint="@color/JGGGrey3"
-                app:mrb_progressTint="@color/JGGYellow"
-                app:mrb_secondaryProgressTint="@color/JGGYellow" />
+                android:id="@+id/img_bidding_provider_avatar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/nurse4"
+                android:background="@color/transparent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="@dimen/circle_image_radius"
+                app:riv_mutate_background="true"
+                app:riv_oval="true"/>
 
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="55"
+            android:gravity="center"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/lbl_bidding_provider_price"
-                android:text="$ 100.00"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/JGGBlack"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"/>
-            <TextView
-                android:id="@+id/lbl_bidding_provider_status"
-                android:text="Declined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="right"
-                android:textColor="@color/JGGBlack"
-                android:fontFamily="@font/muliregular"
-                android:textSize="12dp"/>
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/lbl_bidding_provider_username"
+                    android:text="Alan.Tam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/button_font_size"/>
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/bidding_provider_ratingBar"
+                    style="@style/Widget.MaterialRatingBar.RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="13dp"
+                    android:stepSize="0.01"
+                    android:isIndicator="true"
+                    app:mrb_progressBackgroundTint="@color/JGGGrey3"
+                    app:mrb_progressTint="@color/JGGYellow"
+                    app:mrb_secondaryProgressTint="@color/JGGYellow" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:gravity="center"
             android:orientation="vertical">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="15dp"
-                android:src="@mipmap/icon_proposal_green"/>
-            <TextView
-                android:text="Invite"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:layout_marginRight="15dp"
-                android:textColor="@color/JGGGreen"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/button_font_size"
-                android:gravity="end" />
+                android:orientation="vertical">
+                <TextView
+                    android:visibility="visible"
+                    android:id="@+id/lbl_bidding_provider_price"
+                    android:text="$ 100.00"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/button_font_size"/>
+                <TextView
+                    android:id="@+id/lbl_bidding_provider_status"
+                    android:text="Declined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="right"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_proposal_green"/>
+                <TextView
+                    android:visibility="gone"
+                    android:text="Invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/JGGGreen"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/button_font_size" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

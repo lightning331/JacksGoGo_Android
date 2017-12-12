@@ -19,7 +19,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailDescr
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailImageCarouselCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailUserNameRatingCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailBookedInfoCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailCategoryCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceDetailTimeSlotsCell;
@@ -137,8 +137,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
                 return tagListViewHolder;
             case 10:
-                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_booked_info, parent, false);
-                ServiceDetailBookedInfoCell bookedInfoViewHolder = new ServiceDetailBookedInfoCell(bookedInfoView);
+                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
+                ServiceDetailReferenceNoCell bookedInfoViewHolder = new ServiceDetailReferenceNoCell(bookedInfoView);
                 return bookedInfoViewHolder;
         }
         return null;

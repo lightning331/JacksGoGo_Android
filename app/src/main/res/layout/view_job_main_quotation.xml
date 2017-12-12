@@ -42,7 +42,7 @@
                 android:textSize="@dimen/list_title_font_size"/>
             <TextView
                 android:visibility="visible"
-                android:id="@+id/btn_invite"
+                android:id="@+id/btn_view_quotation"
                 android:text="View Quotations"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
