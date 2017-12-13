@@ -20,14 +20,16 @@ public class JGGImageGalleryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Context mContext;
     private LayoutInflater mInflater;
     private int itemSize;
+    private boolean isEdit;
     private OnItemClickListener mItemClickListener;
 
     private List<AlbumFile> mAlbumFiles;
 
-    public JGGImageGalleryAdapter(Context context, int itemSize, OnItemClickListener itemClickListener) {
+    public JGGImageGalleryAdapter(Context context, int itemSize, boolean isEdit, OnItemClickListener itemClickListener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.itemSize = itemSize;
+        this.isEdit = isEdit;
         this.mItemClickListener = itemClickListener;
     }
 
@@ -57,14 +59,18 @@ public class JGGImageGalleryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ImageViewHolder viewHolder = ((ImageViewHolder) holder);
             viewHolder.setData(mAlbumFiles.get(position));
         } else {
-            ImageViewHolder imageViewHolder = ((ImageViewHolder) holder);
-            imageViewHolder.mIvImage.setImageResource(R.mipmap.icon_add_photo_green);
+            if (!isEdit) {
+                ImageViewHolder imageViewHolder = ((ImageViewHolder) holder);
+                imageViewHolder.mIvImage.setImageResource(R.mipmap.icon_add_photo_green);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mAlbumFiles == null ? 0 : mAlbumFiles.size() + 1;
+        if (mAlbumFiles == null) return 0;
+        if (isEdit) return mAlbumFiles.size();
+        else return mAlbumFiles.size() + 1;
     }
 
     private static class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

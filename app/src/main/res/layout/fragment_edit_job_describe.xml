@@ -2,14 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment">
-
+    tools:context="com.kelvin.jacksgogo.Fragments.Jobs.EditJobDescribeFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
         <LinearLayout
-            android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/JGGGrey5"
@@ -26,7 +24,7 @@
                 android:layout_height="wrap_content" />
             <EditText
                 android:hint="e.g. Air-cond Servicing"
-                android:id="@+id/txt_post_service_title"
+                android:id="@+id/txt_edit_job_describe_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -48,29 +46,7 @@
                 android:layout_height="wrap_content" />
             <EditText
                 android:hint="e.g. I have 10 years of experience."
-                android:id="@+id/txt_post_service_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:padding="@dimen/edit_text_padding_size"
-                android:fontFamily="@font/muliregular"
-                android:textSize="@dimen/body_font_size"
-                android:background="@drawable/grey_border_background">
-            </EditText>
-            <TextView
-                android:text="Add tags to your service(Optional)."
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/list_title_font_size"
-                android:textColor="@color/JGGBlack"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:hint="Separate tags by comma."
-                android:id="@+id/txt_post_service_tag"
+                android:id="@+id/txt_edit_job_describe_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -83,7 +59,7 @@
             </EditText>
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
-                android:id="@+id/describe_photo_recycler_view"
+                android:id="@+id/edit_job_describe_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -91,13 +67,14 @@
                 android:layout_marginTop="16dp"/>
             <LinearLayout
                 android:visibility="visible"
-                android:id="@+id/btn_post_service_take_photo"
+                android:id="@+id/btn_edit_job_describe_take_photo"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/green_border_background">
                 <LinearLayout
                     android:layout_width="0dp"
@@ -105,7 +82,6 @@
                     android:layout_weight="20"
                     android:gravity="center">
                     <ImageView
-                        android:id="@+id/img_take_photo"
                         android:layout_width="50dp"
                         android:layout_height="40dp"
                         android:src="@mipmap/icon_photo_green"/>
@@ -116,7 +92,6 @@
                     android:layout_weight="60"
                     android:gravity="center">
                     <TextView
-                        android:id="@+id/lbl_take_photo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/JGGGreen"
@@ -131,15 +106,16 @@
                 </LinearLayout>
             </LinearLayout>
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/btn_edit_job_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:gravity="left|center_vertical">
                 <LinearLayout
-                    android:id="@+id/btn_post_service_next"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/grey_background"
@@ -147,7 +123,7 @@
                 </LinearLayout>
                 <TextView
                     android:text="Next"
-                    android:id="@+id/lbl_post_service_next"
+                    android:id="@+id/lbl_edit_job_next"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

@@ -1,7 +1,6 @@
-package com.kelvin.jacksgogo.Fragments.Search;
+package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,8 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +16,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
@@ -30,24 +27,12 @@ import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class PostServiceDescribeFragment extends Fragment
-        implements View.OnClickListener, TextWatcher {
-
-    private OnFragmentInteractionListener mListener;
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onNextButtonClick(String title, String comment, String tags);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
+public class EditJobDescribeFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
+    private OnFragmentInteractionListener mListener;
 
     private RecyclerView recyclerView;
     private JGGImageGalleryAdapter mAdapter;
@@ -55,21 +40,18 @@ public class PostServiceDescribeFragment extends Fragment
 
     private EditText txtServiceTitle;
     private EditText txtServiceDesc;
-    private EditText txtServiceTag;
     private LinearLayout btnTakePhoto;
-    private LinearLayout btnNext;
+    private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private String strTitle;
-    private String strDescription;
-    private String strTags;
+    boolean isRequest;
 
-    public PostServiceDescribeFragment() {
+    public EditJobDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceDescribeFragment newInstance(String param1, String param2) {
-        PostServiceDescribeFragment fragment = new PostServiceDescribeFragment();
+    public static EditJobDescribeFragment newInstance(String param1, String param2) {
+        EditJobDescribeFragment fragment = new EditJobDescribeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -87,30 +69,26 @@ public class PostServiceDescribeFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_edit_job_describe, container, false);
         initView(view);
         initRecyclerView(view);
-
         return view;
     }
 
     private void initView(View view) {
 
-        txtServiceTitle = view.findViewById(R.id.txt_post_service_title);
-        txtServiceTitle.addTextChangedListener(this);
-        txtServiceDesc = view.findViewById(R.id.txt_post_service_description);
-        txtServiceDesc.addTextChangedListener(this);
-        txtServiceTag = view.findViewById(R.id.txt_post_service_tag);
-        txtServiceTag.addTextChangedListener(this);
-        btnTakePhoto = view.findViewById(R.id.btn_post_service_take_photo);
+        txtServiceTitle = view.findViewById(R.id.txt_edit_job_describe_title);
+        //txtServiceTitle.addTextChangedListener(this);
+        txtServiceDesc = view.findViewById(R.id.txt_edit_job_describe_description);
+        //txtServiceDesc.addTextChangedListener(this);
+        btnTakePhoto = view.findViewById(R.id.btn_edit_job_describe_take_photo);
         btnTakePhoto.setOnClickListener(this);
-        btnNext = view.findViewById(R.id.btn_post_service_next);
-        lblNext = view.findViewById(R.id.lbl_post_service_next);
+        btnNext = view.findViewById(R.id.btn_edit_job_next);
+        lblNext = view.findViewById(R.id.lbl_edit_job_next);
     }
 
     private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.describe_photo_recycler_view);
+        recyclerView = view.findViewById(R.id.edit_job_describe_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
 
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -118,18 +96,10 @@ public class PostServiceDescribeFragment extends Fragment
         int width = display.getWidth();
 
         int itemSize = (width) / 4;
-        mAdapter = new JGGImageGalleryAdapter(mContext, itemSize, false, new com.yanzhenjie.album.impl.OnItemClickListener() {
+        mAdapter = new JGGImageGalleryAdapter(mContext, itemSize, true, new com.yanzhenjie.album.impl.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position < mAlbumFiles.size()) {
-                    String name = (String)mAlbumFiles.get(position).getPath();
-                    Uri imageUri = Uri.parse(new File(name).toString());
-                    Intent intent = new Intent(mContext, JGGImageCropActivity.class);
-                    intent.putExtra("imageUri", name);
-                    startActivityForResult(intent, 1);
-                } else {
-                    selectImage();
-                }
+                selectImage();
             }
         });
         recyclerView.setAdapter(mAdapter);
@@ -164,7 +134,6 @@ public class PostServiceDescribeFragment extends Fragment
                         mAlbumFiles = result;
                         recyclerView.setVisibility(View.VISIBLE);
                         mAdapter.notifyDataSetChanged(mAlbumFiles);
-                        btnTakePhoto.setVisibility(View.GONE);
                     }
                 })
                 .onCancel(new Action<String>() {
@@ -201,39 +170,9 @@ public class PostServiceDescribeFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_service_next) {
-            listener.onNextButtonClick(strTitle, strDescription, strTags);
-        } else if (view.getId() == R.id.btn_post_service_take_photo) {
+        if (view.getId() == R.id.btn_edit_job_describe_take_photo) {
             selectImage();
         }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (txtServiceTitle.length() > 0
-                && txtServiceDesc.length() > 0) {
-
-            strTitle = txtServiceTitle.getText().toString();
-            strDescription = txtServiceDesc.getText().toString();
-            strTags = txtServiceTag.getText().toString();
-
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            btnNext.setBackgroundResource(R.drawable.green_background);
-            btnNext.setOnClickListener(this);
-        } else {
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            btnNext.setBackgroundResource(R.drawable.grey_background);
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 
     /**

@@ -178,7 +178,8 @@ public class JobDetailActivity extends AppCompatActivity {
     private class OnDismissListener implements PopupMenu.OnDismissListener {
         @Override
         public void onDismiss(PopupMenu menu) {
-            if (actionbarView.getEditStatus() == JGGActionbarView.EditStatus.APPOINTMENT)
+            if (actionbarView.getEditStatus() == JGGActionbarView.EditStatus.APPOINTMENT
+                    || actionbarView.getEditStatus() == JGGActionbarView.EditStatus.NONE)
                 actionbarView.setEditMoreButtonClicked(false);
         }
     }
