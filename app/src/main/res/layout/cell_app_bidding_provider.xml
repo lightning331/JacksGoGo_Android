@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:gravity="center">
     <LinearLayout
+        android:id="@+id/background_layout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/JGGWhite">
@@ -92,29 +93,17 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/btn_proposal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="20"
             android:gravity="center"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/img_proposal"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_proposal_green"/>
-                <TextView
-                    android:visibility="gone"
-                    android:text="Invite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/JGGGreen"
-                    android:fontFamily="@font/mulibold"
-                    android:textSize="@dimen/button_font_size" />
-            </LinearLayout>
+                android:src="@mipmap/icon_proposal_green"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -11,9 +11,8 @@ import com.kelvin.jacksgogo.Models.User.JGGUserBaseModel;
 public class JGGBiddingProviderModel extends JGGBaseModel {
 
     private JGGUserBaseModel user;
-    private Double price = 0.0;
+    private Float price = 0.0f;
     private Global.BiddingStatus status;
-    private boolean isNew = false;
 
     public JGGBiddingProviderModel() {
         super();
@@ -23,5 +22,29 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
 
     public void init() {
         status = Global.BiddingStatus.PENDING;
+    }
+
+    public JGGUserBaseModel getUser() {
+        return user;
+    }
+
+    public void setUser(JGGUserBaseModel user) {
+        this.user = user;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Global.BiddingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Global.BiddingStatus status) {
+        this.status = status;
     }
 }

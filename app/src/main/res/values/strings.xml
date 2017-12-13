@@ -20,6 +20,7 @@
     <string name="pending_search_placeholder">Search through Pending list</string>
     <string name="confirmed_search_placeholder">Search through Confirmed list</string>
     <string name="history_search_placeholder">Search through History list</string>
+    <string name="title_empty"></string>
 
     <!-- TODO: Search -->
     <string name="services">Services</string>
@@ -112,4 +113,7 @@
     <string name="buy_service">Buy Service</string>
     <string name="go_to_summary">Go To Summary</string>
 
+    <!-- TODO: Invite Service Provider Job -->
+    <string name="invite_actionbar_title">Invite</string>
+    <string name="invite_header_title">Here are some recommendations for your posted job. Inviting people to your job increases the chances of finding a perfect match.</string>
 </resources>

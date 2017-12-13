@@ -58,7 +58,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         VERIFY_SKILL,
         POSTED_SERVICE,
         SERVICE_SEARCH,
-        SEARCH_RESULT
+        SEARCH_RESULT,
+        INVITE
     }
 
     public JGGActionbarView(Context context) {
@@ -120,19 +121,13 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 centerTitleTextLayout.setLayoutParams(param1);
                 break;
             case EDIT_MAIN:
-                mTitleTextView.setText(R.string.menu_option_edit);
-                mBackButtonTitleTextView.setText(R.string.title_appointment);
-                mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
+                setEditDoneButton();
                 break;
             case EDIT_DETAIL:
-                mTitleTextView.setText(R.string.menu_option_edit);
-                mBackButtonTitleTextView.setText(R.string.title_appointment);
-                mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
+                setEditDoneButton();
                 break;
             case MAP:
-                mTitleTextView.setText(R.string.title_map);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_map);
                 break;
             case SERVICE:
                 mTitleTextView.setText("");
@@ -142,19 +137,13 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
                 break;
             case SERVICE_LISTING:
-                mTitleTextView.setText(R.string.title_service_listing);
-                mBackButtonTitleTextView.setText(R.string.title_profile);
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+                setOrangeBackButton(R.string.title_service_listing, R.string.title_profile);
                 break;
             case ACTIVE_SERVICE:
-                mTitleTextView.setText(R.string.title_active_service_around);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_active_service_around);
                 break;
             case POST_SERVICE:
-                mTitleTextView.setText(R.string.title_post_service);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_post_service);
                 break;
             case SERVICE_TIME_SLOTS:
                 mTitleTextView.setText(R.string.title_time_slots);
@@ -163,34 +152,22 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mMoreButtonImage.setImageResource(R.mipmap.button_today_green);
                 break;
             case SERVICE_REVIEWS:
-                mTitleTextView.setText(R.string.title_review);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_review);
                 break;
             case SERVICE_BUY:
-                mTitleTextView.setText(R.string.title_buy_service);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_buy_service);
                 break;
             case SETUP_CARD:
-                mTitleTextView.setText(R.string.title_credit_card);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_credit_card);
                 break;
             case JACKS_WALLET:
-                mTitleTextView.setText(R.string.title_jacks_wallet);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_jacks_wallet);
                 break;
             case REQUEST_QUOTATION:
-                mTitleTextView.setText(R.string.title_request_quotation);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_request_quotation);
                 break;
             case VERIFY_SKILL:
-                mTitleTextView.setText(R.string.title_verify_new_skill);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+                setOrangeBackButton(R.string.title_verify_new_skill, R.string.title_empty);
                 break;
             case POSTED_SERVICE:
                 mTitleTextView.setText("");
@@ -199,14 +176,13 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
                 break;
             case SERVICE_SEARCH:
-                mTitleTextView.setText(R.string.title_search);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.title_search);
                 break;
             case SEARCH_RESULT:
-                mTitleTextView.setText(R.string.search_result);
-                mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+                setGreenBackButton("", R.string.search_result);
+                break;
+            case INVITE:
+                setOrangeBackButton(R.string.invite_actionbar_title, R.string.title_empty);
                 break;
             case SERVICE_LISTING_DETAIL:
                 mTitleTextView.setText("");
@@ -228,6 +204,24 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             default:
                 break;
         }
+    }
+
+    private void setOrangeBackButton(int title, int backButtonTitle) {
+        mTitleTextView.setText(title);
+        mBackButtonTitleTextView.setText(backButtonTitle);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+    }
+
+    private void setEditDoneButton() {
+        mTitleTextView.setText(R.string.menu_option_edit);
+        mBackButtonTitleTextView.setText(R.string.title_appointment);
+        mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
+    }
+
+    private void setGreenBackButton(String backTitle, int title) {
+        mTitleTextView.setText(title);
+        mBackButtonTitleTextView.setText(backTitle);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
     }
 
     public void setEditMoreButtonClicked(boolean isSelected) {

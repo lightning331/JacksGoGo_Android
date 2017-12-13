@@ -7,11 +7,12 @@ package com.kelvin.jacksgogo.Models.Base;
 
 public class Global {
     public enum BiddingStatus {
-        PENDING("pending"),
-        ACCEPTED("accepted"),
-        REJECTED("rejected"),
-        DECLINED("declined"),
-        NOTRESPONDED("notResponed");
+        PENDING("Pending"),
+        NEWPROPOSAL("NewProposal"),
+        ACCEPTED("Accepted"),
+        REJECTED("Rejected"),
+        DECLINED("Declined"),
+        NOTRESPONDED("NotResponed");
 
         private String value;
 
