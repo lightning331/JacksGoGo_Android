@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:background="@color/JGGWhite">
         <TextView
-            android:id="@+id/lbl_job_no"
+            android:id="@+id/lbl_reference_no"
             android:text="Job reference no: J39256-17340"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/button_font_size"/>
         <TextView
-            android:id="@+id/lbl_job_posted_date"
+            android:id="@+id/lbl_reference_posted_date"
             android:text="Job posted on 5 Jul, 2017"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

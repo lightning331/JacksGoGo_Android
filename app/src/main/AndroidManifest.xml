@@ -110,10 +110,13 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".Activities.Search.JGGImageCropActivity"
+        <activity
+            android:name=".Activities.Search.JGGImageCropActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Jobs.InviteProviderActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activities.Jobs.InviteProviderActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Jobs.BidDetailActivity"></activity>
     </application>
 
 </manifest>

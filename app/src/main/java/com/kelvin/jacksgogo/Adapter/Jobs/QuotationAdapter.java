@@ -2,7 +2,6 @@ package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppBiddingPr
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
 import com.kelvin.jacksgogo.Models.Base.Global;
 import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
-import com.kelvin.jacksgogo.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -21,10 +19,11 @@ import java.util.ArrayList;
  * Created by PUMA on 12/12/2017.
  */
 
-public class QuotationAdapter extends RecyclerView.Adapter {
+public class QuotationAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context mContext;
     private ArrayList<JGGBiddingProviderModel> providerArray = new ArrayList<>();
+    private JGGBiddingProviderModel provider;
 
     public QuotationAdapter(Context context, ArrayList<JGGBiddingProviderModel> data) {
         this.mContext = context;
@@ -43,16 +42,25 @@ public class QuotationAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (position == 0) {
             SectionTitleView sectionView = (SectionTitleView) holder;
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle("Bidding service providers:");
         } else {
-            JGGBiddingProviderModel provider = providerArray.get(position - 1);
+            provider = providerArray.get(position - 1);
+
             AppBiddingProviderCell cell = (AppBiddingProviderCell) holder;
             cell.setData(provider);
+            cell.imgProposal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view.getId() == R.id.img_proposal) {
+                        listener.onItemClick(position - 1);
+                    }
+                }
+            });
         }
     }
 
@@ -64,5 +72,20 @@ public class QuotationAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    private OnItemClickListener listener;
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

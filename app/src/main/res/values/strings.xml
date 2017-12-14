@@ -46,7 +46,6 @@
     <string name="title_request_quotation">Request A Quotation</string>
     <string name="title_verify_new_skill">Verify New Skills</string>
 
-
     <!-- TODO: JGG Service PopUp Menu -->
     <string name="menu_option_share">Share</string>
     <string name="menu_option_report">Report Service</string>
@@ -112,6 +111,11 @@
     <string name="request_quotation">Request A Quotation</string>
     <string name="buy_service">Buy Service</string>
     <string name="go_to_summary">Go To Summary</string>
+
+    <!-- TODO: Reject Bid -->
+    <string name="title_bid">Bid</string>
+    <string name="alert_reject_title">Reject this bid?</string>
+    <string name="alert_reject_ok">Reject</string>
 
     <!-- TODO: Invite Service Provider Job -->
     <string name="invite_actionbar_title">Invite</string>

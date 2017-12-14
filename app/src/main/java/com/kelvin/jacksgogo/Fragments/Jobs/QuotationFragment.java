@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Jobs.BidDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.QuotationAdapter;
@@ -68,12 +69,26 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         view.setLayoutParams(lp);
 
         QuotationAdapter adapter = new QuotationAdapter(mContext, addDummyData());
+        adapter.setOnItemClickListener(new QuotationAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                onShowBidDetailClick(position);
+            }
+        });
         mRecyclerView.setAdapter(adapter);
 
         btnInvite = (TextView) view.findViewById(R.id.btn_invite_service_provider);
         btnInvite.setOnClickListener(this);
 
         return view;
+    }
+
+    private void onShowBidDetailClick(int position) {
+        String status = quotationArray.get(position).getStatus().toString();
+
+        Intent intent = new Intent(mContext, BidDetailActivity.class);
+        intent.putExtra("bid_status", status);
+        startActivity(intent);
     }
 
     private ArrayList<JGGBiddingProviderModel> addDummyData() {
@@ -120,7 +135,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         JGGBiddingProviderModel p5 = new JGGBiddingProviderModel();
         JGGUserBaseModel user5 = new JGGUserBaseModel();
         user5.setFullname("Alicaia.Leong");
-        user5.setAvatarUrl(R.drawable.nurse);
+        user5.setAvatarUrl(R.drawable.carousel03);
         user5.setRate(3.5f);
         p5.setUser(user5);
         p5.setStatus(Global.BiddingStatus.DECLINED);
@@ -128,9 +143,9 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
 
         JGGBiddingProviderModel p6 = new JGGBiddingProviderModel();
         JGGUserBaseModel user6 = new JGGUserBaseModel();
-        user6.setFullname("CYYong");
+        user6.setFullname("Arimu.H");
         user6.setAvatarUrl(R.drawable.nurse4);
-        user6.setRate(4.75f);
+        user6.setRate(2.75f);
         p6.setUser(user6);
         p6.setStatus(Global.BiddingStatus.REJECTED);
         p6.setPrice(90.00f);

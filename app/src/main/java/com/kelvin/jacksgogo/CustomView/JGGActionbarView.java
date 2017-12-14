@@ -59,7 +59,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         POSTED_SERVICE,
         SERVICE_SEARCH,
         SEARCH_RESULT,
-        INVITE
+        INVITE,
+        BID
     }
 
     public JGGActionbarView(Context context) {
@@ -168,6 +169,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case VERIFY_SKILL:
                 setOrangeBackButton(R.string.title_verify_new_skill, R.string.title_empty);
+                break;
+            case BID:
+                setOrangeBackButton(R.string.title_bid, R.string.title_empty);
                 break;
             case POSTED_SERVICE:
                 mTitleTextView.setText("");

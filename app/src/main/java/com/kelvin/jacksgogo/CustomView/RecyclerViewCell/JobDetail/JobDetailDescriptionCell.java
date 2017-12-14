@@ -6,6 +6,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
@@ -20,6 +21,7 @@ public class JobDetailDescriptionCell extends RecyclerView.ViewHolder {
     public ImageView descriptionImage;
     public TextView description;
     public TextView title;
+    public LinearLayout titleLayout;
 
     public JobDetailDescriptionCell(View itemView) {
         super(itemView);
@@ -27,6 +29,7 @@ public class JobDetailDescriptionCell extends RecyclerView.ViewHolder {
         descriptionImage = itemView.findViewById(R.id.img_description);
         description = itemView.findViewById(R.id.lbl_description);
         title = itemView.findViewById(R.id.lbl_job_detail_title);
+        titleLayout = itemView.findViewById(R.id.job_detail_title_layout);
     }
 
     public TextView getDescription() {
