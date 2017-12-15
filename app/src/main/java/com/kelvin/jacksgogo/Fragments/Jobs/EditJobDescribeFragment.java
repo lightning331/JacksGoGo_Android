@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
+import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -29,7 +33,7 @@ import com.yanzhenjie.album.api.widget.Widget;
 
 import java.util.ArrayList;
 
-public class EditJobDescribeFragment extends Fragment implements View.OnClickListener {
+public class EditJobDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -44,15 +48,20 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    boolean isRequest;
+    private String strTitle;
+    private String strDescription;
+
+    private JGGServiceModel serviceObject;
+    private boolean isRequest;
 
     public EditJobDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static EditJobDescribeFragment newInstance(String param1, String param2) {
+    public static EditJobDescribeFragment newInstance(boolean isRequest) {
         EditJobDescribeFragment fragment = new EditJobDescribeFragment();
         Bundle args = new Bundle();
+        args.putBoolean("isRequest", isRequest);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,13 +87,27 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     private void initView(View view) {
 
         txtServiceTitle = view.findViewById(R.id.txt_edit_job_describe_title);
-        //txtServiceTitle.addTextChangedListener(this);
+        txtServiceTitle.addTextChangedListener(this);
         txtServiceDesc = view.findViewById(R.id.txt_edit_job_describe_description);
-        //txtServiceDesc.addTextChangedListener(this);
+        txtServiceDesc.addTextChangedListener(this);
         btnTakePhoto = view.findViewById(R.id.btn_edit_job_describe_take_photo);
         btnTakePhoto.setOnClickListener(this);
         btnNext = view.findViewById(R.id.btn_edit_job_next);
         lblNext = view.findViewById(R.id.lbl_edit_job_next);
+
+        if (!isRequest) {
+            txtServiceTitle.setText("Gerdening");
+            txtServiceDesc.setText("Need help with moving the lawn and weeding the garden.");
+        } else {
+            //if (serviceObject.getTitle() == null) {
+                txtServiceTitle.setHint("e.g.Gardening");
+                txtServiceDesc.setHint("e.g.My air-cond unit isn't cold.");
+                btnNext.setVisibility(View.VISIBLE);
+            //} else {
+                //txtServiceTitle.setText(serviceObject.getTitle());
+                //txtServiceDesc.setText(serviceObject.getComment());
+            //}
+        }
     }
 
     private void initRecyclerView(View view) {
@@ -155,6 +178,7 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        isRequest = getArguments().getBoolean("isRequest");
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -172,7 +196,36 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         if (view.getId() == R.id.btn_edit_job_describe_take_photo) {
             selectImage();
+        } else if (view.getId() == R.id.btn_edit_job_next) {
+            listener.onNextButtonClick(EditJobTabbarView.EditTabStatus.TIME, strTitle, strDescription);
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (txtServiceTitle.length() > 0
+                && txtServiceDesc.length() > 0) {
+
+            strTitle = txtServiceTitle.getText().toString();
+            strDescription = txtServiceDesc.getText().toString();
+
+            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+            btnNext.setBackgroundResource(R.drawable.green_background);
+            btnNext.setOnClickListener(this);
+        } else {
+            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
+            btnNext.setBackgroundResource(R.drawable.grey_background);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 
     /**
@@ -185,6 +238,16 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onNextButtonClick(EditJobTabbarView.EditTabStatus status, String jobTitle, String jobDesc);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

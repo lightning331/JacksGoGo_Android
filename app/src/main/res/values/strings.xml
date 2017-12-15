@@ -120,4 +120,8 @@
     <!-- TODO: Invite Service Provider Job -->
     <string name="invite_actionbar_title">Invite</string>
     <string name="invite_header_title">Here are some recommendations for your posted job. Inviting people to your job increases the chances of finding a perfect match.</string>
+
+    <string name="accept_bid_title">Accept Bid</string>
+    <string name="accept_bid_header_title">Congratulations on finding a good match!</string>
+    <string name="accept_bid_description">Next, Lets set up a payment method. The payment will only be released when the job is completed.</string>
 </resources>

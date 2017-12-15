@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,6 +16,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.alertview.AlertView;
+import com.bigkoo.alertview.OnDismissListener;
+import com.bigkoo.alertview.OnItemClickListener;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Adapter.Jobs.BidDetailAdapter;
@@ -23,7 +27,7 @@ import com.kelvin.jacksgogo.Models.Base.Global;
 import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.R;
 
-public class BidDetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class BidDetailActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener, OnDismissListener {
 
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
@@ -34,6 +38,10 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
 
     private AlertDialog alertDialog;
     private JGGBiddingProviderModel provider;
+
+    public static boolean getRandomBoolean() {
+        return Math.random() < 0.5;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         btnAcceptBid.setOnClickListener(this);
         String status = getIntent().getStringExtra("bid_status");
         if (status.equals("Rejected")) {
+        btnAcceptBid.setOnClickListener(this);
             btnRejectBid.setVisibility(View.GONE);
         }
 
@@ -117,12 +126,33 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         if (view.getId() == R.id.btn_bid_detail_reject) {
             onShowAlertDialog();
         } else if (view.getId() == R.id.btn_bid_detail_accept) {
-
+            boolean paymentVerified = getRandomBoolean();
+            if (paymentVerified) {
+                new AlertView("Choose a package:", null, "Cancel", null,
+                        new String[]{"One-Time $ 100.00", "Package: $ 800.00 for 10"},
+                        this, AlertView.Style.ActionSheet, this).show();
+            } else {
+                Intent intent = new Intent(this, AcceptBidActivity.class);
+                startActivity(intent);
+            }
         } else if (view.getId() == R.id.btn_alert_cancel) {
             alertDialog.dismiss();
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
             super.finish();
+        }
+    }
+
+    @Override
+    public void onDismiss(Object o) {
+
+    }
+
+    @Override
+    public void onItemClick(Object o, int position) {
+        if (position != AlertView.CANCELPOSITION) {
+            Intent intent = new Intent(this, AcceptBidActivity.class);
+            startActivity(intent);
         }
     }
 }

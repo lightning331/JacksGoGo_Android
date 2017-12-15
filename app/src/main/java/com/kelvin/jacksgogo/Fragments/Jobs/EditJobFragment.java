@@ -124,7 +124,16 @@ public class EditJobFragment extends Fragment implements View.OnClickListener {
             describeContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            EditJobDescribeFragment frag = new EditJobDescribeFragment();
+            EditJobDescribeFragment frag = EditJobDescribeFragment.newInstance(isRequest);
+            frag.setOnItemClickListener(new EditJobDescribeFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick(EditJobTabbarView.EditTabStatus status, String jobTitle, String jobDesc) {
+                    tabbarView.setEditTabStatus(status, isRequest);
+                    serviceModel.setTitle(jobTitle);
+                    serviceModel.setComment(jobDesc);
+                    refreshRecyclerView();
+                }
+            });
             ft.replace(R.id.edit_job_describe_container, frag, frag.getTag());
             ft.commit();
         } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.TIME) {
