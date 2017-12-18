@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceReviewCell;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceReviewCell;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;

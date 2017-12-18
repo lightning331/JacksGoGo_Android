@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.Service.SearchMainAdapter;
+import com.kelvin.jacksgogo.Adapter.Services.SearchMainAdapter;
 import com.kelvin.jacksgogo.R;
 
 public class SearchFragment extends Fragment {

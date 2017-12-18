@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.JGGShareIntentDialog;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 
 import java.lang.reflect.Field;

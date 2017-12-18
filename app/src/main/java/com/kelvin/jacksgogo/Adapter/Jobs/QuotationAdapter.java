@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppBiddingProviderCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
-import com.kelvin.jacksgogo.Models.Base.Global;
+import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.R;
 

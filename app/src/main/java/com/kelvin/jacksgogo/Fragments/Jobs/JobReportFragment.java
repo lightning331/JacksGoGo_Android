@@ -17,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
-import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.AlbumFile;
 

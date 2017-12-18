@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/avatar_title_view"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="88dp"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,20 +12,36 @@
         <LinearLayout
             android:layout_width="96dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-            <com.makeramen.roundedimageview.RoundedImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_avatar"
+            android:gravity="center">
+            <RelativeLayout
                 android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/nurse4"
-                android:background="@color/transparent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:riv_corner_radius="@dimen/circle_image_radius"
-                app:riv_mutate_background="true"
-                app:riv_oval="true"/>
+                android:layout_height="64dp">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/img_avatar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/gardener"
+                    android:background="@color/transparent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="@dimen/circle_image_radius"
+                    app:riv_mutate_background="true"
+                    app:riv_oval="true"/>
+                <RelativeLayout
+                    android:id="@+id/like_button_layout"
+                    android:visibility="gone"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/white_badge_background">
+                    <ImageView
+                        android:id="@+id/btn_like"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/button_like_orange"/>
+                </RelativeLayout>
+            </RelativeLayout>
 
         </LinearLayout>
         <LinearLayout
@@ -81,11 +97,5 @@
                 android:fontFamily="@font/mulibold"
                 android:gravity="end" />
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/JGGGrey4">
     </LinearLayout>
 </LinearLayout>

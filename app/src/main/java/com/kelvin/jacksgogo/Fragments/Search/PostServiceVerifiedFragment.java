@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
 public class PostServiceVerifiedFragment extends Fragment implements View.OnClickListener {

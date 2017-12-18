@@ -28,6 +28,8 @@
     <string name="go_club">GoClub</string>
     <string name="search_result">Search Results</string>
     <string name="canceled">Canceled</string>
+    <string name="favourite_events">Events</string>
+    <string name="favourite_users">Users</string>
 
     <!-- TODO: JGG Appointment PopUp Menu -->
     <string name="menu_option_edit">Edit</string>

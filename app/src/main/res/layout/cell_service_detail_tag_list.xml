@@ -6,6 +6,15 @@
     android:background="@color/JGGGrey5"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/line_layout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/JGGGrey4">
+    </LinearLayout>
+
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/original_post_tag_list"
         android:layout_width="match_parent"

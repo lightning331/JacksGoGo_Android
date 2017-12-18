@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
 import com.kelvin.jacksgogo.R;
 

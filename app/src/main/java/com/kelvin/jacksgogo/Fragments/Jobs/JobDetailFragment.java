@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobDetailAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
 

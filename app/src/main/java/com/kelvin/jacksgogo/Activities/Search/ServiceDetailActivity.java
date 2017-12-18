@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.JGGShareIntentDialog;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
 import com.kelvin.jacksgogo.R;
 

@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
 public class BuyServiceActivity extends AppCompatActivity implements View.OnClickListener {

@@ -41,7 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ServiceInfoWindowAdapter;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceInfoWindowAdapter;
 import com.kelvin.jacksgogo.R;
 
 public class ActiveServiceMapFragment extends Fragment

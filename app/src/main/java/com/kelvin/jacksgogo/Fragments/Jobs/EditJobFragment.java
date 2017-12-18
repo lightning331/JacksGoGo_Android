@@ -22,9 +22,9 @@ import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobTimeAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 
 import java.util.Date;

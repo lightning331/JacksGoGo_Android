@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.EditJobMainFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobMainFragment;
 import com.kelvin.jacksgogo.R;

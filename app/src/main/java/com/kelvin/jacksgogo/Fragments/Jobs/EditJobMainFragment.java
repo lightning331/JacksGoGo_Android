@@ -15,9 +15,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
-import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
+import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.AlbumFile;
 

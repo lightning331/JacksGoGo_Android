@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Adapter.Service.ActiveServiceAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
 public class ServiceListingDetailActivity extends AppCompatActivity implements View.OnClickListener {

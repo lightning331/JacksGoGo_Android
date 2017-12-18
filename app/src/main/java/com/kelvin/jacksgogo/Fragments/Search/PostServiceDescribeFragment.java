@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
-import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
+import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;

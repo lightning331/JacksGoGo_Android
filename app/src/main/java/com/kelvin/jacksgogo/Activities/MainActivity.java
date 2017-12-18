@@ -15,8 +15,9 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppMainTabView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.SearchMainTabView;
+import com.kelvin.jacksgogo.CustomView.Views.AppMainTabView;
+import com.kelvin.jacksgogo.CustomView.Views.FavouriteMainTabView;
+import com.kelvin.jacksgogo.CustomView.Views.SearchMainTabView;
 import com.kelvin.jacksgogo.Fragments.Appointments.AppMainFragment;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     private Toolbar mToolbar;
     private AppMainTabView appMainTabView;
     private SearchMainTabView searchTabView;
+    private FavouriteMainTabView favouriteTabView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,9 +73,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 frag = AppMainFragment.newInstance();
                 break;
             case R.id.navigation_favourite:
-                frag = FavouriteFragment.newInstance(null,
-                        null);
-                mToolbar.setTitle(R.string.title_favourite);
+                frag = FavouriteFragment.newInstance();
                 break;
             case R.id.navigation_profile:
                 frag = ProfileFragment.newInstance(null,
@@ -96,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             } else {
                 this.removeToActionBarForSearch();
             }
+            if (frag instanceof FavouriteFragment) {
+                this.addTopActionBarForFavourite(frag);
+            } else {
+                this.removeToActionBarForFavourite();
+            }
         }
     }
 
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
         appMainTabView = new AppMainTabView(this);
         searchTabView = new SearchMainTabView(this);
+        favouriteTabView = new FavouriteMainTabView(this);
 
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
@@ -159,6 +165,25 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
     private void removeToActionBarForSearch() {
         mToolbar.removeView(searchTabView);
+    }
+
+    private void addTopActionBarForFavourite(final Fragment frag) {
+        mToolbar.removeView(favouriteTabView);
+        if (favouriteTabView == null) favouriteTabView = new FavouriteMainTabView(this);
+        mToolbar.addView(favouriteTabView);
+
+        favouriteTabView.setTabbarItemClickListener(new FavouriteMainTabView.OnTabbarItemClickListener() {
+            @Override
+            public void onTabbarItemClick(TextView item) {
+                if (frag instanceof FavouriteFragment) {
+                    ((FavouriteFragment)frag).refreshFragment(item.getTag());
+                }
+            }
+        });
+    }
+
+    private void removeToActionBarForFavourite() {
+        mToolbar.removeView(favouriteTabView);
     }
 
     @Override

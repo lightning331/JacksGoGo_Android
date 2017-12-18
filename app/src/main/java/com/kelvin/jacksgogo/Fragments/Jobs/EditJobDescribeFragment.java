@@ -22,9 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.Service.JGGImageGalleryAdapter;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
+import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;

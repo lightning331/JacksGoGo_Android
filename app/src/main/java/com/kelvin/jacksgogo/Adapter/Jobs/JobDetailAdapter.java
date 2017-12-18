@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailDescriptionCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailImageCarouselCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailInviteButtonCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailLocationCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobDetailReferenceNoCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailInviteButtonCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.R;
 
 
@@ -81,8 +81,8 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         switch (position) {
             case 0:
                 JobDetailImageCarouselCell cell = (JobDetailImageCarouselCell)holder;
-                int[] array = {R.drawable.carousel01, R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel01,
-                        R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel02, R.drawable.carousel01};
+                int[] array = {R.drawable.carousel04, R.drawable.carousel05, R.drawable.carousel06, R.drawable.carousel01,
+                        R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel04, R.drawable.carousel05};
 
                 cell.imageArray = array;
                 cell.carouselView.setPageCount(array.length);

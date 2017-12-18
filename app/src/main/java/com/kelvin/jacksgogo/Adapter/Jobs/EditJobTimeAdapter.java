@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.CustomView.JGGCalendarView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarView;
+import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
-import com.kelvin.jacksgogo.Models.Jobs_Services.JGGServiceModel;
+import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;

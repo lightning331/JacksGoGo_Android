@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainConfirmedView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainFooterView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainReview;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainPaymentView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainQuotationView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainTipView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.JobDetail.JobMainWorkProgressView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainConfirmedView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainFooterView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainReview;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainPaymentView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainQuotationView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainTipView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainWorkProgressView;
 import com.kelvin.jacksgogo.R;
 
 public class JobMainFragment extends Fragment implements View.OnClickListener {

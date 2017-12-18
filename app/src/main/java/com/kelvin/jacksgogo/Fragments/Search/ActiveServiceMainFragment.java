@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.Adapter.Service.ActiveServiceAdapter;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Search.ActiveServiceTabView;
+import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
 
 public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnAcitiveServiceFragmentInteractionListener {

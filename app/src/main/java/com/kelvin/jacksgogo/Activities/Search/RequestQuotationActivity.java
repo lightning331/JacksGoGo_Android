@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Activities.MainActivity;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.EditJobFragment;
 import com.kelvin.jacksgogo.R;
 

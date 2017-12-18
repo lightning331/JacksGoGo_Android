@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.Activities.Jobs.BidDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.QuotationAdapter;
-import com.kelvin.jacksgogo.CustomView.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Models.Base.Global;
 import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.Models.User.JGGUserBaseModel;

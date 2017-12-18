@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.SectionTitleView;
+import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
