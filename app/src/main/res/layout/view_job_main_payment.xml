@@ -120,6 +120,7 @@
             </LinearLayout>
         </LinearLayout>
         <TextView
+            android:id="@+id/btn_report_to_verify"
             android:visibility="visible"
             android:text="View Job Report To Verify"
             android:layout_width="match_parent"

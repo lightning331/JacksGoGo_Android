@@ -55,12 +55,24 @@ public class JobMainFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void initView(View view) {
+    private void initView(final View view) {
         btnPostedJob = view.findViewById(R.id.btn_posted_job);
         btnPostedJob.setOnClickListener(this);
 
         LinearLayout footerLayout = (LinearLayout)view.findViewById(R.id.job_main_footer_layout);
         JobMainFooterView footerView = new JobMainFooterView(mContext);
+        footerView.setOnItemClickListener(new JobMainFooterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                if (item.getId() == R.id.job_report_layout) {
+                    JobReportFragment frag = JobReportFragment.newInstance(true);
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.app_detail_container, frag, frag.getTag());
+                    ft.addToBackStack("report_fragment");
+                    ft.commit();
+                }
+            }
+        });
         footerLayout.addView(footerView);
 
         LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
@@ -89,6 +101,16 @@ public class JobMainFragment extends Fragment implements View.OnClickListener {
 
         LinearLayout paymentLayout = (LinearLayout)view.findViewById(R.id.job_main_payment_layout);
         JobMainPaymentView paymentView = new JobMainPaymentView(mContext);
+        paymentView.setOnItemClickListener(new JobMainPaymentView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                JobReportFragment frag = JobReportFragment.newInstance(false);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.app_detail_container, frag, frag.getTag());
+                ft.addToBackStack("report_fragment");
+                ft.commit();
+            }
+        });
         paymentLayout.addView(paymentView);
 
         LinearLayout progressLayout = (LinearLayout)view.findViewById(R.id.job_main_work_progress_layout);
@@ -112,7 +134,6 @@ public class JobMainFragment extends Fragment implements View.OnClickListener {
             }
         });
         quotationLayout.addView(quotationView);
-
     }
 
     private void onShowReviewFragment() {

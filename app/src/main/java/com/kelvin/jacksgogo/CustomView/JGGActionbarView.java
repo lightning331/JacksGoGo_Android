@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebHistoryItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,7 +62,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         SEARCH_RESULT,
         INVITE,
         BID,
-        ACCEPT_BIDE
+        ACCEPT_BIDE,
+        JOB_REPORT
     }
 
     public JGGActionbarView(Context context) {
@@ -176,6 +178,10 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case ACCEPT_BIDE:
                 setOrangeBackButton(R.string.accept_bid_title, R.string.title_empty);
+                break;
+            case JOB_REPORT:
+                setOrangeBackButton(R.string.job_report_title, R.string.title_empty);
+                //mBackButtonImage.setBackgroundColor();
                 break;
             case POSTED_SERVICE:
                 mTitleTextView.setText("");

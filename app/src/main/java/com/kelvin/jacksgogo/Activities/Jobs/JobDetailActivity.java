@@ -80,6 +80,10 @@ public class JobDetailActivity extends AppCompatActivity {
                         manager.popBackStack();
                     }
                     break;
+                case JOB_REPORT:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT);
+                    manager.popBackStack();
+                    break;
                 case APPOINTMENT:
                     super.finish();
                     break;

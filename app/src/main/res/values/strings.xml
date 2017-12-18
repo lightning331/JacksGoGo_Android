@@ -74,6 +74,9 @@
     <string name="alert_view_job_button">View Job</string>
     <string name="alert_service_posted_title">Submission Sent!</string>
     <string name="alert_service_posted_desc">Service reference no: S38291-170721 \n Our team will verify your submission and get back to you soon!</string>
+    <string name="alert_verify_job_completed_title">Verify Job As Completed?</string>
+    <string name="alert_verify_job_completed_desc">You have 7 days after sales service.</string>
+    <string name="alert_verify_job_completed_ok">Verify</string>
     <string name="alert_view_service_button">View Post</string>
     <string name="alert_verify_skill_title">Submission Sent!</string>
     <string name="alert_verify_skill_desc">Thank you for verifying! Our team will contact you shortly.</string>
@@ -122,6 +125,7 @@
     <string name="invite_header_title">Here are some recommendations for your posted job. Inviting people to your job increases the chances of finding a perfect match.</string>
 
     <string name="accept_bid_title">Accept Bid</string>
+    <string name="job_report_title">Job Report</string>
     <string name="accept_bid_header_title">Congratulations on finding a good match!</string>
     <string name="accept_bid_description">Next, Lets set up a payment method. The payment will only be released when the job is completed.</string>
 </resources>

@@ -48,6 +48,16 @@ public class JobMainFooterView extends RelativeLayout implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        listener.onItemClick(view);
+    }
 
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }
