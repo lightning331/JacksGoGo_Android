@@ -1,18 +1,15 @@
 package com.kelvin.jacksgogo.Adapter.Services;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryListView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryGridView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
@@ -44,8 +41,8 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return sectionView;
         } else if (viewType == 2) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryListView categoryListView = new SearchCategoryListView(listView);
-            categoryListView.setOnClickListener(this);
+            SearchCategoryGridView categoryListView = new SearchCategoryGridView(listView, mContext, JGGAppBaseModel.AppointmentType.JOBS);
+            //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == 3) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);

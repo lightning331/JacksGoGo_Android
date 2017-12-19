@@ -13,7 +13,7 @@ import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryListView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryGridView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
@@ -54,8 +54,8 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryListView categoryListView = new SearchCategoryListView(listView);
-            categoryListView.setOnClickListener(this);
+            SearchCategoryGridView categoryListView = new SearchCategoryGridView(listView, mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+            //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
