@@ -100,6 +100,7 @@
     <!-- TODO: Address Job -->
     <string name="edit_job_address_title">Where do you need the services?</string>
     <string name="edit_job_address_desc">We will only show the full address to the service provider you have awarded the job to.</string>
+    <string name="address_place_name_title">Place Name</string>
     <string name="address_unit_title">Unit</string>
     <string name="address_street_title">Street</string>
     <string name="address_postcode_title">Postcode</string>

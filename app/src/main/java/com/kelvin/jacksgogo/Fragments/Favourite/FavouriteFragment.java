@@ -60,16 +60,14 @@ public class FavouriteFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        refreshFragment("SERVIES");
+        refreshFragment("SERVICES");
 
         return view;
     }
 
     public void refreshFragment(Object textView) {
 
-        Log.d("Refresh Fragement", "=====================" + textView);
-
-        if (textView == "SERVIES") {
+        if (textView == "SERVICES") {
             ActiveServiceAdapter adapter = new ActiveServiceAdapter();
             adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override

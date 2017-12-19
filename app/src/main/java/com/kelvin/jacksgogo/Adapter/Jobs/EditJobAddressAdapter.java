@@ -24,7 +24,7 @@ import com.kelvin.jacksgogo.R;
 public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, TextWatcher {
 
     Context mContext;
-    int ITEM_COUNT = 5;
+    int ITEM_COUNT = 6;
 
     JGGServiceModel serviceObject;
     String strUnit;
@@ -33,6 +33,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     boolean isRequest;
 
     AppFilterOptionCell nextButtonCell;
+    EditJobAddressCell placeNameCell;
     EditJobAddressCell unitCell;
     EditJobAddressCell streetCell;
     EditJobAddressCell postcodeCell;
@@ -58,18 +59,22 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 descTitleViewHolder.txtTitle.setText(R.string.edit_job_address_desc);
                 return descTitleViewHolder;
             case 2:
+                View placeNameView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
+                placeNameCell = new EditJobAddressCell(placeNameView);
+                return placeNameCell;
+            case 3:
                 View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 unitCell = new EditJobAddressCell(unitTextView);
                 return unitCell;
-            case 3:
+            case 4:
                 View streetTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 streetCell = new EditJobAddressCell(streetTextView);
                 return streetCell;
-            case 4:
+            case 5:
                 View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 postcodeCell = new EditJobAddressCell(takePhotoView);
                 return postcodeCell;
-            case 5:
+            case 6:
                 View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
                 nextButtonCell = new AppFilterOptionCell(originalView);
                 return nextButtonCell;
@@ -80,8 +85,17 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 2) {
+            placeNameCell = (EditJobAddressCell)holder;
+            placeNameCell.hint.setHint(R.string.address_place_name_title);
+            if (!isRequest) {
+                placeNameCell.title.setText("Jurong");
+            } else {
+                placeNameCell.title.setHint("(optional)");
+                placeNameCell.title.addTextChangedListener(this);
+            }
+        } else if (position == 3) {
             unitCell = (EditJobAddressCell)holder;
-            unitCell.hint.setText(R.string.address_unit_title);
+            unitCell.hint.setHint(R.string.address_unit_title);
             if (!isRequest) {
                 unitCell.title.setText("2");
             } else {
@@ -92,9 +106,9 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
                 unitCell.title.addTextChangedListener(this);
             }
-        } else if (position == 3) {
+        } else if (position == 4) {
             streetCell = (EditJobAddressCell)holder;
-            streetCell.hint.setText(R.string.address_street_title);
+            streetCell.hint.setHint(R.string.address_street_title);
             if (!isRequest) {
                 streetCell.title.setText("Jurong West Avenune 5");
             } else {
@@ -105,9 +119,9 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
                 streetCell.title.addTextChangedListener(this);
             }
-        } else if (position == 4) {
+        } else if (position == 5) {
             postcodeCell = (EditJobAddressCell)holder;
-            postcodeCell.hint.setText(R.string.address_postcode_title);
+            postcodeCell.hint.setHint(R.string.address_postcode_title);
             if (!isRequest) {
                 postcodeCell.title.setText("34534");
             } else {
@@ -118,7 +132,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
                 postcodeCell.title.addTextChangedListener(this);
             }
-        } else if (position == 5) {
+        } else if (position == 6) {
             nextButtonCell = (AppFilterOptionCell)holder;
             nextButtonCell.title.setText("Next");
             nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
@@ -129,7 +143,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        if (isRequest) return ITEM_COUNT = 6;
+        if (isRequest) return ITEM_COUNT = 7;
         return ITEM_COUNT;
     }
 

@@ -27,8 +27,8 @@
                     android:visibility="gone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/white_badge_background">
                     <ImageView
@@ -66,7 +66,7 @@
                     android:id="@+id/lbl_service_detail_category_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGBlack"
                     android:fontFamily="@font/mulibold"
@@ -138,7 +138,7 @@
                     android:id="@+id/lbl_service_detail_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGGrey2"
                     android:fontFamily="@font/muliregular"
@@ -162,7 +162,7 @@
                     android:id="@+id/lbl_service_detail_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGBlack"
                     android:fontFamily="@font/mulibold"
@@ -205,7 +205,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -24,6 +24,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/grey_border_background">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    tools:ignore="Suspicious0dp"
+                    android:gravity="center">
+                    <TextView
+                        android:hint="Place Name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7">
+                    <EditText
+                        android:id="@+id/txt_post_address_place_name"
+                        android:hint="(optional)"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/JGGBlack"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/btn_post_address_unit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -45,7 +83,7 @@
                         android:layout_weight="3"
                         android:layout_marginLeft="16dp"
                         android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/body_font_size"/>
+                        android:textSize="@dimen/list_title_font_size"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -59,7 +97,7 @@
                         android:textColor="@color/JGGBlack"
                         android:background="@color/transparent"
                         android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/body_font_size"/>
+                        android:textSize="@dimen/list_title_font_size"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -85,7 +123,7 @@
                         android:layout_marginLeft="16dp"
                         android:textColor="@color/JGGGrey3"
                         android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/body_font_size"/>
+                        android:textSize="@dimen/list_title_font_size"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -99,7 +137,7 @@
                         android:textColor="@color/JGGBlack"
                         android:background="@color/transparent"
                         android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/body_font_size"/>
+                        android:textSize="@dimen/list_title_font_size"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -124,7 +162,7 @@
                         android:layout_weight="3"
                         android:layout_marginLeft="16dp"
                         android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/body_font_size"/>
+                        android:textSize="@dimen/list_title_font_size"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -138,7 +176,7 @@
                         android:textColor="@color/JGGBlack"
                         android:background="@color/transparent"
                         android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/body_font_size"/>
+                        android:textSize="@dimen/list_title_font_size"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout

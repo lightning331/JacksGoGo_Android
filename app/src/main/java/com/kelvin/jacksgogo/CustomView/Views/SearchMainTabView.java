@@ -63,7 +63,7 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
         servicesButton.setOnClickListener(this);
         jobsButton.setOnClickListener(this);
         goClubButton.setOnClickListener(this);
-        servicesTextView.setTag("SERVIES");
+        servicesTextView.setTag("SERVICES");
         jobsTextView.setTag("JOBS");
         goClubTextView.setTag("GOCLUB");
     }

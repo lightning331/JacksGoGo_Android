@@ -67,7 +67,7 @@ public class FavouriteMainTabView extends RelativeLayout implements View.OnClick
         jobsButton.setOnClickListener(this);
         eventButton.setOnClickListener(this);
         userButton.setOnClickListener(this);
-        servicesTextView.setTag("SERVIES");
+        servicesTextView.setTag("SERVICES");
         jobsTextView.setTag("JOBS");
         eventTextView.setTag("EVENTS");
         userTextView.setTag("USERS");

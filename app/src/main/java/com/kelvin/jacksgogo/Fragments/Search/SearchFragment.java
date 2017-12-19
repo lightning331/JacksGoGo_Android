@@ -11,15 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Adapter.Services.SearchMainAdapter;
+import com.kelvin.jacksgogo.Adapter.Services.SearchJobsAdapter;
+import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
 
 public class SearchFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private Context mContext;
 
-    RecyclerView recyclerView;
-    SearchMainAdapter adapter;
+    private RecyclerView recyclerView;
+    private SearchServicesAdapter adapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -43,20 +45,34 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         recyclerView = view.findViewById(R.id.search_main_recycler_view);
-        adapter = new SearchMainAdapter(getContext());
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
-        recyclerView.setAdapter(adapter);
+
+        refreshFragment("SERVICES");
 
         return view;
+    }
+
+    public void refreshFragment(Object textView) {
+
+        if (textView == "SERVICES") {
+            adapter = new SearchServicesAdapter(mContext);
+            recyclerView.setAdapter(adapter);
+        } else if (textView == "JOBS") {
+            SearchJobsAdapter adapter = new SearchJobsAdapter(mContext);
+            recyclerView.setAdapter(adapter);
+        } else if (textView == "GOCLUB") {
+
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
