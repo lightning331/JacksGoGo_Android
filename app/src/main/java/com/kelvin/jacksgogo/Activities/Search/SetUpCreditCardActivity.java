@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class SetUpCreditCardActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class SetUpCreditCardActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.SETUP_CARD);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.SETUP_CARD, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

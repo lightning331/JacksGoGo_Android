@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 import java.lang.reflect.Field;
@@ -50,7 +51,7 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POSTED_SERVICE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POSTED_SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

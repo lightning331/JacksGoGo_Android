@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Adapter.Jobs.InviteProviderAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class InviteProviderActivity extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.INVITE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.INVITE, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

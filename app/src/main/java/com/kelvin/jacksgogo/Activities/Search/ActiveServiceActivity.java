@@ -14,6 +14,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class ActiveServiceActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,7 +47,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_SERVICE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

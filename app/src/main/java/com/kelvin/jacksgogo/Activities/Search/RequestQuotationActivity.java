@@ -18,6 +18,7 @@ import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.EditJobFragment;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class RequestQuotationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,7 +48,7 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.REQUEST_QUOTATION);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.REQUEST_QUOTATION, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

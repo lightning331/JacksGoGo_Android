@@ -65,7 +65,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 11;
     }
 
     @Override

@@ -85,7 +85,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 10;
     }
 
     @Override

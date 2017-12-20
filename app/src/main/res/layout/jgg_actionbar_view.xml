@@ -22,7 +22,6 @@
                     android:id="@+id/img_back"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@mipmap/button_backarrow_orange"
                     android:adjustViewBounds="true"/>
                 <TextView
                     android:id="@+id/lbl_back_title"

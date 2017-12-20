@@ -10,6 +10,7 @@ import android.view.View;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Profile.NotVerifiedSkillFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.VerifiedSkillFragment;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class VerifyNewSkillsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -32,7 +33,7 @@ public class VerifyNewSkillsActivity extends AppCompatActivity implements View.O
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.VERIFY_SKILL);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.VERIFY_SKILL, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

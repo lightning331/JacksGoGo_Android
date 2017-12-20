@@ -20,6 +20,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 import java.lang.reflect.Field;
@@ -65,7 +66,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

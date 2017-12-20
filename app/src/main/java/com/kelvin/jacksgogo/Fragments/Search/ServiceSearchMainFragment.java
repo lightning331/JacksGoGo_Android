@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     private Context mContext;
     private OnFragmentInteractionListener mListener;
 
+    private LinearLayout searchLayout;
     private EditText txtSearch;
     private ImageView btnSearch;
     private TextView btnAdvanced;
@@ -33,13 +35,16 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     private TextView btnEvent;
     private TextView btnUser;
 
+    private String appType;
+
     public ServiceSearchMainFragment() {
         // Required empty public constructor
     }
 
-    public static ServiceSearchMainFragment newInstance(String param1, String param2) {
+    public static ServiceSearchMainFragment newInstance(String type) {
         ServiceSearchMainFragment fragment = new ServiceSearchMainFragment();
         Bundle args = new Bundle();
+        args.putString("appointment_type", type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +53,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            appType = getArguments().getString("appointment_type");
         }
     }
 
@@ -60,19 +65,28 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
 
         initView(view);
 
+        if (appType.equals("SERVICES")) {
+            initViewColor(getResources().getColor(R.color.JGGGreen));
+        } else if (appType.equals("JOBS")) {
+            initViewColor(getResources().getColor(R.color.JGGCyan));
+        } else if (appType.equals("GOCLUB")) {
+            initViewColor(getResources().getColor(R.color.JGGOrange));
+        }
+
         return view;
     }
 
     private void initView(View view) {
-        txtSearch = view.findViewById(R.id.txt_service_search);
-        btnSearch = view.findViewById(R.id.btn_service_search);
-        btnAdvanced = view.findViewById(R.id.btn_service_search_advanced);
-        recyclerViewLayout = view.findViewById(R.id.service_search_recycler_view_layout);
-        recyclerView = view.findViewById(R.id.service_search_recycler_view);
-        btnJobs = view.findViewById(R.id.btn_service_search_jobs);
-        btnGoClub = view.findViewById(R.id.btn_service_search_go_club);
-        btnEvent = view.findViewById(R.id.btn_service_search_event);
-        btnUser = view.findViewById(R.id.btn_service_search_user);
+        searchLayout = view.findViewById(R.id.search_layout);
+        txtSearch = view.findViewById(R.id.txt_search);
+        btnSearch = view.findViewById(R.id.btn_search);
+        btnAdvanced = view.findViewById(R.id.btn_search_advanced);
+        recyclerViewLayout = view.findViewById(R.id.search_recycler_view_layout);
+        recyclerView = view.findViewById(R.id.search_recycler_view);
+        btnJobs = view.findViewById(R.id.btn_search_jobs);
+        btnGoClub = view.findViewById(R.id.btn_search_go_club);
+        btnEvent = view.findViewById(R.id.btn_search_event);
+        btnUser = view.findViewById(R.id.btn_search_user);
 
         btnSearch.setOnClickListener(this);
         btnAdvanced.setOnClickListener(this);
@@ -80,6 +94,46 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
         btnGoClub.setOnClickListener(this);
         btnEvent.setOnClickListener(this);
         btnUser.setOnClickListener(this);
+    }
+
+    private void initViewColor(int color) {
+
+        if (appType.equals("SERVICES")) {
+            searchLayout.setBackgroundResource(R.drawable.green_border_background);
+            btnAdvanced.setBackgroundResource(R.drawable.green_border_background);
+            txtSearch.setHint("Search Services");
+            btnJobs.setText("Jobs");
+            btnJobs.setBackgroundResource(R.drawable.green_border_background);
+            btnGoClub.setBackgroundResource(R.drawable.green_border_background);
+            btnEvent.setBackgroundResource(R.drawable.green_border_background);
+            btnUser.setBackgroundResource(R.drawable.green_border_background);
+            btnSearch.setImageResource(R.mipmap.button_search_round_green);
+        } else if (appType.equals("JOBS")) {
+            searchLayout.setBackgroundResource(R.drawable.cyan_border_background);
+            btnAdvanced.setBackgroundResource(R.drawable.cyan_border_background);
+            txtSearch.setHint("Search Jobs");
+            btnJobs.setText("Services");
+            btnJobs.setBackgroundResource(R.drawable.cyan_border_background);
+            btnGoClub.setBackgroundResource(R.drawable.cyan_border_background);
+            btnEvent.setBackgroundResource(R.drawable.cyan_border_background);
+            btnUser.setBackgroundResource(R.drawable.cyan_border_background);
+            btnSearch.setImageResource(R.mipmap.button_search_round_cyan);
+        } else if (appType.equals("GOCLUB")) {
+            searchLayout.setBackgroundResource(R.drawable.orange_border_background);
+            btnAdvanced.setBackgroundResource(R.drawable.orange_border_background);
+            txtSearch.setHint("Search GoClub");
+            btnGoClub.setText("Services");
+            btnJobs.setBackgroundResource(R.drawable.orange_border_background);
+            btnGoClub.setBackgroundResource(R.drawable.orange_border_background);
+            btnEvent.setBackgroundResource(R.drawable.orange_border_background);
+            btnUser.setBackgroundResource(R.drawable.orange_border_background);
+            btnSearch.setImageResource(R.mipmap.button_search_round_orange);
+        }
+        btnAdvanced.setTextColor(color);
+        btnJobs.setTextColor(color);
+        btnGoClub.setTextColor(color);
+        btnEvent.setTextColor(color);
+        btnUser.setTextColor(color);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -107,22 +161,22 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_service_search_advanced) {
+        if (view.getId() == R.id.btn_search_advanced) {
             ServiceSearchAdvanceFragment frag = new ServiceSearchAdvanceFragment();
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.service_search_container, frag, frag.getTag());
             ft.addToBackStack("advance_search");
             ft.commit();
-        } else if (view.getId() == R.id.btn_service_search) {
+        } else if (view.getId() == R.id.btn_search) {
             Intent intent = new Intent(mContext, SearchResultActivity.class);
             startActivity(intent);
-        } else if (view.getId() == R.id.btn_service_search_jobs) {
+        } else if (view.getId() == R.id.btn_search_jobs) {
 
-        } else if (view.getId() == R.id.btn_service_search_go_club) {
+        } else if (view.getId() == R.id.btn_search_go_club) {
 
-        } else if (view.getId() == R.id.btn_service_search_event) {
+        } else if (view.getId() == R.id.btn_search_event) {
 
-        } else if (view.getId() == R.id.btn_service_search_user) {
+        } else if (view.getId() == R.id.btn_search_user) {
 
         }
     }

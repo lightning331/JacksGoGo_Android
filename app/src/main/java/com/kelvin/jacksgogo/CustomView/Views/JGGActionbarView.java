@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebHistoryItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -58,7 +58,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         REQUEST_QUOTATION,
         VERIFY_SKILL,
         POSTED_SERVICE,
-        SERVICE_SEARCH,
+        SEARCH,
         SEARCH_RESULT,
         INVITE,
         BID,
@@ -98,17 +98,19 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     }
 
     @SuppressLint("ResourceAsColor")
-    public void setStatus(EditStatus status) {
+    public void setStatus(EditStatus status, JGGAppBaseModel.AppointmentType type) {
         this.editStatus = status;
         switch (status) {
             case NONE:
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
                 break;
             case APPOINTMENT:
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText(R.string.title_appointment);
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
                 param = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
@@ -189,8 +191,14 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
                 break;
-            case SERVICE_SEARCH:
-                setGreenBackButton("", R.string.title_search);
+            case SEARCH:
+                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    setGreenBackButton("", R.string.title_search);
+                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    setCyanBackButton("", R.string.title_search);
+                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                    setOrangeBackButton(R.string.title_search, R.string.title_empty);
+                }
                 break;
             case SEARCH_RESULT:
                 setGreenBackButton("", R.string.search_result);
@@ -220,22 +228,28 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         }
     }
 
-    private void setOrangeBackButton(int title, int backButtonTitle) {
-        mTitleTextView.setText(title);
-        mBackButtonTitleTextView.setText(backButtonTitle);
-        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
-    }
-
     private void setEditDoneButton() {
         mTitleTextView.setText(R.string.menu_option_edit);
         mBackButtonTitleTextView.setText(R.string.title_appointment);
         mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
     }
 
+    private void setOrangeBackButton(int title, int backButtonTitle) {
+        mTitleTextView.setText(title);
+        mBackButtonTitleTextView.setText(backButtonTitle);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+    }
+
     private void setGreenBackButton(String backTitle, int title) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+    }
+
+    private void setCyanBackButton(String backTitle, int title) {
+        mTitleTextView.setText(title);
+        mBackButtonTitleTextView.setText(backTitle);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_cyan);
     }
 
     public void setEditMoreButtonClicked(boolean isSelected) {

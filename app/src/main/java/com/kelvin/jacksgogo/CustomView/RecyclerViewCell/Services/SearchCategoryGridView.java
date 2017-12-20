@@ -21,7 +21,7 @@ public class SearchCategoryGridView extends RecyclerView.ViewHolder {
     private Context mContext;
     private JGGAppBaseModel.AppointmentType type;
 
-    public GridView gridView;
+    private GridView gridView;
 
     public SearchCategoryGridView(View itemView, Context context, JGGAppBaseModel.AppointmentType type) {
         super(itemView);

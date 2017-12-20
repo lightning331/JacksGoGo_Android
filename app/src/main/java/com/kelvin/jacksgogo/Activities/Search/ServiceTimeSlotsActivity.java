@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class ServiceTimeSlotsActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class ServiceTimeSlotsActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE_TIME_SLOTS);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE_TIME_SLOTS, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

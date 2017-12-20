@@ -11,6 +11,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceVerifiedFragment;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,7 +37,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POST_SERVICE);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POST_SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

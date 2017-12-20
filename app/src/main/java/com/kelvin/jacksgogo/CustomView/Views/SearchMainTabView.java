@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceSearchActivity;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -19,22 +20,22 @@ import com.kelvin.jacksgogo.R;
 
 public class SearchMainTabView extends RelativeLayout implements View.OnClickListener {
 
-    Context mContext;
-    LayoutInflater mLayoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
 
-    View searchTabView;
+    private View searchTabView;
 
-    LinearLayout servicesButton;
-    LinearLayout jobsButton;
-    LinearLayout goClubButton;
-    TextView servicesTextView;
-    TextView jobsTextView;
-    TextView goClubTextView;
-    ImageView servicesDotImageView;
-    ImageView jobsDotImageView;
-    ImageView goClubDotImageView;
-    ImageButton searchButton;
-
+    private LinearLayout servicesButton;
+    private LinearLayout jobsButton;
+    private LinearLayout goClubButton;
+    private TextView servicesTextView;
+    private TextView jobsTextView;
+    private TextView goClubTextView;
+    private ImageView servicesDotImageView;
+    private ImageView jobsDotImageView;
+    private ImageView goClubDotImageView;
+    private ImageButton searchButton;
+    private JGGAppBaseModel.AppointmentType type;
 
     public SearchMainTabView(Context context) {
         super(context);
@@ -66,13 +67,21 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
         servicesTextView.setTag("SERVICES");
         jobsTextView.setTag("JOBS");
         goClubTextView.setTag("GOCLUB");
+
+        type = JGGAppBaseModel.AppointmentType.SERVICES;
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_search) {
-            // back to previous view
             Intent intent = new Intent(view.getContext(), ServiceSearchActivity.class);
+            if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                intent.putExtra("appointment_type", "SERVICES");
+            } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                intent.putExtra("appointment_type", "JOBS");
+            } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                intent.putExtra("appointment_type", "GOCLUB");
+            }
             mContext.startActivity(intent);
         } else {
             servicesDotImageView.setVisibility(View.INVISIBLE);
@@ -85,19 +94,22 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
 
             if (view.getId() == R.id.services_layout) {
                 servicesTextView.setTextColor(getResources().getColor(R.color.JGGGreen));
+                searchButton.setImageResource(R.mipmap.button_search_green);
                 servicesDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(servicesTextView);
-                searchButton.setImageResource(R.mipmap.button_search_green);
+                type = JGGAppBaseModel.AppointmentType.SERVICES;
             } else if (view.getId() == R.id.jobs_layout) {
                 jobsTextView.setTextColor(getResources().getColor(R.color.JGGCyan));
+                searchButton.setImageResource(R.mipmap.button_search_cyan);
                 jobsDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(jobsTextView);
-                searchButton.setImageResource(R.mipmap.button_search_cyan);
+                type = JGGAppBaseModel.AppointmentType.JOBS;
             } else if (view.getId() == R.id.go_club_layout) {
-                goClubTextView.setTextColor(getResources().getColor(R.color.JGGPurple));
+                goClubTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
+                searchButton.setImageResource(R.mipmap.button_search_orange);
                 goClubDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(goClubTextView);
-                searchButton.setImageResource(R.mipmap.button_search_purple);
+                type = JGGAppBaseModel.AppointmentType.GOCLUB;
             }
         }
     }

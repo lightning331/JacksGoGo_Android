@@ -23,6 +23,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.Adapter.Jobs.BidDetailAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class BidDetailActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener, OnDismissListener {
@@ -74,7 +75,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.BID);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.BID, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
