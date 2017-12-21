@@ -13,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -30,6 +33,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     private EditText txtAdvanceSearch;
     private TextView lblArea;
+    private ImageView btnArea;
     private LinearLayout btnDate;
     private TextView lblDate;
     private LinearLayout btnTime;
@@ -85,13 +89,29 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     private boolean newtonSelected = true;
     private boolean toaSelected = true;
 
+    private GridView gridView;
+
+    private CategoryGridAdapter adapter;
+    private String appType;
+    private int okButtonColor;
+    private int cancelButtonColor;
+    private int checkImage;
+    private int borderBackground;
+    private int imgActiveAM;
+    private int imgActivePM;
+    private int imgInActiveAM;
+    private int imgInActivePM;
+    private int imgUp;
+    private int imgDown;
+
     public ServiceSearchAdvanceFragment() {
         // Required empty public constructor
     }
 
-    public static ServiceSearchAdvanceFragment newInstance(String param1, String param2) {
+    public static ServiceSearchAdvanceFragment newInstance(String type) {
         ServiceSearchAdvanceFragment fragment = new ServiceSearchAdvanceFragment();
         Bundle args = new Bundle();
+        args.putString("APPOINTMENT_TYPE", type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -100,7 +120,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            appType = getArguments().getString("APPOINTMENT_TYPE");
         }
     }
 
@@ -117,6 +137,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     private void initView(View view) {
         txtAdvanceSearch = view.findViewById(R.id.txt_advance_search);
+        btnArea = view.findViewById(R.id.btn_service_search);
         lblArea = view.findViewById(R.id.lbl_advance_search_area);
         btnDate = view.findViewById(R.id.advance_search_date_layout);
         lblDate = view.findViewById(R.id.lbl_advance_search_date);
@@ -124,6 +145,38 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         lblTime = view.findViewById(R.id.lbl_advance_search_time);
         txtAdditionalTag = view.findViewById(R.id.txt_advance_additional_tag);
         btnSearch = view.findViewById(R.id.btn_advance_search);
+        gridView = (GridView) view.findViewById(R.id.category_grid_view);
+
+        switch (appType) {
+            case "SERVICES":
+                cancelButtonColor = getResources().getColor(R.color.JGGGreen10Percent);
+                okButtonColor = getResources().getColor(R.color.JGGGreen);
+                borderBackground = R.drawable.green_border_background;
+                txtAdvanceSearch.setBackgroundResource(R.drawable.green_border_background);
+                btnSearch.setBackgroundResource(R.drawable.green_background);
+                btnArea.setImageResource(R.mipmap.button_showless_green);
+                adapter = new CategoryGridAdapter(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+                break;
+            case "JOBS":
+                cancelButtonColor = getResources().getColor(R.color.JGGCyan10Percent);
+                okButtonColor = getResources().getColor(R.color.JGGCyan);
+                borderBackground = R.drawable.cyan_border_background;
+                txtAdvanceSearch.setBackgroundResource(borderBackground);
+                btnSearch.setBackgroundResource(R.drawable.cyan_background);
+                btnArea.setImageResource(R.mipmap.button_showless_cyan);
+                adapter = new CategoryGridAdapter(mContext, JGGAppBaseModel.AppointmentType.JOBS);
+                break;
+            case "GOCLUB":
+                cancelButtonColor = getResources().getColor(R.color.JGGPurple10Percent);
+                okButtonColor = getResources().getColor(R.color.JGGPurple);
+                borderBackground = R.drawable.purple_border_background;
+                txtAdvanceSearch.setBackgroundResource(R.drawable.purple_border_background);
+                btnSearch.setBackgroundResource(R.drawable.purple_background);
+                btnArea.setImageResource(R.mipmap.button_showless_purple);
+                adapter = new CategoryGridAdapter(mContext, JGGAppBaseModel.AppointmentType.GOCLUB);
+                break;
+        }
+        gridView.setAdapter(adapter);
 
         lblArea.setOnClickListener(this);
         btnDate.setOnClickListener(this);
@@ -149,46 +202,99 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     private void onShowAddTimeView(View view) {
         btnStartTimeUp = (ImageView) view.findViewById(R.id.btn_add_start_time_up);
-        btnStartTimeUp.setOnClickListener(this);
         txtStartTime = (EditText) view.findViewById(R.id.txt_add_start_time);
-        txtStartTime.addTextChangedListener(this);
         btnStartTimeDown = (ImageView) view.findViewById(R.id.btn_add_start_time_down);
-        btnStartTimeDown.setOnClickListener(this);
         btnStartMinuteUp = (ImageView) view.findViewById(R.id.btn_add_start_time_minute_up);
-        btnStartMinuteUp.setOnClickListener(this);
         txtStartMinute = (EditText) view.findViewById(R.id.txt_add_start_minute_time);
-        txtStartMinute.addTextChangedListener(this);
         btnStartMinuteDown = (ImageView) view.findViewById(R.id.btn_add_start_time_minute_down);
-        btnStartMinuteDown.setOnClickListener(this);
         btnStartTimeAM = (ImageView) view.findViewById(R.id.btn_add_start_time_am);
-        btnStartTimeAM.setOnClickListener(this);
         btnStartTimePM = (ImageView) view.findViewById(R.id.btn_add_start_time_pm);
-        btnStartTimePM.setOnClickListener(this);
         btnEndTimeUp = (ImageView) view.findViewById(R.id.btn_add_end_time_up);
-        btnEndTimeUp.setOnClickListener(this);
         txtEndTime = (EditText) view.findViewById(R.id.txt_add_end_time);
-        txtEndTime.addTextChangedListener(this);
         btnEndTimeDown = (ImageView) view.findViewById(R.id.btn_add_end_time_down);
-        btnEndTimeDown.setOnClickListener(this);
         btnEndMinuteUp = (ImageView) view.findViewById(R.id.btn_add_end_time_minute_up);
-        btnEndMinuteUp.setOnClickListener(this);
         txtEndMinute = (EditText) view.findViewById(R.id.txt_add_end_minute_time);
-        txtEndMinute.addTextChangedListener(this);
         btnEndMinuteDown = (ImageView) view.findViewById(R.id.btn_add_end_time_minute_down);
-        btnEndMinuteDown.setOnClickListener(this);
         btnEndTimeAM = (ImageView) view.findViewById(R.id.btn_add_end_time_am);
-        btnEndTimeAM.setOnClickListener(this);
         btnEndTimePM = (ImageView) view.findViewById(R.id.btn_add_end_time_pm);
-        btnEndTimePM.setOnClickListener(this);
         btnCancel = (TextView) view.findViewById(R.id.btn_add_time_cancel);
-        btnCancel.setOnClickListener(this);
         btnOk = (TextView) view.findViewById(R.id.btn_add_time_ok);
-        btnOk.setOnClickListener(this);
         btnClose = (ImageView) view.findViewById(R.id.btn_advance_search_close);
         btnSetEndTime = (TextView) view.findViewById(R.id.btn_advance_search_end_time);
-        btnSetEndTime.setOnClickListener(this);
         endTimeOptionalLayout = (LinearLayout) view.findViewById(R.id.set_end_time_layout);
         endTimeLayout = (LinearLayout) view.findViewById(R.id.advance_search_end_time_layout);
+
+        switch (appType) {
+            case "SERVICES":
+                imgActiveAM = R.mipmap.button_am_active_green;
+                imgInActiveAM = R.mipmap.button_am_green;
+                imgActivePM = R.mipmap.button_pm_active_green;
+                imgInActivePM = R.mipmap.button_pm_green;
+                imgUp = R.mipmap.button_showmore_green;
+                imgDown  = R.mipmap.button_showless_green;
+                btnClose.setImageResource(R.mipmap.button_close_round_green);
+                break;
+            case "JOBS":
+                imgActiveAM = R.mipmap.button_am_active_cyan;
+                imgInActiveAM = R.mipmap.button_am_cyan;
+                imgActivePM = R.mipmap.button_pm_active_cyan;
+                imgInActivePM = R.mipmap.button_pm_cyan;
+                imgUp = R.mipmap.button_showmore_cyan;
+                imgDown  = R.mipmap.button_showless_cyan;
+                btnClose.setImageResource(R.mipmap.button_close_round_cyan);
+                break;
+            case "GOCLUB":
+                imgActiveAM = R.mipmap.button_am_active_purple;
+                imgInActiveAM = R.mipmap.button_am_purple;
+                imgActivePM = R.mipmap.button_pm_active_purple;
+                imgInActivePM = R.mipmap.button_pm_purple;
+                imgUp = R.mipmap.button_showmore_purple;
+                imgDown  = R.mipmap.button_showless_purple;
+                btnClose.setImageResource(R.mipmap.button_close_round_purple);
+                break;
+        }
+
+        btnCancel.setBackgroundColor(cancelButtonColor);
+        btnCancel.setTextColor(okButtonColor);
+        btnOk.setBackgroundColor(okButtonColor);
+        txtStartTime.setBackgroundResource(borderBackground);
+        txtStartMinute.setBackgroundResource(borderBackground);
+        txtEndTime.setBackgroundResource(borderBackground);
+        txtEndMinute.setBackgroundResource(borderBackground);
+        btnSetEndTime.setBackgroundResource(borderBackground);
+        btnSetEndTime.setTextColor(okButtonColor);
+        btnStartTimeUp.setImageResource(imgUp);
+        btnStartTimeDown.setImageResource(imgDown);
+        btnStartMinuteUp.setImageResource(imgUp);
+        btnStartMinuteDown.setImageResource(imgDown);
+        btnStartTimeAM.setImageResource(imgActiveAM);
+        btnStartTimePM.setImageResource(imgInActivePM);
+        btnEndTimeUp.setImageResource(imgUp);
+        btnEndTimeDown.setImageResource(imgDown);
+        btnEndMinuteUp.setImageResource(imgUp);
+        btnEndMinuteDown.setImageResource(imgDown);
+        btnEndTimeAM.setImageResource(imgActiveAM);
+        btnEndTimePM.setImageResource(imgInActivePM);
+
+        btnStartTimeUp.setOnClickListener(this);
+        txtStartTime.addTextChangedListener(this);
+        btnStartTimeDown.setOnClickListener(this);
+        btnStartMinuteUp.setOnClickListener(this);
+        btnStartMinuteDown.setOnClickListener(this);
+        txtStartMinute.addTextChangedListener(this);
+        btnStartTimeAM.setOnClickListener(this);
+        btnStartTimePM.setOnClickListener(this);
+        btnEndTimeUp.setOnClickListener(this);
+        txtEndTime.addTextChangedListener(this);
+        btnEndTimeDown.setOnClickListener(this);
+        btnEndMinuteUp.setOnClickListener(this);
+        txtEndMinute.addTextChangedListener(this);
+        btnEndMinuteDown.setOnClickListener(this);
+        btnEndTimeAM.setOnClickListener(this);
+        btnEndTimePM.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
+        btnSetEndTime.setOnClickListener(this);
     }
 
     private void onShowCalendarView() {
@@ -208,29 +314,30 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         btnCalendarOk = calendarView.findViewById(R.id.btn_add_time_duplicate_ok);
         btnCalendarOk.setText("Done");
 
+        switch (appType) {
+            case "SERVICES":
+                setCalendarViewImage(R.mipmap.button_previous_green, R.mipmap.button_next_green);
+                break;
+            case "JOBS":
+                setCalendarViewImage(R.mipmap.button_previous_cyan, R.mipmap.button_next_cyan);
+                break;
+            case "GOCLUB":
+                setCalendarViewImage(R.mipmap.button_previous_purple, R.mipmap.button_next_purple);
+                break;
+        }
+
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
 
     }
 
-    private void onAmClick(View view) {
-        if (view.getId() == R.id.btn_add_start_time_am) {
-            btnStartTimeAM.setBackgroundResource(R.mipmap.button_am_active_green);
-            btnStartTimePM.setBackgroundResource(R.mipmap.button_pm_green);
-        } else {
-            btnEndTimeAM.setBackgroundResource(R.mipmap.button_am_active_green);
-            btnEndTimePM.setBackgroundResource(R.mipmap.button_pm_green);
-        }
-    }
-
-    private void onPmClick(View view) {
-        if (view.getId() == R.id.btn_add_start_time_pm) {
-            btnStartTimeAM.setBackgroundResource(R.mipmap.button_am_green);
-            btnStartTimePM.setBackgroundResource(R.mipmap.button_pm_active_green);
-        } else {
-            btnEndTimeAM.setBackgroundResource(R.mipmap.button_am_green);
-            btnEndTimePM.setBackgroundResource(R.mipmap.button_pm_active_green);
-        }
+    private void setCalendarViewImage(int imgName1, int imgName2) {
+        btnCalendarCancel.setBackgroundColor(cancelButtonColor);
+        btnCalendarCancel.setTextColor(okButtonColor);
+        duplicateTimeCalendar.setArrowColor(okButtonColor);
+        duplicateTimeCalendar.setSelectionColor(okButtonColor);
+        duplicateTimeCalendar.setLeftArrowMask(getResources().getDrawable(imgName1));
+        duplicateTimeCalendar.setRightArrowMask(getResources().getDrawable(imgName2));
     }
 
     private void onShowAreaView() {
@@ -249,6 +356,21 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         btnNewton = areaView.findViewById(R.id.btn_area_newton);
         btnToa = areaView.findViewById(R.id.btn_area_toa);
 
+        switch (appType) {
+            case "SERVICES":
+                checkImage = R.mipmap.checkbox_on_green;
+                setAreaViewImage(R.mipmap.button_tick_area_round_green);
+                break;
+            case "JOBS":
+                checkImage = R.mipmap.checkbox_on_blue;
+                setAreaViewImage(R.mipmap.button_tick_area_round_cyan);
+                break;
+            case "GOCLUB":
+                checkImage = R.mipmap.checkbox_on_purple;
+                setAreaViewImage(R.mipmap.button_tick_area_round_purple);
+                break;
+        }
+
         btnAreaClose.setOnClickListener(this);
         btnCBD.setOnClickListener(this);
         btnCentral.setOnClickListener(this);
@@ -261,27 +383,39 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         alertDialog.show();
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private void setAreaViewImage(int closeImage) {
+        btnAreaClose.setImageResource(closeImage);
+        btnCBD.setImageResource(checkImage);
+        btnCentral.setImageResource(checkImage);
+        btnEunos.setImageResource(checkImage);
+        btnOrchard.setImageResource(checkImage);
+        btnNewton.setImageResource(checkImage);
+        btnToa.setImageResource(checkImage);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+    private void setOnCheck(ImageView button, boolean selected) {
+        if (selected) button.setImageResource(checkImage);
+        else button.setImageResource(R.mipmap.checkbox_off);
+    }
+
+    private void onAmClick(View view) {
+        if (view.getId() == R.id.btn_add_start_time_am) {
+            btnStartTimeAM.setImageResource(imgActiveAM);
+            btnStartTimePM.setImageResource(imgInActivePM);
         } else {
-
+            btnEndTimeAM.setImageResource(imgActiveAM);
+            btnEndTimePM.setImageResource(imgInActivePM);
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    private void onPmClick(View view) {
+        if (view.getId() == R.id.btn_add_start_time_pm) {
+            btnStartTimeAM.setImageResource(imgInActiveAM);
+            btnStartTimePM.setImageResource(imgActivePM);
+        } else {
+            btnEndTimeAM.setImageResource(imgInActiveAM);
+            btnEndTimePM.setImageResource(imgActivePM);
+        }
     }
 
     @Override
@@ -340,9 +474,27 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         }
     }
 
-    private void setOnCheck(ImageView button, boolean selected) {
-        if (selected) button.setImageResource(R.mipmap.checkbox_on_green);
-        else button.setImageResource(R.mipmap.checkbox_off);
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -362,7 +514,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        btnCalendarOk.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+        btnCalendarOk.setBackgroundColor(okButtonColor);
         btnCalendarOk.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
         btnCalendarOk.setOnClickListener(this);
     }

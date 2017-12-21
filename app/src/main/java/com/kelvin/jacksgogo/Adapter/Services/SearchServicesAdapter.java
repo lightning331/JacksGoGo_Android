@@ -95,19 +95,22 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_view_my_service) {
-            Log.d(TAG, "view my services ========= : ");
-            Intent intent = new Intent(mContext.getApplicationContext(), ServiceListingActivity.class);
-            view.getContext().startActivity(intent);
-        } else if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_other_professions) {
-            Log.d(TAG, "view all services ========= : ");
-            Intent intent = new Intent(mContext.getApplicationContext(), ActiveServiceActivity.class);
-            view.getContext().startActivity(intent);
-        } else if (view.getId() == R.id.btn_post_new) {
-            Log.d(TAG, "post new ========= : ");
-            Intent intent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
-            //intent.putExtra("EDIT_STATUS", "None");
-            view.getContext().startActivity(intent);
+        if (view.getId() == R.id.btn_view_my_service
+                || view.getId() == R.id.btn_view_all
+                || view.getId() == R.id.btn_post_new) {
+
+            listener.onItemClick(view);
+
         }
+    }
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view);
+    }
+
+    public void setOnItemClickLietener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

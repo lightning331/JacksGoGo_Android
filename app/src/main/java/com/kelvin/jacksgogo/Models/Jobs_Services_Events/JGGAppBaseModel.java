@@ -28,6 +28,7 @@ public class JGGAppBaseModel extends JGGBaseModel {
         SERVICES,
         EVENT,
         GOCLUB,
+        USERS,
         UNKNOWN
     }
 

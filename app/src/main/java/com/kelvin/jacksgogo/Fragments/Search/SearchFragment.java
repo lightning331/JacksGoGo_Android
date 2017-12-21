@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.Adapter.Services.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
@@ -21,7 +25,8 @@ public class SearchFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView recyclerView;
-    private SearchServicesAdapter adapter;
+    private String appType = "SERVICES";
+    private Intent mIntent;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -56,17 +61,45 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    public void refreshFragment(Object textView) {
+    public void refreshFragment(String textView) {
+
+        appType = textView;
 
         if (textView == "SERVICES") {
-            adapter = new SearchServicesAdapter(mContext);
+            SearchServicesAdapter adapter = new SearchServicesAdapter(mContext);
+            adapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view) {
+                    onHeaderViewItemClick(view);
+                }
+            });
             recyclerView.setAdapter(adapter);
         } else if (textView == "JOBS") {
             SearchJobsAdapter adapter = new SearchJobsAdapter(mContext);
+            adapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view) {
+                    onHeaderViewItemClick(view);
+                }
+            });
             recyclerView.setAdapter(adapter);
         } else if (textView == "GOCLUB") {
 
         }
+    }
+
+    private void onHeaderViewItemClick(View view) {
+
+        if (view.getId() == R.id.btn_view_my_service) {
+            mIntent = new Intent(mContext.getApplicationContext(), ServiceListingActivity.class);
+        } else if (view.getId() == R.id.btn_view_all) {
+            mIntent = new Intent(mContext.getApplicationContext(), ActiveServiceActivity.class);
+        } else if (view.getId() == R.id.btn_post_new) {
+            mIntent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
+        }
+        mIntent.putExtra("APPOINTMENT_TYPE", appType);
+        mIntent.putExtra("EDIT_STATUS", "None");
+        view.getContext().startActivity(mIntent);
     }
 
     @Override

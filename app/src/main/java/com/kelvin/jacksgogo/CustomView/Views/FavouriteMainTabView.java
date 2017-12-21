@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceSearchActivity;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -35,6 +36,8 @@ public class FavouriteMainTabView extends RelativeLayout implements View.OnClick
     private ImageView eventDotImageView;
     private ImageView userDotImageView;
     private ImageButton searchButton;
+
+    private JGGAppBaseModel.AppointmentType type;
 
     public FavouriteMainTabView(Context context) {
         super(context);
@@ -71,14 +74,24 @@ public class FavouriteMainTabView extends RelativeLayout implements View.OnClick
         jobsTextView.setTag("JOBS");
         eventTextView.setTag("EVENTS");
         userTextView.setTag("USERS");
+
+//        type = JGGAppBaseModel.AppointmentType.SERVICES;
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_search) {
-            // back to previous view
-            Intent intent = new Intent(view.getContext(), ServiceSearchActivity.class);
-            mContext.startActivity(intent);
+//            Intent intent = new Intent(view.getContext(), ServiceSearchActivity.class);
+//            if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+//                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+//            } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+//                intent.putExtra("APPOINTMENT_TYPE", "JOBS");
+//            } else if (type == JGGAppBaseModel.AppointmentType.EVENT) {
+//                intent.putExtra("APPOINTMENT_TYPE", "EVENT");
+//            } else if (type == JGGAppBaseModel.AppointmentType.USERS) {
+//                intent.putExtra("APPOINTMENT_TYPE", "USER");
+//            }
+//            mContext.startActivity(intent);
         } else {
             servicesDotImageView.setVisibility(View.INVISIBLE);
             jobsDotImageView.setVisibility(View.INVISIBLE);
@@ -95,21 +108,25 @@ public class FavouriteMainTabView extends RelativeLayout implements View.OnClick
                 servicesDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(servicesTextView);
                 searchButton.setImageResource(R.mipmap.button_search_green);
+//                type = JGGAppBaseModel.AppointmentType.SERVICES;
             } else if (view.getId() == R.id.jobs_layout) {
                 jobsTextView.setTextColor(getResources().getColor(R.color.JGGCyan));
                 jobsDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(jobsTextView);
                 searchButton.setImageResource(R.mipmap.button_search_cyan);
+//                type = JGGAppBaseModel.AppointmentType.JOBS;
             } else if (view.getId() == R.id.event_layout) {
                 eventTextView.setTextColor(getResources().getColor(R.color.JGGPurple));
                 eventDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(eventTextView);
                 searchButton.setImageResource(R.mipmap.button_search_purple);
+//                type = JGGAppBaseModel.AppointmentType.EVENT;
             } else if (view.getId() == R.id.users_layout) {
                 userTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
                 userDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(userTextView);
                 searchButton.setImageResource(R.mipmap.button_search_orange);
+//                type = JGGAppBaseModel.AppointmentType.USERS;
             }
         }
     }

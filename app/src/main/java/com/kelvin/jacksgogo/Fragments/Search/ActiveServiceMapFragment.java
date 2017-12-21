@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -52,25 +54,30 @@ public class ActiveServiceMapFragment extends Fragment
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    Context mContext;
-    private OnAcitiveServiceFragmentInteractionListener mListener;
+    private Context mContext;
+    private OnFragmentInteractionListener mListener;
 
-    GoogleMap mGoogleMap;
-    SupportMapFragment mapFrag;
-    LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
-    Marker mCurrLocationMarker;
+    private GoogleMap mGoogleMap;
+    private SupportMapFragment mapFrag;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private Marker mCurrLocationMarker;
 
-    SeekBar seekBar;
-    TextView lblServiceCount;
-    TextView lblSearchRadius;
-    LinearLayout btnMapFilter;
-    LinearLayout btnUserLocation;
-    LinearLayout btnListView;
+    private SeekBar seekBar;
+    private TextView lblServiceCount;
+    private TextView lblSearchRadius;
+    private LinearLayout btnMapFilter;
+    private LinearLayout btnUserLocation;
+    private LinearLayout btnListView;
+    private ImageView imgFilter;
+    private ImageView imgUserLocation;
+    private ImageView imgListView;
 
-    public void setOnAcitiveServiceFragmentInteractionListener(
-            OnAcitiveServiceFragmentInteractionListener listener) {
+    private String appType;
+    private int mColor;
+
+    public void setOnFragmentInteractionListener(OnFragmentInteractionListener listener) {
         mListener = listener;
     }
 
@@ -78,8 +85,11 @@ public class ActiveServiceMapFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static ActiveServiceMapFragment newInstance(String param1, String param2) {
+    public static ActiveServiceMapFragment newInstance(String type) {
         ActiveServiceMapFragment fragment = new ActiveServiceMapFragment();
+        Bundle args = new Bundle();
+        args.putString("APPOINTMENT_TYPE", type);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -87,7 +97,9 @@ public class ActiveServiceMapFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            appType = getArguments().getString("APPOINTMENT_TYPE");
+        } else {
+            appType = "SERVICES";
         }
     }
 
@@ -111,6 +123,31 @@ public class ActiveServiceMapFragment extends Fragment
         btnMapFilter = view.findViewById(R.id.btn_map_filter);
         btnUserLocation = view.findViewById(R.id.btn_user_location);
         btnListView = view.findViewById(R.id.btn_list_view);
+        imgFilter = view.findViewById(R.id.img_map_filter);
+        imgUserLocation = view.findViewById(R.id.img_user_location);
+        imgListView = view.findViewById(R.id.img_list_view);
+
+        switch (appType) {
+            case "SERVICES":
+                mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
+                imgListView.setImageResource(R.mipmap.button_listview_green);
+                imgFilter.setImageResource(R.mipmap.button_filter_green);
+                imgUserLocation.setImageResource(R.mipmap.button_location_green);
+                break;
+            case "JOBS":
+                mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
+                imgListView.setImageResource(R.mipmap.button_listview_cyan);
+                imgFilter.setImageResource(R.mipmap.button_filter_cyan);
+                imgUserLocation.setImageResource(R.mipmap.button_location_cyan);
+                break;
+            case "GOCLUB":
+                mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
+                imgListView.setImageResource(R.mipmap.button_listview_purple);
+                imgFilter.setImageResource(R.mipmap.button_filter_purple);
+                imgUserLocation.setImageResource(R.mipmap.button_location_purple);
+                break;
+        }
+        seekBar.getProgressDrawable().setColorFilter(mColor, PorterDuff.Mode.SRC_ATOP);
 
         btnMapFilter.setOnClickListener(this);
         btnUserLocation.setOnClickListener(this);
@@ -143,6 +180,7 @@ public class ActiveServiceMapFragment extends Fragment
     public void onClick(View view) {
         if (view.getId() == R.id.btn_map_filter) {
             Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
+            intent.putExtra("APPOINTMENT_TYPE", appType);
             startActivity(intent);
         } else if (view.getId() == R.id.btn_user_location) {
 
@@ -300,7 +338,7 @@ public class ActiveServiceMapFragment extends Fragment
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.anchor(.5f, .5f);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin_selected));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
     }
 
@@ -381,7 +419,7 @@ public class ActiveServiceMapFragment extends Fragment
         mContext.startActivity(new Intent(mContext, ServiceDetailActivity.class));
     }
 
-    public interface OnAcitiveServiceFragmentInteractionListener {
+    public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }

@@ -15,24 +15,30 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
+import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
 
-public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnAcitiveServiceFragmentInteractionListener {
+public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnFragmentInteractionListener {
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
-    ActiveServiceTabView tabView;
+    private RecyclerView recyclerView;
+    private ActiveServiceTabView tabView;
+
+    private String appType;
 
     public ActiveServiceMainFragment() {
         // Required empty public constructor
 
     }
 
-    public static ActiveServiceMainFragment newInstance(String param1, String param2) {
+    public static ActiveServiceMainFragment newInstance(String appType) {
         ActiveServiceMainFragment fragment = new ActiveServiceMainFragment();
+        Bundle args = new Bundle();
+        args.putString("APPOINTMENT_TYPE", appType);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -40,7 +46,9 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            appType = getArguments().getString("APPOINTMENT_TYPE");
+        } else {
+            appType = "SERVICES";
         }
     }
 
@@ -64,22 +72,32 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        ActiveServiceAdapter adapter = new ActiveServiceAdapter();
-        adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick() {
-                Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
-                intent.putExtra("is_post", false);
-                startActivity(intent);
-            }
-        });
+        if (appType.equals("SERVICES")) {
+            ActiveServiceAdapter adapter = new ActiveServiceAdapter();
+            adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
+                    intent.putExtra("is_post", false);
+                    startActivity(intent);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+        } else if (appType.equals("JOBS")) {
+            JobsListingAdapter adapter = new JobsListingAdapter();
+            adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
 
-        recyclerView.setAdapter(adapter);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     private void initTabView(View view) {
 
-        tabView = new ActiveServiceTabView(getContext());
+        tabView = new ActiveServiceTabView(getContext(), appType);
         LinearLayout tabbarLayout = (LinearLayout) view.findViewById(R.id.active_service_tab_view_layout);
         tabbarLayout.addView(tabView);
         tabView.setTabbarItemClickListener(new ActiveServiceTabView.OnTabbarItemClickListener() {
@@ -87,14 +105,15 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             public void onTabbarItemClick(View view) {
                 if (view.getId() == R.id.btn_active_service_filter) {
                     Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
+                    intent.putExtra("APPOINTMENT_TYPE", appType);
                     startActivity(intent);
                 } else if (view.getId() == R.id.btn_active_service_mapview) {
-                    ActiveServiceMapFragment activeServiceMapFragment = new ActiveServiceMapFragment();
+                    ActiveServiceMapFragment mapFragment = ActiveServiceMapFragment.newInstance(appType);
 
-                    activeServiceMapFragment.setOnAcitiveServiceFragmentInteractionListener(ActiveServiceMainFragment.this);
+                    mapFragment.setOnFragmentInteractionListener(ActiveServiceMainFragment.this);
 
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.active_service_container, activeServiceMapFragment, activeServiceMapFragment.getTag());
+                    ft.replace(R.id.active_service_container, mapFragment, mapFragment.getTag());
                     ft.addToBackStack("active_service");
                     ft.commit();
                 } else {

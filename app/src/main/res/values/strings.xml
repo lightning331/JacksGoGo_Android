@@ -38,7 +38,11 @@
     <string name="title_map">Map</string>
     <string name="title_service_listing">Service Listing</string>
     <string name="title_active_service_around">Active Services Around</string>
+    <string name="title_active_job_around">Active Jobs Around</string>
+    <string name="title_active_goclub_around">Active GoClub Around</string>
     <string name="title_post_service">Post A Service</string>
+    <string name="title_post_job">Post A Job</string>
+    <string name="title_post_goclub">Post A GoClub</string>
     <string name="title_invite_service_provider">Invite Service Providers</string>
     <string name="title_time_slots">Time Slots</string>
     <string name="title_review">Reviews</string>

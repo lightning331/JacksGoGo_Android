@@ -101,15 +101,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:textSize="@dimen/list_title_font_size"
-                android:background="@mipmap/button_am_active_green"/>
+                android:textSize="@dimen/list_title_font_size"/>
             <ImageView
                 android:id="@+id/btn_add_start_time_pm"
                 android:text="PM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="@mipmap/button_pm_green"/>
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -227,15 +225,13 @@
                 android:id="@+id/btn_add_end_time_am"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/button_am_active_green"/>
+                android:layout_marginLeft="10dp"/>
             <ImageView
                 android:id="@+id/btn_add_end_time_pm"
                 android:text="PM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="@mipmap/button_pm_green"/>
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

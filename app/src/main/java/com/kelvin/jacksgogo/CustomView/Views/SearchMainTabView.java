@@ -76,11 +76,11 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
         if (view.getId() == R.id.btn_search) {
             Intent intent = new Intent(view.getContext(), ServiceSearchActivity.class);
             if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
-                intent.putExtra("appointment_type", "SERVICES");
+                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
             } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
-                intent.putExtra("appointment_type", "JOBS");
+                intent.putExtra("APPOINTMENT_TYPE", "JOBS");
             } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
-                intent.putExtra("appointment_type", "GOCLUB");
+                intent.putExtra("APPOINTMENT_TYPE", "GOCLUB");
             }
             mContext.startActivity(intent);
         } else {
@@ -105,8 +105,8 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
                 listener.onTabbarItemClick(jobsTextView);
                 type = JGGAppBaseModel.AppointmentType.JOBS;
             } else if (view.getId() == R.id.go_club_layout) {
-                goClubTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
-                searchButton.setImageResource(R.mipmap.button_search_orange);
+                goClubTextView.setTextColor(getResources().getColor(R.color.JGGPurple));
+                searchButton.setImageResource(R.mipmap.button_search_purple);
                 goClubDotImageView.setVisibility(View.VISIBLE);
                 listener.onTabbarItemClick(goClubTextView);
                 type = JGGAppBaseModel.AppointmentType.GOCLUB;

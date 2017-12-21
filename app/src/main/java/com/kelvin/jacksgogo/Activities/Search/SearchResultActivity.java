@@ -21,13 +21,21 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
+        String appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
+
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.search_result_actionbar);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        if (appType.equals("SERVICES")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.SERVICES);
+        } else if (appType.equals("JOBS")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.JOBS);
+        } else if (appType.equals("GOCLUB")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.GOCLUB);
+        }
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -36,7 +44,7 @@ public class SearchResultActivity extends AppCompatActivity {
         });
 
         // Main Fragment
-        ActiveServiceMainFragment frag = new ActiveServiceMainFragment();
+        ActiveServiceMainFragment frag = ActiveServiceMainFragment.newInstance(appType);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.active_service_container, frag, frag.getTag());
         ft.commit();

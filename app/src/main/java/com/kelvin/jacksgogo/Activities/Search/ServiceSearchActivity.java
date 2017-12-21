@@ -24,7 +24,7 @@ public class ServiceSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_search);
 
-        appType = getIntent().getStringExtra("appointment_type"); // Dennis
+        appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_search_actionbar);

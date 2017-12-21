@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             @Override
             public void onTabbarItemClick(TextView item) {
                 if (frag instanceof SearchFragment) {
-                    ((SearchFragment)frag).refreshFragment(item.getTag());
+                    ((SearchFragment)frag).refreshFragment(item.getTag().toString());
                 }
             }
         });
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             @Override
             public void onTabbarItemClick(TextView item) {
                 if (frag instanceof FavouriteFragment) {
-                    ((FavouriteFragment)frag).refreshFragment(item.getTag());
+                    ((FavouriteFragment)frag).refreshFragment(item.getTag().toString());
                 }
             }
         });

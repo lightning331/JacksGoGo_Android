@@ -44,7 +44,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     public static ServiceSearchMainFragment newInstance(String type) {
         ServiceSearchMainFragment fragment = new ServiceSearchMainFragment();
         Bundle args = new Bundle();
-        args.putString("appointment_type", type);
+        args.putString("APPOINTMENT_TYPE", type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,7 +53,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            appType = getArguments().getString("appointment_type");
+            appType = getArguments().getString("APPOINTMENT_TYPE");
         }
     }
 
@@ -70,7 +70,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
         } else if (appType.equals("JOBS")) {
             initViewColor(getResources().getColor(R.color.JGGCyan));
         } else if (appType.equals("GOCLUB")) {
-            initViewColor(getResources().getColor(R.color.JGGOrange));
+            initViewColor(getResources().getColor(R.color.JGGPurple));
         }
 
         return view;
@@ -119,15 +119,15 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
             btnUser.setBackgroundResource(R.drawable.cyan_border_background);
             btnSearch.setImageResource(R.mipmap.button_search_round_cyan);
         } else if (appType.equals("GOCLUB")) {
-            searchLayout.setBackgroundResource(R.drawable.orange_border_background);
-            btnAdvanced.setBackgroundResource(R.drawable.orange_border_background);
+            searchLayout.setBackgroundResource(R.drawable.purple_border_background);
+            btnAdvanced.setBackgroundResource(R.drawable.purple_border_background);
             txtSearch.setHint("Search GoClub");
             btnGoClub.setText("Services");
-            btnJobs.setBackgroundResource(R.drawable.orange_border_background);
-            btnGoClub.setBackgroundResource(R.drawable.orange_border_background);
-            btnEvent.setBackgroundResource(R.drawable.orange_border_background);
-            btnUser.setBackgroundResource(R.drawable.orange_border_background);
-            btnSearch.setImageResource(R.mipmap.button_search_round_orange);
+            btnJobs.setBackgroundResource(R.drawable.purple_border_background);
+            btnGoClub.setBackgroundResource(R.drawable.purple_border_background);
+            btnEvent.setBackgroundResource(R.drawable.purple_border_background);
+            btnUser.setBackgroundResource(R.drawable.purple_border_background);
+            btnSearch.setImageResource(R.mipmap.button_search_round_purple);
         }
         btnAdvanced.setTextColor(color);
         btnJobs.setTextColor(color);
@@ -162,13 +162,14 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_search_advanced) {
-            ServiceSearchAdvanceFragment frag = new ServiceSearchAdvanceFragment();
+            ServiceSearchAdvanceFragment frag = ServiceSearchAdvanceFragment.newInstance(appType);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.service_search_container, frag, frag.getTag());
             ft.addToBackStack("advance_search");
             ft.commit();
         } else if (view.getId() == R.id.btn_search) {
             Intent intent = new Intent(mContext, SearchResultActivity.class);
+            intent.putExtra("APPOINTMENT_TYPE", appType);
             startActivity(intent);
         } else if (view.getId() == R.id.btn_search_jobs) {
 

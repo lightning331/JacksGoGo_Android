@@ -56,11 +56,7 @@ public class CategoryGridAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             gridViewItem = inflater.inflate(R.layout.cell_search_category, null);
         }
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
-            gridViewItem.setLayoutParams(new GridView.LayoutParams(320, 315));
-        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
-            gridViewItem.setLayoutParams(new GridView.LayoutParams(320, 315));
-        }
+        gridViewItem.setLayoutParams(new GridView.LayoutParams(320, 315));
 
         ImageView categoryIcon = (ImageView) gridViewItem.findViewById(R.id.img_search_category);
         TextView categoryTitle = (TextView) gridViewItem.findViewById(R.id.lbl_search_category);

@@ -6,9 +6,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
@@ -21,8 +23,11 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
 
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
-    private ActiveServiceMainFragment activeServiceMainFragment;
+    private ActiveServiceMainFragment activeFrag;
     private BottomNavigationView mbtmView;;
+    private TextView btnPost;
+
+    private String appType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +39,11 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
 
     private void initializeView() {
 
+        appType = getIntent().getStringExtra("APPOINTMENT_TYPE"); // Dennis
+
         // Hide Bottom NavigationView and ToolBar
         mbtmView = (BottomNavigationView) findViewById(R.id.active_service_navigation);
+        btnPost = (TextView) findViewById(R.id.btn_post);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
@@ -47,7 +55,19 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        if (appType.equals("SERVICES")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, JGGAppBaseModel.AppointmentType.SERVICES);
+            btnPost.setText(R.string.title_post_service);
+            btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
+        } else if (appType.equals("JOBS")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, JGGAppBaseModel.AppointmentType.JOBS);
+            btnPost.setText(R.string.title_post_job);
+            btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan));
+        } else if (appType.equals("GOCLUB")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, JGGAppBaseModel.AppointmentType.GOCLUB);
+            btnPost.setText(R.string.title_post_goclub);
+            btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGPurple));
+        }
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -56,9 +76,9 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
         });
 
         // Main Fragment
-        activeServiceMainFragment = new ActiveServiceMainFragment();
+        activeFrag = ActiveServiceMainFragment.newInstance(appType);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.active_service_container, activeServiceMainFragment, activeServiceMainFragment.getTag());
+        ft.replace(R.id.active_service_container, activeFrag, activeFrag.getTag());
         ft.commit();
     }
 

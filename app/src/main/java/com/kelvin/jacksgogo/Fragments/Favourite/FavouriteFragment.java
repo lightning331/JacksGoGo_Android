@@ -26,6 +26,7 @@ public class FavouriteFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView recyclerView;
+    private String appType = "SERVICES";
 
     public FavouriteFragment() {
         // Required empty public constructor
@@ -65,7 +66,9 @@ public class FavouriteFragment extends Fragment {
         return view;
     }
 
-    public void refreshFragment(Object textView) {
+    public void refreshFragment(String textView) {
+
+        appType = textView;
 
         if (textView == "SERVICES") {
             ActiveServiceAdapter adapter = new ActiveServiceAdapter();

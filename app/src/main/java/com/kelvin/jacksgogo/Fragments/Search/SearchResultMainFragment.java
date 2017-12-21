@@ -80,7 +80,7 @@ public class SearchResultMainFragment extends Fragment {
 
     private void initTabView(View view) {
 
-        tabView = new ActiveServiceTabView(getContext());
+//        /tabView = new ActiveServiceTabView(getContext());
         LinearLayout tabbarLayout = (LinearLayout) view.findViewById(R.id.search_result_tab_view_layout);
         tabbarLayout.addView(tabView);
         tabView.setTabbarItemClickListener(new ActiveServiceTabView.OnTabbarItemClickListener() {

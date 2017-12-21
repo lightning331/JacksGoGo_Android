@@ -38,16 +38,17 @@
             android:id="@+id/active_service_navigation"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/JGGGreen"
             android:layout_gravity="bottom"
             app:itemTextColor="@color/JGGWhite"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:itemTextAppearance="@style/NavigationViewOwnStyle">
             <TextView
+                android:id="@+id/btn_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/title_post_service"
                 android:textAlignment="center"
+                android:background="@color/JGGGreen"
                 android:textColor="@color/JGGWhite"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/button_font_size"

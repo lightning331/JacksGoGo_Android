@@ -1,12 +1,15 @@
 package com.kelvin.jacksgogo.Adapter.Services;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryGridView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
@@ -75,6 +78,18 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
+            listener.onItemClick(view);
+        }
+    }
 
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view);
+    }
+
+    public void setOnItemClickLietener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

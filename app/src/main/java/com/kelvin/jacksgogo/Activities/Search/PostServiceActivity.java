@@ -21,6 +21,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private boolean alreadyVerifiedSkills = getRandomBoolean();
     private String status;
 
+    private Object appType;
+
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;
     }
@@ -51,6 +53,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
             status = extra.getString("EDIT_STATUS");
+            appType = extra.getString("APPOINTMENT_TYPE");
         } else {
             status = "None";
         }
@@ -77,6 +80,9 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     PostServiceNotVerifiedFragment notVerifiedFragment = new PostServiceNotVerifiedFragment();
                     ft.replace(R.id.post_service_container, notVerifiedFragment, notVerifiedFragment.getTag());
+                }
+                if (appType == "JOBS") {
+
                 }
                 ft.commit();
                 break;

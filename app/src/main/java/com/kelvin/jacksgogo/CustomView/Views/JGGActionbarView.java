@@ -48,7 +48,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         SERVICE,
         SERVICE_LISTING,
         SERVICE_LISTING_DETAIL,
-        ACTIVE_SERVICE,
+        ACTIVE_AROUND,
         POST_SERVICE,
         SERVICE_TIME_SLOTS,
         SERVICE_REVIEWS,
@@ -145,8 +145,14 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             case SERVICE_LISTING:
                 setOrangeBackButton(R.string.title_service_listing, R.string.title_profile);
                 break;
-            case ACTIVE_SERVICE:
-                setGreenBackButton("", R.string.title_active_service_around);
+            case ACTIVE_AROUND:
+                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    setGreenBackButton("", R.string.title_active_service_around);
+                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    setCyanBackButton("", R.string.title_active_job_around);
+                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                    setPurpleBackButton(R.string.title_search, R.string.title_active_goclub_around);
+                }
                 break;
             case POST_SERVICE:
                 setGreenBackButton("", R.string.title_post_service);
@@ -197,17 +203,24 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_search);
                 } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
-                    setOrangeBackButton(R.string.title_search, R.string.title_empty);
+                    setPurpleBackButton(R.string.title_search, R.string.title_empty);
                 }
                 break;
             case SEARCH_RESULT:
-                setGreenBackButton("", R.string.search_result);
+                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    setGreenBackButton("", R.string.search_result);
+                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    setCyanBackButton("", R.string.search_result);
+                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                    setPurpleBackButton(R.string.search_result, R.string.title_empty);
+                }
                 break;
             case INVITE:
                 setOrangeBackButton(R.string.invite_actionbar_title, R.string.title_empty);
                 break;
             case SERVICE_LISTING_DETAIL:
                 mTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mBackButtonTitleTextView.setText(R.string.title_service_listing);
                 param = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
@@ -240,6 +253,12 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
     }
 
+    private void setPurpleBackButton(int title, int backButtonTitle) {
+        mTitleTextView.setText(title);
+        mBackButtonTitleTextView.setText(backButtonTitle);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_purple);
+    }
+
     private void setGreenBackButton(String backTitle, int title) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
@@ -254,7 +273,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
 
     public void setEditMoreButtonClicked(boolean isSelected) {
         if (isSelected) {
-            mMoreButtonImage.setImageResource(R.mipmap.button_more_orange_active);
+            mMoreButtonImage.setImageResource(R.mipmap.button_more_active_orange);
         } else {
             mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
         }
