@@ -82,7 +82,10 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.service_listing_detail_navigation) {
-            startActivity(new Intent(this, PostServiceActivity.class));
+            Intent intent = new Intent(this, PostServiceActivity.class);
+            intent.putExtra("EDIT_STATUS", "None");
+            intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+            startActivity(intent);
         }
     }
 

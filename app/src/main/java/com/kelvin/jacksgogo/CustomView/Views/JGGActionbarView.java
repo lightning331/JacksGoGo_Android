@@ -18,16 +18,22 @@ import com.kelvin.jacksgogo.R;
 
 public class JGGActionbarView extends RelativeLayout implements View.OnClickListener {
 
-    Context mContext;
+    private Context mContext;
 
-    LinearLayout mBackButton;
-    LinearLayout mMoreButton;
-    LinearLayout mLikeButton;
-    LinearLayout moreButtonsLayout;
-    LinearLayout centerTitleTextLayout;
+    private LinearLayout mBackButton;
+    private LinearLayout mMoreButton;
+    private LinearLayout mLikeButton;
+    private LinearLayout moreButtonsLayout;
+    private LinearLayout centerTitleTextLayout;
 
-    LinearLayout.LayoutParams param;
-    LinearLayout.LayoutParams param1;
+    private LinearLayout.LayoutParams param;
+    private LinearLayout.LayoutParams param1;
+
+    private int imgBack;
+    private int imgMoreOutLine;
+    private int imgLikeOutLine;
+    private int imgMore;
+    private int imgLike;
 
     public ImageView mBackButtonImage;
     public ImageView mMoreButtonImage;
@@ -45,11 +51,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         EDIT_MAIN,
         EDIT_DETAIL,
         MAP,
-        SERVICE,
+        DETAILS,
         SERVICE_LISTING,
         SERVICE_LISTING_DETAIL,
         ACTIVE_AROUND,
-        POST_SERVICE,
+        POST,
         SERVICE_TIME_SLOTS,
         SERVICE_REVIEWS,
         SERVICE_BUY,
@@ -135,12 +141,28 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             case MAP:
                 setGreenBackButton("", R.string.title_map);
                 break;
-            case SERVICE:
+            case DETAILS:
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
-                mLikeButtonImage.setImageResource(R.mipmap.button_favourite_outline_green);
-                mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
+                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    imgLikeOutLine = R.mipmap.button_favourite_outline_green;
+                    imgMoreOutLine = R.mipmap.button_more_green;
+                    imgLike = R.mipmap.button_favourite_green;
+                    imgMore = R.mipmap.button_more_active_green;
+                    setLikeButton(R.mipmap.button_backarrow_green, imgLikeOutLine, imgMoreOutLine);
+                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    imgLikeOutLine = R.mipmap.button_favourite_outline_cyan;
+                    imgMoreOutLine = R.mipmap.button_more_cyan;
+                    imgLike = R.mipmap.button_favourite_cyan;
+                    imgMore = R.mipmap.button_more_active_cyan;
+                    setLikeButton(R.mipmap.button_backarrow_cyan, imgLikeOutLine, imgMoreOutLine);
+                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                    imgLikeOutLine = R.mipmap.button_favourite_outline_purple;
+                    imgMoreOutLine = R.mipmap.button_more_purple;
+                    imgLike = R.mipmap.button_favourite_purple;
+                    imgMore = R.mipmap.button_more_active_purple;
+                    setLikeButton(R.mipmap.button_backarrow_purple, imgLikeOutLine, imgMoreOutLine);
+                }
                 break;
             case SERVICE_LISTING:
                 setOrangeBackButton(R.string.title_service_listing, R.string.title_profile);
@@ -154,8 +176,14 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     setPurpleBackButton(R.string.title_search, R.string.title_active_goclub_around);
                 }
                 break;
-            case POST_SERVICE:
-                setGreenBackButton("", R.string.title_post_service);
+            case POST:
+                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    setGreenBackButton("", R.string.title_post_service);
+                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    setCyanBackButton("", R.string.title_post_job);
+                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                    setPurpleBackButton(R.string.title_post_goclub, R.string.title_empty);
+                }
                 break;
             case SERVICE_TIME_SLOTS:
                 mTitleTextView.setText(R.string.title_time_slots);
@@ -241,6 +269,12 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         }
     }
 
+    private void setLikeButton(int back, int like, int more) {
+        mBackButtonImage.setImageResource(back);
+        mLikeButtonImage.setImageResource(like);
+        mMoreButtonImage.setImageResource(more);
+    }
+
     private void setEditDoneButton() {
         mTitleTextView.setText(R.string.menu_option_edit);
         mBackButtonTitleTextView.setText(R.string.title_appointment);
@@ -281,18 +315,18 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
 
     public void setLikeButtonClicked(boolean isSelected) {
         if (isSelected) {
-            mLikeButtonImage.setImageResource(R.mipmap.button_favourite_outline_green);
+            mLikeButtonImage.setImageResource(imgLikeOutLine);
         } else {
-            mLikeButtonImage.setImageResource(R.mipmap.button_favourite_green);
+            mLikeButtonImage.setImageResource(imgLike);
         }
         mLikeButtonSelected = !isSelected;
     }
 
-    public void setShareMoreButtonClicked(boolean isSelected) {
+    public void setMoreButtonClicked(boolean isSelected) {
         if (isSelected) {
-            mMoreButtonImage.setImageResource(R.mipmap.button_more_active_green);
+            mMoreButtonImage.setImageResource(imgMore);
         } else {
-            mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
+            mMoreButtonImage.setImageResource(imgMoreOutLine);
         }
         mMoreButtonSelected = !isSelected;
     }

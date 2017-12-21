@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
-import com.kelvin.jacksgogo.Adapter.Services.SearchJobsAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
 
@@ -70,7 +70,7 @@ public class SearchFragment extends Fragment {
             adapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
-                    onHeaderViewItemClick(view);
+                    onViewHolderItemClick(view);
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment {
             adapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
-                    onHeaderViewItemClick(view);
+                    onViewHolderItemClick(view);
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -88,7 +88,7 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private void onHeaderViewItemClick(View view) {
+    private void onViewHolderItemClick(View view) {
 
         if (view.getId() == R.id.btn_view_my_service) {
             mIntent = new Intent(mContext.getApplicationContext(), ServiceListingActivity.class);

@@ -71,6 +71,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
+                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
                     mContext.startActivity(intent);
                 }
             });

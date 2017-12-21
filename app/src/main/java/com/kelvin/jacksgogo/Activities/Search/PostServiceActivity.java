@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.Fragments.Jobs.PostJobFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceVerifiedFragment;
@@ -21,7 +22,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private boolean alreadyVerifiedSkills = getRandomBoolean();
     private String status;
 
-    private Object appType;
+    private String appType;
 
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;
@@ -32,24 +33,6 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_service);
 
-        initFragment();
-
-        actionbarView = new JGGActionbarView(this);
-        mToolbar = (Toolbar) findViewById(R.id.post_service_actionbar);
-        mToolbar.addView(actionbarView);
-        setSupportActionBar(mToolbar);
-
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POST_SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
-        actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
-            @Override
-            public void onActionbarItemClick(View view) {
-                actionbarViewItemClick(view);
-            }
-        });
-
-    }
-
-    private void initFragment() {
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
             status = extra.getString("EDIT_STATUS");
@@ -57,6 +40,23 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         } else {
             status = "None";
         }
+
+        actionbarView = new JGGActionbarView(this);
+        mToolbar = (Toolbar) findViewById(R.id.post_service_actionbar);
+        mToolbar.addView(actionbarView);
+        setSupportActionBar(mToolbar);
+
+        actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
+            @Override
+            public void onActionbarItemClick(View view) {
+                actionbarViewItemClick(view);
+            }
+        });
+
+        initFragment();
+    }
+
+    private void initFragment() {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         PostServiceMainFragment frag;
@@ -74,15 +74,27 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                 ft.commit();
                 break;
             case "None":
-                if (alreadyVerifiedSkills) {
-                    PostServiceVerifiedFragment verifiedFragment = new PostServiceVerifiedFragment();
-                    ft.replace(R.id.post_service_container, verifiedFragment, verifiedFragment.getTag());
-                } else {
-                    PostServiceNotVerifiedFragment notVerifiedFragment = new PostServiceNotVerifiedFragment();
-                    ft.replace(R.id.post_service_container, notVerifiedFragment, notVerifiedFragment.getTag());
-                }
-                if (appType == "JOBS") {
-
+                switch (appType) {
+                    case "SERVICES":
+                        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
+                        if (alreadyVerifiedSkills) {
+                            PostServiceVerifiedFragment fra = new PostServiceVerifiedFragment();
+                            ft.replace(R.id.post_service_container, fra, fra.getTag());
+                        } else {
+                            PostServiceNotVerifiedFragment fra = new PostServiceNotVerifiedFragment();
+                            ft.replace(R.id.post_service_container, fra, fra.getTag());
+                        }
+                        break;
+                    case "JOBS":
+                        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
+                        PostJobFragment fra = new PostJobFragment();
+                        ft.replace(R.id.post_service_container, fra, fra.getTag());
+                        break;
+                    case "GOCLUB":
+                        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.GOCLUB);
+                        break;
+                    default:
+                        break;
                 }
                 ft.commit();
                 break;

@@ -39,7 +39,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
 
     private void initializeView() {
 
-        appType = getIntent().getStringExtra("APPOINTMENT_TYPE"); // Dennis
+        appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = (BottomNavigationView) findViewById(R.id.active_service_navigation);

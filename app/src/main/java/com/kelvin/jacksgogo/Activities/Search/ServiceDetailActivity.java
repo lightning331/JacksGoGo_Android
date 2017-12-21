@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -28,15 +29,19 @@ import java.lang.reflect.Field;
 public class ServiceDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
-    JGGActionbarView actionbarView;
-    AlertDialog alertDialog;
+    private JGGActionbarView actionbarView;
+    private LinearLayout viewedLayout;
+    private TextView lblViewedCount;
+    private TextView lblViewedCountDesc;
+    private TextView lblViewingCount;
+    private AlertDialog alertDialog;
 
-    boolean isService;
-    boolean reportFlag = false;
-
-    public void setReportFlag(boolean reportFlag) {
-        this.reportFlag = reportFlag;
-    }
+    private boolean isService = false;
+    private boolean reportFlag = false;
+    private String appType;
+    private TextView bottomTitle;
+    private int mColor;
+    private int mColorPercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +50,16 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
         Bundle bundle = getIntent().getExtras();
         isService = bundle.getBoolean("is_service");
+        appType = bundle.getString("APPOINTMENT_TYPE");
+
+        lblViewedCount = (TextView) findViewById(R.id.lbl_booked_count);
+        lblViewedCountDesc = (TextView) findViewById(R.id.lbl_booked_title);
+        lblViewingCount = (TextView) findViewById(R.id.lbl_viewing_count);
+        viewedLayout = (LinearLayout) findViewById(R.id.bottom_top_view_layout);
 
         // Hide Bottom NavigationView and ToolBar
         BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
-        TextView title = mbtmView.findViewById(R.id.service_detail_bottom_title);
-        if (!isService) title.setText(R.string.request_quotation);
+        bottomTitle = mbtmView.findViewById(R.id.service_detail_bottom_title);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
@@ -66,20 +76,49 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
                 actionbarViewItemClick(view);
             }
         });
+
+        initViewColor();
+    }
+
+    private void initViewColor() {
+        if (appType.equals("SERVICES")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.SERVICES);
+            mColor = getResources().getColor(R.color.JGGGreen);
+            mColorPercent = getResources().getColor(R.color.JGGGreen10Percent);
+            bottomTitle.setText("Buy Service");
+            if (!isService) bottomTitle.setText(R.string.request_quotation);
+            lblViewedCountDesc.setText("people have booked this service!");
+            bottomTitle.setBackgroundColor(mColor);
+            viewedLayout.setBackgroundColor(mColorPercent);
+        } else if (appType.equals("JOBS")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.JOBS);
+            mColor = getResources().getColor(R.color.JGGCyan);
+            mColorPercent = getResources().getColor(R.color.JGGCyan10Percent);
+            bottomTitle.setText("Make A Proposal");
+            lblViewedCountDesc.setText("people have viewed this job recently!");
+            bottomTitle.setBackgroundColor(mColor);
+            viewedLayout.setBackgroundColor(mColorPercent);
+        } else if (appType.equals("GOCLUB")) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.GOCLUB);
+            mColor = getResources().getColor(R.color.JGGPurple);
+            mColorPercent = getResources().getColor(R.color.JGGPurple10Percent);
+            bottomTitle.setText("Make A Event");
+            bottomTitle.setBackgroundColor(mColor);
+            viewedLayout.setBackgroundColor(mColorPercent);
+        }
     }
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_like_original) {
             actionbarView.setLikeButtonClicked(actionbarView.mLikeButtonSelected);
         } else if (view.getId() == R.id.btn_more) {
-            actionbarView.setShareMoreButtonClicked(true);
+            actionbarView.setMoreButtonClicked(true);
             // Show Edit PopUp Menu
             showEditPopUpMenu(view);
         } else if (view.getId() == R.id.btn_back) {
@@ -89,7 +128,14 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.share_menu);
+        if (appType.equals("SERVICES")) {
+            popupMenu.inflate(R.menu.share_menu_green);
+        } else if (appType.equals("JOBS")) {
+            popupMenu.inflate(R.menu.share_menu_cyan);
+        } else if (appType.equals("GOCLUB")) {
+            popupMenu.inflate(R.menu.share_menu_purple);
+        }
+
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
 
@@ -134,7 +180,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     private class OnDismissListener implements PopupMenu.OnDismissListener {
         @Override
         public void onDismiss(PopupMenu menu) {
-            actionbarView.setShareMoreButtonClicked(false);
+            actionbarView.setMoreButtonClicked(false);
         }
     }
 
@@ -166,7 +212,9 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         title.setText(R.string.alert_report_service_title);
         description.setText(R.string.alert_report_service_desc);
         reportButton.setText(R.string.alert_report_service_ok);
-        reportButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
+        reportButton.setBackgroundColor(mColor);
+        cancelButton.setBackgroundColor(mColorPercent);
+        cancelButton.setTextColor(mColor);
         if (reportFlag) {
             alertDialog.setCanceledOnTouchOutside(false);
             cancelButton.setVisibility(View.GONE);
@@ -180,10 +228,10 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     private void openShareDialog() {
-        JGGShareIntentDialog dialogShare = new JGGShareIntentDialog.Builder(this)
+        JGGShareIntentDialog shareDialog = new JGGShareIntentDialog.Builder(this)
                 .setDialogTitle("Share with your friends")
                 .setShareLink(null)
                 .build();
-        dialogShare.show();
+        shareDialog.show();
     }
 }

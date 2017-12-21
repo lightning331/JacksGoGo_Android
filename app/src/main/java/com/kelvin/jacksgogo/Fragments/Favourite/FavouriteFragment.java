@@ -77,6 +77,7 @@ public class FavouriteFragment extends Fragment {
                 public void onItemClick() {
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
+                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
                     mContext.startActivity(intent);
                 }
             });
@@ -86,7 +87,10 @@ public class FavouriteFragment extends Fragment {
             adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-
+                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                    intent.putExtra("is_service", true);
+                    intent.putExtra("APPOINTMENT_TYPE", "JOBS");
+                    mContext.startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);

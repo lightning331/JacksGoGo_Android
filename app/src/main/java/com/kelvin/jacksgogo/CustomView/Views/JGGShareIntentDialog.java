@@ -16,15 +16,17 @@ import com.kelvin.jacksgogo.R;
 
 
 public class JGGShareIntentDialog extends Dialog {
+
     private Context context;
-    private ListView share_list;
-    private TextView dialog_title;
-    private String shareLink;
-    private String title_text;
-    private boolean isShowDialogTitle;
-    private Button  btn_cancel;
-    private Button  btn_done;
-    public  int     itemPosition;
+
+    public ListView share_list;
+    public TextView dialog_title;
+    public String shareLink;
+    public String title_text;
+    public Button  btn_cancel;
+    public Button  btn_done;
+    public boolean isShowDialogTitle;
+    public int     itemPosition;
 
     private JGGShareIntentDialog(Context context) {
         super(context);

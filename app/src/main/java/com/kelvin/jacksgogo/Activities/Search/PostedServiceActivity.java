@@ -96,7 +96,7 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
         if (view.getId() == R.id.btn_back) {
             onBackClick();
         } else if (view.getId() == R.id.btn_more) {
-            actionbarView.setShareMoreButtonClicked(true);
+            actionbarView.setMoreButtonClicked(true);
             onMorePopUpMenu(view);
         }
     }
@@ -148,7 +148,7 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
     private class OnDismissListener implements PopupMenu.OnDismissListener {
         @Override
         public void onDismiss(PopupMenu menu) {
-            actionbarView.setShareMoreButtonClicked(false);
+            actionbarView.setMoreButtonClicked(false);
         }
     }
 

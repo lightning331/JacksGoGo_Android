@@ -28,7 +28,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_filter);
 
-        appType = getIntent().getStringExtra("APPOINTMENT_TYPE"); // Dennis
+        appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
 
         initView();
     }

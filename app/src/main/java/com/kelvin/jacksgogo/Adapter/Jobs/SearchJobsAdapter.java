@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Services;
+package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryGridView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
@@ -56,6 +57,14 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_list_detail, parent, false);
             JobListDetailCell cell = new JobListDetailCell(view);
+            cell.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                    intent.putExtra("APPOINTMENT_TYPE", "JOBS");
+                    mContext.startActivity(intent);
+                }
+            });
 
             return cell;
         }

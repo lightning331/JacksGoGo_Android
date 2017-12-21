@@ -139,6 +139,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     public void onClick(View view) {
                         Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                         intent.putExtra("is_service", false);
+                        intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
                         mContext.startActivity(intent);
                     }
                 });

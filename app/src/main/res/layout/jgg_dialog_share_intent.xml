@@ -80,6 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/JGGWhite"
             android:gravity="center_vertical|center_horizontal">
 
             <Button
@@ -88,8 +89,8 @@
                 android:text="@string/alert_cancel"
                 android:textAllCaps="false"
                 android:id="@+id/dialog_share_btn_cancel"
-                android:background="@color/JGGGreen10Percent"
-                android:textColor="@color/JGGGreen"
+                android:background="@color/JGGOrange10Percent"
+                android:textColor="@color/JGGOrange"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:clickable="false" />
@@ -108,7 +109,7 @@
                 android:text="@string/menu_option_share"
                 android:textAllCaps="false"
                 android:id="@+id/dialog_share_btn_done"
-                android:background="@color/JGGGreen"
+                android:background="@color/JGGOrange"
                 android:textColor="@color/JGGWhite"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size" />
