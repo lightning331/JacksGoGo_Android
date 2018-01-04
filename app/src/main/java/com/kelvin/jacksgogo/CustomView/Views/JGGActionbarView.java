@@ -56,6 +56,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         SERVICE_LISTING_DETAIL,
         ACTIVE_AROUND,
         POST,
+        POSTED,
         SERVICE_TIME_SLOTS,
         SERVICE_REVIEWS,
         SERVICE_BUY,
@@ -63,7 +64,6 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         JACKS_WALLET,
         REQUEST_QUOTATION,
         VERIFY_SKILL,
-        POSTED_SERVICE,
         SEARCH,
         SEARCH_RESULT,
         INVITE,
@@ -219,11 +219,23 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 setOrangeBackButton(R.string.job_report_title, R.string.title_empty);
                 //mBackButtonImage.setBackgroundColor();
                 break;
-            case POSTED_SERVICE:
+            case POSTED:
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
-                mMoreButtonImage.setImageResource(R.mipmap.button_more_green);
+                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    imgMoreOutLine = R.mipmap.button_more_green;
+                    imgMore = R.mipmap.button_more_active_green;
+                    setMoreButtonClicked(false);
+                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    imgMoreOutLine = R.mipmap.button_more_cyan;
+                    imgMore = R.mipmap.button_more_active_cyan;
+                    setMoreButtonClicked(false);
+                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                    imgMoreOutLine = R.mipmap.button_more_purple;
+                    imgMore = R.mipmap.button_more_active_purple;
+                    setMoreButtonClicked(false);
+                }
                 break;
             case SEARCH:
                 if (type == JGGAppBaseModel.AppointmentType.SERVICES) {

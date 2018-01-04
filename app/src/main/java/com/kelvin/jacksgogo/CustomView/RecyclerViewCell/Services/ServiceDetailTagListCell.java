@@ -32,11 +32,11 @@ public class ServiceDetailTagListCell extends RecyclerView.ViewHolder {
         tags.add("plants");
         tags.add("landscaping");
         tags.add("horticulture");
-        tags.add("gardener");
+        tags.add("nurse2");
         tags.add("plants");
         tags.add("landscaping");
         tags.add("horticulture");
-        tags.add("gardener");
+        tags.add("nurse2");
         tagList.setTags(tags);
     }
 }

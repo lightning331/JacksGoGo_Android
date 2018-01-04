@@ -83,8 +83,6 @@ public class ActiveServiceTabView extends RelativeLayout implements View.OnClick
         ratingButton.setTag("RATING");
     }
 
-    private OnTabbarItemClickListener listener;
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_active_service_filter) {
@@ -103,6 +101,8 @@ public class ActiveServiceTabView extends RelativeLayout implements View.OnClick
 
         listener.onTabbarItemClick(view);
     }
+
+    private OnTabbarItemClickListener listener;
 
     public interface OnTabbarItemClickListener {
         void onTabbarItemClick(View item);

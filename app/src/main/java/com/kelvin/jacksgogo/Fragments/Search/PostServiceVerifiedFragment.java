@@ -9,16 +9,27 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
+import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class PostServiceVerifiedFragment extends Fragment implements View.OnClickListener {
 
+    private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private TextView btnVerify;
+    private GridView gridView;
+    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
 
     public static PostServiceVerifiedFragment newInstance(String param1, String param2) {
         PostServiceVerifiedFragment fragment = new PostServiceVerifiedFragment();
@@ -32,6 +43,7 @@ public class PostServiceVerifiedFragment extends Fragment implements View.OnClic
         if (getArguments() != null) {
 
         }
+        addCategoryData();
     }
 
     @Override
@@ -40,26 +52,48 @@ public class PostServiceVerifiedFragment extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_verified, container, false);
 
-        TextView btnVerify = view.findViewById(R.id.btn_verify_new_skills);
-        btnVerify.setOnClickListener(this);
-        LinearLayout btnOther = view.findViewById(R.id.btn_post_other);
-        btnOther.setOnClickListener(this);
-        LinearLayout btnCooking = view.findViewById(R.id.btn_post_cooking);
-        btnCooking.setOnClickListener(this);
-        LinearLayout btnEducation = view.findViewById(R.id.btn_post_education);
-        btnEducation.setOnClickListener(this);
-        LinearLayout btnHand = view.findViewById(R.id.btn_post_handyman);
-        btnHand.setOnClickListener(this);
-        LinearLayout btnHouse = view.findViewById(R.id.btn_post_household);
-        btnHouse.setOnClickListener(this);
-        LinearLayout btnMessenger = view.findViewById(R.id.btn_post_messenger);
-        btnMessenger.setOnClickListener(this);
-        LinearLayout btnRun = view.findViewById(R.id.btn_post_run);
-        btnRun.setOnClickListener(this);
-        LinearLayout btnSport = view.findViewById(R.id.btn_post_sports);
-        btnSport.setOnClickListener(this);
+        initView(view);
 
         return view;
+    }
+
+    private void initView(View view) {
+        btnVerify = view.findViewById(R.id.btn_verify_new_skills);
+        btnVerify.setOnClickListener(this);
+
+        gridView = view.findViewById(R.id.post_service_category_grid_view);
+        gridView.setNumColumns(4);
+        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, "SERVICES");
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the GridView selected/clicked item text
+                String name = datas.get(position).get("name").toString();
+                Toast.makeText(getActivity(), name,
+                        Toast.LENGTH_LONG).show();
+
+                PostServiceDetailFragment editJobMainFragment = PostServiceDetailFragment.newInstance(EditJobTabbarView.EditTabStatus.DESCRIBE);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.post_service_container, editJobMainFragment, editJobMainFragment.getTag());
+                ft.addToBackStack("post_service");
+                ft.commit();
+            }
+        });
+        /*adapter.setOnItemClickListener(new CategoryGridAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String name = datas.get(position).get("name").toString();
+                Toast.makeText(getActivity(), name,
+                        Toast.LENGTH_LONG).show();
+
+                PostServiceDetailFragment editJobMainFragment = PostServiceDetailFragment.newInstance(EditJobTabbarView.EditTabStatus.DESCRIBE);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.post_service_container, editJobMainFragment, editJobMainFragment.getTag());
+                ft.addToBackStack("post_service");
+                ft.commit();
+            }
+        });*/
+        gridView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -93,15 +127,22 @@ public class PostServiceVerifiedFragment extends Fragment implements View.OnClic
             intent.putExtra("already_verified_skills", true);
             mContext.startActivity(intent);
         } else {
-            PostServiceDetailFragment editJobMainFragment = PostServiceDetailFragment.newInstance(EditJobTabbarView.EditTabStatus.DESCRIBE);
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.post_service_container, editJobMainFragment, editJobMainFragment.getTag());
-            ft.addToBackStack("post_service");
-            ft.commit();
+
         }
     }
 
-    private OnFragmentInteractionListener mListener;
+    private void addCategoryData() {
+        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
+        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
+        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
+    }
+
+    private Map<String, Object> createMap(String name, int iconId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("icon", iconId);
+        return map;
+    }
 
     public PostServiceVerifiedFragment() {
         // Required empty public constructor

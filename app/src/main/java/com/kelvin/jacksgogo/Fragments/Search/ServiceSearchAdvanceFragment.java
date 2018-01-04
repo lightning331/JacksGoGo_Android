@@ -12,19 +12,24 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServiceSearchAdvanceFragment extends Fragment implements View.OnClickListener, TextWatcher, OnDateSelectedListener {
 
@@ -82,17 +87,17 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     private AlertDialog alertDialog;
 
+    private CategoryGridAdapter adapter;
+    private GridView gridView;
+    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
+
+    private String appType;
     private boolean cbdSelected = true;
     private boolean centralSelected = true;
     private boolean eunosSelected = true;
     private boolean orchardSelected = true;
     private boolean newtonSelected = true;
     private boolean toaSelected = true;
-
-    private GridView gridView;
-
-    private CategoryGridAdapter adapter;
-    private String appType;
     private int okButtonColor;
     private int cancelButtonColor;
     private int checkImage;
@@ -122,6 +127,27 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         if (getArguments() != null) {
             appType = getArguments().getString("APPOINTMENT_TYPE");
         }
+        createCategory();
+    }
+
+    private void createCategory() {
+        datas.add(createMap("Cooking & Baking", R.mipmap.icon_cat_cooking_baking));
+        datas.add(createMap("Education", R.mipmap.icon_cat_education));
+        datas.add(createMap("Handyman", R.mipmap.icon_cat_handyman));
+        datas.add(createMap("Household Chores", R.mipmap.icon_cat_householdchores));
+        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
+        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
+        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
+        datas.add(createMap("Other Professions", R.mipmap.icon_cat_other));
+    }
+
+    private Map<String, Object> createMap(String name, int iconId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("icon", iconId);
+        String nn = map.get("name").toString();
+        int id = (int)map.get("icon");
+        return map;
     }
 
     @Override
@@ -147,6 +173,11 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         btnSearch = view.findViewById(R.id.btn_advance_search);
         gridView = (GridView) view.findViewById(R.id.category_grid_view);
 
+        lblArea.setOnClickListener(this);
+        btnDate.setOnClickListener(this);
+        btnTime.setOnClickListener(this);
+        btnSearch.setOnClickListener(this);
+
         switch (appType) {
             case "SERVICES":
                 cancelButtonColor = getResources().getColor(R.color.JGGGreen10Percent);
@@ -155,7 +186,6 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
                 txtAdvanceSearch.setBackgroundResource(R.drawable.green_border_background);
                 btnSearch.setBackgroundResource(R.drawable.green_background);
                 btnArea.setImageResource(R.mipmap.button_showless_green);
-                adapter = new CategoryGridAdapter(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
                 break;
             case "JOBS":
                 cancelButtonColor = getResources().getColor(R.color.JGGCyan10Percent);
@@ -164,7 +194,6 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
                 txtAdvanceSearch.setBackgroundResource(borderBackground);
                 btnSearch.setBackgroundResource(R.drawable.cyan_background);
                 btnArea.setImageResource(R.mipmap.button_showless_cyan);
-                adapter = new CategoryGridAdapter(mContext, JGGAppBaseModel.AppointmentType.JOBS);
                 break;
             case "GOCLUB":
                 cancelButtonColor = getResources().getColor(R.color.JGGPurple10Percent);
@@ -173,15 +202,19 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
                 txtAdvanceSearch.setBackgroundResource(R.drawable.purple_border_background);
                 btnSearch.setBackgroundResource(R.drawable.purple_background);
                 btnArea.setImageResource(R.mipmap.button_showless_purple);
-                adapter = new CategoryGridAdapter(mContext, JGGAppBaseModel.AppointmentType.GOCLUB);
                 break;
         }
+        adapter = new CategoryGridAdapter(mContext, datas, appType);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the GridView selected/clicked item text
+                String name = datas.get(position).get("name").toString();
+                Toast.makeText(getActivity(), name,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
         gridView.setAdapter(adapter);
-
-        lblArea.setOnClickListener(this);
-        btnDate.setOnClickListener(this);
-        btnTime.setOnClickListener(this);
-        btnSearch.setOnClickListener(this);
     }
 
     private void onAddTimeClick() {

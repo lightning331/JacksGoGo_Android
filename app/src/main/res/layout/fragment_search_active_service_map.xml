@@ -120,7 +120,7 @@
                 android:id="@+id/search_radius_seekbar"
                 android:progressTint="@color/JGGGreen"
                 android:thumbTint="@color/JGGWhite"
-                android:thumb="@drawable/map_thumb"
+                android:thumb="@drawable/badge_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

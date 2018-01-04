@@ -46,6 +46,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

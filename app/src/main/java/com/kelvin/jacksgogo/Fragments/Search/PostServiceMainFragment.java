@@ -15,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -50,10 +52,6 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
         NONE,
         EDIT,
         DUPLICATE
-    }
-
-    public PostEditStatus getEditStatus() {
-        return editStatus;
     }
 
     public void setEditStatus(PostEditStatus editStatus) {
@@ -155,8 +153,6 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
         mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-
         }
     }
 
@@ -181,6 +177,8 @@ public class PostServiceMainFragment extends Fragment implements View.OnClickLis
                     break;
                 case DUPLICATE:
                     Intent intent = new Intent(mContext, PostServiceActivity.class);
+                    intent.putExtra("EDIT_STATUS", "None");
+                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
                     startActivity(intent);
                     break;
                 default:

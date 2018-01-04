@@ -17,9 +17,14 @@ import com.kelvin.jacksgogo.R;
 
 public class NotVerifiedSkillFragment extends Fragment implements View.OnClickListener {
 
+    private OnFragmentInteractionListener mListener;
     private Context mContext;
     private TextView btnSubmit;
     private AlertDialog alertDialog;
+
+    public NotVerifiedSkillFragment() {
+        // Required empty public constructor
+    }
 
     public static NotVerifiedSkillFragment newInstance(String param1, String param2) {
         NotVerifiedSkillFragment fragment = new NotVerifiedSkillFragment();
@@ -95,12 +100,6 @@ public class NotVerifiedSkillFragment extends Fragment implements View.OnClickLi
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    private OnFragmentInteractionListener mListener;
-
-    public NotVerifiedSkillFragment() {
-        // Required empty public constructor
     }
 
     @Override

@@ -161,7 +161,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="25"
-                android:alpha="0.5"
+                android:alpha="0.6"
                 android:gravity="center"
                 android:background="@color/JGGGreen">
                 <ImageView
@@ -189,7 +189,7 @@
                     android:layout_gravity="top|end"
                     android:layout_centerVertical="true"
                     android:textAlignment="center"
-                    android:background="@drawable/badge_background"
+                    android:background="@drawable/badge_red"
                     android:fontFamily="@font/muliregular"
                     android:textColor="@color/JGGWhite"
                     android:textSize="@dimen/badge_font_size"

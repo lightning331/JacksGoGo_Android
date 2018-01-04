@@ -105,7 +105,10 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.active_service_navigation) {
-            startActivity(new Intent(this, PostServiceActivity.class));
+            Intent intent = new Intent(this, PostServiceActivity.class);
+            intent.putExtra("EDIT_STATUS", "None");
+            intent.putExtra("APPOINTMENT_TYPE", appType);
+            startActivity(intent);
         }
     }
 }

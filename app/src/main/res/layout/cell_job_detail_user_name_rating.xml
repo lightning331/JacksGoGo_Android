@@ -21,7 +21,7 @@
                     android:id="@+id/img_avatar"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/gardener"
+                    android:src="@drawable/nurse2"
                     android:background="@color/transparent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
@@ -33,12 +33,14 @@
                     android:visibility="gone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:gravity="center"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/white_badge_background">
+                    android:background="@drawable/badge_white">
                     <ImageView
                         android:id="@+id/btn_like"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
                         android:src="@mipmap/button_like_orange"/>
                 </RelativeLayout>
             </RelativeLayout>

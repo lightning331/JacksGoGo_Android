@@ -1,45 +1,52 @@
 package com.kelvin.jacksgogo.Adapter.Services;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by PUMA on 12/19/2017.
  */
 
-public class CategoryGridAdapter extends BaseAdapter {
+public class CategoryGridAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Context mContext;
-    private JGGAppBaseModel.AppointmentType mType;
     private View gridViewItem;
+    private ImageView categoryIcon;
+    private TextView categoryTitle;
+    private LinearLayout itemBackground;
 
-    String[] names = {};
-    int[] icons = {};
+    private String mType;
+    private ArrayList<Map<String, Object>> category;
+    private int position;
+    private boolean isSelected = false;
 
-    public CategoryGridAdapter(Context context, JGGAppBaseModel.AppointmentType type) {
+    public CategoryGridAdapter(Context context, ArrayList<Map<String, Object>> data, String type) {
         this.mContext = context;
         this.mType = type;
-
-        addDummyData();
+        this.category = data;
     }
 
     @Override
     public int getCount() {
-        return names.length;
+        return category.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return names[i];
+        return category.get(i);
     }
 
     @Override
@@ -48,7 +55,7 @@ public class CategoryGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
         gridViewItem = view;
 
@@ -58,64 +65,44 @@ public class CategoryGridAdapter extends BaseAdapter {
         }
         gridViewItem.setLayoutParams(new GridView.LayoutParams(320, 315));
 
-        ImageView categoryIcon = (ImageView) gridViewItem.findViewById(R.id.img_search_category);
-        TextView categoryTitle = (TextView) gridViewItem.findViewById(R.id.lbl_search_category);
+        categoryIcon = (ImageView) gridViewItem.findViewById(R.id.img_search_category);
+        categoryTitle = (TextView) gridViewItem.findViewById(R.id.lbl_search_category);
+        itemBackground = (LinearLayout) gridViewItem.findViewById(R.id.cell_background);
 
-        categoryIcon.setImageResource(icons[i]);
-        categoryTitle.setText(names[i]);
+        position = i;
+        //itemBackground.setOnClickListener(this);
+
+        String name = category.get(i).get("name").toString();
+        int iconId = (int) category.get(i).get("icon");
+        categoryTitle.setText(name);
+        categoryIcon.setImageResource(iconId);
 
         return gridViewItem;
     }
 
-    private void addDummyData() {
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
-            names = new String[]{
-                    "Favourited Services",
-                    "Cooking & Baking",
-                    "Education",
-                    "Handyman",
-                    "Household Chores",
-                    "Messenger",
-                    "Running Man",
-                    "Sports",
-                    "Other Professions"
-            };
-            icons = new int[]{
-                    R.mipmap.icon_cat_favourites,
-                    R.mipmap.icon_cat_cooking_baking,
-                    R.mipmap.icon_cat_education,
-                    R.mipmap.icon_cat_handyman,
-                    R.mipmap.icon_cat_householdchores,
-                    R.mipmap.icon_cat_messenger,
-                    R.mipmap.icon_cat_runningman,
-                    R.mipmap.icon_cat_sports,
-                    R.mipmap.icon_cat_other
-            };
-        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
-            names = new String[]{
-                    "Quick Jobs",
-                    "Favourited Services",
-                    "Cooking & Baking",
-                    "Education",
-                    "Handyman",
-                    "Household Chores",
-                    "Messenger",
-                    "Running Man",
-                    "Sports",
-                    "Other Professions"
-            };
-            icons = new int[]{
-                    R.mipmap.icon_cat_quickjob,
-                    R.mipmap.icon_cat_favourites,
-                    R.mipmap.icon_cat_cooking_baking,
-                    R.mipmap.icon_cat_education,
-                    R.mipmap.icon_cat_handyman,
-                    R.mipmap.icon_cat_householdchores,
-                    R.mipmap.icon_cat_messenger,
-                    R.mipmap.icon_cat_runningman,
-                    R.mipmap.icon_cat_sports,
-                    R.mipmap.icon_cat_other
-            };
+    @Override
+    public void onClick(View view) {
+        listener.onItemClick(view, position);
+        isSelected = !isSelected;
+        if (mType.equals("SERVICES")) {
+            if (isSelected) itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
+            else itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+        } else if (mType.equals("JOBS")) {
+            if (isSelected) itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan10Percent));
+            else itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+        } else if (mType.equals("GOCLUB")) {
+            if (isSelected) itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGPurple10Percent));
+            else itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
         }
+    }
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

@@ -470,7 +470,7 @@
                         android:layout_height="35dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:src="@drawable/appicon_512"/>
+                        android:src="@mipmap/jacks_gogo_logo"/>
                     <TextView
                         android:text="JGG Approval Agent"
                         android:layout_width="0dp"
@@ -500,7 +500,7 @@
                             android:layout_gravity="top|end"
                             android:layout_centerVertical="true"
                             android:textAlignment="center"
-                            android:background="@drawable/badge_background"
+                            android:background="@drawable/badge_red"
                             android:fontFamily="@font/muliregular"
                             android:textColor="@color/JGGWhite"
                             android:textSize="@dimen/badge_font_size"

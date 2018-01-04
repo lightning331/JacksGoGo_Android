@@ -23,7 +23,7 @@
                 android:id="@+id/img_avatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/nurse4"
+                android:src="@drawable/nurse1"
                 android:background="@color/transparent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"

@@ -106,7 +106,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         JGGBiddingProviderModel p2 = new JGGBiddingProviderModel();
         JGGUserBaseModel user2 = new JGGUserBaseModel();
         user2.setFullname("Christina.P");
-        user2.setAvatarUrl(R.drawable.nurse4);
+        user2.setAvatarUrl(R.drawable.nurse1);
         user2.setRate(5.0f);
         p2.setUser(user2);
         p2.setStatus(Global.BiddingStatus.PENDING);
@@ -144,7 +144,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         JGGBiddingProviderModel p6 = new JGGBiddingProviderModel();
         JGGUserBaseModel user6 = new JGGUserBaseModel();
         user6.setFullname("Arimu.H");
-        user6.setAvatarUrl(R.drawable.nurse4);
+        user6.setAvatarUrl(R.drawable.nurse1);
         user6.setRate(2.75f);
         p6.setUser(user6);
         p6.setStatus(Global.BiddingStatus.REJECTED);

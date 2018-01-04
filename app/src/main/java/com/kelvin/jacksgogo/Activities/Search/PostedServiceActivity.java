@@ -37,6 +37,10 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
     private boolean isVerified = getRandomBoolean();
     private boolean isPost = false;
 
+    public static boolean getRandomBoolean() {
+        return Math.random() < 0.5;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,7 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POSTED_SERVICE, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POSTED, JGGAppBaseModel.AppointmentType.SERVICES);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -59,14 +63,10 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        initiView();
+        initView();
     }
 
-    public static boolean getRandomBoolean() {
-        return Math.random() < 0.5;
-    }
-
-    private void initiView() {
+    private void initView() {
         btnViewTimeSlots = findViewById(R.id.btn_posted_service_view_time_slots);
         verifyStatusLayout = findViewById(R.id.posted_service_status_layout);
         chatLayout = findViewById(R.id.posted_service_chat_layout);
@@ -161,10 +161,12 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
             } else if (menuItem.getItemId() == R.id.posted_service_menu_edit) {    // Edit Service
                 Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
                 intent.putExtra("EDIT_STATUS", "Edit");
+                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_duplicate) {    // Duplicate Service
                 Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
                 intent.putExtra("EDIT_STATUS", "Duplicate");
+                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_delete) {    // Delete Service
                 onDeleteButtonClick();

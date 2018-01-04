@@ -8,13 +8,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VerifiedSkillFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
+    private Context mContext;
+    private GridView gridView;
+    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
 
     public VerifiedSkillFragment() {
         // Required empty public constructor
@@ -32,6 +42,7 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
         if (getArguments() != null) {
 
         }
+        addCategoryData();
     }
 
     @Override
@@ -39,32 +50,30 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_verified_skill, container, false);
-        initView(view);
+
+        gridView = view.findViewById(R.id.profile_verified_category_grid_view);
+        gridView.setNumColumns(4);
+        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, "SERVICES");
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the GridView selected/clicked item text
+                NotVerifiedSkillFragment frag = new NotVerifiedSkillFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.verify_skill_container, frag, frag.getTag());
+                ft.addToBackStack("verify_skill");
+                ft.commit();
+
+                String name = datas.get(position).get("name").toString();
+                Toast.makeText(getActivity(), name,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+        gridView.setAdapter(adapter);
+
         return view;
     }
 
-    private void initView(View view) {
-
-        LinearLayout btnOther = view.findViewById(R.id.btn_post_other);
-        btnOther.setOnClickListener(this);
-        LinearLayout btnCooking = view.findViewById(R.id.btn_post_cooking);
-        btnCooking.setOnClickListener(this);
-        LinearLayout btnEducation = view.findViewById(R.id.btn_post_education);
-        btnEducation.setOnClickListener(this);
-        LinearLayout btnHand = view.findViewById(R.id.btn_post_handyman);
-        btnHand.setOnClickListener(this);
-        LinearLayout btnHouse = view.findViewById(R.id.btn_post_household);
-        btnHouse.setOnClickListener(this);
-        LinearLayout btnMessenger = view.findViewById(R.id.btn_post_messenger);
-        btnMessenger.setOnClickListener(this);
-        LinearLayout btnRun = view.findViewById(R.id.btn_post_run);
-        btnRun.setOnClickListener(this);
-        LinearLayout btnSport = view.findViewById(R.id.btn_post_sports);
-        btnSport.setOnClickListener(this);
-
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -74,6 +83,7 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -90,13 +100,24 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        NotVerifiedSkillFragment frag = new NotVerifiedSkillFragment();
+    }
 
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.verify_skill_container, frag, frag.getTag());
-        ft.addToBackStack("verify_skill");
-        ft.commit();
+    private void addCategoryData() {
+        datas.add(createMap("Cooking & Baking", R.mipmap.icon_cat_cooking_baking));
+        datas.add(createMap("Education", R.mipmap.icon_cat_education));
+        datas.add(createMap("Handyman", R.mipmap.icon_cat_handyman));
+        datas.add(createMap("Household Chores", R.mipmap.icon_cat_householdchores));
+        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
+        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
+        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
+        datas.add(createMap("Other Professions", R.mipmap.icon_cat_other));
+    }
 
+    private Map<String, Object> createMap(String name, int iconId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("icon", iconId);
+        return map;
     }
 
     public interface OnFragmentInteractionListener {
