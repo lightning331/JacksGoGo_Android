@@ -17,19 +17,19 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGEventModel;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGServiceModel;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGServicePackageModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServicePackageModel;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.CANCELLED;
-import static com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.NONE;
-import static com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.WITHDRAWN;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.CANCELLED;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.NONE;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.WITHDRAWN;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {

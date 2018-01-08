@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGEventModel;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;

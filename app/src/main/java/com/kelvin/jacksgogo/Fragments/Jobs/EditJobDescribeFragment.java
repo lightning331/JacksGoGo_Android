@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGServiceModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;

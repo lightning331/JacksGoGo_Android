@@ -1,7 +1,7 @@
-package com.kelvin.jacksgogo.Models.Jobs_Services_Events;
+package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.kelvin.jacksgogo.Models.User.JGGClientUserModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGClientUserModel;
 
 import java.util.Date;
 

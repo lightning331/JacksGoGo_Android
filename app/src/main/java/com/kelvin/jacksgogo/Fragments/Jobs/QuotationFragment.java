@@ -18,9 +18,9 @@ import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.QuotationAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Models.Base.Global;
-import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
-import com.kelvin.jacksgogo.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -95,9 +95,9 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
 
         JGGBiddingProviderModel p1 = new JGGBiddingProviderModel();
         JGGUserBaseModel user1 = new JGGUserBaseModel();
-        user1.setFullname("CYYong");
+        user1.setSurname("CYYong");
         user1.setAvatarUrl(R.drawable.nurse);
-        user1.setRate(4.5f);
+        user1.setRate(4.5);
         p1.setUser(user1);
         p1.setStatus(Global.BiddingStatus.NEWPROPOSAL);
         p1.setPrice(100.00f);
@@ -105,9 +105,9 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
 
         JGGBiddingProviderModel p2 = new JGGBiddingProviderModel();
         JGGUserBaseModel user2 = new JGGUserBaseModel();
-        user2.setFullname("Christina.P");
+        user2.setSurname("Christina.P");
         user2.setAvatarUrl(R.drawable.nurse1);
-        user2.setRate(5.0f);
+        user2.setRate(5.0);
         p2.setUser(user2);
         p2.setStatus(Global.BiddingStatus.PENDING);
         p2.setPrice(105.00f);
@@ -115,9 +115,9 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
 
         JGGBiddingProviderModel p3 = new JGGBiddingProviderModel();
         JGGUserBaseModel user3 = new JGGUserBaseModel();
-        user3.setFullname("RenYW");
+        user3.setSurname("RenYW");
         user3.setAvatarUrl(R.drawable.carousel01);
-        user3.setRate(4.0f);
+        user3.setRate(4.0);
         p3.setUser(user3);
         p3.setStatus(Global.BiddingStatus.PENDING);
         p3.setPrice(110.00f);
@@ -125,27 +125,27 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
 
         JGGBiddingProviderModel p4 = new JGGBiddingProviderModel();
         JGGUserBaseModel user4 = new JGGUserBaseModel();
-        user4.setFullname("RositaV");
+        user4.setSurname("RositaV");
         user4.setAvatarUrl(R.drawable.carousel02);
-        user4.setRate(5.0f);
+        user4.setRate(5.0);
         p4.setUser(user4);
         p4.setStatus(Global.BiddingStatus.NOTRESPONDED);
         quotationArray.add(p4);
 
         JGGBiddingProviderModel p5 = new JGGBiddingProviderModel();
         JGGUserBaseModel user5 = new JGGUserBaseModel();
-        user5.setFullname("Alicaia.Leong");
+        user5.setSurname("Alicaia.Leong");
         user5.setAvatarUrl(R.drawable.carousel03);
-        user5.setRate(3.5f);
+        user5.setRate(3.5);
         p5.setUser(user5);
         p5.setStatus(Global.BiddingStatus.DECLINED);
         quotationArray.add(p5);
 
         JGGBiddingProviderModel p6 = new JGGBiddingProviderModel();
         JGGUserBaseModel user6 = new JGGUserBaseModel();
-        user6.setFullname("Arimu.H");
+        user6.setSurname("Arimu.H");
         user6.setAvatarUrl(R.drawable.nurse1);
-        user6.setRate(2.75f);
+        user6.setRate(2.75);
         p6.setUser(user6);
         p6.setStatus(Global.BiddingStatus.REJECTED);
         p6.setPrice(90.00f);

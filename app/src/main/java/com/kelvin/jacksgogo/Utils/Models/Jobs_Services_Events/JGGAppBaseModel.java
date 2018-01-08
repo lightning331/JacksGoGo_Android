@@ -1,6 +1,6 @@
-package com.kelvin.jacksgogo.Models.Jobs_Services_Events;
+package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
-import com.kelvin.jacksgogo.Models.Base.JGGBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Base.JGGBaseModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,8 +1,8 @@
-package com.kelvin.jacksgogo.Models;
+package com.kelvin.jacksgogo.Utils.Models;
 
-import com.kelvin.jacksgogo.Models.Base.Global;
-import com.kelvin.jacksgogo.Models.Base.JGGBaseModel;
-import com.kelvin.jacksgogo.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Base.JGGBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 
 /**
  * Created by PUMA on 11/3/2017.

@@ -1,7 +1,7 @@
-package com.kelvin.jacksgogo.Models.Jobs_Services_Events;
+package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
-import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
-import com.kelvin.jacksgogo.Models.User.JGGProviderUserModel;
+import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
 import java.util.Date;

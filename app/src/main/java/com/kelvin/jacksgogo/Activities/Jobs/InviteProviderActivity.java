@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Adapter.Jobs.InviteProviderAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class InviteProviderActivity extends AppCompatActivity {

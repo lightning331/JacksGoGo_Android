@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Models.Jobs_Services_Events;
+package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
 /**
  * Created by PUMA on 10/28/2017.

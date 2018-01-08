@@ -12,7 +12,7 @@ import com.kelvin.jacksgogo.Fragments.Jobs.PostJobFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceVerifiedFragment;
-import com.kelvin.jacksgogo.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {

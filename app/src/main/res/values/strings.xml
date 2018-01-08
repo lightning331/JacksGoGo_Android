@@ -89,6 +89,13 @@
     <string name="alert_verify_skill_button">Back To Service Listing</string>
     <string name="alert_posted_service_delete_title">Delete Service?</string>
     <string name="alert_posted_service_delete_desc">Deleted services can be found in Service Listing.</string>
+    <string name="alert_email_sent_title">Email Sent!</string>
+    <string name="alert_email_sent_desc">Check your email for the next steps.</string>
+
+    <!-- TODO: Forgot Password -->
+    <string name="alert_forgot_pass_title">Forgot Password?</string>
+    <string name="alert_forgot_pass_desc">Enter your email linked to your account below. We will send you an email with steps to reset your password.</string>
+    <string name="alert_forgot_pass_send">Send</string>
 
 
     <!-- TODO: Share Dialog -->

@@ -8,13 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Models.Base.Global;
-import com.kelvin.jacksgogo.Models.JGGBiddingProviderModel;
-import com.kelvin.jacksgogo.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.w3c.dom.Text;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -73,8 +71,8 @@ public class AppBiddingProviderCell extends RecyclerView.ViewHolder {
             itemView.setAlpha(.5f);
         }
         avatar.setImageResource(user.getAvatarUrl());
-        userName.setText(user.getFullname());
-        ratingBar.setRating(user.getRate());
+        userName.setText(user.getSurname());
+        ratingBar.setRating(user.getRate().floatValue());
         price.setText("$"+String.valueOf(provider.getPrice()));
         this.status.setText(provider.getStatus().toString());
     }

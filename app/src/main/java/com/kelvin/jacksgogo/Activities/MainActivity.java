@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Activities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -22,6 +26,7 @@ import com.kelvin.jacksgogo.Fragments.Appointments.AppMainFragment;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment;
+import com.kelvin.jacksgogo.Fragments.Profile.SignInFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
 
@@ -33,23 +38,32 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     private AppMainTabView appMainTabView;
     private SearchMainTabView searchTabView;
     private FavouriteMainTabView favouriteTabView;
+    private FrameLayout mContainer;
+    private CoordinatorLayout.LayoutParams params;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private boolean alreadyLoged;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             selectFragment(item);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    //item.setIcon(R.mipmap.tab_home_active);
                     return true;
                 case R.id.navigation_search:
+                    //item.setIcon(R.mipmap.tab_search_active);
                     return true;
                 case R.id.navigation_appointments:
+                    //item.setIcon(R.mipmap.tab_appointment_active);
                     return true;
                 case R.id.navigation_favourite:
+                    //item.setIcon(R.mipmap.tab_favourite_active);
                     return true;
                 case R.id.navigation_profile:
+                    //item.setIcon(R.mipmap.tab_profile_active);
                     return true;
             }
             return false;
@@ -76,9 +90,13 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 frag = FavouriteFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                frag = ProfileFragment.newInstance(null,
-                        null);
-                mToolbar.setTitle(R.string.title_profile);
+
+                if (alreadyLoged) {
+                    frag = ProfileFragment.newInstance();
+                    mToolbar.setTitle(R.string.title_profile);
+                } else {
+                    frag = SignInFragment.newInstance();
+                }
                 break;
         }
 
@@ -86,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container, frag, frag.getTag());
             ft.commit();
+
             if (frag instanceof AppMainFragment) {
                 this.addTopActionBarForAppointment(frag);
             } else {
@@ -101,6 +120,13 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             } else {
                 this.removeToActionBarForFavourite();
             }
+            if (frag instanceof SignInFragment) {
+                params.setBehavior(null);
+                mContainer.requestLayout();
+            } else {
+                params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+                mContainer.requestLayout();
+            }
         }
     }
 
@@ -109,6 +135,16 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle != null) alreadyLoged = bundle.getBoolean("loged_in");
+
+        initView();
+    }
+
+    private void initView() {
+        mContainer = (FrameLayout) findViewById(R.id.container);
+        params = (CoordinatorLayout.LayoutParams) mContainer.getLayoutParams();
 
         BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
@@ -184,6 +220,10 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
     private void removeToActionBarForFavourite() {
         mToolbar.removeView(favouriteTabView);
+    }
+
+    public void setLoginStatus(boolean status) {
+        alreadyLoged = status;
     }
 
     @Override

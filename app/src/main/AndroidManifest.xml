@@ -116,8 +116,21 @@
         <activity
             android:name=".Activities.Jobs.InviteProviderActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Jobs.BidDetailActivity" />
-        <activity android:name=".Activities.Jobs.AcceptBidActivity"></activity>
+        <activity
+            android:name=".Activities.Jobs.BidDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Jobs.AcceptBidActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.Profile.SignUpEmailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.Profile.SignUpSMSVerifyActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.Profile.SignUpPhoneActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
