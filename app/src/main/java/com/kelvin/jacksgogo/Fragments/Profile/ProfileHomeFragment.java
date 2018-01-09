@@ -9,23 +9,19 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
-public class ProfileFragment extends Fragment implements View.OnClickListener, TextWatcher {
+public class ProfileHomeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFragment() {
+    public ProfileHomeFragment() {
         // Required empty public constructor
     }
 
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
+    public static ProfileHomeFragment newInstance() {
+        ProfileHomeFragment fragment = new ProfileHomeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/JGGGrey5"
-    tools:context="com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment">
+    tools:context="com.kelvin.jacksgogo.Fragments.Profile.ProfileHomeFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -96,6 +96,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
+                            app:ccp_autoDetectCountry="true"
                             app:ccp_defaultNameCode="SG" />
                     </RelativeLayout>
                 </LinearLayout>

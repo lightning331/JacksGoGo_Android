@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -7,13 +8,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpPhoneActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -23,6 +34,9 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout btnNext;
     private TextView lblNext;
 
+    private ProgressDialog progressDialog;
+    private String strPhoneNumber;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +45,7 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
+
         this.txtPhone = findViewById(R.id.txt_sign_up_phone);
         this.txtPhone.addTextChangedListener(this);
         this.ccp = findViewById(R.id.ccp);
@@ -38,6 +53,43 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
         this.btnBack.setOnClickListener(this);
         this.btnNext = findViewById(R.id.btn_sign_up_phone_next);
         this.lblNext = findViewById(R.id.lbl_sign_up_phone_next);
+
+        // AutoDetectCountry enabled
+        // Phone Number Auto Formatting
+        ccp.registerCarrierNumberEditText(txtPhone);
+        ccp.setNumberAutoFormattingEnabled(true);
+    }
+
+    private void sendSMS() {
+        progressDialog = Global.createProgressDialog(this);
+
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(strPhoneNumber);
+        signUpCall.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    onShowSMSVerify();
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(SignUpPhoneActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpPhoneActivity", t.getMessage());
+                Toast.makeText(SignUpPhoneActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void onShowSMSVerify() {
+        Intent intent = new Intent(this, SignUpSMSVerifyActivity.class);
+        intent.putExtra("phone_number", strPhoneNumber);
+        startActivity(intent);
     }
 
     @Override
@@ -48,6 +100,8 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtPhone.length() > 0) {
+            strPhoneNumber = "+" + ccp.getSelectedCountryCode() + txtPhone.getText().toString();
+
             lblNext.setTextColor(ContextCompat.getColor(this, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.orange_background);
             btnNext.setOnClickListener(this);
@@ -69,9 +123,7 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.btn_sign_up_phone_back) {
             this.finish();
         } else if (view.getId() == R.id.btn_sign_up_phone_next) {
-            Intent intent = new Intent(this, SignUpSMSVerifyActivity.class);
-            startActivity(intent);
+            sendSMS();
         }
-
     }
 }

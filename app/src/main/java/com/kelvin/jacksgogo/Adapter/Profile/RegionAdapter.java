@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.SignupRegionCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGRegionModel;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by PUMA on 1/5/2018.
@@ -16,16 +20,18 @@ import com.kelvin.jacksgogo.R;
 public class RegionAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context mContext;
+    private ArrayList<JGGRegionModel> regions;
 
-    public RegionAdapter(Context context) {
+    public RegionAdapter(Context context, ArrayList<JGGRegionModel> regions) {
         this.mContext = context;
+        this.regions = regions;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View regionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_sign_up_region, parent, false);
-        SignupRegionCell cell = new SignupRegionCell(regionView);
+        SignupRegionCell cell = new SignupRegionCell(regionView, mContext);
         return cell;
     }
 
@@ -35,15 +41,20 @@ public class RegionAdapter extends RecyclerView.Adapter implements View.OnClickL
         SignupRegionCell cell = (SignupRegionCell)holder;
         cell.itemView.setOnClickListener(this);
 
-        if (position == 1) {
-            cell.lblRegion.setText("Malaysia");
-            cell.imgRegion.setImageResource(R.mipmap.icon_malaysia);
+        if (regions.size() > 0) {
+            JGGRegionModel region = regions.get(position);
+            cell.lblRegion.setText(region.getRegionName());
+            cell.setImage(region.getImage());
         }
+    }
+
+    public void setData(ArrayList<JGGRegionModel> regions) {
+        this.regions = regions;
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return regions.size();
     }
 
     @Override
@@ -60,4 +71,5 @@ public class RegionAdapter extends RecyclerView.Adapter implements View.OnClickL
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
 }

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -7,12 +8,26 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -23,6 +38,10 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout btnSignUp;
     private TextView lblSignUp;
     private LinearLayout btnSignUpFacebook;
+
+    private ProgressDialog progressDialog;
+    private String strEmail;
+    private String strPassword;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +66,80 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         this.btnBack.setOnClickListener(this);
     }
 
+    private void signUp() {
+
+        String pass = txtPassword.getText().toString();
+        String cpass = txtConfirmPassword.getText().toString();
+        if (!emailValidator(strEmail)) {
+            Toast.makeText(this,"Invalid Email Address.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!pass.equals(cpass)){
+            Toast.makeText(this,"Password Not matching",Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            if (strPassword.length() <= 6) {
+                Toast.makeText(this,"Passwords must have at least 6 digit.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        progressDialog = Global.createProgressDialog(this);
+
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> signUpCall = signInManager.accountSignUp(strEmail, strPassword);
+        signUpCall.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                if (response.isSuccessful()) {
+                    onShowPhoneVerify();
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(SignUpEmailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpEmailActivity", t.getMessage());
+                Toast.makeText(SignUpEmailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * validate email address format.
+     */
+    public static boolean emailValidator(String email)
+    {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    /**
+     * validate password format.
+     */
+    public static boolean passwordValidator(String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*\\\\d)(?=.*[$@$!%*#?&])[A-Za-z\\\\d$@$!%*#?&]{6,}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    private void onShowPhoneVerify() {
+        Intent intent = new Intent(this, SignUpPhoneActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -56,6 +149,9 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtEmail.length() > 0
                 && txtPassword.length() > 0) {
+
+            strEmail = txtEmail.getText().toString();
+            strPassword = txtPassword.getText().toString();
 
             lblSignUp.setTextColor(ContextCompat.getColor(this, R.color.JGGWhite));
             btnSignUp.setBackgroundResource(R.drawable.orange_background);
@@ -78,8 +174,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.btn_sign_up_email_back) {
             this.finish();
         } else if (view.getId() == R.id.btn_sign_up) {
-            Intent intent = new Intent(this, SignUpPhoneActivity.class);
-            startActivity(intent);
+            signUp();
+            //onShowPhoneVerify();
         }
     }
 }

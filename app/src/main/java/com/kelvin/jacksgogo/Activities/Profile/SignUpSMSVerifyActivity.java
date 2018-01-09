@@ -1,20 +1,32 @@
 package com.kelvin.jacksgogo.Activities.Profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -25,12 +37,17 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     private LinearLayout btnSubmit;
     private TextView lblSubmit;
 
+    private ProgressDialog progressDialog;
+    private String strPhoneNumber;
+    private String strOTP;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_smsverify);
         initView();
+
+        strPhoneNumber = getIntent().getStringExtra("phone_number");
 
         new CountDownTimer(10000, 1000) {
 
@@ -57,6 +74,70 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
         this.btnBack.setOnClickListener(this);
     }
 
+    private void reSendOTP() {
+        progressDialog = Global.createProgressDialog(this);
+
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(strPhoneNumber);
+        signUpCall.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(SignUpSMSVerifyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpEmailActivity", t.getMessage());
+                Toast.makeText(SignUpSMSVerifyActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void submit() {
+        progressDialog = Global.createProgressDialog(this);
+
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGUserBaseResponse> signUpCall = signInManager.verifyPhoneNumber(strPhoneNumber, strOTP);
+        signUpCall.enqueue(new Callback<JGGUserBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGUserBaseResponse> call, Response<JGGUserBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getValue() != null) {
+                        JGGUserBaseModel user = response.body().getValue();
+                        onShowMainActivity();
+                    } else {
+                        Toast.makeText(SignUpSMSVerifyActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(SignUpSMSVerifyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGUserBaseResponse> call, Throwable t) {
+                Log.d("SignUpSMSVerifyActivity", t.getMessage());
+                Toast.makeText(SignUpSMSVerifyActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void onShowMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        MainActivity activity = new MainActivity();
+        activity.setLoginStatus(true);
+        startActivity(intent);
+    }
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -65,6 +146,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtOTP.length() > 0) {
+            strOTP = txtOTP.getText().toString();
             lblSubmit.setTextColor(ContextCompat.getColor(this, R.color.JGGWhite));
             btnSubmit.setBackgroundResource(R.drawable.orange_background);
             btnSubmit.setOnClickListener(this);
@@ -85,9 +167,10 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
 
         if (view.getId() == R.id.btn_sign_up_sms_back) {
             this.finish();
+        } else if (view.getId() == R.id.btn_sign_up_sms_resend) {
+            reSendOTP();
         } else if (view.getId() == R.id.btn_sign_up_sms_submit) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            submit();
         }
     }
 }

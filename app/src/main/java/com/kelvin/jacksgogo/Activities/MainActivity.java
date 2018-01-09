@@ -11,9 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -25,7 +23,7 @@ import com.kelvin.jacksgogo.CustomView.Views.SearchMainTabView;
 import com.kelvin.jacksgogo.Fragments.Appointments.AppMainFragment;
 import com.kelvin.jacksgogo.Fragments.Favourite.FavouriteFragment;
 import com.kelvin.jacksgogo.Fragments.Home.HomeFragment;
-import com.kelvin.jacksgogo.Fragments.Profile.ProfileFragment;
+import com.kelvin.jacksgogo.Fragments.Profile.ProfileHomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.SignInFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
@@ -92,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             case R.id.navigation_profile:
 
                 if (alreadyLoged) {
-                    frag = ProfileFragment.newInstance();
+                    frag = ProfileHomeFragment.newInstance();
                     mToolbar.setTitle(R.string.title_profile);
                 } else {
                     frag = SignInFragment.newInstance();
@@ -135,9 +133,6 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
-
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null) alreadyLoged = bundle.getBoolean("loged_in");
 
         initView();
     }

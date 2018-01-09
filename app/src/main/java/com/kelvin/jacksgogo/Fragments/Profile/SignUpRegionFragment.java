@@ -1,23 +1,35 @@
 package com.kelvin.jacksgogo.Fragments.Profile;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.SignUpEmailActivity;
-import com.kelvin.jacksgogo.Activities.SplashActivity;
 import com.kelvin.jacksgogo.Adapter.Profile.RegionAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpRegionFragment extends Fragment implements View.OnClickListener {
 
@@ -25,7 +37,10 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
 
     private Context mContext;
     private RecyclerView recyclerView;
+    private RegionAdapter mAdapter;
     private LinearLayout btnSignIn;
+    private ArrayList<JGGRegionModel> regions = new ArrayList<JGGRegionModel>();
+    private ProgressDialog progressDialog;
 
     public SignUpRegionFragment() {
         // Required empty public constructor
@@ -52,6 +67,8 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up_region, container, false);
 
+        getRegionData();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.region_recycler_view);
         btnSignIn = (LinearLayout) view.findViewById(R.id.btn_sign_in);
         btnSignIn.setOnClickListener(this);
@@ -62,7 +79,7 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        RegionAdapter mAdapter = new RegionAdapter(mContext);
+        mAdapter = new RegionAdapter(mContext, regions);
         mAdapter.setOnItemClickListener(new RegionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick() {
@@ -73,6 +90,33 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
         recyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    private void getRegionData() {
+        progressDialog = Global.createProgressDialog(mContext);
+
+        JGGAPIManager regionManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+        Call<JGGRegionResponse> regionCall = regionManager.getRegions();
+        regionCall.enqueue(new Callback<JGGRegionResponse>() {
+            @Override
+            public void onResponse(Call<JGGRegionResponse> call, Response<JGGRegionResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    regions = response.body().getValue();
+                    mAdapter.setData(regions);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGRegionResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
     public void onButtonPressed(Uri uri) {

@@ -63,6 +63,7 @@ dependencies {
     compile 'com.hbb20:ccp:2.1.1'
     compile 'com.bigkoo:alertview:1.0.3'
     compile 'com.makeramen:roundedimageview:2.3.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.synnapps:carouselview:0.1.4'
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
     compile 'co.lujun:androidtagview:1.1.4'

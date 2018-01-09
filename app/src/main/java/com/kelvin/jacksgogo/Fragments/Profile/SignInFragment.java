@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
@@ -133,7 +133,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
             public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    //Log.d("SigninFragment", response.body().getAccess_token());
 
                     String access_token = response.body().getAccess_token();
                     Long expire_in = response.body().getExpires_in();
@@ -154,32 +153,31 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
 
                                 getActivity().getSupportFragmentManager()
                                         .beginTransaction()
-                                        .add(R.id.container, ProfileFragment.newInstance())
+                                        .add(R.id.container, ProfileHomeFragment.newInstance())
                                         .commit();
                             } else {
                                 int statusCode  = response.code();
-                                Log.d("tag", response.message());
+                                Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<JGGUserBaseResponse> call, Throwable t) {
-                            Log.d("SigninFragment", "error loading from Login API");
+                            Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }
                     });
 
                 } else {
                     int statusCode  = response.code();
-                    Log.d("tag", response.message());
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGTokenResponse> call, Throwable t) {
-                Log.d("SigninFragment", "error loading from Auth Token API");
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
-
             }
         });
     }
