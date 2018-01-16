@@ -2,22 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment">
+    tools:context="com.kelvin.jacksgogo.Fragments.Search.PostServicePriceFragment">
 
     <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
         <LinearLayout
-            android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/JGGGrey5"
             android:orientation="vertical">
-
             <TextView
-                android:id="@+id/lbl_title"
-                android:text="Give your service a short title."
+                android:text="Do you have a budget?"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"
@@ -25,125 +23,111 @@
                 android:layout_marginLeft="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <EditText
-                android:hint="e.g. Air-cond Servicing"
-                android:id="@+id/txt_post_service_title"
+            <TextView
+                android:text="No limit"
+                android:id="@+id/btn_post_job_no_limit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:padding="@dimen/edit_text_padding_size"
-                android:fontFamily="@font/muliregular"
-                android:textSize="@dimen/list_title_font_size"
-                android:background="@drawable/grey_border_background">
-            </EditText>
-            <TextView
-                android:id="@+id/lbl_description"
-                android:text="Describ your service."
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/list_title_font_size"
-                android:textColor="@color/JGGBlack"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:hint="e.g. My air-cond unit isn't cold."
-                android:id="@+id/txt_post_service_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:padding="@dimen/edit_text_padding_size"
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/list_title_font_size"
-                android:background="@drawable/grey_border_background">
-            </EditText>
+                android:textColor="@color/JGGCyan"
+                android:background="@drawable/cyan_border_background"/>
             <TextView
-                android:id="@+id/lbl_tags"
-                android:text="Add tags to your service(Optional)."
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/list_title_font_size"
-                android:textColor="@color/JGGBlack"
+                android:text="Fixed amount."
+                android:id="@+id/btn_post_job_fixed_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:hint="Separate tags by comma."
-                android:id="@+id/txt_post_service_tag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:padding="@dimen/edit_text_padding_size"
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/list_title_font_size"
-                android:background="@drawable/grey_border_background">
-            </EditText>
-            <android.support.v7.widget.RecyclerView
+                android:textColor="@color/JGGCyan"
+                android:background="@drawable/cyan_border_background"/>
+            <EditText
                 android:visibility="gone"
-                android:id="@+id/describe_photo_recycler_view"
+                android:hint="Amount  $1.00"
+                android:id="@+id/txt_post_job_fixed_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"/>
-            <LinearLayout
-                android:visibility="visible"
-                android:id="@+id/btn_post_service_take_photo"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:text="From $... to $..."
+                android:id="@+id/btn_post_job_From"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="48dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
-                android:background="@drawable/green_border_background">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="20"
-                    android:gravity="center">
-                    <ImageView
-                        android:id="@+id/img_take_photo"
-                        android:layout_width="50dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/icon_photo_green"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="60"
-                    android:gravity="center">
-                    <TextView
-                        android:id="@+id/lbl_take_photo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/JGGGreen"
-                        android:textSize="@dimen/list_text_font_size"
-                        android:fontFamily="@font/mulibold"
-                        android:text="Take Photos (Optional)"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="20">
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGCyan"
+                android:background="@drawable/cyan_border_background"/>
+            <EditText
+                android:visibility="gone"
+                android:hint="Min.  $1.00"
+                android:id="@+id/txt_post_job_from_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <EditText
+                android:visibility="gone"
+                android:hint="Max.  $9999.00"
+                android:id="@+id/txt_post_job_from_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/lbl_post_job_no_limit_desc"
+                android:text="@string/post_job_budget_no_limit_desc"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <RelativeLayout
-                android:id="@+id/btn_post_service_next"
+                android:visibility="gone"
+                android:id="@+id/btn_post_job_budget_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/grey_background"
                 android:gravity="left|center_vertical">
                 <LinearLayout
@@ -153,7 +137,7 @@
                 </LinearLayout>
                 <TextView
                     android:text="Next"
-                    android:id="@+id/lbl_post_service_next"
+                    android:id="@+id/lbl_post_job_budget_next"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

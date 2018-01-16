@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/JGGGrey5"
-    tools:context="com.kelvin.jacksgogo.Fragments.Search.PostServiceNotVerifiedFragment">
+    tools:context="com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillNotVerifiedFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

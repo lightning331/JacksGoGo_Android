@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobAddressCell;
-import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
@@ -155,7 +155,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(EditJobTabbarView.EditTabStatus status, String unit, String street, String postcode);
+        void onNextButtonClick(PostServiceTabbarView.TabName status, String unit, String street, String postcode);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -165,7 +165,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.view_filter_bg) {
-            listener.onNextButtonClick(EditJobTabbarView.EditTabStatus.REPORT, strUnit, strStreet, strPostCode);
+            listener.onNextButtonClick(PostServiceTabbarView.TabName.REPORT, strUnit, strStreet, strPostCode);
         }
     }
 

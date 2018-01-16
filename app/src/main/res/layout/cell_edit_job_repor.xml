@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/green_border_background">
+        android:layout_marginRight="16dp">
         <LinearLayout
             android:id="@+id/edit_job_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/green_border_background">
             <TextView
                 android:id="@+id/lbl_edit_job_address_title"
                 android:text="Postcode"

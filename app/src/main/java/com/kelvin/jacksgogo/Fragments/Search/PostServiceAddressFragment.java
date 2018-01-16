@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,22 +23,27 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     private Context mContext;
     private OnFragmentInteractionListener mListener;
 
+    private TextView lblTitle;
+    private TextView lblDesc;
     private EditText txtUnit;
     private EditText txtStreet;
     private EditText txtPostCode;
+    private LinearLayout checkboxLayout;
     private ImageView btnCheckBox;
     private RelativeLayout btnNext;
     private TextView lblNext;
 
     private boolean isChecked = false;
+    private String mType;
 
     public PostServiceAddressFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceAddressFragment newInstance(String param1, String param2) {
+    public static PostServiceAddressFragment newInstance(String type) {
         PostServiceAddressFragment fragment = new PostServiceAddressFragment();
         Bundle args = new Bundle();
+        args.putString("appointment_type", type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +52,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mType = getArguments().getString("appointment_type");
         }
     }
 
@@ -62,9 +68,12 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     }
 
     private void initView(View view) {
+        lblTitle = view.findViewById(R.id.lbl_post_address_title);
+        lblDesc = view.findViewById(R.id.lbl_post_address_desc);
         txtUnit = view.findViewById(R.id.txt_post_address_unit);
         txtStreet = view.findViewById(R.id.txt_post_address_street);
         txtPostCode = view.findViewById(R.id.txt_post_address_postcode);
+        checkboxLayout = view.findViewById(R.id.show_full_address_layout);
         btnCheckBox = view.findViewById(R.id.btn_post_address_checkbox);
         btnNext = view.findViewById(R.id.btn_post_address_next);
         lblNext = view.findViewById(R.id.lbl_post_address_next);
@@ -73,6 +82,13 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         txtUnit.addTextChangedListener(this);
         txtStreet.addTextChangedListener(this);
         txtPostCode.addTextChangedListener(this);
+
+        if (mType.equals("JOB")) {
+            lblTitle.setText(R.string.post_job_address_title);
+            lblDesc.setVisibility(View.VISIBLE);
+            checkboxLayout.setVisibility(View.GONE);
+            lblNext.setText("Next");
+        }
     }
 
     public void onButtonPressed(Uri uri) {
@@ -122,6 +138,9 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             btnNext.setOnClickListener(this);
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.green_background);
+            if (mType.equals("JOB")) {
+                btnNext.setBackgroundResource(R.drawable.cyan_background);
+            }
         } else {
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
             btnNext.setBackgroundResource(R.drawable.grey_background);

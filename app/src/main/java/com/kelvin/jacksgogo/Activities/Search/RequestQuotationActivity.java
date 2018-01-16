@@ -16,8 +16,8 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.EditJobFragment;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.Fragments.Search.EditServiceFragment;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
@@ -57,9 +57,9 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
         });
 
         // Fragment
-        EditJobFragment editJobFragment = EditJobFragment.newInstance(EditJobTabbarView.EditTabStatus.DESCRIBE, true);
+        EditServiceFragment editServiceFragment = EditServiceFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE, true);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.request_quotation_container, editJobFragment, editJobFragment.getTag());
+        ft.replace(R.id.request_quotation_container, editServiceFragment, editServiceFragment.getTag());
         ft.commit();
     }
 

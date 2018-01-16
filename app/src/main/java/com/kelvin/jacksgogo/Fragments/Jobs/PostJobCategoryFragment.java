@@ -12,13 +12,14 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PostJobFragment extends Fragment {
+public class PostJobCategoryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -26,12 +27,12 @@ public class PostJobFragment extends Fragment {
     private GridView gridView;
     private ArrayList<Map<String, Object>> datas = new ArrayList<>();
 
-    public PostJobFragment() {
+    public PostJobCategoryFragment() {
         // Required empty public constructor
     }
 
-    public static PostJobFragment newInstance(String param1, String param2) {
-        PostJobFragment fragment = new PostJobFragment();
+    public static PostJobCategoryFragment newInstance(String param1, String param2) {
+        PostJobCategoryFragment fragment = new PostJobCategoryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -50,7 +51,7 @@ public class PostJobFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_job, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_job_category, container, false);
 
         gridView = (GridView) view.findViewById(R.id.post_job_category_grid_view);
         gridView.setNumColumns(4);
@@ -62,6 +63,12 @@ public class PostJobFragment extends Fragment {
                 String name = datas.get(position).get("name").toString();
                 Toast.makeText(getActivity(), name,
                         Toast.LENGTH_LONG).show();
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE))
+                        .addToBackStack("post_job")
+                        .commit();
             }
         });
         gridView.setAdapter(adapter);

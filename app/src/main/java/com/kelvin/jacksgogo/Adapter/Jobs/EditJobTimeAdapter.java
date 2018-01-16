@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarView;
-import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
@@ -122,14 +122,14 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_time_slots_status) {
-            listener.onItemClick(EditJobTabbarView.EditTabStatus.ADDRESS, selectedDate);
+            listener.onItemClick(PostServiceTabbarView.TabName.ADDRESS, selectedDate);
         }
     }
 
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(EditJobTabbarView.EditTabStatus status, Date date);
+        void onItemClick(PostServiceTabbarView.TabName status, Date date);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

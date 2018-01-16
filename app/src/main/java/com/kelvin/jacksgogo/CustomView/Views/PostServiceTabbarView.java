@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 11/10/2017.
  */
 
-public class EditJobTabbarView extends RelativeLayout implements View.OnClickListener {
+public class PostServiceTabbarView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
 
@@ -24,7 +24,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
     LinearLayout mReportButton;
     ImageView imgTimeLine;
     ImageView imgAddressLine;
-    ImageView imgRreportLine;
+    ImageView imgReportLine;
     public ImageView mDescribeImage;
     public ImageView mTimeImage;
     public ImageView mAddressImage;
@@ -34,16 +34,16 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
     public TextView mAddressText;
     public TextView mReportText;
 
-    private EditTabStatus editTabStatus;
+    private TabName tabName;
 
-    public enum EditTabStatus {
+    public enum TabName {
         DESCRIBE,
         TIME,
         ADDRESS,
         REPORT
     }
 
-    public EditJobTabbarView(Context context) {
+    public PostServiceTabbarView(Context context) {
         super(context);
         this.mContext = context;
 
@@ -53,7 +53,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
     private void initView() {
 
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mTabbarView                 = mLayoutInflater.inflate(R.layout.view_edit_job_tabbar, this);
+        View mTabbarView                 = mLayoutInflater.inflate(R.layout.view_post_service_tabbar, this);
 
         mDescribeButton     = (LinearLayout) mTabbarView.findViewById(R.id.btn_describe);
         mTimeButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_time);
@@ -69,7 +69,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         mReportText         = (TextView) mTabbarView.findViewById(R.id.lbl_report);
         imgTimeLine         = (ImageView) mTabbarView.findViewById(R.id.img_time_line);
         imgAddressLine      = (ImageView) mTabbarView.findViewById(R.id.img_address_line);
-        imgRreportLine      = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
+        imgReportLine = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
 
         mDescribeButton.setOnClickListener(this);
         mTimeButton.setOnClickListener(this);
@@ -77,12 +77,12 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         mReportButton.setOnClickListener(this);
     }
 
-    public EditTabStatus getEditTabStatus() {
-        return editTabStatus;
+    public TabName getTabName() {
+        return tabName;
     }
 
-    public void setEditTabStatus(EditTabStatus status, boolean isRequest) {
-        this.editTabStatus = status;
+    public void setTabName(TabName name, boolean isRequest) {
+        this.tabName = name;
 
         mDescribeImage.setImageResource(R.mipmap.counter_greytick);
         mDescribeText.setTextColor(getResources().getColor(R.color.JGGGrey1));
@@ -93,7 +93,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
         mReportImage.setImageResource(R.mipmap.counter_greytick);
         mReportText.setTextColor(getResources().getColor(R.color.JGGGrey1));
         imgTimeLine.setImageResource(R.mipmap.line_dotted);
-        imgRreportLine.setImageResource(R.mipmap.line_dotted);
+        imgReportLine.setImageResource(R.mipmap.line_dotted);
         imgAddressLine.setImageResource(R.mipmap.line_dotted);
         if (isRequest) {
             mDescribeImage.setImageResource(R.mipmap.counter_grey);
@@ -102,7 +102,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
             mReportImage.setImageResource(R.mipmap.counter_grey);
         }
 
-        switch (status) {
+        switch (name) {
             case DESCRIBE:
                 mDescribeImage.setImageResource(R.mipmap.counter_greentick);
                 mDescribeText.setTextColor(getResources().getColor(R.color.JGGGreen));
@@ -133,7 +133,7 @@ public class EditJobTabbarView extends RelativeLayout implements View.OnClickLis
             case REPORT:
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 imgAddressLine.setImageResource(R.mipmap.line_full);
-                imgRreportLine.setImageResource(R.mipmap.line_full);
+                imgReportLine.setImageResource(R.mipmap.line_full);
                 mReportImage.setImageResource(R.mipmap.counter_greentick);
                 mReportText.setTextColor(getResources().getColor(R.color.JGGGreen));
                 if (isRequest) {

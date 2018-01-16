@@ -13,7 +13,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.EditJobMainFragment;
+import com.kelvin.jacksgogo.Fragments.Search.EditServiceMainFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobMainFragment;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
@@ -25,7 +25,7 @@ public class JobDetailActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
     JobMainFragment jobMainFragment;
-    EditJobMainFragment editJobMainFragment;
+    EditServiceMainFragment editServiceMainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,9 +136,9 @@ public class JobDetailActivity extends AppCompatActivity {
     private void backToEditJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        editJobMainFragment = EditJobMainFragment.newInstance(false);
+        editServiceMainFragment = EditServiceMainFragment.newInstance(false);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
+        ft.replace(R.id.app_detail_container, editServiceMainFragment, editServiceMainFragment.getTag());
         ft.commit();
     }
 
@@ -149,9 +149,9 @@ public class JobDetailActivity extends AppCompatActivity {
     private void openEditJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        editJobMainFragment = EditJobMainFragment.newInstance(false);
+        editServiceMainFragment = EditServiceMainFragment.newInstance(false);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, editJobMainFragment, editJobMainFragment.getTag());
+        ft.replace(R.id.app_detail_container, editServiceMainFragment, editServiceMainFragment.getTag());
         ft.commit();
     }
 

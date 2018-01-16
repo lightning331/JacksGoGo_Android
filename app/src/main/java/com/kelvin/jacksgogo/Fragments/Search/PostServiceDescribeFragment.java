@@ -18,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
@@ -38,26 +38,21 @@ public class PostServiceDescribeFragment extends Fragment
         implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onNextButtonClick(String title, String comment, String tags);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
     private Context mContext;
 
     private RecyclerView recyclerView;
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
 
+    private TextView lblTitle;
+    private TextView lblDescription;
+    private TextView lblTags;
     private EditText txtServiceTitle;
     private EditText txtServiceDesc;
     private EditText txtServiceTag;
     private LinearLayout btnTakePhoto;
+    private ImageView imgTakePhoto;
+    private TextView txtTakePhoto;
     private RelativeLayout btnNext;
     private TextView lblNext;
 
@@ -65,13 +60,16 @@ public class PostServiceDescribeFragment extends Fragment
     private String strDescription;
     private String strTags;
 
+    private String mType;
+
     public PostServiceDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceDescribeFragment newInstance(String param1, String param2) {
+    public static PostServiceDescribeFragment newInstance(String type) {
         PostServiceDescribeFragment fragment = new PostServiceDescribeFragment();
         Bundle args = new Bundle();
+        args.putString("appointment_type", type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,7 +78,7 @@ public class PostServiceDescribeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mType = getArguments().getString("appointment_type");
         }
     }
 
@@ -98,6 +96,9 @@ public class PostServiceDescribeFragment extends Fragment
 
     private void initView(View view) {
 
+        lblTitle = view.findViewById(R.id.lbl_title);
+        lblDescription = view.findViewById(R.id.lbl_description);
+        lblTags = view.findViewById(R.id.lbl_tags);
         txtServiceTitle = view.findViewById(R.id.txt_post_service_title);
         txtServiceTitle.addTextChangedListener(this);
         txtServiceDesc = view.findViewById(R.id.txt_post_service_description);
@@ -106,8 +107,18 @@ public class PostServiceDescribeFragment extends Fragment
         txtServiceTag.addTextChangedListener(this);
         btnTakePhoto = view.findViewById(R.id.btn_post_service_take_photo);
         btnTakePhoto.setOnClickListener(this);
+        imgTakePhoto = view.findViewById(R.id.img_take_photo);
+        txtTakePhoto = view.findViewById(R.id.lbl_take_photo);
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
+        if (mType.equals("JOB")) {
+            lblTitle.setText(R.string.post_job_desc_title);
+            lblDescription.setText(R.string.post_job_desc_description);
+            lblTags.setText(R.string.post_job_desc_tag);
+            btnTakePhoto.setBackgroundResource(R.drawable.cyan_border_background);
+            imgTakePhoto.setImageResource(R.mipmap.icon_photo_cyan);
+            txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGCyan));
+        }
     }
 
     private void initRecyclerView(View view) {
@@ -171,7 +182,7 @@ public class PostServiceDescribeFragment extends Fragment
                 .onCancel(new Action<String>() {
                     @Override
                     public void onAction(int requestCode, @NonNull String result) {
-                        Toast.makeText(mContext, R.string.canceled, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(mContext, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })
                 .start();
@@ -225,6 +236,7 @@ public class PostServiceDescribeFragment extends Fragment
 
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.green_background);
+            if (mType.equals("JOB")) btnNext.setBackgroundResource(R.drawable.cyan_background);
             btnNext.setOnClickListener(this);
         } else {
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
@@ -237,16 +249,16 @@ public class PostServiceDescribeFragment extends Fragment
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onNextButtonClick(String title, String comment, String tags);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 
-public class PostServiceDetailFragment extends Fragment {
+public class PostServiceMainTabFragment extends Fragment {
 
     private static final String TAB_MENU1 = "Describe";
     private static final String TAB_MENU2 = "Price";
@@ -24,20 +24,20 @@ public class PostServiceDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
-    private EditJobTabbarView tabbarView;
+    private PostServiceTabbarView tabbarView;
     private LinearLayout tabbarLayout;
     private AlertDialog alertDialog;
 
-    private String status;
+    private String tabName;
 
-    public PostServiceDetailFragment() {
+    public PostServiceMainTabFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceDetailFragment newInstance(EditJobTabbarView.EditTabStatus status) {
-        PostServiceDetailFragment fragment = new PostServiceDetailFragment();
+    public static PostServiceMainTabFragment newInstance(PostServiceTabbarView.TabName name) {
+        PostServiceMainTabFragment fragment = new PostServiceMainTabFragment();
         Bundle args = new Bundle();
-        args.putString("status", status.toString());
+        args.putString("tabName", name.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +46,7 @@ public class PostServiceDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            status = getArguments().getString("status");
+            tabName = getArguments().getString("tabName");
         }
     }
 
@@ -54,10 +54,10 @@ public class PostServiceDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_service_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_main_tab, container, false);
 
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_service_tabbar_view);
-        tabbarView = new EditJobTabbarView(getContext());
+        tabbarView = new PostServiceTabbarView(getContext());
         tabbarView.mDescribeText.setText(TAB_MENU1);
         tabbarView.mTimeText.setText(TAB_MENU2);
         tabbarView.mAddressText.setText(TAB_MENU3);
@@ -66,7 +66,7 @@ public class PostServiceDetailFragment extends Fragment {
 
         initTabbarView();
 
-        tabbarView.setTabItemClickLietener(new EditJobTabbarView.OnTabItemClickListener() {
+        tabbarView.setTabItemClickLietener(new PostServiceTabbarView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabbarViewClick(view);
@@ -79,14 +79,14 @@ public class PostServiceDetailFragment extends Fragment {
 
     private void initTabbarView() {
 
-        if (status == "DESCRIBE") {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE, true);
-        } else if (status == "TIME") {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME, true);
-        } else if (status == "ADDRESS") {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS, true);
-        } else if (status == "REPORT") {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT, true);
+        if (tabName == "DESCRIBE") {
+            tabbarView.setTabName(PostServiceTabbarView.TabName.DESCRIBE, true);
+        } else if (tabName == "TIME") {
+            tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
+        } else if (tabName == "ADDRESS") {
+            tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, true);
+        } else if (tabName == "REPORT") {
+            tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, true);
         }
         refreshFragment();
     }
@@ -94,13 +94,13 @@ public class PostServiceDetailFragment extends Fragment {
     private void onTabbarViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.DESCRIBE, true);
+            tabbarView.setTabName(PostServiceTabbarView.TabName.DESCRIBE, true);
         } else if (view.getId() == R.id.btn_time) {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME, true);
+            tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
         } else if (view.getId() == R.id.btn_address) {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS, true);
+            tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, true);
         } else if (view.getId() == R.id.btn_report) {
-            tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT, true);
+            tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, true);
         }
         refreshFragment();
     }
@@ -108,47 +108,48 @@ public class PostServiceDetailFragment extends Fragment {
     private void refreshFragment() {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.DESCRIBE) {
-            PostServiceDescribeFragment frag = new PostServiceDescribeFragment();
+        if (tabbarView.getTabName() == PostServiceTabbarView.TabName.DESCRIBE) {
+            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick(String title, String comment, String tags) {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.TIME, true);
+                    tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
-        } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.TIME) {
+        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.TIME) {
             PostServicePriceFragment frag = new PostServicePriceFragment();
             frag.setOnItemClickListener(new PostServicePriceFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.ADDRESS, true);
+                    tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, true);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
-        } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.ADDRESS) {
+        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.ADDRESS) {
             PostServiceTimeSlotFragment frag = new PostServiceTimeSlotFragment();
             frag.setOnItemClickListener(new PostServiceTimeSlotFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setEditTabStatus(EditJobTabbarView.EditTabStatus.REPORT, true);
+                    tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, true);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
-        } else if (tabbarView.getEditTabStatus() == EditJobTabbarView.EditTabStatus.REPORT) {
-            PostServiceAddressFragment frag = new PostServiceAddressFragment();
+        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.REPORT) {
+            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    PostServiceMainFragment fragment = new PostServiceMainFragment();
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.post_service_container, fragment, fragment.getTag());
-                    fragment.setEditStatus(PostServiceMainFragment.PostEditStatus.NONE);
-                    ft.addToBackStack("post_service_main");
-                    ft.commit();
+                    PostServiceSummaryFragment fragment = new PostServiceSummaryFragment();
+                    fragment.setEditStatus(PostServiceSummaryFragment.PostEditStatus.NONE);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.post_service_container, fragment, fragment.getTag())
+                            .addToBackStack("post_service_summary")
+                            .commit();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
@@ -156,7 +157,6 @@ public class PostServiceDetailFragment extends Fragment {
         ft.commit();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -180,16 +180,6 @@ public class PostServiceDetailFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

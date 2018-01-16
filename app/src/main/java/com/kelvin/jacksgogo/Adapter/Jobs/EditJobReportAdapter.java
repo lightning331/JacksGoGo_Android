@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
+import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
-import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
 
@@ -36,17 +36,18 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     private boolean isReportTypeGeoTracking = false;
     private boolean isReportTypePinCode = false;
 
-    private int reportType;
+    private String appointmentType;
+    private int reportType = 0;
 
     AppFilterOptionCell nextButtonCell;
 
     private ArrayList<ReportViewHolder> reportTypeArray = new ArrayList<>();
     private ArrayList<JGGReportModel> reportSet = new ArrayList<>();
 
-    public EditJobReportAdapter(Context context, boolean b, JGGServiceModel data) {
+    public EditJobReportAdapter(Context context, boolean b, String appType) {
         this.mContext = context;
         this.isRequest = b;
-        this.serviceObject = data;
+        appointmentType = appType;
 
         this.reportSet.add(new JGGReportModel(context.getString(R.string.edit_job_report_before_title),context.getString(R.string.edit_job_report_before_desc)));
         this.reportSet.add(new JGGReportModel(context.getString(R.string.edit_job_report_geo_titles),context.getString(R.string.edit_job_report_geo_desc)));
@@ -80,14 +81,28 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
             ReportViewHolder descTitleViewHolder = (ReportViewHolder)holder;
             descTitleViewHolder.title.setText(this.reportSet.get(position-1).getTitle());
             descTitleViewHolder.description.setText(this.reportSet.get(position-1).getDescription());
-            descTitleViewHolder.bind(position, listener);
+            descTitleViewHolder.bind(position);
+            if (appointmentType.equals("JOB")) {
+                descTitleViewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+                descTitleViewHolder.btnBackground.setBackgroundResource(R.drawable.cyan_border_background);
+            }
             reportTypeArray.add(descTitleViewHolder);
         } else if (position == reportSet.size() + 1) {
             nextButtonCell = (AppFilterOptionCell)holder;
             nextButtonCell.title.setText(R.string.go_to_summary);
-            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGrey4));
-            nextButtonCell.btnOriginal.setBorderWidth((float)0);
+            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+            if (appointmentType.equals("JOB")) nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+            nextButtonCell.btnOriginal.setBorderWidth((float) 0);
+            nextButtonCell.btnOriginal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Summary Button Clicked
+                    if (view.getId() == R.id.view_filter_bg) {
+                        listener.onItemClick(reportType);
+                    }
+                }
+            });
         }
     }
 
@@ -108,7 +123,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, JGGServiceModel object);
+        void onItemClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -128,7 +143,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
             description = itemView.findViewById(R.id.lbl_edit_job_address_desc);
         }
 
-        public void bind(final int position, final OnItemClickListener listener) {
+        public void bind(final int position) {
 
             btnBackground.setOnClickListener(new View.OnClickListener() {
 
@@ -138,45 +153,48 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     if (position == 1) {
                         isReportTypeBefore = !isReportTypeBefore;
+                        reportType = 1;
                         if (isReportTypeBefore) {
                             reportTypeArray.get(0).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_background));
                             reportTypeArray.get(0).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
                         } else {
                             reportTypeArray.get(0).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_border_background));
                             reportTypeArray.get(0).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+                            if (appointmentType.equals("JOB")) {
+                                reportTypeArray.get(0).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+                                reportTypeArray.get(0).btnBackground.setBackgroundResource(R.drawable.cyan_border_background);
+                            }
                         }
                     }
                     if (position == 2) {
                         isReportTypeGeoTracking = !isReportTypeGeoTracking;
+                        reportType = 2;
                         if (isReportTypeGeoTracking) {
                             reportTypeArray.get(1).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_background));
                             reportTypeArray.get(1).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
                         } else {
                             reportTypeArray.get(1).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_border_background));
                             reportTypeArray.get(1).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+                            if (appointmentType.equals("JOB")) {
+                                reportTypeArray.get(1).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+                                reportTypeArray.get(1).btnBackground.setBackgroundResource(R.drawable.cyan_border_background);
+                            }
                         }
                     }
                     if (position == 3) {
                         isReportTypePinCode = !isReportTypePinCode;
+                        reportType = 3;
                         if (isReportTypePinCode) {
                             reportTypeArray.get(2).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_background));
                             reportTypeArray.get(2).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
                         } else {
                             reportTypeArray.get(2).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_border_background));
                             reportTypeArray.get(2).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+                            if (appointmentType.equals("JOB")) {
+                                reportTypeArray.get(2).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+                                reportTypeArray.get(2).btnBackground.setBackgroundResource(R.drawable.cyan_border_background);
+                            }
                         }
-                    }
-
-                    if (isRequest) {
-                        nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-                        nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-                        nextButtonCell.btnOriginal.setBorderWidth((float) 0);
-                        nextButtonCell.btnOriginal.setOnClickListener(this);
-                    }
-
-                    // Summary Button Clicked
-                    if (view.getId() == R.id.view_filter_bg) {
-                        listener.onItemClick(position, serviceObject);
                     }
                 }
             });

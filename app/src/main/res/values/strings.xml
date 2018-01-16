@@ -72,6 +72,8 @@
     <string name="alert_report_service_ok">Report</string>
     <string name="alert_payment_setup_success">Payment Set Up Successfully!</string>
     <string name="alert_quit_quotation_title">Quit Requesting A Quotation?</string>
+    <string name="alert_quit_post_service_title">Quit Posting A New Service?</string>
+    <string name="alert_quit_post_job_title">Quit Posting A New Job?</string>
     <string name="alert_quit_quotation_desc">All info will be lost.</string>
     <string name="alert_quit_button">Quit</string>
     <string name="alert_cancel">Cancel</string>
@@ -101,6 +103,14 @@
     <!-- TODO: Share Dialog -->
     <string name="share_dlg_title">Share with your friend</string>
     <string name="share_dlg_actions">Actions</string>
+
+    <!-- TODO: Post Job -->
+    <string name="post_job_desc_title">Give your job a short title.</string>
+    <string name="post_job_desc_description">Describe the job you need done.</string>
+    <string name="post_job_desc_tag">Add tags to your job(optional).</string>
+    <string name="post_job_address_desc">We will only show the full address to the service provider you have awarded the job to.</string>
+    <string name="post_job_address_title">Where do you need the services?</string>
+    <string name="post_job_budget_no_limit_desc">Responding service providers will be asked to quote an amount.</string>
 
     <!-- TODO: Edit Job -->
     <string name="edit_job_tag_describe">Describe</string>

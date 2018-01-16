@@ -10,24 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PostServiceNotVerifiedFragment extends Fragment implements View.OnClickListener {
+public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
+    private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private TextView btnVerify;
     private GridView gridView;
     private ArrayList<Map<String, Object>> datas = new ArrayList<>();
 
-    public static PostServiceNotVerifiedFragment newInstance(String param1, String param2) {
-        PostServiceNotVerifiedFragment fragment = new PostServiceNotVerifiedFragment();
+    public static PostServiceSkillVerifiedFragment newInstance(String param1, String param2) {
+        PostServiceSkillVerifiedFragment fragment = new PostServiceSkillVerifiedFragment();
+
         return fragment;
     }
 
@@ -44,7 +49,7 @@ public class PostServiceNotVerifiedFragment extends Fragment implements View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_service_not_verified, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_service_skill_verified, container, false);
 
         initView(view);
 
@@ -52,26 +57,31 @@ public class PostServiceNotVerifiedFragment extends Fragment implements View.OnC
     }
 
     private void initView(View view) {
+        btnVerify = view.findViewById(R.id.btn_verify_new_skills);
+        btnVerify.setOnClickListener(this);
 
-        gridView = view.findViewById(R.id.post_service_not_verified_category_grid_view);
+        gridView = view.findViewById(R.id.post_service_category_grid_view);
         gridView.setNumColumns(4);
         CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, "SERVICES");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the GridView selected/clicked item text
-                Intent intent = new Intent(mContext, VerifyNewSkillsActivity.class);
-                intent.putExtra("already_verified_skills", false);
-                mContext.startActivity(intent);
-
                 String name = datas.get(position).get("name").toString();
                 Toast.makeText(getActivity(), name,
                         Toast.LENGTH_LONG).show();
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE))
+                        .addToBackStack("post_service")
+                        .commit();
             }
         });
         gridView.setAdapter(adapter);
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -95,26 +105,21 @@ public class PostServiceNotVerifiedFragment extends Fragment implements View.OnC
         mListener = null;
     }
 
-    private OnFragmentInteractionListener mListener;
-
-    public PostServiceNotVerifiedFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.btn_verify_new_skills) {
+            Intent intent = new Intent(mContext, VerifyNewSkillsActivity.class);
+            intent.putExtra("already_verified_skills", true);
+            mContext.startActivity(intent);
+        } else {
 
+        }
     }
 
     private void addCategoryData() {
-        datas.add(createMap("Cooking & Baking", R.mipmap.icon_cat_cooking_baking));
-        datas.add(createMap("Education", R.mipmap.icon_cat_education));
-        datas.add(createMap("Handyman", R.mipmap.icon_cat_handyman));
-        datas.add(createMap("Household Chores", R.mipmap.icon_cat_householdchores));
         datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
         datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
         datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
-        datas.add(createMap("Other Professions", R.mipmap.icon_cat_other));
     }
 
     private Map<String, Object> createMap(String name, int iconId) {
@@ -122,6 +127,10 @@ public class PostServiceNotVerifiedFragment extends Fragment implements View.OnC
         map.put("name", name);
         map.put("icon", iconId);
         return map;
+    }
+
+    public PostServiceSkillVerifiedFragment() {
+        // Required empty public constructor
     }
 
     public interface OnFragmentInteractionListener {

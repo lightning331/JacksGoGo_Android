@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Jobs;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
@@ -33,7 +33,7 @@ import com.yanzhenjie.album.api.widget.Widget;
 
 import java.util.ArrayList;
 
-public class EditJobDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
+public class EditServiceDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -54,12 +54,12 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     private JGGServiceModel serviceObject;
     private boolean isRequest;
 
-    public EditJobDescribeFragment() {
+    public EditServiceDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static EditJobDescribeFragment newInstance(boolean isRequest) {
-        EditJobDescribeFragment fragment = new EditJobDescribeFragment();
+    public static EditServiceDescribeFragment newInstance(boolean isRequest) {
+        EditServiceDescribeFragment fragment = new EditServiceDescribeFragment();
         Bundle args = new Bundle();
         args.putBoolean("isRequest", isRequest);
         fragment.setArguments(args);
@@ -78,7 +78,7 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_job_describe, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_service_describe, container, false);
         initView(view);
         initRecyclerView(view);
         return view;
@@ -197,7 +197,7 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
         if (view.getId() == R.id.btn_edit_job_describe_take_photo) {
             selectImage();
         } else if (view.getId() == R.id.btn_edit_job_next) {
-            listener.onNextButtonClick(EditJobTabbarView.EditTabStatus.TIME, strTitle, strDescription);
+            listener.onNextButtonClick(PostServiceTabbarView.TabName.TIME, strTitle, strDescription);
         }
     }
 
@@ -241,7 +241,7 @@ public class EditJobDescribeFragment extends Fragment implements View.OnClickLis
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(EditJobTabbarView.EditTabStatus status, String jobTitle, String jobDesc);
+        void onNextButtonClick(PostServiceTabbarView.TabName status, String jobTitle, String jobDesc);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

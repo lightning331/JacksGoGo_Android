@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Jobs;
+package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
 import android.net.Uri;
@@ -17,13 +17,13 @@ import android.widget.LinearLayout;
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
-import com.kelvin.jacksgogo.CustomView.Views.EditJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
-public class EditJobMainFragment extends Fragment implements EditJobFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class EditServiceMainFragment extends Fragment implements EditServiceFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     private Context mContext;
     private RecyclerView recyclerView;
@@ -32,17 +32,17 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
 
-    private EditJobFragment editJobFragment;
+    private EditServiceFragment editServiceFragment;
     private boolean isRequest; // Request Or Edit
 
     private OnFragmentInteractionListener mListener;
 
-    public EditJobMainFragment() {
+    public EditServiceMainFragment() {
         // Required empty public constructor
     }
 
-    public static EditJobMainFragment newInstance(boolean b) {
-        EditJobMainFragment fragment = new EditJobMainFragment();
+    public static EditServiceMainFragment newInstance(boolean b) {
+        EditServiceMainFragment fragment = new EditServiceMainFragment();
         Bundle args = new Bundle();
         args.putBoolean("isRequest", b);
         fragment.setArguments(args);
@@ -60,7 +60,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_edit_job_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_service_main, container, false);
 
         initView(view);
         initRecyclerView(view);
@@ -81,7 +81,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
         timeView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(EditJobTabbarView.EditTabStatus.TIME);
+                onShowEditJobFragment(PostServiceTabbarView.TabName.TIME);
             }
         });
         timeLayout.addView(timeView);
@@ -93,7 +93,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
         addressView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(EditJobTabbarView.EditTabStatus.ADDRESS);
+                onShowEditJobFragment(PostServiceTabbarView.TabName.ADDRESS);
             }
         });
         addressLayout.addView(addressView);
@@ -105,7 +105,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
         reportView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(EditJobTabbarView.EditTabStatus.REPORT);
+                onShowEditJobFragment(PostServiceTabbarView.TabName.REPORT);
             }
         });
         reportLayout.addView(reportView);
@@ -114,6 +114,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
 
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.edit_job_main_recycler_view);
+        recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
 
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -127,22 +128,21 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
 
             }
         });
-        recyclerView.setVisibility(View.VISIBLE);
         mAdapter.notifyDataSetChanged(mAlbumFiles);
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void onShowEditJobFragment(EditJobTabbarView.EditTabStatus status) {
+    private void onShowEditJobFragment(PostServiceTabbarView.TabName status) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (isRequest) {
-            editJobFragment = EditJobFragment.newInstance(status, true);
-            ft.replace(R.id.request_quotation_container, editJobFragment, editJobFragment.getTag());
+            editServiceFragment = EditServiceFragment.newInstance(status, true);
+            ft.replace(R.id.request_quotation_container, editServiceFragment, editServiceFragment.getTag());
         } else {
-            editJobFragment = EditJobFragment.newInstance(status, false);
-            ft.replace(R.id.app_detail_container, editJobFragment, editJobFragment.getTag());
+            editServiceFragment = EditServiceFragment.newInstance(status, false);
+            ft.replace(R.id.app_detail_container, editServiceFragment, editServiceFragment.getTag());
         }
-        editJobFragment.setmListener(EditJobMainFragment.this);
+        editServiceFragment.setmListener(EditServiceMainFragment.this);
         ft.addToBackStack("edit_job");
         ft.commit();
     }
@@ -176,7 +176,7 @@ public class EditJobMainFragment extends Fragment implements EditJobFragment.OnF
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_edit_job_tag) {
-            onShowEditJobFragment(EditJobTabbarView.EditTabStatus.DESCRIBE);
+            onShowEditJobFragment(PostServiceTabbarView.TabName.DESCRIBE);
         }
     }
 
