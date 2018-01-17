@@ -124,6 +124,7 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
             this.finish();
         } else if (view.getId() == R.id.btn_sign_up_phone_next) {
             sendSMS();
+            //onShowSMSVerify();
         }
     }
 }

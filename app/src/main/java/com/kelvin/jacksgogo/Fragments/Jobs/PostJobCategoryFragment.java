@@ -83,14 +83,17 @@ public class PostJobCategoryFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 String name = categories.get(position).getName();
-                Toast.makeText(getActivity(), name,
-                        Toast.LENGTH_LONG).show();
+                if (name.equals("QuickJob")) {
 
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE))
-                        .addToBackStack("post_job")
-                        .commit();
+                } else {
+                    PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE);
+                    frag.setCategory(categories.get(position));
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_service_container, frag)
+                            .addToBackStack("post_job")
+                            .commit();
+                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -151,16 +154,6 @@ public class PostJobCategoryFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

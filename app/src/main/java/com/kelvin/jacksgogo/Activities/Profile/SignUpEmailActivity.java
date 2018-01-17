@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -93,6 +94,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
                 if (response.isSuccessful()) {
+                    JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(strEmail, strPassword);
                     onShowPhoneVerify();
                 } else {
                     int statusCode  = response.code();

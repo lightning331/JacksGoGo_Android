@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
@@ -46,6 +48,10 @@ public class SearchFragment extends Fragment {
 
     private String appType = "SERVICES";
     private Intent mIntent;
+    private int mPercentColor;
+    private int mColor;
+
+    private android.app.AlertDialog alertDialog;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -85,6 +91,8 @@ public class SearchFragment extends Fragment {
         loadCategories();
         appType = textView;
         if (appType.equals("SERVICES")) {
+            mPercentColor = ContextCompat.getColor(mContext, R.color.JGGGreen10Percent);
+            mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
             serviceAdapter = new SearchServicesAdapter(mContext, categories);
             serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
                 @Override
@@ -94,6 +102,8 @@ public class SearchFragment extends Fragment {
             });
             recyclerView.setAdapter(serviceAdapter);
         } else if (appType.equals("JOBS")) {
+            mPercentColor = ContextCompat.getColor(mContext, R.color.JGGCyan10Percent);
+            mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
             jobAdapter = new SearchJobsAdapter(mContext, categories);
             jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
                 @Override
@@ -103,6 +113,8 @@ public class SearchFragment extends Fragment {
             });
             recyclerView.setAdapter(jobAdapter);
         } else if (appType.equals("GOCLUB")) {
+            mPercentColor = ContextCompat.getColor(mContext, R.color.JGGPurple10Percent);
+            mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
 
         }
     }
@@ -156,11 +168,50 @@ public class SearchFragment extends Fragment {
         } else if (view.getId() == R.id.btn_view_all) {
             mIntent = new Intent(mContext.getApplicationContext(), ActiveServiceActivity.class);
         } else if (view.getId() == R.id.btn_post_new) {
-            mIntent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
+            if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                mIntent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
+            } else {
+                showAlertDialog();
+                return;
+            }
         }
         mIntent.putExtra("APPOINTMENT_TYPE", appType);
         mIntent.putExtra("EDIT_STATUS", "None");
         view.getContext().startActivity(mIntent);
+    }
+
+    private void showAlertDialog() {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText("Information");
+        desc.setText(R.string.alert_post_failed_desc);
+        okButton.setText(R.string.alert_ok);
+        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGRed));
+        cancelButton.setBackgroundColor(mPercentColor);
+        cancelButton.setTextColor(mColor);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     @Override

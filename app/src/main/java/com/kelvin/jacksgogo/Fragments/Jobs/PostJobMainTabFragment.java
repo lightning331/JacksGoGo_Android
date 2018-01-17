@@ -13,25 +13,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.squareup.picasso.Picasso;
 
 public class PostJobMainTabFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
-    private FrameLayout describeContainer;
     private PostJobTabbarView tabbarView;
     private LinearLayout tabbarLayout;
+    private ImageView imgCategory;
+    private TextView lblCategory;
     private RecyclerView recyclerView;
-    private AlertDialog alertDialog;
 
+    private FrameLayout describeContainer;
+    private AlertDialog alertDialog;
+    private JGGCategoryModel category;
     private String tabName;
 
     public PostJobMainTabFragment() {
@@ -61,6 +68,13 @@ public class PostJobMainTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post_job_main_tab, container, false);
 
         describeContainer = (FrameLayout) view.findViewById(R.id.post_job_detail_container);
+        imgCategory = (ImageView) view.findViewById(R.id.img_post_job_tab_category);
+        Picasso.with(mContext)
+                .load(category.getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory = (TextView) view.findViewById(R.id.lbl_post_job_tab_category_name);
+        lblCategory.setText(category.getName());
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -95,6 +109,10 @@ public class PostJobMainTabFragment extends Fragment {
             tabbarView.setTabName(PostJobTabbarView.TabName.REPORT, true);
         }
         refreshFragment();
+    }
+
+    public void setCategory(JGGCategoryModel category) {
+        this.category = category;
     }
 
     private void onTabbarViewClick(View view) {

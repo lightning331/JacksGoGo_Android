@@ -75,6 +75,7 @@
     <string name="alert_quit_post_service_title">Quit Posting A New Service?</string>
     <string name="alert_quit_post_job_title">Quit Posting A New Job?</string>
     <string name="alert_quit_quotation_desc">All info will be lost.</string>
+    <string name="alert_post_failed_desc">You can\'t perform this action because didn\'t login. Would you login to proceed this?</string>
     <string name="alert_quit_button">Quit</string>
     <string name="alert_cancel">Cancel</string>
     <string name="alert_job_posted_title">Job Posted!</string>

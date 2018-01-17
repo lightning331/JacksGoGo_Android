@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -146,20 +148,16 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
 
-                                JGGAppManager.getInstance(mContext).currentUser = response.body().getValue();
+                                JGGUserBaseModel user = response.body().getValue();
+                                JGGAppManager.getInstance(mContext).currentUser = user;
                                 JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
-
-                                String[] usernamePassword = JGGAppManager.getInstance(mContext).getUsernamePassword();
-                                String username = usernamePassword[0];
-                                String password = usernamePassword[1];
-                                JGGUserBaseModel currentUser = JGGAppManager.getInstance(mContext).currentUser;
-
-                                ((MainActivity) mContext).setLoginStatus(true);
 
                                 getActivity().getSupportFragmentManager()
                                         .beginTransaction()
-                                        .add(R.id.container, ProfileHomeFragment.newInstance())
+                                        .replace(R.id.container, ProfileHomeFragment.newInstance())
                                         .commit();
+                                // Refresh MainActivity
+                                ((MainActivity)getActivity()).selectFragment();
                             } else {
                                 int statusCode  = response.code();
                                 Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

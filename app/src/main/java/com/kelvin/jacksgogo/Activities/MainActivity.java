@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
+import com.kelvin.jacksgogo.Activities.Profile.SignUpSMSVerifyActivity;
 import com.kelvin.jacksgogo.CustomView.Views.AppMainTabView;
 import com.kelvin.jacksgogo.CustomView.Views.FavouriteMainTabView;
 import com.kelvin.jacksgogo.CustomView.Views.SearchMainTabView;
@@ -27,6 +29,8 @@ import com.kelvin.jacksgogo.Fragments.Profile.ProfileHomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.SignInFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -38,15 +42,15 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     private FavouriteMainTabView favouriteTabView;
     private FrameLayout mContainer;
     private CoordinatorLayout.LayoutParams params;
-
-    private boolean alreadyLoged;
+    private MenuItem mItem;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            selectFragment(item);
+            mItem = item;
+            selectFragment();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //item.setIcon(R.mipmap.tab_home_active);
@@ -68,11 +72,13 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         }
     };
 
-    private void selectFragment(MenuItem item) {
+    public void selectFragment() {
         Fragment frag = null;
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
+        params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+        mContainer.requestLayout();
         // init corresponding fragment
-        switch (item.getItemId()) {
+        switch (mItem.getItemId()) {
             case R.id.navigation_home:
                 frag = HomeFragment.newInstance(null,
                         null);
@@ -88,16 +94,57 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 frag = FavouriteFragment.newInstance();
                 break;
             case R.id.navigation_profile:
+                // Remove Top Navigationbar
+                params.setBehavior(null);
+                mContainer.requestLayout();
 
-                if (alreadyLoged) {
+                String username = JGGAppManager.getInstance(this).getUsernamePassword()[0];
+                if (!username.equals("")) {
                     frag = ProfileHomeFragment.newInstance();
-                    mToolbar.setTitle(R.string.title_profile);
                 } else {
                     frag = SignInFragment.newInstance();
                 }
                 break;
         }
+        initTopNavigation(frag);
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+        setContentView(R.layout.activity_main);
+
+        initView();
+    }
+
+    private void initView() {
+        mContainer = (FrameLayout) findViewById(R.id.container);
+        params = (CoordinatorLayout.LayoutParams) mContainer.getLayoutParams();
+
+        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        mbtmView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        boolean bSmsVeryfyKey = getIntent().getBooleanExtra(SignUpSMSVerifyActivity.SMSVerifyKey, false);
+        if (bSmsVeryfyKey) {
+            mbtmView.setSelectedItemId(R.id.navigation_profile);
+        } else {
+            mbtmView.setSelectedItemId(R.id.navigation_home);
+        }
+
+        // Hide Bottom NavigationView and ToolBar
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+
+        appMainTabView = new AppMainTabView(this);
+        searchTabView = new SearchMainTabView(this);
+        favouriteTabView = new FavouriteMainTabView(this);
+
+        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
+        setSupportActionBar(mToolbar);
+    }
+
+    private void initTopNavigation(Fragment frag) {
         if (frag != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container, frag, frag.getTag());
@@ -118,44 +165,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             } else {
                 this.removeToActionBarForFavourite();
             }
-            if (frag instanceof SignInFragment) {
-                params.setBehavior(null);
-                mContainer.requestLayout();
-            } else {
-                params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-                mContainer.requestLayout();
-            }
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.activity_main);
-
-        initView();
-    }
-
-    private void initView() {
-        mContainer = (FrameLayout) findViewById(R.id.container);
-        params = (CoordinatorLayout.LayoutParams) mContainer.getLayoutParams();
-
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
-        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-        mbtmView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mbtmView.setSelectedItemId(R.id.navigation_home);
-
-        // Hide Bottom NavigationView and ToolBar
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
-
-        appMainTabView = new AppMainTabView(this);
-        searchTabView = new SearchMainTabView(this);
-        favouriteTabView = new FavouriteMainTabView(this);
-
-        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
-        setSupportActionBar(mToolbar);
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
@@ -215,10 +225,6 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
     private void removeToActionBarForFavourite() {
         mToolbar.removeView(favouriteTabView);
-    }
-
-    public void setLoginStatus(boolean status) {
-        alreadyLoged = status;
     }
 
     @Override

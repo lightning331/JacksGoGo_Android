@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
@@ -40,6 +41,8 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     private ProgressDialog progressDialog;
     private String strPhoneNumber;
     private String strOTP;
+
+    public static final String SMSVerifyKey = "SMSVerifyKey";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +115,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
                 if (response.isSuccessful()) {
                     if (response.body().getValue() != null) {
                         JGGUserBaseModel user = response.body().getValue();
+                        JGGAppManager.getInstance(SignUpSMSVerifyActivity.this).currentUser = user;
                         onShowMainActivity();
                     } else {
                         Toast.makeText(SignUpSMSVerifyActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -133,8 +137,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
 
     private void onShowMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        MainActivity activity = new MainActivity();
-        activity.setLoginStatus(true);
+        intent.putExtra(SMSVerifyKey, true);
         startActivity(intent);
     }
 
@@ -170,6 +173,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
         } else if (view.getId() == R.id.btn_sign_up_sms_resend) {
             reSendOTP();
         } else if (view.getId() == R.id.btn_sign_up_sms_submit) {
+            //onShowMainActivity();
             submit();
         }
     }
