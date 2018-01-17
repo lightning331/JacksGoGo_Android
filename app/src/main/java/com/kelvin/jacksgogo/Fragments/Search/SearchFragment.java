@@ -18,6 +18,10 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+
+import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
@@ -64,7 +68,6 @@ public class SearchFragment extends Fragment {
     public void refreshFragment(String textView) {
 
         appType = textView;
-
         if (textView == "SERVICES") {
             SearchServicesAdapter adapter = new SearchServicesAdapter(mContext);
             adapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {

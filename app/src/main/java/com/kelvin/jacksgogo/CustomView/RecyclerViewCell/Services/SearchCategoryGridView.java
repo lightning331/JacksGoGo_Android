@@ -9,8 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +35,6 @@ public class SearchCategoryGridView extends RecyclerView.ViewHolder {
         this.mContext = context;
         this.mType = type;
 
-        addCategoryData();
-
         gridView = itemView.findViewById(R.id.category_grid_view);
 
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) gridView.getLayoutParams();
@@ -47,7 +47,8 @@ public class SearchCategoryGridView extends RecyclerView.ViewHolder {
         }
         gridView.setLayoutParams(params);
 
-        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, mType.toString());
+        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(mContext).categories;
+        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, categories, mType.toString());
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,10 +60,6 @@ public class SearchCategoryGridView extends RecyclerView.ViewHolder {
         });
         gridView.setAdapter(adapter);
     }
-
-//    public void setOnClickListener(View.OnClickListener listener) {
-//        otherButton.setOnClickListener(listener);
-//    }
 
     private void addCategoryData() {
         if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {

@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Adapter.Services;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,11 +32,11 @@ public class CategoryGridAdapter extends BaseAdapter implements View.OnClickList
     private LinearLayout itemBackground;
 
     private String mType;
-    private ArrayList<Map<String, Object>> category;
+    private ArrayList<JGGCategoryModel> category;
     private int position;
     private boolean isSelected = false;
 
-    public CategoryGridAdapter(Context context, ArrayList<Map<String, Object>> data, String type) {
+    public CategoryGridAdapter(Context context, ArrayList<JGGCategoryModel> data, String type) {
         this.mContext = context;
         this.mType = type;
         this.category = data;
@@ -41,7 +44,10 @@ public class CategoryGridAdapter extends BaseAdapter implements View.OnClickList
 
     @Override
     public int getCount() {
-        return category.size();
+        if (category != null) {
+            return category.size();
+        }
+        return 0;
     }
 
     @Override
@@ -72,12 +78,18 @@ public class CategoryGridAdapter extends BaseAdapter implements View.OnClickList
         position = i;
         //itemBackground.setOnClickListener(this);
 
-        String name = category.get(i).get("name").toString();
-        int iconId = (int) category.get(i).get("icon");
+        String name = category.get(i).getName();
         categoryTitle.setText(name);
-        categoryIcon.setImageResource(iconId);
+        setImage(category.get(i).getImage());
 
         return gridViewItem;
+    }
+
+    public void setImage(String imgUrl) {
+        Picasso.with(mContext)
+                .load(imgUrl)
+                .placeholder(null)
+                .into(categoryIcon);
     }
 
     @Override

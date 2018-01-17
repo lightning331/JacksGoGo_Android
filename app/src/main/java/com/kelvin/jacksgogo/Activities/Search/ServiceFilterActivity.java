@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +37,6 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
         appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
 
-        addCategoryData();
         initView();
     }
 
@@ -63,7 +64,8 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
         }
 
-        adapter = new CategoryGridAdapter(this, datas, appType);
+        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(this).categories;
+        adapter = new CategoryGridAdapter(this, categories, appType);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.API.JGGTokenManager;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
@@ -131,13 +131,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         call.enqueue(new Callback<JGGTokenResponse>() {
             @Override
             public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
 
                     String access_token = response.body().getAccess_token();
                     Long expire_in = response.body().getExpires_in();
 
-                    JGGTokenManager.getInstance(mContext).saveToken(access_token, expire_in);
+                    JGGAppManager.getInstance(mContext).saveToken(access_token, expire_in);
 
                     JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
                     Call<JGGUserBaseResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
@@ -146,8 +145,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                         public void onResponse(Call<JGGUserBaseResponse> call, Response<JGGUserBaseResponse> response) {
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
-                                JGGUserBaseModel userBaseModel = response.body().getValue();
-                                String userName = userBaseModel.getUserName();
+
+                                JGGAppManager.getInstance(mContext).currentUser = response.body().getValue();
+                                JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
+
+                                String[] usernamePassword = JGGAppManager.getInstance(mContext).getUsernamePassword();
+                                String username = usernamePassword[0];
+                                String password = usernamePassword[1];
+                                JGGUserBaseModel currentUser = JGGAppManager.getInstance(mContext).currentUser;
 
                                 ((MainActivity) mContext).setLoginStatus(true);
 
@@ -169,6 +174,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                     });
 
                 } else {
+                    progressDialog.dismiss();
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }

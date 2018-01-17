@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
         if (getArguments() != null) {
 
         }
-        addCategoryData();
+        //addCategoryData();
     }
 
     @Override
@@ -53,7 +55,8 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
 
         gridView = view.findViewById(R.id.profile_verified_category_grid_view);
         gridView.setNumColumns(4);
-        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, "SERVICES");
+        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(mContext).categories;
+        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, categories, "SERVICES");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

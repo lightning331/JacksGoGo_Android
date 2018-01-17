@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +39,6 @@ public class PostServiceSkillNotVerifiedFragment extends Fragment implements Vie
         if (getArguments() != null) {
 
         }
-        addCategoryData();
     }
 
     @Override
@@ -52,10 +53,11 @@ public class PostServiceSkillNotVerifiedFragment extends Fragment implements Vie
     }
 
     private void initView(View view) {
+        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(mContext).categories;
 
         gridView = view.findViewById(R.id.post_service_not_verified_category_grid_view);
         gridView.setNumColumns(4);
-        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, "SERVICES");
+        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, categories, "SERVICES");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

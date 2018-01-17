@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Utils.API;
 
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
@@ -45,4 +46,7 @@ public interface JGGAPIManager {
     @POST("api/Account/VerifyCode")
     Call<JGGUserBaseResponse> verifyPhoneNumber(@Field("Provider") String phoneNumber,
                                                 @Field("Code") String code);
+
+    @GET("api/Category/GetAllCategories")
+    Call<JGGCategoryResponse> getCategory();
 }

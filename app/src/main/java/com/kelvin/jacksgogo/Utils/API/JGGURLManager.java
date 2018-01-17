@@ -37,7 +37,7 @@ public class JGGURLManager {
 
     public static <S> S createService(Class<S> serviceClass, Context mContext) {
 
-        String authToken = "Bearer " + JGGTokenManager.getInstance(mContext).getToken();
+        String authToken = "Bearer " + JGGAppManager.getInstance(mContext).getToken();
 
         if (!TextUtils.isEmpty(authToken)) {
             JGGAuthenticationInterceptor interceptor =

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,10 +15,20 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostJobCategoryFragment extends Fragment {
 
@@ -25,7 +36,10 @@ public class PostJobCategoryFragment extends Fragment {
     private Context mContext;
 
     private GridView gridView;
-    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
+    private CategoryGridAdapter adapter;
+    private ArrayList<JGGCategoryModel> categories;
+
+    private ProgressDialog progressDialog;
 
     public PostJobCategoryFragment() {
         // Required empty public constructor
@@ -44,7 +58,6 @@ public class PostJobCategoryFragment extends Fragment {
         if (getArguments() != null) {
 
         }
-        addCategoryData();
     }
 
     @Override
@@ -53,14 +66,15 @@ public class PostJobCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_job_category, container, false);
 
+        loadCategories();
         gridView = (GridView) view.findViewById(R.id.post_job_category_grid_view);
         gridView.setNumColumns(4);
-        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, datas, "JOBS");
+        adapter = new CategoryGridAdapter(mContext, categories, "JOBS");
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the GridView selected/clicked item text
-                String name = datas.get(position).get("name").toString();
+                String name = categories.get(position).getName();
                 Toast.makeText(getActivity(), name,
                         Toast.LENGTH_LONG).show();
 
@@ -76,24 +90,36 @@ public class PostJobCategoryFragment extends Fragment {
         return view;
     }
 
-    private void addCategoryData() {
-        datas.add(createMap("Quick Jobs", R.mipmap.icon_cat_quickjob));
-        datas.add(createMap("Favourited Services", R.mipmap.icon_cat_favourites));
-        datas.add(createMap("Cooking & Baking", R.mipmap.icon_cat_cooking_baking));
-        datas.add(createMap("Education", R.mipmap.icon_cat_education));
-        datas.add(createMap("Handyman", R.mipmap.icon_cat_handyman));
-        datas.add(createMap("Household Chores", R.mipmap.icon_cat_householdchores));
-        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
-        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
-        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
-        datas.add(createMap("Other Professions", R.mipmap.icon_cat_other));
-    }
+    private void loadCategories() {
+        if (JGGAppManager.getInstance(mContext).categories != null) {
+            this.categories = JGGAppManager.getInstance(mContext).categories;
+        } else {
+            progressDialog = Global.createProgressDialog(mContext);
 
-    private Map<String, Object> createMap(String name, int iconId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", name);
-        map.put("icon", iconId);
-        return map;
+            final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            Call<JGGCategoryResponse> call = apiManager.getCategory();
+            call.enqueue(new Callback<JGGCategoryResponse>() {
+                @Override
+                public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        JGGAppManager.getInstance(mContext).categories = response.body().getValue();
+                        categories = JGGAppManager.getInstance(mContext).categories;
+                        adapter.notifyDataSetChanged();
+                        gridView.setAdapter(adapter);
+                    } else {
+                        int statusCode  = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     public void onButtonPressed(Uri uri) {
