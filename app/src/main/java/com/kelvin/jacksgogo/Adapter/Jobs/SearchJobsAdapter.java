@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryGridView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by PUMA on 12/19/2017.
@@ -23,9 +26,11 @@ import com.kelvin.jacksgogo.R;
 public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     private Context mContext;
+    private ArrayList<JGGCategoryModel> mCategories;
 
-    public SearchJobsAdapter(Context context) {
+    public SearchJobsAdapter(Context context, ArrayList<JGGCategoryModel> data) {
         this.mContext = context;
+        mCategories = data;
     }
 
     @Override
@@ -43,7 +48,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return sectionView;
         } else if (viewType == 2) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryGridView categoryListView = new SearchCategoryGridView(listView, mContext, JGGAppBaseModel.AppointmentType.JOBS);
+            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, JGGAppBaseModel.AppointmentType.JOBS, mCategories);
             //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == 3) {
@@ -88,6 +93,10 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
             listener.onItemClick(view);
         }
+    }
+
+    public void notifyDataChanged(ArrayList<JGGCategoryModel> data) {
+        mCategories = data;
     }
 
     private OnItemClickListener listener;

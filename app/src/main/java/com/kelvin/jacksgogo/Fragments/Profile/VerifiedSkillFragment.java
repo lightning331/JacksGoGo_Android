@@ -5,13 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
@@ -25,8 +30,10 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private GridView gridView;
-    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
+
+    private RecyclerView recyclerView;
+    private CategoryCellAdapter adapter;
+    private ArrayList<JGGCategoryModel> mCategories;
 
     public VerifiedSkillFragment() {
         // Required empty public constructor
@@ -53,26 +60,28 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_verified_skill, container, false);
 
-        gridView = view.findViewById(R.id.profile_verified_category_grid_view);
-        gridView.setNumColumns(4);
-        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(mContext).categories;
-        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, categories, "SERVICES");
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCategories = JGGAppManager.getInstance(mContext).categories;
+        recyclerView = view.findViewById(R.id.category_recycler_view);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        }
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
+        adapter = new CategoryCellAdapter(mContext, mCategories, "SERVICES");
+        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the GridView selected/clicked item text
-                NotVerifiedSkillFragment frag = new NotVerifiedSkillFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.verify_skill_container, frag, frag.getTag());
-                ft.addToBackStack("verify_skill");
-                ft.commit();
-
-                String name = datas.get(position).get("name").toString();
-                Toast.makeText(getActivity(), name,
+            public void onItemClick(int position) {
+                String name = mCategories.get(position).getName();
+                Toast.makeText(mContext, name,
                         Toast.LENGTH_LONG).show();
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.verify_skill_container, new NotVerifiedSkillFragment())
+                        .addToBackStack("verify_skill")
+                        .commit();
             }
         });
-        gridView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -103,24 +112,6 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-    }
-
-    private void addCategoryData() {
-        datas.add(createMap("Cooking & Baking", R.mipmap.icon_cat_cooking_baking));
-        datas.add(createMap("Education", R.mipmap.icon_cat_education));
-        datas.add(createMap("Handyman", R.mipmap.icon_cat_handyman));
-        datas.add(createMap("Household Chores", R.mipmap.icon_cat_householdchores));
-        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
-        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
-        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
-        datas.add(createMap("Other Professions", R.mipmap.icon_cat_other));
-    }
-
-    private Map<String, Object> createMap(String name, int iconId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", name);
-        map.put("icon", iconId);
-        return map;
     }
 
     public interface OnFragmentInteractionListener {

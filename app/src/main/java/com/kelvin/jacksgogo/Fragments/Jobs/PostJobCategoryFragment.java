@@ -5,14 +5,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -23,8 +25,6 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,8 +35,9 @@ public class PostJobCategoryFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
-    private GridView gridView;
-    private CategoryGridAdapter adapter;
+    private RecyclerView recyclerView;
+    private CategoryCellAdapter adapter;
+    private View view;
     private ArrayList<JGGCategoryModel> categories;
 
     private ProgressDialog progressDialog;
@@ -64,16 +65,23 @@ public class PostJobCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_job_category, container, false);
+        view = inflater.inflate(R.layout.fragment_post_job_category, container, false);
 
         loadCategories();
-        gridView = (GridView) view.findViewById(R.id.post_job_category_grid_view);
-        gridView.setNumColumns(4);
-        adapter = new CategoryGridAdapter(mContext, categories, "JOBS");
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        initRecyclerView(view);
+        return view;
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.post_job_category_recycler_view);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        }
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
+        adapter = new CategoryCellAdapter(mContext, categories, "JOB");
+        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the GridView selected/clicked item text
+            public void onItemClick(int position) {
                 String name = categories.get(position).getName();
                 Toast.makeText(getActivity(), name,
                         Toast.LENGTH_LONG).show();
@@ -85,14 +93,12 @@ public class PostJobCategoryFragment extends Fragment {
                         .commit();
             }
         });
-        gridView.setAdapter(adapter);
-
-        return view;
+        recyclerView.setAdapter(adapter);
     }
 
     private void loadCategories() {
         if (JGGAppManager.getInstance(mContext).categories != null) {
-            this.categories = JGGAppManager.getInstance(mContext).categories;
+            categories = JGGAppManager.getInstance(mContext).categories;
         } else {
             progressDialog = Global.createProgressDialog(mContext);
 
@@ -105,8 +111,8 @@ public class PostJobCategoryFragment extends Fragment {
                     if (response.isSuccessful()) {
                         JGGAppManager.getInstance(mContext).categories = response.body().getValue();
                         categories = JGGAppManager.getInstance(mContext).categories;
+                        adapter.refreshData(categories);
                         adapter.notifyDataSetChanged();
-                        gridView.setAdapter(adapter);
                     } else {
                         int statusCode  = response.code();
                         Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

@@ -73,12 +73,12 @@ public class QuotationAdapter extends RecyclerView.Adapter implements View.OnCli
         return position;
     }
 
-    private OnItemClickListener listener;
-
     @Override
     public void onClick(View view) {
 
     }
+
+    private OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);

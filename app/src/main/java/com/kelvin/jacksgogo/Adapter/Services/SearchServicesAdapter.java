@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryGridView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by PUMA on 11/14/2017.
@@ -23,13 +26,16 @@ import com.kelvin.jacksgogo.R;
 public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     private Context mContext;
+    private ArrayList<JGGCategoryModel> mCategories;
+
     private int HEADER_TYPE = 0;
     private int CATEGORY_SECTION_TITLE_TYPE = 1;
     private int CATEGORY_SECTION_TYPE = 2;
     private int RECOMMEND_SECTION_TITLE_TYPE = 3;
 
-    public SearchServicesAdapter(Context context) {
-        this.mContext = context;
+    public SearchServicesAdapter(Context context, ArrayList<JGGCategoryModel> data) {
+        mContext = context;
+        mCategories = data;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryGridView categoryListView = new SearchCategoryGridView(listView, mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, JGGAppBaseModel.AppointmentType.SERVICES, mCategories);
             //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
@@ -97,6 +103,10 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             listener.onItemClick(view);
 
         }
+    }
+
+    public void notifyDataChanged(ArrayList<JGGCategoryModel> data) {
+        mCategories = data;
     }
 
     private OnItemClickListener listener;

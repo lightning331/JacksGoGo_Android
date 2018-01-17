@@ -5,32 +5,34 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
-import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
     private TextView btnVerify;
-    private GridView gridView;
-    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private CategoryCellAdapter adapter;
+
+    private ArrayList<JGGCategoryModel> mCategories;
 
     public static PostServiceSkillVerifiedFragment newInstance(String param1, String param2) {
         PostServiceSkillVerifiedFragment fragment = new PostServiceSkillVerifiedFragment();
@@ -60,16 +62,19 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     private void initView(View view) {
         btnVerify = view.findViewById(R.id.btn_verify_new_skills);
         btnVerify.setOnClickListener(this);
-        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(mContext).categories;
-        gridView = view.findViewById(R.id.post_service_category_grid_view);
-        gridView.setNumColumns(4);
-        CategoryGridAdapter adapter = new CategoryGridAdapter(mContext, categories, "SERVICES");
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCategories = JGGAppManager.getInstance(mContext).categories;
+
+        recyclerView = view.findViewById(R.id.category_recycler_view);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        }
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
+        adapter = new CategoryCellAdapter(mContext, mCategories, "SERVICES");
+        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the GridView selected/clicked item text
-                String name = datas.get(position).get("name").toString();
-                Toast.makeText(getActivity(), name,
+            public void onItemClick(int position) {
+                String name = mCategories.get(position).getName();
+                Toast.makeText(mContext, name,
                         Toast.LENGTH_LONG).show();
 
                 getActivity().getSupportFragmentManager()
@@ -79,7 +84,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
                         .commit();
             }
         });
-        gridView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -115,19 +120,6 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         } else {
 
         }
-    }
-
-    private void addCategoryData() {
-        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
-        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
-        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
-    }
-
-    private Map<String, Object> createMap(String name, int iconId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", name);
-        map.put("icon", iconId);
-        return map;
     }
 
     public PostServiceSkillVerifiedFragment() {

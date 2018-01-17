@@ -18,20 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:paddingRight="10dp"
+        android:paddingRight="5dp"
         android:paddingLeft="10dp"
         android:gravity="center"
         android:orientation="vertical">
-        <GridView
-            android:id="@+id/post_job_category_grid_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:horizontalSpacing="5dp"
-            android:verticalSpacing="5dp"
-            android:numColumns="4"
-            android:columnWidth="80dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/post_job_category_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/JGGGrey5"
+            android:orientation="vertical">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
 </LinearLayout>

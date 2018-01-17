@@ -7,21 +7,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.Services.CategoryGridAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -30,8 +31,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ServiceSearchAdvanceFragment extends Fragment implements View.OnClickListener, TextWatcher, OnDateSelectedListener {
 
@@ -89,9 +88,9 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     private AlertDialog alertDialog;
 
-    private CategoryGridAdapter adapter;
-    private GridView gridView;
-    private ArrayList<Map<String, Object>> datas = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private CategoryCellAdapter adapter;
+    private ArrayList<JGGCategoryModel> mCategories;
 
     private String appType;
     private boolean cbdSelected = true;
@@ -132,26 +131,6 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         //createCategory();
     }
 
-    private void createCategory() {
-        datas.add(createMap("Cooking & Baking", R.mipmap.icon_cat_cooking_baking));
-        datas.add(createMap("Education", R.mipmap.icon_cat_education));
-        datas.add(createMap("Handyman", R.mipmap.icon_cat_handyman));
-        datas.add(createMap("Household Chores", R.mipmap.icon_cat_householdchores));
-        datas.add(createMap("Messenger", R.mipmap.icon_cat_messenger));
-        datas.add(createMap("Running Man", R.mipmap.icon_cat_runningman));
-        datas.add(createMap("Sports", R.mipmap.icon_cat_sports));
-        datas.add(createMap("Other Professions", R.mipmap.icon_cat_other));
-    }
-
-    private Map<String, Object> createMap(String name, int iconId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", name);
-        map.put("icon", iconId);
-        String nn = map.get("name").toString();
-        int id = (int)map.get("icon");
-        return map;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -173,7 +152,6 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         lblTime = view.findViewById(R.id.lbl_advance_search_time);
         txtAdditionalTag = view.findViewById(R.id.txt_advance_additional_tag);
         btnSearch = view.findViewById(R.id.btn_advance_search);
-        gridView = (GridView) view.findViewById(R.id.category_grid_view);
 
         lblArea.setOnClickListener(this);
         btnDate.setOnClickListener(this);
@@ -206,18 +184,23 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
                 btnArea.setImageResource(R.mipmap.button_showless_purple);
                 break;
         }
-        ArrayList<JGGCategoryModel> categories = JGGAppManager.getInstance(mContext).categories;
-        adapter = new CategoryGridAdapter(mContext, categories, appType);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCategories = JGGAppManager.getInstance(mContext).categories;
+        recyclerView = view.findViewById(R.id.category_recycler_view);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        }
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
+        adapter = new CategoryCellAdapter(mContext, mCategories, appType);
+        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the GridView selected/clicked item text
-                String name = datas.get(position).get("name").toString();
-                Toast.makeText(getActivity(), name,
+            public void onItemClick(int position) {
+                String name = mCategories.get(position).getName();
+                Toast.makeText(mContext, name,
                         Toast.LENGTH_LONG).show();
+
             }
         });
-        gridView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     private void onAddTimeClick() {

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
@@ -18,10 +20,18 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchFragment extends Fragment {
 
@@ -29,6 +39,11 @@ public class SearchFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView recyclerView;
+    private ArrayList<JGGCategoryModel> categories;
+    private SearchJobsAdapter jobAdapter;
+    private SearchServicesAdapter serviceAdapter;
+    private ProgressDialog progressDialog;
+
     private String appType = "SERVICES";
     private Intent mIntent;
 
@@ -67,27 +82,70 @@ public class SearchFragment extends Fragment {
 
     public void refreshFragment(String textView) {
 
+        loadCategories();
         appType = textView;
-        if (textView == "SERVICES") {
-            SearchServicesAdapter adapter = new SearchServicesAdapter(mContext);
-            adapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
+        if (appType.equals("SERVICES")) {
+            serviceAdapter = new SearchServicesAdapter(mContext, categories);
+            serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
                     onViewHolderItemClick(view);
                 }
             });
-            recyclerView.setAdapter(adapter);
-        } else if (textView == "JOBS") {
-            SearchJobsAdapter adapter = new SearchJobsAdapter(mContext);
-            adapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
+            recyclerView.setAdapter(serviceAdapter);
+        } else if (appType.equals("JOBS")) {
+            jobAdapter = new SearchJobsAdapter(mContext, categories);
+            jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
                     onViewHolderItemClick(view);
                 }
             });
-            recyclerView.setAdapter(adapter);
-        } else if (textView == "GOCLUB") {
+            recyclerView.setAdapter(jobAdapter);
+        } else if (appType.equals("GOCLUB")) {
 
+        }
+    }
+
+    private void loadCategories() {
+        if (JGGAppManager.getInstance(mContext).categories != null) {
+            categories = JGGAppManager.getInstance(mContext).categories;
+        } else {
+            progressDialog = Global.createProgressDialog(mContext);
+
+            final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            Call<JGGCategoryResponse> call = apiManager.getCategory();
+            call.enqueue(new Callback<JGGCategoryResponse>() {
+                @Override
+                public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        JGGAppManager.getInstance(mContext).categories = response.body().getValue();
+                        categories = JGGAppManager.getInstance(mContext).categories;
+
+                        if (appType.equals("SERVICES")) {
+                            serviceAdapter.notifyDataChanged(categories);
+                            serviceAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(serviceAdapter);
+                        } else if (appType.equals("JOBS")) {
+                            jobAdapter.notifyDataChanged(categories);
+                            jobAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(jobAdapter);
+                        } else if (appType.equals("GOCLUB")) {
+
+                        }
+                    } else {
+                        int statusCode  = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
