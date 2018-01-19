@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/button_showmore_green"/>
                 <EditText
+                    android:editable="false"
                     android:text="10"
                     android:id="@+id/txt_add_start_time"
                     android:layout_width="56dp"
@@ -78,11 +79,11 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/button_showmore_green"/>
                 <EditText
+                    android:editable="false"
                     android:text="00"
                     android:id="@+id/txt_add_start_minute_time"
                     android:layout_width="56dp"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:textAlignment="center"
@@ -167,11 +168,11 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/button_showmore_green"/>
                 <EditText
+                    android:editable="false"
                     android:text="11"
                     android:id="@+id/txt_add_end_time"
                     android:layout_width="56dp"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:textAlignment="center"
@@ -206,11 +207,11 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/button_showmore_green"/>
                 <EditText
+                    android:editable="false"
                     android:text="00"
                     android:id="@+id/txt_add_end_minute_time"
                     android:layout_width="56dp"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:textAlignment="center"

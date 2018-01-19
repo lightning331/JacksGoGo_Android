@@ -2,7 +2,7 @@ package com.kelvin.jacksgogo.Utils.Responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 
 import java.util.ArrayList;
 

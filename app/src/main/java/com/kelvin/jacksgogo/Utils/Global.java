@@ -38,6 +38,52 @@ public class Global {
         }
     }
 
+    public enum JGGJobType {
+        none(-1),
+        repeating(0),
+        oneTime(1);
+
+        private int value;
+
+        JGGJobType(final int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "JGGJobType{" +
+                    "value=" + value +
+                    '}';
+        }
+    }
+
+    public enum JGGRepetitionType {
+        none(-1),
+        weekly(0),
+        monthly(1);
+
+        private int value;
+
+        JGGRepetitionType(final int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "JGGRepetitionType{" +
+                    "value=" + value +
+                    '}';
+        }
+    }
+
     public static ProgressDialog createProgressDialog(Context mContext) {
         ProgressDialog dialog = new ProgressDialog(mContext);
         try {

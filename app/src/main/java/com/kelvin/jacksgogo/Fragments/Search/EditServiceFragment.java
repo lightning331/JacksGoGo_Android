@@ -167,7 +167,7 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             EditJobReportAdapter reportAdapter = new EditJobReportAdapter(mContext, isRequest, "SERVICE");
             reportAdapter.setOnItemClickListener(new EditJobReportAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(int position) {
+                public void onItemClick(int[] position) {
                     serviceModel.setReportType(position);
                     if (serviceModel.getTitle() == null
                             || serviceModel.getComment() == null
@@ -175,7 +175,7 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
                             || serviceModel.getUnit() == null
                             || serviceModel.getStreet() == null
                             || serviceModel.getPostcode() == null
-                            || serviceModel.getReportType() == 0) {
+                            || serviceModel.getReportType().length == 0) {
                         showAlertDialog();
                         return;
                     }

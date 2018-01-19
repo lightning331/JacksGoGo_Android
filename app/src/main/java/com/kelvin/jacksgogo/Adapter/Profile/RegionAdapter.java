@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.SignupRegionCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGRegionModel;
-import com.squareup.picasso.Picasso;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 
 import java.util.ArrayList;
 

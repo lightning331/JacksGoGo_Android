@@ -44,28 +44,43 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, JGGAppBaseModel.AppointmentType.SERVICES, mContext);
-            categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == CATEGORY_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
-            sectionView.txtTitle.setText("All Categories");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
             SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, JGGAppBaseModel.AppointmentType.SERVICES, mCategories);
-            //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
-            sectionView.txtTitle.setText("Recommended For You");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_list_detail, parent, false);
             ServiceListDetailCell cell = new ServiceListDetailCell(view);
+            return cell;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (position == HEADER_TYPE) {
+            SearchHomeHeaderView categoryListView = (SearchHomeHeaderView) holder;
+            categoryListView.setOnClickListener(this);
+        } else if (position == CATEGORY_SECTION_TITLE_TYPE) {
+            SectionTitleView sectionView = (SectionTitleView) holder;
+            sectionView.txtTitle.setText("All Categories");
+            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+        } else if (position == CATEGORY_SECTION_TYPE) {
+            SearchCategoryCell categoryListView = (SearchCategoryCell) holder;
+        } else if (position == RECOMMEND_SECTION_TITLE_TYPE) {
+            SectionTitleView sectionView = (SectionTitleView) holder;
+            sectionView.txtTitle.setText("Recommended For You");
+            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+        } else {
+            ServiceListDetailCell cell = (ServiceListDetailCell) holder;
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -75,13 +90,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     mContext.startActivity(intent);
                 }
             });
-            return cell;
         }
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
     }
 
     @Override

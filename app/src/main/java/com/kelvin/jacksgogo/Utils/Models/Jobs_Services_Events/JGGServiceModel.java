@@ -17,7 +17,7 @@ public class JGGServiceModel extends JGGAppBaseModel {
     public String street;
     public String postcode;
     public LatLng latLng = new LatLng(0, 0);
-    public int reportType = 0;
+    public int[] reportType;
 
     public JGGServiceModel(Date appointmentDate, String title, AppointmentStatus status, String comment, Integer badgeNumber) {
         super(appointmentDate, title, status, comment, badgeNumber, AppointmentType.SERVICES);
@@ -32,11 +32,11 @@ public class JGGServiceModel extends JGGAppBaseModel {
         this.type = AppointmentType.SERVICES;
     }
 
-    public int getReportType() {
+    public int[] getReportType() {
         return reportType;
     }
 
-    public void setReportType(int reportType) {
+    public void setReportType(int[] reportType) {
         this.reportType = reportType;
     }
 

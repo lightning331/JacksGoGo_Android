@@ -80,11 +80,7 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
         imgBudgetLine       = (ImageView) mTabbarView.findViewById(R.id.img_budget_line);
         imgReportLine       = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
 
-        mDescribeButton.setOnClickListener(this);
-        mTimeButton.setOnClickListener(this);
         mAddressButton.setOnClickListener(this);
-        mBudgetButton.setOnClickListener(this);
-        mReportButton.setOnClickListener(this);
     }
 
     public TabName getTabName() {
@@ -118,6 +114,7 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
 
         switch (name) {
             case DESCRIBE:
+                mDescribeButton.setOnClickListener(this);
                 mDescribeImage.setImageResource(R.mipmap.counter_greentick);
                 mDescribeText.setTextColor(getResources().getColor(R.color.JGGCyan));
                 if (isPost) {
@@ -125,6 +122,8 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
                 }
                 break;
             case TIME:
+                mDescribeButton.setOnClickListener(this);
+                mTimeButton.setOnClickListener(this);
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 mTimeImage.setImageResource(R.mipmap.counter_greentick);
                 mTimeText.setTextColor(getResources().getColor(R.color.JGGCyan));
@@ -134,6 +133,9 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
                 }
                 break;
             case ADDRESS:
+                mDescribeButton.setOnClickListener(this);
+                mTimeButton.setOnClickListener(this);
+                mAddressButton.setOnClickListener(this);
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 imgAddressLine.setImageResource(R.mipmap.line_full);
                 mAddressImage.setImageResource(R.mipmap.counter_greentick);
@@ -145,6 +147,10 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
                 }
                 break;
             case BUDGET:
+                mDescribeButton.setOnClickListener(this);
+                mTimeButton.setOnClickListener(this);
+                mAddressButton.setOnClickListener(this);
+                mBudgetButton.setOnClickListener(this);
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 imgAddressLine.setImageResource(R.mipmap.line_full);
                 imgBudgetLine.setImageResource(R.mipmap.line_full);
@@ -158,6 +164,11 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
                 }
                 break;
             case REPORT:
+                mDescribeButton.setOnClickListener(this);
+                mTimeButton.setOnClickListener(this);
+                mAddressButton.setOnClickListener(this);
+                mBudgetButton.setOnClickListener(this);
+                mReportButton.setOnClickListener(this);
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 imgAddressLine.setImageResource(R.mipmap.line_full);
                 imgBudgetLine.setImageResource(R.mipmap.line_full);

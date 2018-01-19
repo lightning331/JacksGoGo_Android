@@ -17,12 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.squareup.picasso.Picasso;
 
 public class PostJobMainTabFragment extends Fragment {
@@ -38,7 +41,7 @@ public class PostJobMainTabFragment extends Fragment {
 
     private FrameLayout describeContainer;
     private AlertDialog alertDialog;
-    private JGGCategoryModel category;
+    public JGGCreatingJobModel creatingJob;
     private String tabName;
 
     public PostJobMainTabFragment() {
@@ -69,34 +72,29 @@ public class PostJobMainTabFragment extends Fragment {
 
         describeContainer = (FrameLayout) view.findViewById(R.id.post_job_detail_container);
         imgCategory = (ImageView) view.findViewById(R.id.img_post_job_tab_category);
+        lblCategory = (TextView) view.findViewById(R.id.lbl_post_job_tab_category_name);
         Picasso.with(mContext)
-                .load(category.getImage())
+                .load(((PostServiceActivity)mContext).selectedCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory = (TextView) view.findViewById(R.id.lbl_post_job_tab_category_name);
-        lblCategory.setText(category.getName());
+        lblCategory.setText(((PostServiceActivity)mContext).selectedCategory.getName());
+        creatingJob = ((PostServiceActivity)mContext).creatingJob;
+
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
-        tabbarLayout = (LinearLayout)view.findViewById(R.id.post_job_tabbar_view);
-        tabbarView = new PostJobTabbarView(mContext);
-        tabbarLayout.addView(tabbarView);
 
-        initTabbarView();
+        initTabbarView(view);
 
-        tabbarView.setTabItemClickLietener(new PostJobTabbarView.OnTabItemClickListener() {
-            @Override
-            public void onTabItemClick(View view) {
-                onTabbarViewClick(view);
-            }
-        });
-        refreshFragment();
         return view;
     }
 
-    private void initTabbarView() {
+    private void initTabbarView(View view) {
 
+        tabbarLayout = (LinearLayout)view.findViewById(R.id.post_job_tabbar_view);
+        tabbarView = new PostJobTabbarView(mContext);
+        tabbarLayout.addView(tabbarView);
         if (tabName == "DESCRIBE") {
             tabbarView.setTabName(PostJobTabbarView.TabName.DESCRIBE, true);
         } else if (tabName == "TIME") {
@@ -108,11 +106,13 @@ public class PostJobMainTabFragment extends Fragment {
         } else if (tabName == "REPORT") {
             tabbarView.setTabName(PostJobTabbarView.TabName.REPORT, true);
         }
+        tabbarView.setTabItemClickLietener(new PostJobTabbarView.OnTabItemClickListener() {
+            @Override
+            public void onTabItemClick(View view) {
+                onTabbarViewClick(view);
+            }
+        });
         refreshFragment();
-    }
-
-    public void setCategory(JGGCategoryModel category) {
-        this.category = category;
     }
 
     private void onTabbarViewClick(View view) {
@@ -141,7 +141,11 @@ public class PostJobMainTabFragment extends Fragment {
             PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("JOB");
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String title, String comment, String tags) {
+                public void onNextButtonClick(String title, String desc, String tags) {
+                    creatingJob.setTitle(title);
+                    creatingJob.setDescription(desc);
+                    creatingJob.setTags(tags);
+                    ((PostServiceActivity)mContext).creatingJob = creatingJob;
                     tabbarView.setTabName(PostJobTabbarView.TabName.TIME, true);
                     refreshFragment();
                 }
@@ -161,7 +165,14 @@ public class PostJobMainTabFragment extends Fragment {
             PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("JOB");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick() {
+                public void onNextButtonClick(String unit, String street, String postcode, String placename) {
+                    JGGAddressModel address = new JGGAddressModel();
+                    address.setFloor(placename);
+                    address.setUnit(unit);
+                    address.setPostalCode(postcode);
+                    address.setAddress(street);
+                    creatingJob.setAddress(address);
+                    ((PostServiceActivity)mContext).creatingJob = creatingJob;
                     tabbarView.setTabName(PostJobTabbarView.TabName.BUDGET, true);
                     refreshFragment();
                 }
@@ -171,7 +182,17 @@ public class PostJobMainTabFragment extends Fragment {
             PostJobPriceFragment frag = new PostJobPriceFragment();
             frag.setOnItemClickListener(new PostJobPriceFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String type, String min, String max) {
+                public void onNextButtonClick(int type, String min, String max) {
+                    creatingJob.setBudget(null);
+                    creatingJob.setBudgetFrom(null);
+                    creatingJob.setBudgetTo(null);
+                    if (type == 2) {
+                        creatingJob.setBudget(Double.parseDouble(min));
+                    } else if (type == 3) {
+                        creatingJob.setBudgetFrom(Double.parseDouble(min));
+                        creatingJob.setBudgetTo(Double.parseDouble(max));
+                    }
+                    ((PostServiceActivity)mContext).creatingJob = creatingJob;
                     tabbarView.setTabName(PostJobTabbarView.TabName.REPORT, true);
                     refreshFragment();
                 }
@@ -183,7 +204,7 @@ public class PostJobMainTabFragment extends Fragment {
             EditJobReportAdapter reportAdapter = new EditJobReportAdapter(mContext, true, "JOB");
             reportAdapter.setOnItemClickListener(new EditJobReportAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(int position) {
+                public void onItemClick(int[] position) {
                     PostJobSummaryFragment fragment = new PostJobSummaryFragment();
                     fragment.setEditStatus(PostJobSummaryFragment.PostJobStatus.NONE);
 

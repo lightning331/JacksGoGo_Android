@@ -291,7 +291,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:textColor="@color/JGGBlack"
-                        android:fontFamily="@font/muliregular"
+                        android:fontFamily="@font/mulibold"
                         android:textSize="@dimen/button_font_size" />
 
                 </LinearLayout>

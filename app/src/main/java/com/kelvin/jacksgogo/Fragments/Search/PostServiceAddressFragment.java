@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 
 public class PostServiceAddressFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -25,6 +27,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
     private TextView lblTitle;
     private TextView lblDesc;
+    private EditText txtPlaceName;
     private EditText txtUnit;
     private EditText txtStreet;
     private EditText txtPostCode;
@@ -35,6 +38,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
     private boolean isChecked = false;
     private String mType;
+    private JGGCreatingJobModel creatingJob;
 
     public PostServiceAddressFragment() {
         // Required empty public constructor
@@ -64,12 +68,18 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
         initView(view);
 
+        txtPlaceName.setText("My home");
+        txtUnit.setText("2");
+        txtStreet.setText("Jurong West Avenue 5");
+        txtPostCode.setText("638657");
+
         return view;
     }
 
     private void initView(View view) {
         lblTitle = view.findViewById(R.id.lbl_post_address_title);
         lblDesc = view.findViewById(R.id.lbl_post_address_desc);
+        txtPlaceName = view.findViewById(R.id.txt_post_address_place_name);
         txtUnit = view.findViewById(R.id.txt_post_address_unit);
         txtStreet = view.findViewById(R.id.txt_post_address_street);
         txtPostCode = view.findViewById(R.id.txt_post_address_postcode);
@@ -84,10 +94,18 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         txtPostCode.addTextChangedListener(this);
 
         if (mType.equals("JOB")) {
+
+            creatingJob = ((PostServiceActivity)mContext).creatingJob;
+
             lblTitle.setText(R.string.post_job_address_title);
             lblDesc.setVisibility(View.VISIBLE);
             checkboxLayout.setVisibility(View.GONE);
             lblNext.setText("Next");
+
+            txtPlaceName.setText(creatingJob.getAddress().getFloor());
+            txtUnit.setText(creatingJob.getAddress().getUnit());
+            txtStreet.setText(creatingJob.getAddress().getAddress());
+            txtPostCode.setText(creatingJob.getAddress().getPostalCode());
         }
     }
 
@@ -121,7 +139,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             if (isChecked) btnCheckBox.setImageResource(R.mipmap.checkbox_on_green);
             else btnCheckBox.setImageResource(R.mipmap.checkbox_off);
         } else if (view.getId() == R.id.btn_post_address_next) {
-            listener.onNextButtonClick();
+            listener.onNextButtonClick(txtUnit.getText().toString(), txtStreet.getText().toString(), txtPostCode.getText().toString(), txtPlaceName.getText().toString());
         }
     }
 
@@ -144,6 +162,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         } else {
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
             btnNext.setBackgroundResource(R.drawable.grey_background);
+            btnNext.setClickable(false);
         }
     }
 
@@ -152,16 +171,6 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -170,7 +179,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick();
+        void onNextButtonClick(String unit, String street, String postcode, String placename);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

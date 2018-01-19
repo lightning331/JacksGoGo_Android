@@ -46,7 +46,7 @@ public class SearchCategoryCell extends RecyclerView.ViewHolder {
 
         }
 
-        adapter = new CategoryCellAdapter(mContext, mCategories, "JOB");
+        adapter = new CategoryCellAdapter(mContext, mCategories);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

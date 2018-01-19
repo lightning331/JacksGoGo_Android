@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
@@ -22,6 +23,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class PostJobCategoryFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, categories, "JOB");
+        adapter = new CategoryCellAdapter(mContext, categories);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -87,7 +89,7 @@ public class PostJobCategoryFragment extends Fragment {
 
                 } else {
                     PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE);
-                    frag.setCategory(categories.get(position));
+                    ((PostServiceActivity)mContext).selectedCategory = categories.get(position);
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, frag)

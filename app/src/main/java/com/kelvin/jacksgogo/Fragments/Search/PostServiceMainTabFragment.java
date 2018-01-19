@@ -142,7 +142,7 @@ public class PostServiceMainTabFragment extends Fragment {
             PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick() {
+                public void onNextButtonClick(String unit, String street, String postcode, String placename) {
                     PostServiceSummaryFragment fragment = new PostServiceSummaryFragment();
                     fragment.setEditStatus(PostServiceSummaryFragment.PostEditStatus.NONE);
 

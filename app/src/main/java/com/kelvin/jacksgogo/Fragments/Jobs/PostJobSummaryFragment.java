@@ -10,13 +10,19 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
@@ -26,6 +32,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
+    private ImageView imgCategory;
+    private TextView lblCategory;
     private LinearLayout btnDescribe;
     private LinearLayout btnTime;
     private LinearLayout btnAddress;
@@ -41,8 +49,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private TagContainerLayout describeTagView;
 
     private AlertDialog alertDialog;
-
     private PostJobStatus jobStatus;
+    public JGGCategoryModel selectedCategory;
+    private JGGCreatingJobModel creatingJob;
 
     public enum PostJobStatus {
         NONE,
@@ -78,11 +87,19 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_job_summary, container, false);
+
+        selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
+        creatingJob = ((PostServiceActivity)mContext).creatingJob;
+
         initView(view);
+        setDatas();
+
         return view;
     }
 
     private void initView(View view) {
+        imgCategory = view.findViewById(R.id.img_category);
+        lblCategory = view.findViewById(R.id.lbl_category_name);
         btnDescribe = view.findViewById(R.id.btn_post_job_summary_describe);
         btnTime = view.findViewById(R.id.btn_post_job_summary_time);
         btnAddress = view.findViewById(R.id.btn_post_job_summary_address);
@@ -96,7 +113,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         lblBudget = view.findViewById(R.id.lbl_post_job_budget);
         lblReport = view.findViewById(R.id.lbl_post_job_report);
         btnPostJob = view.findViewById(R.id.btn_post_job);
-        setTagList();
 
         btnDescribe.setOnClickListener(this);
         btnTime.setOnClickListener(this);
@@ -104,6 +120,37 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         btnBudget.setOnClickListener(this);
         btnReport.setOnClickListener(this);
         btnPostJob.setOnClickListener(this);
+    }
+
+    private void setDatas() {
+        Picasso.with(mContext)
+                .load(selectedCategory.getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory.setText(selectedCategory.getName());
+
+        if (creatingJob != null) {
+            lblDescribeTitle.setText(creatingJob.getTitle());
+            lblDescribeDesc.setText(creatingJob.getDescription());
+            String [] strings = creatingJob.getTags().split(",");
+            describeTagView.setTags(Arrays.asList(strings));
+            //lblTime.setText(creatingJob.getJobTime().getJobStartOn().toString());
+            lblAddress.setText(creatingJob.getAddress().getFullAddress());
+            if (creatingJob.getSelectedPriceType() == 1) lblBudget.setText("No limit");
+            else if (creatingJob.getSelectedPriceType() == 2) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
+            else if (creatingJob.getSelectedPriceType() == 3)
+                lblBudget.setText("From $ " + creatingJob.getBudgetFrom().toString()
+                        + " "
+                        + "to $ " + creatingJob.getBudgetTo().toString());
+        } else {
+            lblDescribeTitle.setText("No title");
+            lblDescribeDesc.setText("");
+            describeTagView.removeAllTags();
+            lblTime.setText("No set");
+            lblAddress.setText("No set");
+            lblBudget.setText("No set");
+            lblReport.setText("No set");
+        }
     }
 
     private void setTagList() {

@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.CalendarCell;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
@@ -30,7 +30,7 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     Context mContext;
 
-    JGGCalendarView calendarViewCell;
+    CalendarCell calendarViewCell;
     EditJobTimeSlotsCell timeSlotsCell;
 
     ArrayList<Date> selectedDates = new ArrayList<>();
@@ -60,7 +60,7 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return dateTitleViewHolder;
         } else if (viewType == 2) {
             View dateTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.jgg_calendar_view, parent, false);
-            return new JGGCalendarView(dateTitleView);
+            return new CalendarCell(dateTitleView);
         } else if (viewType == 3) {
             View timeSlotsTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView timeViewHolder = new SectionTitleView(timeSlotsTitle);
@@ -81,7 +81,7 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             dateTitleViewHolder.txtTitle.setText("When do you need the services?");
             dateTitleViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
         } else if (position == 2) {
-            calendarViewCell = (JGGCalendarView)holder;
+            calendarViewCell = (CalendarCell)holder;
             if (!isRequest) {
 
             } else {

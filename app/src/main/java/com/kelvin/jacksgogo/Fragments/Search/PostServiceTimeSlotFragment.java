@@ -20,7 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -28,7 +30,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 
 
-public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher, OnDateSelectedListener {
+public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -80,10 +82,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     private LinearLayout paxBackground;
     private TextView btnCancel;
     private TextView btnOk;
-
-    private MaterialCalendarView duplicateTimeCalendar;
-    private TextView btnDuplicateCancel;
-    private TextView btnDuplicateOk;
 
     private AlertDialog alertDialog;
 
@@ -331,23 +329,21 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     }
 
     private void onShowDuplicateTimeCalendarView() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View calendarView = inflater.inflate(R.layout.view_post_service_duplicate_time, null);
-        builder.setView(calendarView);
+        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+        builder.calendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
+        builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, String date) {
+                if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
+                    alertDialog.dismiss();
+                }
+            }
+        });
         alertDialog = builder.create();
-
-        duplicateTimeCalendar = calendarView.findViewById(R.id.add_time_duplicate_calendar);
-        duplicateTimeCalendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
-        duplicateTimeCalendar.setOnDateChangedListener(this);
-        btnDuplicateCancel = calendarView.findViewById(R.id.btn_add_time_duplicate_cancel);
-        btnDuplicateCancel.setOnClickListener(this);
-        btnDuplicateOk = calendarView.findViewById(R.id.btn_add_time_duplicate_ok);
-
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
-
     }
 
     private void onViewTimeSlotClick() {
@@ -453,23 +449,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
 
     }
 
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        btnDuplicateOk.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        btnDuplicateOk.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-        btnDuplicateOk.setOnClickListener(this);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

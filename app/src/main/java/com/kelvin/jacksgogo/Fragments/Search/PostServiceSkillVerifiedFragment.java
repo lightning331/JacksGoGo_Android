@@ -69,7 +69,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, mCategories, "SERVICES");
+        adapter = new CategoryCellAdapter(mContext, mCategories);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

@@ -12,11 +12,14 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
-import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillVerifiedFragment;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,6 +30,9 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private boolean alreadyVerifiedSkills = getRandomBoolean();
     private String status;
     private String appType;
+
+    public JGGCategoryModel selectedCategory;
+    public JGGCreatingJobModel creatingJob;
 
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;
@@ -96,6 +102,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                         }
                         break;
                     case "JOBS":
+                        creatingJob = new JGGCreatingJobModel();
+                        creatingJob.setAddress(new JGGAddressModel());
                         actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
                         getSupportFragmentManager()
                                 .beginTransaction()

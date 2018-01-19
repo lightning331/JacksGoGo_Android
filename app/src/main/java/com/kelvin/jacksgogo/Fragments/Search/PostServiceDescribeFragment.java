@@ -24,8 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -57,10 +59,11 @@ public class PostServiceDescribeFragment extends Fragment
     private TextView lblNext;
 
     private String strTitle;
-    private String strDescription;
+    private String strDesc;
     private String strTags;
 
     private String mType;
+    private JGGCreatingJobModel creatingJob;
 
     public PostServiceDescribeFragment() {
         // Required empty public constructor
@@ -88,8 +91,13 @@ public class PostServiceDescribeFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
+
         initView(view);
         initRecyclerView(view);
+
+        txtServiceTitle.setText("Gardening");
+        txtServiceDesc.setText("Need help with moving the lawn and weeding the garden.");
+        txtServiceTag.setText("lawn, weeding");
 
         return view;
     }
@@ -112,12 +120,18 @@ public class PostServiceDescribeFragment extends Fragment
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
         if (mType.equals("JOB")) {
+
+            creatingJob = ((PostServiceActivity)mContext).creatingJob;
+
             lblTitle.setText(R.string.post_job_desc_title);
             lblDescription.setText(R.string.post_job_desc_description);
             lblTags.setText(R.string.post_job_desc_tag);
             btnTakePhoto.setBackgroundResource(R.drawable.cyan_border_background);
             imgTakePhoto.setImageResource(R.mipmap.icon_photo_cyan);
             txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGCyan));
+            txtServiceTitle.setText(creatingJob.getTitle());
+            txtServiceDesc.setText(creatingJob.getDescription());
+            txtServiceTag.setText(creatingJob.getTags());
         }
     }
 
@@ -214,7 +228,10 @@ public class PostServiceDescribeFragment extends Fragment
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_service_next) {
-            listener.onNextButtonClick(strTitle, strDescription, strTags);
+            strTitle = txtServiceTitle.getText().toString();
+            strDesc = txtServiceDesc.getText().toString();
+            strTags = txtServiceTag.getText().toString();
+            listener.onNextButtonClick(strTitle, strDesc, strTags);
         } else if (view.getId() == R.id.btn_post_service_take_photo) {
             selectImage();
         }
@@ -228,11 +245,8 @@ public class PostServiceDescribeFragment extends Fragment
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtServiceTitle.length() > 0
-                && txtServiceDesc.length() > 0) {
-
-            strTitle = txtServiceTitle.getText().toString();
-            strDescription = txtServiceDesc.getText().toString();
-            strTags = txtServiceTag.getText().toString();
+                && txtServiceDesc.length() > 0
+                && txtServiceTag.length() > 0) {
 
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.green_background);
@@ -241,6 +255,7 @@ public class PostServiceDescribeFragment extends Fragment
         } else {
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
             btnNext.setBackgroundResource(R.drawable.grey_background);
+            btnNext.setClickable(false);
         }
     }
 
@@ -252,7 +267,7 @@ public class PostServiceDescribeFragment extends Fragment
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(String title, String comment, String tags);
+        void onNextButtonClick(String title, String desc, String tags);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

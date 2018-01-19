@@ -30,16 +30,13 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int ITEM_COUNT = 4;
     public final static int TYPE_SECTION_HEADER = 0;
 
-    private JGGServiceModel serviceObject;
     private boolean isRequest;
-    private boolean isReportTypeBefore = false;
-    private boolean isReportTypeGeoTracking = false;
-    private boolean isReportTypePinCode = false;
+    private boolean isReportTypeBefore;
+    private boolean isReportTypeGeoTracking;
+    private boolean isReportTypePinCode;
 
     private String appointmentType;
-    private int reportType = 0;
-
-    AppFilterOptionCell nextButtonCell;
+    private int[] reportType;
 
     private ArrayList<ReportViewHolder> reportTypeArray = new ArrayList<>();
     private ArrayList<JGGReportModel> reportSet = new ArrayList<>();
@@ -69,7 +66,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
             return descTitleViewHolder;
         } else if (viewType == reportSet.size() + 1){
             View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
-            nextButtonCell = new AppFilterOptionCell(originalView);
+            AppFilterOptionCell nextButtonCell = new AppFilterOptionCell(originalView);
             return nextButtonCell;
         }
         return null;
@@ -88,7 +85,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
             reportTypeArray.add(descTitleViewHolder);
         } else if (position == reportSet.size() + 1) {
-            nextButtonCell = (AppFilterOptionCell)holder;
+            AppFilterOptionCell nextButtonCell = (AppFilterOptionCell)holder;
             nextButtonCell.title.setText(R.string.go_to_summary);
             nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
@@ -123,7 +120,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int[] position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -153,7 +150,6 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     if (position == 1) {
                         isReportTypeBefore = !isReportTypeBefore;
-                        reportType = 1;
                         if (isReportTypeBefore) {
                             reportTypeArray.get(0).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_background));
                             reportTypeArray.get(0).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
@@ -168,7 +164,6 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                     if (position == 2) {
                         isReportTypeGeoTracking = !isReportTypeGeoTracking;
-                        reportType = 2;
                         if (isReportTypeGeoTracking) {
                             reportTypeArray.get(1).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_background));
                             reportTypeArray.get(1).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
@@ -183,7 +178,6 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                     if (position == 3) {
                         isReportTypePinCode = !isReportTypePinCode;
-                        reportType = 3;
                         if (isReportTypePinCode) {
                             reportTypeArray.get(2).btnBackground.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_background));
                             reportTypeArray.get(2).title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));

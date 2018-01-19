@@ -24,10 +24,10 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<JGGCategoryModel> mCategories;
     private String mType;
 
-    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data, String type) {
+    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data) {
         mContext = context;
         mCategories = data;
-        mType = type;
+        //mType = type;
     }
 
     @Override

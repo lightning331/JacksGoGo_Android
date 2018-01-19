@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.CustomView.Views;
+package com.kelvin.jacksgogo.CustomView.RecyclerViewCell;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -6,20 +6,18 @@ import android.view.View;
 import com.kelvin.jacksgogo.R;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
-
 /**
  * Created by PUMA on 11/13/2017.
  */
 
-public class JGGCalendarView extends RecyclerView.ViewHolder {
+public class CalendarCell extends RecyclerView.ViewHolder {
 
     public MaterialCalendarView calendarView;
 
-    public JGGCalendarView(View itemView) {
+    public CalendarCell(View itemView) {
         super(itemView);
 
-        calendarView = itemView.findViewById(R.id.jgg_calendarView);
+        calendarView = itemView.findViewById(R.id.cell_calendar);
         //calendarView.setSelectionMode(SELECTION_MODE_MULTIPLE);
     }
 }

@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Utils.Models.User;
+package com.kelvin.jacksgogo.Utils.Models.System;
 
 /**
  * Created by PUMA on 1/8/2018.
@@ -11,6 +11,7 @@ public class JGGRegionModel {
     private String CurrencyCode;
     private String ID;
     private String Image;
+    private JGGCurrencyModel BasicCurrency;
 
     public String getRegionName() {
         return RegionName;
@@ -50,5 +51,13 @@ public class JGGRegionModel {
 
     public void setImage(String image) {
         Image = image;
+    }
+
+    public JGGCurrencyModel getBasicCurrency() {
+        return BasicCurrency;
+    }
+
+    public void setBasicCurrency(JGGCurrencyModel basicCurrency) {
+        BasicCurrency = basicCurrency;
     }
 }

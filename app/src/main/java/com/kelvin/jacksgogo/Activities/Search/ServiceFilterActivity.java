@@ -70,7 +70,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        adapter = new CategoryCellAdapter(this, mCategories, appType);
+        adapter = new CategoryCellAdapter(this, mCategories);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
