@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 public class PostServiceAddressFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -139,7 +140,16 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             if (isChecked) btnCheckBox.setImageResource(R.mipmap.checkbox_on_green);
             else btnCheckBox.setImageResource(R.mipmap.checkbox_off);
         } else if (view.getId() == R.id.btn_post_address_next) {
-            listener.onNextButtonClick(txtUnit.getText().toString(), txtStreet.getText().toString(), txtPostCode.getText().toString(), txtPlaceName.getText().toString());
+            JGGAddressModel address = new JGGAddressModel();
+            address.setFloor(txtPlaceName.getText().toString());
+            address.setUnit(txtUnit.getText().toString());
+            address.setPostalCode(txtPostCode.getText().toString());
+            address.setAddress(txtStreet.getText().toString());
+
+            creatingJob.setAddress(address);
+            ((PostServiceActivity)mContext).creatingJob = creatingJob;
+
+            listener.onNextButtonClick();
         }
     }
 
@@ -179,7 +189,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(String unit, String street, String postcode, String placename);
+        void onNextButtonClick();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

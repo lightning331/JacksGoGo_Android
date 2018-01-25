@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 public class PostServiceMainTabFragment extends Fragment {
 
@@ -112,7 +113,7 @@ public class PostServiceMainTabFragment extends Fragment {
             PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String title, String comment, String tags) {
+                public void onNextButtonClick() {
                     tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
                     refreshFragment();
                 }
@@ -142,7 +143,7 @@ public class PostServiceMainTabFragment extends Fragment {
             PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String unit, String street, String postcode, String placename) {
+                public void onNextButtonClick() {
                     PostServiceSummaryFragment fragment = new PostServiceSummaryFragment();
                     fragment.setEditStatus(PostServiceSummaryFragment.PostEditStatus.NONE);
 

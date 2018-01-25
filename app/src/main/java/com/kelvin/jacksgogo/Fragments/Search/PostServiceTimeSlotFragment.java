@@ -333,7 +333,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         builder.calendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
             @Override
-            public void onDoneButtonClick(View view, String date) {
+            public void onDoneButtonClick(View view, String month, String day, String year) {
                 if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {

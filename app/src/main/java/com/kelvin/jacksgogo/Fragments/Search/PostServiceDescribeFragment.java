@@ -231,7 +231,15 @@ public class PostServiceDescribeFragment extends Fragment
             strTitle = txtServiceTitle.getText().toString();
             strDesc = txtServiceDesc.getText().toString();
             strTags = txtServiceTag.getText().toString();
-            listener.onNextButtonClick(strTitle, strDesc, strTags);
+            if (mType.equals("JOB")) {
+                creatingJob.setTitle(strTitle);
+                creatingJob.setDescription(strDesc);
+                creatingJob.setTags(strTags);
+                ((PostServiceActivity) mContext).creatingJob = creatingJob;
+            } else if (mType.equals("SERVICE")) {
+
+            }
+            listener.onNextButtonClick();
         } else if (view.getId() == R.id.btn_post_service_take_photo) {
             selectImage();
         }
@@ -267,7 +275,7 @@ public class PostServiceDescribeFragment extends Fragment
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(String title, String desc, String tags);
+        void onNextButtonClick();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

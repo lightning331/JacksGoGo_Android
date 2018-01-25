@@ -80,7 +80,7 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
         imgBudgetLine       = (ImageView) mTabbarView.findViewById(R.id.img_budget_line);
         imgReportLine       = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
 
-        mAddressButton.setOnClickListener(this);
+        //mAddressButton.setOnClickListener(this);
     }
 
     public TabName getTabName() {

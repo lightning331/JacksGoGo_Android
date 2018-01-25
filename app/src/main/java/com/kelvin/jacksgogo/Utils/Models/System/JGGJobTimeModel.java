@@ -10,7 +10,7 @@ public class JGGJobTimeModel {
 
     private Date JobStartOn;
     private Date JobEndOn;
-    private boolean IsSpecific;
+    private Boolean IsSpecific;
     private int Peoples;
 
     public Date getJobStartOn() {
@@ -29,11 +29,11 @@ public class JGGJobTimeModel {
         JobEndOn = jobEndOn;
     }
 
-    public boolean isSpecific() {
+    public Boolean isSpecific() {
         return IsSpecific;
     }
 
-    public void setSpecific(boolean specific) {
+    public void setSpecific(Boolean specific) {
         IsSpecific = specific;
     }
 

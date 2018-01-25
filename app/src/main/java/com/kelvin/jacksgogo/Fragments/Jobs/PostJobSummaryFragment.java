@@ -15,14 +15,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Adapter.Jobs.PostJobRepeatingDayAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
@@ -130,18 +134,68 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         lblCategory.setText(selectedCategory.getName());
 
         if (creatingJob != null) {
+            // Describe
             lblDescribeTitle.setText(creatingJob.getTitle());
             lblDescribeDesc.setText(creatingJob.getDescription());
             String [] strings = creatingJob.getTags().split(",");
             describeTagView.setTags(Arrays.asList(strings));
-            //lblTime.setText(creatingJob.getJobTime().getJobStartOn().toString());
+            // Address
             lblAddress.setText(creatingJob.getAddress().getFullAddress());
+            // Budget
             if (creatingJob.getSelectedPriceType() == 1) lblBudget.setText("No limit");
             else if (creatingJob.getSelectedPriceType() == 2) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
             else if (creatingJob.getSelectedPriceType() == 3)
                 lblBudget.setText("From $ " + creatingJob.getBudgetFrom().toString()
                         + " "
                         + "to $ " + creatingJob.getBudgetTo().toString());
+            // Time
+            if (creatingJob.getJobType() == Global.JGGJobType.oneTime) {
+                String time = "";
+                if (creatingJob.getJobTime().isSpecific()) {
+                    if (creatingJob.getJobTime().getJobEndOn() != null)
+                        time = "on "
+                                + getDateString(creatingJob.getJobTime().getJobStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn())
+                                + " - "
+                                + Global.getTimeString(creatingJob.getJobTime().getJobEndOn());
+                    else
+                        time = "on "
+                                + getDateString(creatingJob.getJobTime().getJobStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn());
+                } else {
+                    if (creatingJob.getJobTime().getJobEndOn() != null)
+                        time = "any time until "
+                                + getDateString(creatingJob.getJobTime().getJobStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn())
+                                + " - "
+                                + Global.getTimeString(creatingJob.getJobTime().getJobEndOn());
+                    else
+                        time = "any time until "
+                                + getDateString(creatingJob.getJobTime().getJobStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn());
+                }
+                lblTime.setText(time);
+            } else if (creatingJob.getJobType() == Global.JGGJobType.repeating) {
+                String time = "";
+                String dayString = creatingJob.getRepetition();
+                String[] items = dayString.split(",");
+                if (creatingJob.getRepetitionType() == Global.JGGRepetitionType.weekly) {
+                    for (int i = 0; i < items.length; i ++) {
+                        if (time.equals(""))
+                            time = "Every " + Global.getWeekName(Integer.parseInt(items[i]) - 1);
+                        else
+                            time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]) - 1);
+                    }
+                } else if (creatingJob.getRepetitionType() == Global.JGGRepetitionType.monthly) {
+                    for (int i = 0; i < items.length; i ++) {
+                        if (time.equals(""))
+                            time = "Every " + Global.getDayName(Integer.parseInt(items[i]) - 1) + " of the month";
+                        else
+                            time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i]) - 1) + " of the month";
+                    }
+                }
+                lblTime.setText(time);
+            }
         } else {
             lblDescribeTitle.setText("No title");
             lblDescribeDesc.setText("");
@@ -153,13 +207,10 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void setTagList() {
-        Typeface typeface = Typeface.create("muliregular", Typeface.NORMAL);
-        describeTagView.setTagTypeface(typeface);
-        List<String> tags = new ArrayList<String>();
-        tags.add("faucet");
-        tags.add("plumbing");
-        describeTagView.setTags(tags);
+    public String getDateString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+        String dateString = dateFormat.format(date);
+        return dateString;
     }
 
     private void showAlertDialog() {
@@ -184,29 +235,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -264,6 +292,29 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                     .addToBackStack("post_job")
                     .commit();
         }
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public interface OnFragmentInteractionListener {

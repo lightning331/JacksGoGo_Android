@@ -157,11 +157,11 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         builder.btnCalendarOk.setText("Done");
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
             @Override
-            public void onDoneButtonClick(View view, String date) {
+            public void onDoneButtonClick(View view, String month, String day, String year) {
                 if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-                    lblDate.setText(date);
+                    lblDate.setText(month + " " + day);
                     alertDialog.dismiss();
                 }
             }

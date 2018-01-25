@@ -176,7 +176,7 @@
                 android:background="@drawable/cyan_border_background"/>
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
-                android:id="@+id/post_job_time_day_recycler_view"
+                android:id="@+id/post_job_selected_day_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">

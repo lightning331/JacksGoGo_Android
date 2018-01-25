@@ -1,6 +1,5 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -108,8 +107,6 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         minLayout.setVisibility(View.GONE);
         maxLayout.setVisibility(View.GONE);
         lblResponding.setVisibility(View.GONE);
-        if (txtFixed.length() > 0 || txtFromMin.length() > 0 && txtFromMax.length() > 0) onNextButtonEnable();
-        onNextButtonDissable();
         switch (selectedPriceType) {
             case 0:
                 btnNext.setVisibility(View.GONE);
@@ -173,7 +170,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnNext.setOnClickListener(this);
     }
 
-    private void onNextButtonDissable() {
+    private void onNextButtonDisable() {
         lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
         btnNext.setBackgroundResource(R.drawable.grey_background);
         btnNext.setClickable(false);
@@ -203,19 +200,15 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
             }
             from = !from;
         } else if (view.getId() == R.id.btn_post_job_budget_next) {
-            switch (selectedPriceType) {
-                case 1:
-                    listener.onNextButtonClick(1, null, null);
-                    break;
-                case 2:
-                    listener.onNextButtonClick(2, txtFixed.getText().toString(), null);
-                    break;
-                case 3:
-                    listener.onNextButtonClick(3, txtFromMin.getText().toString(), txtFromMax.getText().toString());
-                    break;
-                default:
-                    break;
+            if (selectedPriceType == 2) {
+                creatingJob.setBudget(Double.parseDouble(txtFixed.getText().toString()));
+            } else if (selectedPriceType == 3) {
+                creatingJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
+                creatingJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
             }
+            ((PostServiceActivity)mContext).creatingJob = creatingJob;
+            listener.onNextButtonClick();
+
             return;
         }
         creatingJob.setSelectedPriceType(selectedPriceType);
@@ -231,10 +224,10 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (selectedPriceType == 2) {
             if (txtFixed.length() > 0) onNextButtonEnable();
-            else onNextButtonDissable();
+            else onNextButtonDisable();
         } else if (selectedPriceType == 3) {
             if (txtFromMin.length() > 0 && txtFromMax.length() > 0) onNextButtonEnable();
-            else onNextButtonDissable();
+            else onNextButtonDisable();
         }
     }
 
@@ -246,7 +239,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(int type, String min, String max);
+        void onNextButtonClick();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

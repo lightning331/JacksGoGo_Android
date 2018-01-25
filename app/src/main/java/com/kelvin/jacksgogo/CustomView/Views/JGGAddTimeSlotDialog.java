@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
@@ -55,12 +56,13 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private int imgDown;
     private int imgClose;
 
-    private int startHour = 10;
-    private int startMinute = 0;
+    private Integer startHour = 10;
+    private Integer startMinute = 0;
     private boolean startAM = true;
-    private int endHour = 11;
-    private int endMinute = 0;
+    private Integer endHour = 11;
+    private Integer endMinute = 0;
     private boolean endAM = true;
+    private boolean endTimeEnable;
 
     public JGGAddTimeSlotDialog(Context context, JGGAppBaseModel.AppointmentType type) {
         super(context);
@@ -186,13 +188,15 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         if (view == btnStartTimeAM) {
             btnStartTimeAM.setImageResource(imgActiveAM);
             btnStartTimePM.setImageResource(imgInActivePM);
+        } else if (view == btnStartTimePM) {
+            startAM = false;
+            btnStartTimeAM.setImageResource(imgInActiveAM);
+            btnStartTimePM.setImageResource(imgActivePM);
         } else if (view == btnEndTimeAM) {
             btnEndTimeAM.setImageResource(imgActiveAM);
             btnEndTimePM.setImageResource(imgInActivePM);
-        } else if (view == btnStartTimePM) {
-            btnStartTimeAM.setImageResource(imgInActiveAM);
-            btnStartTimePM.setImageResource(imgActivePM);
         } else if (view == btnEndTimePM) {
+            endAM = false;
             btnEndTimeAM.setImageResource(imgInActiveAM);
             btnEndTimePM.setImageResource(imgActivePM);
         }
@@ -231,24 +235,30 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         else if (startHour > 12) startHour = 1;
         if (startMinute < 0) startMinute = 45;
         else if (startMinute > 45) startMinute = 0;
-        txtStartTime.setText("" + startHour);
-        txtStartMinute.setText("" + startMinute);
+        if (startHour < 10) txtStartTime.setText("0" + startHour);
+        else txtStartTime.setText("" + startHour);
+        if (startMinute == 0) txtStartMinute.setText("0" + startMinute);
+        else txtStartMinute.setText("" + startMinute);
 
         if (endHour < 1) endHour = 12;
         else if (endHour > 12) endHour = 1;
         if (endMinute < 0) endMinute = 45;
         else if (endMinute > 45) endMinute = 0;
-        txtEndTime.setText("" + endHour);
-        txtEndMinute.setText("" + endMinute);
+        if (endHour < 10) txtEndTime.setText("0" + endHour);
+        else txtEndTime.setText("" + endHour);
+        if (endMinute == 0) txtEndMinute.setText("0" + endMinute);
+        else txtEndMinute.setText("" + endMinute);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_advance_search_end_time) {
+            endTimeEnable = true;
             endTimeOptionalLayout.setVisibility(View.GONE);
             endTimeLayout.setVisibility(View.VISIBLE);
             btnClose.setOnClickListener(this);
         } else if (view.getId() == R.id.btn_advance_search_close) {
+            endTimeEnable = false;
             endTimeOptionalLayout.setVisibility(View.VISIBLE);
             endTimeLayout.setVisibility(View.GONE);
         }
@@ -280,5 +290,49 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         } else if (view.getId() == R.id.btn_add_end_time_pm) {
             onPressedChangeTime(view);
         }
+
+        else if (view.getId() == R.id.btn_add_time_cancel) {
+            listener.onDoneButtonClick(view, null, null, null, null);
+        } else if (view.getId() == R.id.btn_add_time_ok) {
+            if (Integer.parseInt(txtStartTime.getText().toString()) >= Integer.parseInt(txtEndTime.getText().toString())
+                    && endAM
+                    || Integer.parseInt(txtEndTime.getText().toString()) == 12
+                    && endAM) {
+                Toast.makeText(mContext, "Please set end time later than start time.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String startTimeString = "";
+            String endTimeString = "";
+            if (startHour != null && startMinute != null)
+                startTimeString = txtStartTime.getText().toString()
+                        + ":"
+                        + txtStartMinute.getText().toString();
+            if (endTimeEnable) {
+                if (endHour != null && endMinute != null) {
+                    Integer endHour = Integer.parseInt(txtEndTime.getText().toString());
+                    if (!endAM && endHour < 12) {
+                        endTimeString = endHour + 12
+                                + ":"
+                                + txtEndMinute.getText().toString();
+
+                    } else {
+                        endTimeString = endHour.toString()
+                                + ":"
+                                + txtEndMinute.getText().toString();
+                    }
+                }
+            }
+            listener.onDoneButtonClick(view, startTimeString, endTimeString, startAM, endAM);
+        }
+    }
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onDoneButtonClick(View view, String startTime, String endTime, Boolean startAM, Boolean endAM);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

@@ -20,6 +20,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -104,6 +105,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                     case "JOBS":
                         creatingJob = new JGGCreatingJobModel();
                         creatingJob.setAddress(new JGGAddressModel());
+                        creatingJob.setJobTime(new JGGJobTimeModel());
                         actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
                         getSupportFragmentManager()
                                 .beginTransaction()

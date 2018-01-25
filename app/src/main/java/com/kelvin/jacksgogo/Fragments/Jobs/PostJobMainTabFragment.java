@@ -26,6 +26,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 import com.squareup.picasso.Picasso;
 
 public class PostJobMainTabFragment extends Fragment {
@@ -141,11 +142,7 @@ public class PostJobMainTabFragment extends Fragment {
             PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("JOB");
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String title, String desc, String tags) {
-                    creatingJob.setTitle(title);
-                    creatingJob.setDescription(desc);
-                    creatingJob.setTags(tags);
-                    ((PostServiceActivity)mContext).creatingJob = creatingJob;
+                public void onNextButtonClick() {
                     tabbarView.setTabName(PostJobTabbarView.TabName.TIME, true);
                     refreshFragment();
                 }
@@ -165,14 +162,7 @@ public class PostJobMainTabFragment extends Fragment {
             PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("JOB");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String unit, String street, String postcode, String placename) {
-                    JGGAddressModel address = new JGGAddressModel();
-                    address.setFloor(placename);
-                    address.setUnit(unit);
-                    address.setPostalCode(postcode);
-                    address.setAddress(street);
-                    creatingJob.setAddress(address);
-                    ((PostServiceActivity)mContext).creatingJob = creatingJob;
+                public void onNextButtonClick() {
                     tabbarView.setTabName(PostJobTabbarView.TabName.BUDGET, true);
                     refreshFragment();
                 }
@@ -182,17 +172,7 @@ public class PostJobMainTabFragment extends Fragment {
             PostJobPriceFragment frag = new PostJobPriceFragment();
             frag.setOnItemClickListener(new PostJobPriceFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(int type, String min, String max) {
-                    creatingJob.setBudget(null);
-                    creatingJob.setBudgetFrom(null);
-                    creatingJob.setBudgetTo(null);
-                    if (type == 2) {
-                        creatingJob.setBudget(Double.parseDouble(min));
-                    } else if (type == 3) {
-                        creatingJob.setBudgetFrom(Double.parseDouble(min));
-                        creatingJob.setBudgetTo(Double.parseDouble(max));
-                    }
-                    ((PostServiceActivity)mContext).creatingJob = creatingJob;
+                public void onNextButtonClick() {
                     tabbarView.setTabName(PostJobTabbarView.TabName.REPORT, true);
                     refreshFragment();
                 }

@@ -87,17 +87,23 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
 
     @Override
     public void onClick(View view) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd");
-        if (calendar.getSelectedDate() != null)
-            listener.onDoneButtonClick(view, dateFormat.format(calendar.getSelectedDate().getDate()));
+        if (calendar.getSelectedDate() != null) {
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+            String month = monthFormat.format(calendar.getSelectedDate().getDate());
+            String day = dayFormat.format(calendar.getSelectedDate().getDate());
+            String year = yearFormat.format(calendar.getSelectedDate().getDate());
+            listener.onDoneButtonClick(view, month, day, year);
+        }
         else
-            listener.onDoneButtonClick(view, null);
+            listener.onDoneButtonClick(view, null, null, null);
     }
 
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onDoneButtonClick(View view, String date);
+        void onDoneButtonClick(View view, String month, String day, String year);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
