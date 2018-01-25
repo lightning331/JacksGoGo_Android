@@ -9,6 +9,7 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by PUMA on 10/28/2017.
@@ -61,6 +62,40 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
                 return "Before & After Photo" + ", " + "Geotracking" + ", " + "PIN Code";
             default:
                 return "No set";
+        }
+    }
+
+    public List<Integer> selectedID() {
+        List<Integer> array = new ArrayList<>();
+        switch (ReportType) {
+            case 1:
+                array.add(1);
+                return array;
+            case 2:
+                array.add(2);
+                return array;
+            case 3:
+                array.add(1);
+                array.add(2);
+                return array;
+            case 4:
+                array.add(3);
+                return array;
+            case 5:
+                array.add(1);
+                array.add(3);
+                return array;
+            case 6:
+                array.add(2);
+                array.add(3);
+                return array;
+            case 7:
+                array.add(1);
+                array.add(2);
+                array.add(3);
+                return array;
+            default:
+                return array;
         }
     }
 

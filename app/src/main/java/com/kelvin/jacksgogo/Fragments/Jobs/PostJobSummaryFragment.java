@@ -1,8 +1,8 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,23 +13,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
-import com.kelvin.jacksgogo.Adapter.Jobs.PostJobRepeatingDayAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -56,6 +60,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private PostJobStatus jobStatus;
     public JGGCategoryModel selectedCategory;
     private JGGCreatingJobModel creatingJob;
+    private ProgressDialog progressDialog;
 
     public enum PostJobStatus {
         NONE,
@@ -93,6 +98,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         View view = inflater.inflate(R.layout.fragment_post_job_summary, container, false);
 
         selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
+        ((PostServiceActivity)mContext).creatingJob.setJobCategoryID(selectedCategory.getID());
         creatingJob = ((PostServiceActivity)mContext).creatingJob;
 
         initView(view);
@@ -148,6 +154,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 lblBudget.setText("From $ " + creatingJob.getBudgetFrom().toString()
                         + " "
                         + "to $ " + creatingJob.getBudgetTo().toString());
+            // Report
+            lblReport.setText(creatingJob.reportTypeName());
             // Time
             if (creatingJob.getJobType() == Global.JGGJobType.oneTime) {
                 String time = "";
@@ -213,6 +221,31 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         return dateString;
     }
 
+    private void onPostJob() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostJobResponse> call = manager.postJob(creatingJob);
+        call.enqueue(new Callback<JGGPostJobResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    response.body().getValue();
+                    showAlertDialog();
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostJobResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     private void showAlertDialog() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -233,7 +266,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
         okButton.setOnClickListener(this);
 
-        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
     }
 
@@ -242,25 +275,25 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (view.getId() == R.id.btn_post_job) {
             switch (jobStatus) {
                 case NONE:
-                    showAlertDialog();
+                    onPostJob();
                     break;
                 case EDIT:
                     showAlertDialog();
                     break;
                 case DUPLICATE:
-//                    Intent intent = new Intent(mContext, PostServiceActivity.class);
-//                    intent.putExtra("EDIT_STATUS", "None");
-//                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
-//                    startActivity(intent);
+                    //                    Intent intent = new Intent(mContext, PostServiceActivity.class);
+                    //                    intent.putExtra("EDIT_STATUS", "None");
+                    //                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                    //                    startActivity(intent);
                     break;
                 default:
                     break;
             }
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-//            Intent intent = new Intent(mContext, PostedServiceActivity.class);
-//            intent.putExtra("is_post", true);
-//            mContext.startActivity(intent);
+            //            Intent intent = new Intent(mContext, PostedServiceActivity.class);
+            //            intent.putExtra("is_post", true);
+            //            mContext.startActivity(intent);
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()

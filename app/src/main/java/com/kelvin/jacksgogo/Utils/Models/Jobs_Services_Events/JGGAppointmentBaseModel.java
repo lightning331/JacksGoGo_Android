@@ -5,7 +5,6 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**

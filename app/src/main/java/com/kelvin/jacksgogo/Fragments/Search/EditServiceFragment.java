@@ -24,6 +24,7 @@ import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobTimeAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 
@@ -165,10 +166,10 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
         } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.REPORT) {
             recyclerView.setVisibility(View.VISIBLE);
             EditJobReportAdapter reportAdapter = new EditJobReportAdapter(mContext, isRequest, "SERVICE");
-            reportAdapter.setOnItemClickListener(new EditJobReportAdapter.OnItemClickListener() {
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(int[] position) {
-                    serviceModel.setReportType(position);
+                public void onItemClick(View view, int position) {
+                    //serviceModel.setReportType(position);
                     if (serviceModel.getTitle() == null
                             || serviceModel.getComment() == null
                             || serviceModel.getDate() == null
@@ -185,7 +186,11 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
                     ft.replace(R.id.request_quotation_container, editServiceMainFragment, editServiceMainFragment.getTag());
                     ft.commit();
                 }
-            });
+                @Override
+                public void onItemLongClick(View view, int position) {
+
+                }
+            }));
             recyclerView.setAdapter(reportAdapter);
         }
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -5,12 +5,23 @@ package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
  */
 
 public class JGGReportModel {
+
+    private int id;
     private String title;
     private String description;
 
-    public JGGReportModel(String title, String description) {
+    public JGGReportModel(int id, String title, String description) {
+        this.id = id;
         this.title = title;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -28,6 +39,4 @@ public class JGGReportModel {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 }

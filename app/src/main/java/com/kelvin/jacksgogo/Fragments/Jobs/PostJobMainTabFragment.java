@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,14 +19,17 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostJobMainTabFragment extends Fragment {
 
@@ -41,9 +43,14 @@ public class PostJobMainTabFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private FrameLayout describeContainer;
-    private AlertDialog alertDialog;
-    public JGGCreatingJobModel creatingJob;
     private String tabName;
+
+    private JGGCreatingJobModel creatingJob;
+    private EditJobReportAdapter reportAdapter;
+    private List<Integer> selectedIds = new ArrayList<>();
+    private boolean isMultiSelect = false;
+    private JGGReportModel data;
+    private int reportType = 0;
 
     public PostJobMainTabFragment() {
         // Required empty public constructor
@@ -181,24 +188,71 @@ public class PostJobMainTabFragment extends Fragment {
         } else if (tabbarView.getTabName() == PostJobTabbarView.TabName.REPORT) {
             describeContainer.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            EditJobReportAdapter reportAdapter = new EditJobReportAdapter(mContext, true, "JOB");
-            reportAdapter.setOnItemClickListener(new EditJobReportAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int[] position) {
-                    PostJobSummaryFragment fragment = new PostJobSummaryFragment();
-                    fragment.setEditStatus(PostJobSummaryFragment.PostJobStatus.NONE);
 
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.post_service_container, fragment, fragment.getTag())
-                            .addToBackStack("post_job_summary")
-                            .commit();
+            creatingJob = ((PostServiceActivity)mContext).creatingJob;
+            selectedIds = creatingJob.selectedID();
+
+            reportAdapter = new EditJobReportAdapter(mContext, true, "JOB");
+            reportAdapter.setSelectedIds(selectedIds);
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    int itemCount = reportAdapter.getItemCount();
+                    if (position == itemCount - 1) {
+                        onSaveCreatingJob();
+                        PostJobSummaryFragment fragment = new PostJobSummaryFragment();
+                        fragment.setEditStatus(PostJobSummaryFragment.PostJobStatus.NONE);
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.post_service_container, fragment, fragment.getTag())
+                        .addToBackStack("post_job_summary")
+                        .commit();
+                    } else {
+                        if (!isMultiSelect) {
+                            selectedIds = new ArrayList<>();
+                            isMultiSelect = true;
+                        }
+                        multiSelect(position);
+                    }
                 }
-            });
+
+                @Override
+                public void onItemLongClick(View view, int position) {
+
+                }
+            }));
             recyclerView.setAdapter(reportAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.refreshDrawableState();
         }
         ft.commit();
+    }
+
+    private void multiSelect(int position) {
+
+        data = reportAdapter.getItem(position - 1);
+
+        if (data != null) {
+            Integer id = data.getId();
+            if (selectedIds.contains(data.getId()))
+                selectedIds.remove(Integer.valueOf(data.getId()));
+            else
+                selectedIds.add(data.getId());
+            reportAdapter.setSelectedIds(selectedIds);
+        }
+    }
+
+    private void onSaveCreatingJob() {
+        reportType = 0;
+        for (Integer index : selectedIds) {
+            if (index == 1) {
+                reportType += 1;
+            } else if (index == 2) {
+                reportType += 2;
+            } else if (index == 3) {
+                reportType += 4;
+            }
+        }
+        creatingJob.setReportType(reportType);
+        ((PostServiceActivity)mContext).creatingJob = creatingJob;
     }
 
     public void onButtonPressed(Uri uri) {
