@@ -35,6 +35,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 public class SearchFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -90,7 +95,7 @@ public class SearchFragment extends Fragment {
 
         loadCategories();
         appType = textView;
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             mPercentColor = ContextCompat.getColor(mContext, R.color.JGGGreen10Percent);
             mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
             serviceAdapter = new SearchServicesAdapter(mContext, categories);
@@ -101,7 +106,7 @@ public class SearchFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(serviceAdapter);
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             mPercentColor = ContextCompat.getColor(mContext, R.color.JGGCyan10Percent);
             mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
             jobAdapter = new SearchJobsAdapter(mContext, categories);
@@ -112,7 +117,7 @@ public class SearchFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(jobAdapter);
-        } else if (appType.equals("GOCLUB")) {
+        } else if (appType.equals(GOCLUB)) {
             mPercentColor = ContextCompat.getColor(mContext, R.color.JGGPurple10Percent);
             mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
 
@@ -135,15 +140,15 @@ public class SearchFragment extends Fragment {
                         JGGAppManager.getInstance(mContext).categories = response.body().getValue();
                         categories = JGGAppManager.getInstance(mContext).categories;
 
-                        if (appType.equals("SERVICES")) {
+                        if (appType.equals(SERVICES)) {
                             serviceAdapter.notifyDataChanged(categories);
                             serviceAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(serviceAdapter);
-                        } else if (appType.equals("JOBS")) {
+                        } else if (appType.equals(JOBS)) {
                             jobAdapter.notifyDataChanged(categories);
                             jobAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(jobAdapter);
-                        } else if (appType.equals("GOCLUB")) {
+                        } else if (appType.equals(GOCLUB)) {
 
                         }
                     } else {
@@ -175,7 +180,7 @@ public class SearchFragment extends Fragment {
                 return;
             }
         }
-        mIntent.putExtra("APPOINTMENT_TYPE", appType);
+        mIntent.putExtra(APPOINTMENT_TYPE, appType);
         mIntent.putExtra("EDIT_STATUS", "None");
         view.getContext().startActivity(mIntent);
     }
@@ -195,9 +200,9 @@ public class SearchFragment extends Fragment {
         title.setText("Information");
         desc.setText(R.string.alert_post_failed_desc);
         okButton.setText(R.string.alert_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGRed));
-        cancelButton.setBackgroundColor(mPercentColor);
-        cancelButton.setTextColor(mColor);
+        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
+        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
+        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

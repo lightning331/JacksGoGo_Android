@@ -15,8 +15,11 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Adapter.Services.ServiceListingAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ServiceListingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -81,7 +84,7 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
         if (view.getId() == R.id.service_listing_navigation) {
             Intent intent = new Intent(this, PostServiceActivity.class);
             intent.putExtra("EDIT_STATUS", "None");
-            intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+            intent.putExtra(APPOINTMENT_TYPE, SERVICES);
             startActivity(intent);
         }
     }

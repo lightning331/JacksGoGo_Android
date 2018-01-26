@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
@@ -22,12 +23,12 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context mContext;
     private ArrayList<JGGCategoryModel> mCategories;
-    private String mType;
+    private JGGAppBaseModel.AppointmentType mType;
 
-    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data) {
+    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data, JGGAppBaseModel.AppointmentType type) {
         mContext = context;
         mCategories = data;
-        //mType = type;
+        mType = type;
     }
 
     @Override
@@ -40,23 +41,42 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         CategoryViewHolder categoryView = (CategoryViewHolder) holder;
-        if (mCategories != null) {
-            String categoryName = mCategories.get(position).getName();
-            String url = mCategories.get(position).getImage();
-            categoryView.setData(url, categoryName);
-
-            categoryView.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(position);
+        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+            if (mCategories != null) {
+                String categoryName = mCategories.get(position).getName();
+                String url = mCategories.get(position).getImage();
+                categoryView.setData(url, categoryName);
+            }
+        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+            if (position == 0) {
+                categoryView.lblCategory.setText("Quick Jobs");
+                categoryView.imgCategory.setImageResource(R.mipmap.icon_cat_quickjob);
+            } else {
+                if (mCategories != null) {
+                    String categoryName = mCategories.get(position - 1).getName();
+                    String url = mCategories.get(position - 1).getImage();
+                    categoryView.setData(url, categoryName);
                 }
-            });
+            }
         }
+        categoryView.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        if (mCategories != null) return mCategories.size();
+        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+            if (mCategories != null)
+                return mCategories.size();
+        }
+        else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+            if (mCategories != null)
+                return mCategories.size() + 1;
+        }
         return 0;
     }
 
@@ -73,7 +93,6 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
-
 
     private static class CategoryViewHolder extends RecyclerView.ViewHolder {
 

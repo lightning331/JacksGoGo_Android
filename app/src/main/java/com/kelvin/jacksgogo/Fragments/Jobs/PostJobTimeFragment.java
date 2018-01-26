@@ -26,7 +26,6 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,17 +124,18 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         btnOneTime.setOnClickListener(this);
         btnRepeating.setOnClickListener(this);
 
-        creatingJob = ((PostServiceActivity)mContext).creatingJob;
+        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
         selectedJobType = creatingJob.getJobType();
         isSpecific = creatingJob.getJobTime().isSpecific();
         selectedRepeatingType = creatingJob.getRepetitionType();
+        repetition = creatingJob.getRepetition();
         selectedRepeatingDays = creatingJob.getSelectedRepeatingDays();
-        if (creatingJob.getJobTime().getJobStartOn() != null) {
-            lblDate.setText(getDateString(creatingJob.getJobTime().getJobStartOn()));
-            startTime = Global.getTimeString(creatingJob.getJobTime().getJobStartOn());
+        if (creatingJob.getJobTime().getStartOn() != null) {
+            lblDate.setText(getDateString(creatingJob.getJobTime().getStartOn()));
+            startTime = Global.getTimeString(creatingJob.getJobTime().getStartOn());
             lblTime.setText(startTime);
-            if (creatingJob.getJobTime().getJobEndOn() != null) {
-                endTime = Global.getTimeString(creatingJob.getJobTime().getJobEndOn());
+            if (creatingJob.getJobTime().getEndOn() != null) {
+                endTime = Global.getTimeString(creatingJob.getJobTime().getEndOn());
                 lblTime.setText(startTime + " - " + endTime);
             }
             onNextButtonEnable();
@@ -179,12 +179,14 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                     btnNext.setVisibility(View.GONE);
                 } else if (isSpecific) {
                     specific = true;
+                    repeatingJob = true;
                     onYellowButtonColor(btnSpecific);
                     btnAnyDay.setVisibility(View.GONE);
                     btnDate.setOnClickListener(this);
                     btnTime.setOnClickListener(this);
                 } else if (!isSpecific) {
                     anyTime = true;
+                    repeatingJob = true;
                     onYellowButtonColor(btnAnyDay);
                     btnSpecific.setVisibility(View.GONE);
                     lblCertainDateTime.setVisibility(View.VISIBLE);
@@ -276,6 +278,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     }
 
     private void onShowRepeatingDayDialog(Global.JGGRepetitionType type) {
+        selectedRepeatingDays.clear();
         RepeatingDayDialog builder = new RepeatingDayDialog(mContext, type);
         builder.setOnItemClickListener(new RepeatingDayDialog.OnItemClickListener() {
             @Override
@@ -284,8 +287,8 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_alert_ok) {
                     for (int i = 0; i < days.size(); i ++) {
-                        Integer day = days.get(i);
-                        if (repetition.equals("")) repetition = day.toString();
+                        Integer day = days.get(i) - 1;
+                        if (repetition == null || repetition.equals("")) repetition = day.toString();
                         else repetition = repetition + "," + day.toString();
                         selectedRepeatingDays.add(day);
                     }
@@ -370,11 +373,13 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
             if (weekly) selectedRepeatingType = Global.JGGRepetitionType.none;
             else selectedRepeatingType = Global.JGGRepetitionType.weekly;
             selectedRepeatingDays.clear();
+            repetition = "";
             weekly = !weekly;
         } else if (view.getId() == R.id.btn_post_job_monthly) {
             if (monthly) selectedRepeatingType = Global.JGGRepetitionType.none;
             else selectedRepeatingType = Global.JGGRepetitionType.monthly;
             selectedRepeatingDays.clear();
+            repetition = "";
             monthly = !monthly;
         } else if (view.getId() == R.id.btn_post_job_add_another_day) {
             onShowRepeatingDayDialog(selectedRepeatingType);
@@ -393,15 +398,15 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
             timeModel.setSpecific(isSpecific);
             startOn = Global.getDate(selectedDay + " " + startTime + ":" + "00");
             endOn = Global.getDate(selectedDay + " " + endTime + ":" + "00");
-            timeModel.setJobStartOn(startOn);
-            timeModel.setJobEndOn(endOn);
+            timeModel.setStartOn(startOn);
+            timeModel.setEndOn(endOn);
             creatingJob.setJobTime(timeModel);
         } else if (selectedJobType == Global.JGGJobType.repeating) {
             creatingJob.setRepetition(repetition);
-            creatingJob.setRepetitionType(selectedRepeatingType);
         }
+        creatingJob.setRepetitionType(selectedRepeatingType);
         creatingJob.setJobType(selectedJobType);
-        ((PostServiceActivity)mContext).creatingJob = creatingJob;
+        ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
     }
 
     public String getDateString(Date date) {

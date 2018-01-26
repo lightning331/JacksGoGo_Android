@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
+import com.google.gson.annotations.SerializedName;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -12,6 +13,21 @@ import java.util.Date;
  */
 
 public class JGGAppointmentBaseModel {
+
+    private String Title;
+    private String Description;
+    private String Tags;
+    private String RegionID;
+    private JGGRegionModel Region;
+    private JGGCurrencyModel Currency;
+    private String CurrencyCode;
+    private String UserProfileID;
+    private JGGUserProfileModel UserProfile;
+    private Date PostOn;
+    private int Status = 0;
+    private JGGAddressModel Address;
+    private JGGAddressModel DAddress;
+    private AppointmentType type;
 
     public enum AppointmentStatus {
         NONE,
@@ -31,20 +47,6 @@ public class JGGAppointmentBaseModel {
         GOCLUB,
         UNKNOWN
     }
-
-    private String Title;
-    private String Description;
-    private String Tags;
-    private String RegionID;
-    private JGGRegionModel Region;
-    private JGGCurrencyModel Currency;
-    private String CurrencyCode;
-    private String UserProfileID;
-    private JGGUserProfileModel UserProfile;
-    private Date PostOn;
-    private int Status = 0;
-    private JGGAddressModel Address;
-    private AppointmentType type;
 
     public JGGAppointmentBaseModel() {
         super();
@@ -146,6 +148,14 @@ public class JGGAppointmentBaseModel {
 
     public void setAddress(JGGAddressModel address) {
         Address = address;
+    }
+
+    public JGGAddressModel getDAddress() {
+        return DAddress;
+    }
+
+    public void setDAddress(JGGAddressModel DAddress) {
+        this.DAddress = DAddress;
     }
 
     public AppointmentType getType() {

@@ -86,7 +86,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
                 //else remove selected item color.
                 viewHolder.btnBackground.setBackgroundResource(R.drawable.green_border_background);
                 viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-                if (appointmentType.equals("JOB")) {
+                if (appointmentType.equals("JOBS")) {
                     viewHolder.btnBackground.setBackgroundResource(R.drawable.cyan_border_background);
                     viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
                 }
@@ -96,7 +96,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
             nextButtonCell.title.setText(R.string.go_to_summary);
             nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-            if (appointmentType.equals("JOB")) nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+            if (appointmentType.equals("JOBS")) nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
             nextButtonCell.btnOriginal.setBorderWidth((float) 0);
         }
     }

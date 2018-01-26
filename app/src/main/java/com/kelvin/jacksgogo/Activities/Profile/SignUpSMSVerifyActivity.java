@@ -22,8 +22,10 @@ import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -107,14 +109,14 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
         progressDialog = Global.createProgressDialog(this);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGUserBaseResponse> signUpCall = signInManager.verifyPhoneNumber(strPhoneNumber, strOTP);
-        signUpCall.enqueue(new Callback<JGGUserBaseResponse>() {
+        Call<JGGUserProfileResponse> signUpCall = signInManager.verifyPhoneNumber(strPhoneNumber, strOTP);
+        signUpCall.enqueue(new Callback<JGGUserProfileResponse>() {
             @Override
-            public void onResponse(Call<JGGUserBaseResponse> call, Response<JGGUserBaseResponse> response) {
+            public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getValue() != null) {
-                        JGGUserBaseModel user = response.body().getValue();
+                        JGGUserProfileModel user = response.body().getValue();
                         JGGAppManager.getInstance(SignUpSMSVerifyActivity.this).currentUser = user;
                         onShowMainActivity();
                     } else {
@@ -127,7 +129,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
             }
 
             @Override
-            public void onFailure(Call<JGGUserBaseResponse> call, Throwable t) {
+            public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
                 Log.d("SignUpSMSVerifyActivity", t.getMessage());
                 Toast.makeText(SignUpSMSVerifyActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();

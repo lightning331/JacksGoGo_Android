@@ -19,6 +19,11 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Search.SearchResultActivity;
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 public class ServiceSearchMainFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
@@ -44,7 +49,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     public static ServiceSearchMainFragment newInstance(String type) {
         ServiceSearchMainFragment fragment = new ServiceSearchMainFragment();
         Bundle args = new Bundle();
-        args.putString("APPOINTMENT_TYPE", type);
+        args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,7 +58,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            appType = getArguments().getString("APPOINTMENT_TYPE");
+            appType = getArguments().getString(APPOINTMENT_TYPE);
         }
     }
 
@@ -65,11 +70,11 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
 
         initView(view);
 
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             initViewColor(getResources().getColor(R.color.JGGGreen));
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             initViewColor(getResources().getColor(R.color.JGGCyan));
-        } else if (appType.equals("GOCLUB")) {
+        } else if (appType.equals(GOCLUB)) {
             initViewColor(getResources().getColor(R.color.JGGPurple));
         }
 
@@ -98,7 +103,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
 
     private void initViewColor(int color) {
 
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             searchLayout.setBackgroundResource(R.drawable.green_border_background);
             btnAdvanced.setBackgroundResource(R.drawable.green_border_background);
             txtSearch.setHint("Search Services");
@@ -108,7 +113,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
             btnEvent.setBackgroundResource(R.drawable.green_border_background);
             btnUser.setBackgroundResource(R.drawable.green_border_background);
             btnSearch.setImageResource(R.mipmap.button_search_round_green);
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             searchLayout.setBackgroundResource(R.drawable.cyan_border_background);
             btnAdvanced.setBackgroundResource(R.drawable.cyan_border_background);
             txtSearch.setHint("Search Jobs");
@@ -118,7 +123,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
             btnEvent.setBackgroundResource(R.drawable.cyan_border_background);
             btnUser.setBackgroundResource(R.drawable.cyan_border_background);
             btnSearch.setImageResource(R.mipmap.button_search_round_cyan);
-        } else if (appType.equals("GOCLUB")) {
+        } else if (appType.equals(GOCLUB)) {
             searchLayout.setBackgroundResource(R.drawable.purple_border_background);
             btnAdvanced.setBackgroundResource(R.drawable.purple_border_background);
             txtSearch.setHint("Search GoClub");
@@ -169,7 +174,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
             ft.commit();
         } else if (view.getId() == R.id.btn_search) {
             Intent intent = new Intent(mContext, SearchResultActivity.class);
-            intent.putExtra("APPOINTMENT_TYPE", appType);
+            intent.putExtra(APPOINTMENT_TYPE, appType);
             startActivity(intent);
         } else if (view.getId() == R.id.btn_search_jobs) {
 

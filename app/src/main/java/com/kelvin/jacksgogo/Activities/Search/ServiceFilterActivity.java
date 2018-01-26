@@ -15,9 +15,15 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ServiceFilterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,14 +35,21 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
     private CategoryCellAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
-    private String appType;
+    private JGGAppBaseModel.AppointmentType mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_filter);
 
-        appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
+        String appType = getIntent().getStringExtra(APPOINTMENT_TYPE);
+        if (appType.equals(SERVICES)) {
+            mType = JGGAppBaseModel.AppointmentType.SERVICES;
+        } else if (appType.equals(JOBS)) {
+            mType = JGGAppBaseModel.AppointmentType.JOBS;
+        } else if (appType.equals(GOCLUB)) {
+            mType = JGGAppBaseModel.AppointmentType.GOCLUB;
+        }
 
         initView();
     }
@@ -50,15 +63,15 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
         closeButton.setOnClickListener(this);
 
-        if (appType.equals("SERVICES")) {
+        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_green);
             btnCurrentLocation.setBackgroundResource(R.drawable.green_background);
 
-        } else if (appType.equals("JOBS")) {
+        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_cyan);
             btnCurrentLocation.setBackgroundResource(R.drawable.cyan_background);
 
-        } else if (appType.equals("GOCLUB")) {
+        } else if (mType == JGGAppBaseModel.AppointmentType.GOCLUB) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_purple);
             btnCurrentLocation.setBackgroundResource(R.drawable.purple_background);
 
@@ -70,14 +83,28 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        adapter = new CategoryCellAdapter(this, mCategories);
+        adapter = new CategoryCellAdapter(this, mCategories, mType);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String name = mCategories.get(position).getName();
-                Toast.makeText(ServiceFilterActivity.this, name,
-                        Toast.LENGTH_LONG).show();
+                if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    if (mCategories != null) {
+                        String name = mCategories.get(position).getName();
+                        Toast.makeText(ServiceFilterActivity.this, name,
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+                    if (mCategories != null) {
+                        String name = "";
+                        if (position == 0)
+                            name = "Quick Jobs";
+                        else
+                            name = mCategories.get(position - 1).getName();
 
+                        Toast.makeText(ServiceFilterActivity.this, name,
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
         recyclerView.setAdapter(adapter);

@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,17 +19,21 @@ import java.util.TimeZone;
  */
 
 public class JGGAppManager {
-    private static JGGAppManager appManager = new JGGAppManager();
-    private static SharedPreferences sharedPreferences;
-    private static SharedPreferences.Editor editor;
 
     private static final String TOKEN = "token";
     private static final String EXPIRE_IN = "expire_in";
     private static final String USERNAME_KEY = "username";
     private static final String PASSWORD_KEY = "password";
+    private static final String REGION_KEY = "region";
 
-    public JGGUserBaseModel currentUser;
+    private static JGGAppManager appManager = new JGGAppManager();
+    private static SharedPreferences sharedPreferences;
+    private static SharedPreferences.Editor editor;
+
+    public JGGUserProfileModel currentUser;
     public ArrayList<JGGCategoryModel> categories;
+    public ArrayList<JGGRegionModel> regions;
+    public JGGRegionModel currentRegion;
 
     private JGGAppManager() {
 
@@ -40,6 +45,15 @@ public class JGGAppManager {
             editor = sharedPreferences.edit();
         }
         return appManager;
+    }
+
+    public JGGRegionModel getCurrentRegion() {
+        currentRegion = regions.get(0);
+        return currentRegion;
+    }
+
+    public void setCurrentRegion(JGGRegionModel currentRegion) {
+        this.currentRegion = currentRegion;
     }
 
     public void saveToken(String token, Long expire_in) {

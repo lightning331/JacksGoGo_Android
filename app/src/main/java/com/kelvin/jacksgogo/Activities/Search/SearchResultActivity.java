@@ -8,8 +8,13 @@ import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class SearchResultActivity extends AppCompatActivity {
 
@@ -21,7 +26,7 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
-        String appType = getIntent().getStringExtra("APPOINTMENT_TYPE");
+        String appType = getIntent().getStringExtra(APPOINTMENT_TYPE);
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);
@@ -29,11 +34,11 @@ public class SearchResultActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.SERVICES);
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.JOBS);
-        } else if (appType.equals("GOCLUB")) {
+        } else if (appType.equals(GOCLUB)) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.GOCLUB);
         }
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {

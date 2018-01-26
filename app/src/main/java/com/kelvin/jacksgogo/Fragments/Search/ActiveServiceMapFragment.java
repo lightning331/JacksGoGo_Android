@@ -46,6 +46,9 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceInfoWindowAdapter;
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 public class ActiveServiceMapFragment extends Fragment
         implements View.OnClickListener,
         OnMapReadyCallback,
@@ -88,7 +91,7 @@ public class ActiveServiceMapFragment extends Fragment
     public static ActiveServiceMapFragment newInstance(String type) {
         ActiveServiceMapFragment fragment = new ActiveServiceMapFragment();
         Bundle args = new Bundle();
-        args.putString("APPOINTMENT_TYPE", type);
+        args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,9 +100,9 @@ public class ActiveServiceMapFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            appType = getArguments().getString("APPOINTMENT_TYPE");
+            appType = getArguments().getString(APPOINTMENT_TYPE);
         } else {
-            appType = "SERVICES";
+            appType = SERVICES;
         }
     }
 
@@ -180,7 +183,7 @@ public class ActiveServiceMapFragment extends Fragment
     public void onClick(View view) {
         if (view.getId() == R.id.btn_map_filter) {
             Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
-            intent.putExtra("APPOINTMENT_TYPE", appType);
+            intent.putExtra(APPOINTMENT_TYPE, appType);
             startActivity(intent);
         } else if (view.getId() == R.id.btn_user_location) {
 

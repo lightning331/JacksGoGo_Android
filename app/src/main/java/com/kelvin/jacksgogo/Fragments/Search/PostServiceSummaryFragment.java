@@ -25,6 +25,9 @@ import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 public class PostServiceSummaryFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
@@ -171,7 +174,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 case DUPLICATE:
                     Intent intent = new Intent(mContext, PostServiceActivity.class);
                     intent.putExtra("EDIT_STATUS", "None");
-                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                     startActivity(intent);
                     break;
                 default:

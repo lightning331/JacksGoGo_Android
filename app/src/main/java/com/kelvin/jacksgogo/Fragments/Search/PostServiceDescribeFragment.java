@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -35,6 +36,11 @@ import com.yanzhenjie.album.api.widget.Widget;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceDescribeFragment extends Fragment
         implements View.OnClickListener, TextWatcher {
@@ -62,7 +68,7 @@ public class PostServiceDescribeFragment extends Fragment
     private String strDesc;
     private String strTags;
 
-    private String mType;
+    private JGGAppBaseModel.AppointmentType appType;
     private JGGCreatingJobModel creatingJob;
 
     public PostServiceDescribeFragment() {
@@ -72,7 +78,7 @@ public class PostServiceDescribeFragment extends Fragment
     public static PostServiceDescribeFragment newInstance(String type) {
         PostServiceDescribeFragment fragment = new PostServiceDescribeFragment();
         Bundle args = new Bundle();
-        args.putString("appointment_type", type);
+        args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,7 +87,13 @@ public class PostServiceDescribeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mType = getArguments().getString("appointment_type");
+            String type = getArguments().getString(APPOINTMENT_TYPE);
+            if (type.equals(SERVICES))
+                appType = JGGAppBaseModel.AppointmentType.SERVICES;
+            else if (type.equals(JOBS))
+                appType = JGGAppBaseModel.AppointmentType.JOBS;
+            else if (type.equals(GOCLUB))
+                appType = JGGAppBaseModel.AppointmentType.GOCLUB;
         }
     }
 
@@ -119,9 +131,9 @@ public class PostServiceDescribeFragment extends Fragment
         txtTakePhoto = view.findViewById(R.id.lbl_take_photo);
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
-        if (mType.equals("JOB")) {
+        if (appType == JGGAppBaseModel.AppointmentType.JOBS) {
 
-            creatingJob = ((PostServiceActivity)mContext).creatingJob;
+            creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
 
             lblTitle.setText(R.string.post_job_desc_title);
             lblDescription.setText(R.string.post_job_desc_description);
@@ -231,12 +243,12 @@ public class PostServiceDescribeFragment extends Fragment
             strTitle = txtServiceTitle.getText().toString();
             strDesc = txtServiceDesc.getText().toString();
             strTags = txtServiceTag.getText().toString();
-            if (mType.equals("JOB")) {
+            if (appType == JGGAppBaseModel.AppointmentType.JOBS) {
                 creatingJob.setTitle(strTitle);
                 creatingJob.setDescription(strDesc);
                 creatingJob.setTags(strTags);
-                ((PostServiceActivity) mContext).creatingJob = creatingJob;
-            } else if (mType.equals("SERVICE")) {
+                ((PostServiceActivity) mContext).creatingAppointment = creatingJob;
+            } else if (appType == JGGAppBaseModel.AppointmentType.SERVICES) {
 
             }
             listener.onNextButtonClick();
@@ -258,7 +270,7 @@ public class PostServiceDescribeFragment extends Fragment
 
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.green_background);
-            if (mType.equals("JOB")) btnNext.setBackgroundResource(R.drawable.cyan_background);
+            if (appType == JGGAppBaseModel.AppointmentType.JOBS) btnNext.setBackgroundResource(R.drawable.cyan_background);
             btnNext.setOnClickListener(this);
         } else {
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));

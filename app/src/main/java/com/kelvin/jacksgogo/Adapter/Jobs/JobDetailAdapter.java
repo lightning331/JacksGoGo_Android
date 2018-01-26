@@ -17,6 +17,9 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCe
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 
 /**
  * Created by PUMA on 11/3/2017.
@@ -139,7 +142,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     public void onClick(View view) {
                         Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                         intent.putExtra("is_service", false);
-                        intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                        intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                         mContext.startActivity(intent);
                     }
                 });

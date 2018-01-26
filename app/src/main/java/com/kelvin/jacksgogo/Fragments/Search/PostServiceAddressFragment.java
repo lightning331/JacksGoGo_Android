@@ -18,8 +18,13 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceAddressFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -38,7 +43,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     private TextView lblNext;
 
     private boolean isChecked = false;
-    private String mType;
+    private JGGAppBaseModel.AppointmentType mType;
     private JGGCreatingJobModel creatingJob;
 
     public PostServiceAddressFragment() {
@@ -48,7 +53,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     public static PostServiceAddressFragment newInstance(String type) {
         PostServiceAddressFragment fragment = new PostServiceAddressFragment();
         Bundle args = new Bundle();
-        args.putString("appointment_type", type);
+        args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +62,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mType = getArguments().getString("appointment_type");
+            String type = getArguments().getString(APPOINTMENT_TYPE);
+            if (type.equals(SERVICES))
+                mType = JGGAppBaseModel.AppointmentType.SERVICES;
+            else if (type.equals(JOBS))
+                mType = JGGAppBaseModel.AppointmentType.JOBS;
         }
     }
 
@@ -66,6 +75,8 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_address, container, false);
+
+        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
 
         initView(view);
 
@@ -94,9 +105,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         txtStreet.addTextChangedListener(this);
         txtPostCode.addTextChangedListener(this);
 
-        if (mType.equals("JOB")) {
-
-            creatingJob = ((PostServiceActivity)mContext).creatingJob;
+        if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
 
             lblTitle.setText(R.string.post_job_address_title);
             lblDesc.setVisibility(View.VISIBLE);
@@ -147,7 +156,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             address.setAddress(txtStreet.getText().toString());
 
             creatingJob.setAddress(address);
-            ((PostServiceActivity)mContext).creatingJob = creatingJob;
+            ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
 
             listener.onNextButtonClick();
         }
@@ -166,7 +175,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             btnNext.setOnClickListener(this);
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.green_background);
-            if (mType.equals("JOB")) {
+            if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
                 btnNext.setBackgroundResource(R.drawable.cyan_background);
             }
         } else {

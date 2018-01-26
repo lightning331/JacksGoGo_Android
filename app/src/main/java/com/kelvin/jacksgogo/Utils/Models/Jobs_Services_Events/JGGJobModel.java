@@ -1,15 +1,14 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
-import android.media.Image;
-
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by PUMA on 10/28/2017.
@@ -17,10 +16,11 @@ import java.util.List;
 
 public class JGGJobModel extends JGGAppointmentBaseModel {
 
-    private String JobCategoryID;
+    private String CategoryID;
+    private JGGCategoryModel Category;
     private boolean IsRequest;
     private int ServiceType = 0;
-    private ArrayList<String> AttachmentURL;
+    private ArrayList<String> AttachmentURLs;
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
@@ -28,83 +28,45 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private int ReportType = 0;
     private boolean IsRescheduled;
     private String Repetition;
+    private boolean IsQuickJob;
+    private int ViewCount = 0;
     private JGGJobTimeModel JobTime;
-    private Global.JGGJobType JobType = Global.JGGJobType.none;
-    private Global.JGGRepetitionType RepetitionType = Global.JGGRepetitionType.none;
+    private ArrayList<JGGTimeSlotModel> Sessions;
+    private JGGProposalModel Proposal;
+    private Integer JobType;
+    private Integer RepetitionType;
 
     private ArrayList<JGGBiddingProviderModel> biddingProviders;
     private ArrayList<JGGProviderUserModel> invitedProviders;
-    private AppointmentType type;
 
     public JGGJobModel() {
         super();
-
-        type = AppointmentType.JOBS;
-        biddingProviders = new ArrayList<>();
-        invitedProviders = new ArrayList<>();
     }
 
-    public String reportTypeName() {
-        switch (ReportType) {
-            case 1:
-                return "Before & After Photo";
-            case 2:
-                return "Geotracking";
-            case 3:
-                return "Before & After Photo" + ", " + "Geotracking";
-            case 4:
-                return "PIN Code";
-            case 5:
-                return "Before & After Photo" + ", " + "PIN Code";
-            case 6:
-                return "Geotracking" + ", " + "PIN Code";
-            case 7:
-                return "Before & After Photo" + ", " + "Geotracking" + ", " + "PIN Code";
-            default:
-                return "No set";
-        }
+    @Override
+    public AppointmentType getType() {
+        return AppointmentType.JOBS;
     }
 
-    public List<Integer> selectedID() {
-        List<Integer> array = new ArrayList<>();
-        switch (ReportType) {
-            case 1:
-                array.add(1);
-                return array;
-            case 2:
-                array.add(2);
-                return array;
-            case 3:
-                array.add(1);
-                array.add(2);
-                return array;
-            case 4:
-                array.add(3);
-                return array;
-            case 5:
-                array.add(1);
-                array.add(3);
-                return array;
-            case 6:
-                array.add(2);
-                array.add(3);
-                return array;
-            case 7:
-                array.add(1);
-                array.add(2);
-                array.add(3);
-                return array;
-            default:
-                return array;
-        }
+    @Override
+    public void setType(AppointmentType type) {
+        super.setType(type);
     }
 
-    public String getJobCategoryID() {
-        return JobCategoryID;
+    public String getCategoryID() {
+        return CategoryID;
     }
 
-    public void setJobCategoryID(String jobCategoryID) {
-        JobCategoryID = jobCategoryID;
+    public void setCategoryID(String categoryID) {
+        CategoryID = categoryID;
+    }
+
+    public JGGCategoryModel getCategory() {
+        return Category;
+    }
+
+    public void setCategory(JGGCategoryModel category) {
+        Category = category;
     }
 
     public boolean isRequest() {
@@ -123,12 +85,12 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         ServiceType = serviceType;
     }
 
-    public ArrayList<String> getAttachmentURL() {
-        return AttachmentURL;
+    public ArrayList<String> getAttachmentURLs() {
+        return AttachmentURLs;
     }
 
-    public void setAttachmentURL(ArrayList<String> attachmentURL) {
-        AttachmentURL = attachmentURL;
+    public void setAttachmentURLs(ArrayList<String> attachmentURLs) {
+        AttachmentURLs = attachmentURLs;
     }
 
     public Double getBudgetFrom() {
@@ -183,6 +145,38 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         return Repetition;
     }
 
+    public boolean isQuickJob() {
+        return IsQuickJob;
+    }
+
+    public void setQuickJob(boolean quickJob) {
+        IsQuickJob = quickJob;
+    }
+
+    public int getViewCount() {
+        return ViewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        ViewCount = viewCount;
+    }
+
+    public ArrayList<JGGTimeSlotModel> getSessions() {
+        return Sessions;
+    }
+
+    public void setSessions(ArrayList<JGGTimeSlotModel> sessions) {
+        Sessions = sessions;
+    }
+
+    public JGGProposalModel getProposal() {
+        return Proposal;
+    }
+
+    public void setProposal(JGGProposalModel proposal) {
+        Proposal = proposal;
+    }
+
     public void setRepetition(String repetition) {
         Repetition = repetition;
     }
@@ -196,19 +190,19 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     }
 
     public Global.JGGJobType getJobType() {
-        return JobType;
+        return Global.JGGJobType.valueOf(JobType);
     }
 
     public void setJobType(Global.JGGJobType jobType) {
-        JobType = jobType;
+        JobType = jobType.getValue();
     }
 
     public Global.JGGRepetitionType getRepetitionType() {
-        return RepetitionType;
+        return Global.JGGRepetitionType.valueOf(RepetitionType);
     }
 
     public void setRepetitionType(Global.JGGRepetitionType repetitionType) {
-        RepetitionType = repetitionType;
+        RepetitionType = repetitionType.getValue();
     }
 
     public ArrayList<JGGBiddingProviderModel> getBiddingProviders() {
@@ -225,16 +219,6 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
 
     public void setInvitedProviders(ArrayList<JGGProviderUserModel> invitedProviders) {
         this.invitedProviders = invitedProviders;
-    }
-
-    @Override
-    public AppointmentType getType() {
-        return type;
-    }
-
-    @Override
-    public void setType(AppointmentType type) {
-        this.type = type;
     }
 }
 

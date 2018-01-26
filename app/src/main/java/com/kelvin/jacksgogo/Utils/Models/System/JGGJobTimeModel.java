@@ -8,25 +8,25 @@ import java.util.Date;
 
 public class JGGJobTimeModel {
 
-    private Date JobStartOn;
-    private Date JobEndOn;
+    private Date StartOn;
+    private Date EndOn;
     private Boolean IsSpecific;
     private int Peoples;
 
-    public Date getJobStartOn() {
-        return JobStartOn;
+    public Date getStartOn() {
+        return StartOn;
     }
 
-    public void setJobStartOn(Date jobStartOn) {
-        JobStartOn = jobStartOn;
+    public void setStartOn(Date startOn) {
+        StartOn = startOn;
     }
 
-    public Date getJobEndOn() {
-        return JobEndOn;
+    public Date getEndOn() {
+        return EndOn;
     }
 
-    public void setJobEndOn(Date jobEndOn) {
-        JobEndOn = jobEndOn;
+    public void setEndOn(Date endOn) {
+        EndOn = endOn;
     }
 
     public Boolean isSpecific() {

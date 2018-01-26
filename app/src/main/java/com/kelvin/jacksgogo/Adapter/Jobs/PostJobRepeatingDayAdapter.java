@@ -53,9 +53,9 @@ public class PostJobRepeatingDayAdapter extends RecyclerView.Adapter {
         else {
             Integer day = selectedRepeatingDays.get(position);
             if (mType == Global.JGGRepetitionType.weekly) {
-                cell.btnDay.setText("Every " + Global.getWeekName(day.intValue() - 1));
+                cell.btnDay.setText("Every " + Global.getWeekName(day.intValue()));
             } else if (mType == Global.JGGRepetitionType.monthly) {
-                cell.btnDay.setText("Every " + Global.getDayName(day.intValue() - 1) + " of the month.");
+                cell.btnDay.setText("Every " + Global.getDayName(day.intValue()) + " of the month.");
             }
             cell.btnClose.setVisibility(View.VISIBLE);
             cell.btnClose.setOnClickListener(new View.OnClickListener() {

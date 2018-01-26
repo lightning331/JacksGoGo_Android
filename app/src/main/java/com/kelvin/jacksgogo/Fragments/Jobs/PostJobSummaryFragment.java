@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -58,9 +59,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
     private AlertDialog alertDialog;
     private PostJobStatus jobStatus;
-    public JGGCategoryModel selectedCategory;
+    private JGGCategoryModel selectedCategory;
     private JGGCreatingJobModel creatingJob;
     private ProgressDialog progressDialog;
+    private ArrayList<String> attachmentURLs;
+    private String postedJobID;
 
     public enum PostJobStatus {
         NONE,
@@ -97,9 +100,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_job_summary, container, false);
 
+        attachmentURLs = new ArrayList<>();
         selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
-        ((PostServiceActivity)mContext).creatingJob.setJobCategoryID(selectedCategory.getID());
-        creatingJob = ((PostServiceActivity)mContext).creatingJob;
+        ((PostServiceActivity)mContext).creatingAppointment.setCategoryID(selectedCategory.getID());
+        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+        creatingJob.setAttachmentURLs(attachmentURLs);
 
         initView(view);
         setDatas();
@@ -155,32 +160,32 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                         + " "
                         + "to $ " + creatingJob.getBudgetTo().toString());
             // Report
-            lblReport.setText(creatingJob.reportTypeName());
+            lblReport.setText(Global.reportTypeName(creatingJob.getReportType()));
             // Time
             if (creatingJob.getJobType() == Global.JGGJobType.oneTime) {
                 String time = "";
                 if (creatingJob.getJobTime().isSpecific()) {
-                    if (creatingJob.getJobTime().getJobEndOn() != null)
+                    if (creatingJob.getJobTime().getEndOn() != null)
                         time = "on "
-                                + getDateString(creatingJob.getJobTime().getJobStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn())
+                                + getDateString(creatingJob.getJobTime().getStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn())
                                 + " - "
-                                + Global.getTimeString(creatingJob.getJobTime().getJobEndOn());
+                                + Global.getTimeString(creatingJob.getJobTime().getEndOn());
                     else
                         time = "on "
-                                + getDateString(creatingJob.getJobTime().getJobStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn());
+                                + getDateString(creatingJob.getJobTime().getStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn());
                 } else {
-                    if (creatingJob.getJobTime().getJobEndOn() != null)
+                    if (creatingJob.getJobTime().getEndOn() != null)
                         time = "any time until "
-                                + getDateString(creatingJob.getJobTime().getJobStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn())
+                                + getDateString(creatingJob.getJobTime().getStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn())
                                 + " - "
-                                + Global.getTimeString(creatingJob.getJobTime().getJobEndOn());
+                                + Global.getTimeString(creatingJob.getJobTime().getEndOn());
                     else
                         time = "any time until "
-                                + getDateString(creatingJob.getJobTime().getJobStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getJobStartOn());
+                                + getDateString(creatingJob.getJobTime().getStartOn())
+                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn());
                 }
                 lblTime.setText(time);
             } else if (creatingJob.getJobType() == Global.JGGJobType.repeating) {
@@ -190,16 +195,16 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 if (creatingJob.getRepetitionType() == Global.JGGRepetitionType.weekly) {
                     for (int i = 0; i < items.length; i ++) {
                         if (time.equals(""))
-                            time = "Every " + Global.getWeekName(Integer.parseInt(items[i]) - 1);
+                            time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
                         else
-                            time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]) - 1);
+                            time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
                     }
                 } else if (creatingJob.getRepetitionType() == Global.JGGRepetitionType.monthly) {
                     for (int i = 0; i < items.length; i ++) {
                         if (time.equals(""))
-                            time = "Every " + Global.getDayName(Integer.parseInt(items[i]) - 1) + " of the month";
+                            time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
                         else
-                            time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i]) - 1) + " of the month";
+                            time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
                     }
                 }
                 lblTime.setText(time);
@@ -215,22 +220,16 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
     }
 
-    public String getDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
-        String dateString = dateFormat.format(date);
-        return dateString;
-    }
-
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostJobResponse> call = manager.postJob(creatingJob);
+        Call<JGGPostJobResponse> call = manager.postNewJob(creatingJob);
         call.enqueue(new Callback<JGGPostJobResponse>() {
             @Override
             public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    response.body().getValue();
+                    postedJobID = response.body().getValue();
                     showAlertDialog();
                 } else {
                     int statusCode  = response.code();
@@ -260,7 +259,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
 
         title.setText(R.string.alert_job_posted_title);
-        desc.setText(R.string.alert_job_posted_desc);
+        desc.setText("Job reference no: " + postedJobID + '\n' +  '\n' + "Good luck!");
         cancelButton.setVisibility(View.GONE);
         okButton.setText(R.string.alert_view_job_button);
         okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
@@ -268,6 +267,12 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
+    }
+
+    public String getDateString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+        String dateString = dateFormat.format(date);
+        return dateString;
     }
 
     @Override
@@ -281,19 +286,19 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                     showAlertDialog();
                     break;
                 case DUPLICATE:
-                    //                    Intent intent = new Intent(mContext, PostServiceActivity.class);
-                    //                    intent.putExtra("EDIT_STATUS", "None");
-                    //                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
-                    //                    startActivity(intent);
+//                    Intent intent = new Intent(mContext, PostServiceActivity.class);
+//                    intent.putExtra("EDIT_STATUS", "None");
+//                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
+//                    startActivity(intent);
                     break;
                 default:
                     break;
             }
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-            //            Intent intent = new Intent(mContext, PostedServiceActivity.class);
-            //            intent.putExtra("is_post", true);
-            //            mContext.startActivity(intent);
+//            Intent intent = new Intent(mContext, PostedServiceActivity.class);
+//            intent.putExtra("is_post", true);
+//            mContext.startActivity(intent);
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()

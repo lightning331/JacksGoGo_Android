@@ -19,6 +19,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 /**
  * Created by PUMA on 12/19/2017.
  */
@@ -96,13 +100,13 @@ public class CategoryGridAdapter extends BaseAdapter implements View.OnClickList
     public void onClick(View view) {
         listener.onItemClick(view, position);
         isSelected = !isSelected;
-        if (mType.equals("SERVICES")) {
+        if (mType.equals(SERVICES)) {
             if (isSelected) itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
             else itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-        } else if (mType.equals("JOBS")) {
+        } else if (mType.equals(JOBS)) {
             if (isSelected) itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan10Percent));
             else itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-        } else if (mType.equals("GOCLUB")) {
+        } else if (mType.equals(GOCLUB)) {
             if (isSelected) itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGPurple10Percent));
             else itemBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
         }

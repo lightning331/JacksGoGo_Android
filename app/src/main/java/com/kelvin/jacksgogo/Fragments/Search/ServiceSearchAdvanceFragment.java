@@ -30,6 +30,8 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+
 public class ServiceSearchAdvanceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
@@ -61,7 +63,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     public static ServiceSearchAdvanceFragment newInstance(String type) {
         ServiceSearchAdvanceFragment fragment = new ServiceSearchAdvanceFragment();
         Bundle args = new Bundle();
-        args.putString("APPOINTMENT_TYPE", type);
+        args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +72,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String appType = getArguments().getString("APPOINTMENT_TYPE");
+            String appType = getArguments().getString(APPOINTMENT_TYPE);
             switch (appType) {
                 case "SERVICES":
                     mType = JGGAppBaseModel.AppointmentType.SERVICES;
@@ -131,14 +133,28 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, mCategories);
+        adapter = new CategoryCellAdapter(mContext, mCategories, mType);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String name = mCategories.get(position).getName();
-                Toast.makeText(mContext, name,
-                        Toast.LENGTH_LONG).show();
+                if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    if (mCategories != null) {
+                        String name = mCategories.get(position).getName();
+                        Toast.makeText(mContext, name,
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+                    if (mCategories != null) {
+                        String name = "";
+                        if (position == 0)
+                            name = "Quick Jobs";
+                        else
+                            name = mCategories.get(position - 1).getName();
 
+                        Toast.makeText(mContext, name,
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -146,6 +162,16 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
 
     private void onAddTimeClick() {
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, mType);
+        builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, String start, String end, Boolean startAM, Boolean endAM) {
+                if (view.getId() == R.id.btn_add_time_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_ok) {
+                    alertDialog.dismiss();
+                }
+            }
+        });
         alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();

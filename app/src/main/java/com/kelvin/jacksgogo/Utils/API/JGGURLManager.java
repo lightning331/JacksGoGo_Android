@@ -15,7 +15,7 @@ public class JGGURLManager {
 
     private static Retrofit retrofit = null;
 
-    //private static final String BASE_URL = "http://192.168.0.30:50370/";
+//    private static final String BASE_URL = "http://192.168.0.30:50370/";
     private static final String BASE_URL = "http://www.meridians2.com/JGGDev/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

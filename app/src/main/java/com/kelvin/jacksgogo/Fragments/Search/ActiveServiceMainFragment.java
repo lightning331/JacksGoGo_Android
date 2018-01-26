@@ -20,6 +20,10 @@ import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnFragmentInteractionListener {
 
     private OnFragmentInteractionListener mListener;
@@ -37,7 +41,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     public static ActiveServiceMainFragment newInstance(String appType) {
         ActiveServiceMainFragment fragment = new ActiveServiceMainFragment();
         Bundle args = new Bundle();
-        args.putString("APPOINTMENT_TYPE", appType);
+        args.putString(APPOINTMENT_TYPE, appType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,9 +50,9 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            appType = getArguments().getString("APPOINTMENT_TYPE");
+            appType = getArguments().getString(APPOINTMENT_TYPE);
         } else {
-            appType = "SERVICES";
+            appType = SERVICES;
         }
     }
 
@@ -72,7 +76,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             ActiveServiceAdapter adapter = new ActiveServiceAdapter();
             adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
@@ -83,7 +87,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                 }
             });
             recyclerView.setAdapter(adapter);
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             JobsListingAdapter adapter = new JobsListingAdapter();
             adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
@@ -105,7 +109,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             public void onTabbarItemClick(View view) {
                 if (view.getId() == R.id.btn_active_service_filter) {
                     Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
-                    intent.putExtra("APPOINTMENT_TYPE", appType);
+                    intent.putExtra(APPOINTMENT_TYPE, appType);
                     startActivity(intent);
                 } else if (view.getId() == R.id.btn_active_service_mapview) {
                     ActiveServiceMapFragment mapFragment = ActiveServiceMapFragment.newInstance(appType);

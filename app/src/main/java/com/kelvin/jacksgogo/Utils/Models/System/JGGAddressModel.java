@@ -15,6 +15,8 @@ public class JGGAddressModel {
     private double Lat;
     private double Lon;
     private String CountryCode;
+    private boolean IsDrop;
+
     private String fullAddress;
 
     public String getFullAddress() {
@@ -98,5 +100,13 @@ public class JGGAddressModel {
 
     public void setCountryCode(String countryCode) {
         CountryCode = countryCode;
+    }
+
+    public boolean isDrop() {
+        return IsDrop;
+    }
+
+    public void setDrop(boolean drop) {
+        IsDrop = drop;
     }
 }

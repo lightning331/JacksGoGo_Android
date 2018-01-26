@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils.Models.User;
 
+import com.google.gson.annotations.SerializedName;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 
 /**
@@ -10,6 +11,7 @@ public class JGGUserProfileModel {
 
     private JGGRegionModel Region;
     private JGGUserBaseModel User;
+    private String ID;
     private String RegionID;
     private String UserID;
     private String DisplayName;
@@ -50,6 +52,14 @@ public class JGGUserProfileModel {
     private String BillingMobileNo_AreaCode;
     private String BillingMobileNo_Number;
     private String BillingMobileNo_Extension;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public JGGRegionModel getRegion() {
         return Region;

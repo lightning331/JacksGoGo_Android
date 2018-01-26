@@ -1,6 +1,5 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -86,7 +85,7 @@ public class PostJobMainTabFragment extends Fragment {
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(((PostServiceActivity)mContext).selectedCategory.getName());
-        creatingJob = ((PostServiceActivity)mContext).creatingJob;
+        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
 
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -146,7 +145,7 @@ public class PostJobMainTabFragment extends Fragment {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         if (tabbarView.getTabName() == PostJobTabbarView.TabName.DESCRIBE) {
-            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("JOB");
+            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("JOBS");
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
@@ -166,7 +165,7 @@ public class PostJobMainTabFragment extends Fragment {
             });
             ft.replace(R.id.post_job_detail_container, frag, frag.getTag());
         } else if (tabbarView.getTabName() == PostJobTabbarView.TabName.ADDRESS) {
-            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("JOB");
+            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("JOBS");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
@@ -189,10 +188,10 @@ public class PostJobMainTabFragment extends Fragment {
             describeContainer.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            creatingJob = ((PostServiceActivity)mContext).creatingJob;
-            selectedIds = creatingJob.selectedID();
+            creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+            selectedIds = Global.selectedID(creatingJob.getReportType());
 
-            reportAdapter = new EditJobReportAdapter(mContext, true, "JOB");
+            reportAdapter = new EditJobReportAdapter(mContext, true, "JOBS");
             reportAdapter.setSelectedIds(selectedIds);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
@@ -252,7 +251,7 @@ public class PostJobMainTabFragment extends Fragment {
             }
         }
         creatingJob.setReportType(reportType);
-        ((PostServiceActivity)mContext).creatingJob = creatingJob;
+        ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
     }
 
     public void onButtonPressed(Uri uri) {

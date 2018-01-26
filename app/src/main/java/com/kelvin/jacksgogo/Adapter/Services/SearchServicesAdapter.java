@@ -19,6 +19,9 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 /**
  * Created by PUMA on 11/14/2017.
  */
@@ -86,7 +89,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
-                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                     mContext.startActivity(intent);
                 }
             });

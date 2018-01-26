@@ -6,9 +6,10 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -22,14 +23,14 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("oauth/Token")
-    Call<JGGTokenResponse> oauthTocken(@Field("username") String email,
-                                       @Field("password") String password,
-                                       @Field("grant_type") String grant_type);
+    Call<JGGTokenResponse> authTocken(@Field("username") String email,
+                                      @Field("password") String password,
+                                      @Field("grant_type") String grant_type);
 
     @FormUrlEncoded
     @POST("api/Account/Login")
-    Call<JGGUserBaseResponse> accountLogin(@Field("email") String email,
-                                           @Field("password") String password);
+    Call<JGGUserProfileResponse> accountLogin(@Field("email") String email,
+                                              @Field("password") String password);
 
 
     @GET("api/Region/GetRegions")
@@ -46,13 +47,12 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("api/Account/VerifyCode")
-    Call<JGGUserBaseResponse> verifyPhoneNumber(@Field("Provider") String phoneNumber,
+    Call<JGGUserProfileResponse> verifyPhoneNumber(@Field("Provider") String phoneNumber,
                                                 @Field("Code") String code);
 
     @GET("api/Category/GetAllCategories")
     Call<JGGCategoryResponse> getCategory();
 
-    @FormUrlEncoded
     @POST("api/Appointment/PostJob")
-    Call<JGGPostJobResponse> postJob(JGGCreatingJobModel creatingJob);
+    Call<JGGPostJobResponse> postNewJob(@Body JGGCreatingJobModel creatingJob);
 }

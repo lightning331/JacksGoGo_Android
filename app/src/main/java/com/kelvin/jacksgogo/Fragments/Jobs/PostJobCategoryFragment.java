@@ -22,8 +22,8 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
 import java.util.ArrayList;
@@ -80,16 +80,15 @@ public class PostJobCategoryFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, categories);
+        adapter = new CategoryCellAdapter(mContext, categories, JGGAppBaseModel.AppointmentType.JOBS);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String name = categories.get(position).getName();
-                if (name.equals("QuickJob")) {
+                if (position == 0) {
 
                 } else {
                     PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE);
-                    ((PostServiceActivity)mContext).selectedCategory = categories.get(position);
+                    ((PostServiceActivity)mContext).selectedCategory = categories.get(position - 1);
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, frag)

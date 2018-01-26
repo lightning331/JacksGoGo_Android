@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -27,9 +25,9 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +51,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
     private String strPassword;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
-    private JGGAPIManager tokenService;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -128,8 +125,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         progressDialog = Global.createProgressDialog(mContext);
 
         Retrofit retrofit = JGGURLManager.getClient();
-        tokenService = retrofit.create(JGGAPIManager.class);
-        Call<JGGTokenResponse> call = tokenService.oauthTocken(strEmail, strPassword, "password");
+        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
+        Call<JGGTokenResponse> call = apiManager.authTocken(strEmail, strPassword, "password");
         call.enqueue(new Callback<JGGTokenResponse>() {
             @Override
             public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
@@ -141,14 +138,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                     JGGAppManager.getInstance(mContext).saveToken(access_token, expire_in);
 
                     JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-                    Call<JGGUserBaseResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
-                    loginCall.enqueue(new Callback<JGGUserBaseResponse>() {
+                    Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
+                    loginCall.enqueue(new Callback<JGGUserProfileResponse>() {
                         @Override
-                        public void onResponse(Call<JGGUserBaseResponse> call, Response<JGGUserBaseResponse> response) {
+                        public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
 
-                                JGGUserBaseModel user = response.body().getValue();
+                                JGGUserProfileModel user = response.body().getValue();
                                 JGGAppManager.getInstance(mContext).currentUser = user;
                                 JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
 
@@ -165,7 +162,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                         }
 
                         @Override
-                        public void onFailure(Call<JGGUserBaseResponse> call, Throwable t) {
+                        public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
                             Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }

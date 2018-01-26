@@ -20,10 +20,15 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 import java.lang.reflect.Field;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ServiceDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,7 +54,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
         Bundle bundle = getIntent().getExtras();
         isService = bundle.getBoolean("is_service");
-        appType = bundle.getString("APPOINTMENT_TYPE");
+        appType = bundle.getString(APPOINTMENT_TYPE);
 
         lblViewedCount = (TextView) findViewById(R.id.lbl_booked_count);
         lblViewedCountDesc = (TextView) findViewById(R.id.lbl_booked_title);
@@ -86,7 +91,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initViewColor() {
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.SERVICES);
             mColor = getResources().getColor(R.color.JGGGreen);
             mColorPercent = getResources().getColor(R.color.JGGGreen10Percent);
@@ -95,7 +100,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             lblViewedCountDesc.setText("people have booked this service!");
             bottomTitle.setBackgroundColor(mColor);
             viewedLayout.setBackgroundColor(mColorPercent);
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.JOBS);
             mColor = getResources().getColor(R.color.JGGCyan);
             mColorPercent = getResources().getColor(R.color.JGGCyan10Percent);
@@ -103,7 +108,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             lblViewedCountDesc.setText("people have viewed this job recently!");
             bottomTitle.setBackgroundColor(mColor);
             viewedLayout.setBackgroundColor(mColorPercent);
-        } else if (appType.equals("GOCLUB")) {
+        } else if (appType.equals(GOCLUB)) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.GOCLUB);
             mColor = getResources().getColor(R.color.JGGPurple);
             mColorPercent = getResources().getColor(R.color.JGGPurple10Percent);
@@ -127,11 +132,11 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        if (appType.equals("SERVICES")) {
+        if (appType.equals(SERVICES)) {
             popupMenu.inflate(R.menu.share_menu_green);
-        } else if (appType.equals("JOBS")) {
+        } else if (appType.equals(JOBS)) {
             popupMenu.inflate(R.menu.share_menu_cyan);
-        } else if (appType.equals("GOCLUB")) {
+        } else if (appType.equals(GOCLUB)) {
             popupMenu.inflate(R.menu.share_menu_purple);
         }
 

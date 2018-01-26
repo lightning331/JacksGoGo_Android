@@ -1,10 +1,10 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,8 +15,11 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ServiceListingDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -84,7 +87,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
         if (view.getId() == R.id.service_listing_detail_navigation) {
             Intent intent = new Intent(this, PostServiceActivity.class);
             intent.putExtra("EDIT_STATUS", "None");
-            intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+            intent.putExtra(APPOINTMENT_TYPE, SERVICES);
             startActivity(intent);
         }
     }

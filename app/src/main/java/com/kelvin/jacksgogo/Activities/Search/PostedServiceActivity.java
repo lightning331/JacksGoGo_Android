@@ -16,14 +16,17 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostedServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -161,12 +164,12 @@ public class PostedServiceActivity extends AppCompatActivity implements View.OnC
             } else if (menuItem.getItemId() == R.id.posted_service_menu_edit) {    // Edit Service
                 Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
                 intent.putExtra("EDIT_STATUS", "Edit");
-                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_duplicate) {    // Duplicate Service
                 Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
                 intent.putExtra("EDIT_STATUS", "Duplicate");
-                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_delete) {    // Delete Service
                 onDeleteButtonClick();

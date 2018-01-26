@@ -79,7 +79,7 @@
     <string name="alert_quit_button">Quit</string>
     <string name="alert_cancel">Cancel</string>
     <string name="alert_job_posted_title">Job Posted!</string>
-    <string name="alert_job_posted_desc">Job reference no: J38291-170721</string>
+    <string name="alert_job_posted_desc">Job reference no: </string>
     <string name="alert_view_job_button">View Job</string>
     <string name="alert_service_posted_title">Submission Sent!</string>
     <string name="alert_service_posted_desc">Service reference no: S38291-170721 \n Our team will verify your submission and get back to you soon!</string>

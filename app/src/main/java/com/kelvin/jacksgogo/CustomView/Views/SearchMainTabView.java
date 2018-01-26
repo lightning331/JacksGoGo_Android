@@ -14,6 +14,11 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceSearchActivity;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 /**
  * Created by PUMA on 11/13/2017.
  */
@@ -64,9 +69,9 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
         servicesButton.setOnClickListener(this);
         jobsButton.setOnClickListener(this);
         goClubButton.setOnClickListener(this);
-        servicesTextView.setTag("SERVICES");
-        jobsTextView.setTag("JOBS");
-        goClubTextView.setTag("GOCLUB");
+        servicesTextView.setTag(SERVICES);
+        jobsTextView.setTag(JOBS);
+        goClubTextView.setTag(GOCLUB);
 
         type = JGGAppBaseModel.AppointmentType.SERVICES;
     }
@@ -76,11 +81,11 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
         if (view.getId() == R.id.btn_search) {
             Intent intent = new Intent(view.getContext(), ServiceSearchActivity.class);
             if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
-                intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                intent.putExtra(APPOINTMENT_TYPE, SERVICES);
             } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
-                intent.putExtra("APPOINTMENT_TYPE", "JOBS");
+                intent.putExtra(APPOINTMENT_TYPE, JOBS);
             } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
-                intent.putExtra("APPOINTMENT_TYPE", "GOCLUB");
+                intent.putExtra(APPOINTMENT_TYPE, GOCLUB);
             }
             mContext.startActivity(intent);
         } else {

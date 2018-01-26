@@ -90,7 +90,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnFixed.setOnClickListener(this);
         btnFrom.setOnClickListener(this);
 
-        creatingJob = ((PostServiceActivity)mContext).creatingJob;
+        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
         selectedPriceType = creatingJob.getSelectedPriceType();
         updateData();
     }
@@ -206,7 +206,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
                 creatingJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
                 creatingJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
             }
-            ((PostServiceActivity)mContext).creatingJob = creatingJob;
+            ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
             listener.onNextButtonClick();
 
             return;

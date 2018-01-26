@@ -46,13 +46,28 @@ public class SearchCategoryCell extends RecyclerView.ViewHolder {
 
         }
 
-        adapter = new CategoryCellAdapter(mContext, mCategories);
+        adapter = new CategoryCellAdapter(mContext, mCategories, mType);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String name = mCategories.get(position).getName();
-                Toast.makeText(mContext, name,
-                        Toast.LENGTH_LONG).show();
+                if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+                    if (mCategories != null) {
+                        String name = mCategories.get(position).getName();
+                        Toast.makeText(mContext, name,
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+                    if (mCategories != null) {
+                        String name = "";
+                        if (position == 0)
+                            name = "Quick Jobs";
+                        else
+                            name = mCategories.get(position - 1).getName();
+
+                        Toast.makeText(mContext, name,
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
         recyclerView.setAdapter(adapter);

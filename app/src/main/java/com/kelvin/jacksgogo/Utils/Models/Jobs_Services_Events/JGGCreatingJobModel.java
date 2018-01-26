@@ -7,9 +7,9 @@ import java.util.List;
 
 public class JGGCreatingJobModel extends JGGJobModel {
 
-    public ArrayList<Image> attachmentImages;
+    private ArrayList<Image> attachmentImages;
     private int selectedPriceType = 0;
-    private List<Integer> selectedRepeatingDays = new ArrayList<Integer>();
+    private List<Integer> selectedRepeatingDays = new ArrayList<>();
 
     public int getSelectedPriceType() {
         return selectedPriceType;
@@ -25,5 +25,13 @@ public class JGGCreatingJobModel extends JGGJobModel {
 
     public void setSelectedRepeatingDays(List<Integer> selectedRepeatingDays) {
         this.selectedRepeatingDays = selectedRepeatingDays;
+    }
+
+    public ArrayList<Image> getAttachmentImages() {
+        return attachmentImages;
+    }
+
+    public void setAttachmentImages(ArrayList<Image> attachmentImages) {
+        this.attachmentImages = attachmentImages;
     }
 }

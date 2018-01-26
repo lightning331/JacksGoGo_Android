@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,19 @@ import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.Adapter.Users.UserListingAdapter;
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.Global.USERS;
+
 public class FavouriteFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
     private RecyclerView recyclerView;
-    private String appType = "SERVICES";
+    private String appType = SERVICES;
 
     public FavouriteFragment() {
         // Required empty public constructor
@@ -61,7 +66,7 @@ public class FavouriteFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        refreshFragment("SERVICES");
+        refreshFragment(SERVICES);
 
         return view;
     }
@@ -70,31 +75,31 @@ public class FavouriteFragment extends Fragment {
 
         appType = textView;
 
-        if (textView == "SERVICES") {
+        if (textView == SERVICES) {
             ActiveServiceAdapter adapter = new ActiveServiceAdapter();
             adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
-                    intent.putExtra("APPOINTMENT_TYPE", "SERVICES");
+                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                     mContext.startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);
-        } else if (textView == "JOBS") {
+        } else if (textView == JOBS) {
             JobsListingAdapter adapter = new JobsListingAdapter();
             adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
-                    intent.putExtra("APPOINTMENT_TYPE", "JOBS");
+                    intent.putExtra(APPOINTMENT_TYPE, JOBS);
                     mContext.startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);
-        } else if (textView == "EVENTS") {
+        } else if (textView == EVENTS) {
             EventsListingAdapter adapter = new EventsListingAdapter();
             adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
@@ -103,7 +108,7 @@ public class FavouriteFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(adapter);
-        } else if (textView == "USERS") {
+        } else if (textView == USERS) {
             UserListingAdapter adapter = new UserListingAdapter();
             recyclerView.setAdapter(adapter);
         }
