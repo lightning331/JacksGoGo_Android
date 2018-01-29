@@ -127,12 +127,13 @@ public class Global {
         }
     }
 
-    public static String APPOINTMENT_TYPE = "APPOINTMENT_TYPE";
-    public static String SERVICES = "SERVICES";
-    public static String JOBS = "JOBS";
-    public static String EVENTS = "EVENTS";
-    public static String GOCLUB = "GOCLUB";
-    public static String USERS = "USERS";
+    public static final String APPOINTMENT_TYPE = "APPOINTMENT_TYPE";
+    public static final String SERVICES = "SERVICES";
+    public static final String JOBS = "JOBS";
+    public static final String EVENTS = "EVENTS";
+    public static final String GOCLUB = "GOCLUB";
+    public static final String USERS = "USERS";
+    public static final String SIGNUP_FINISHED = "SIGNUP_FINISHED";
 
     public static String reportTypeName(int reportType) {
         switch (reportType) {

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/JGGGrey5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="294dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/carousel05"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:alpha="0.5"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/JGGOrange"
+                android:alpha="0.3">
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="152dp"
+                    android:gravity="center">
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/btn_view_my_service"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:background="@drawable/orange_border_dot">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:gravity="center_horizontal">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:gravity="center">
+                                        <TextView
+                                            android:text="Credit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:textColor="@color/JGGBlack"
+                                            android:textSize="@dimen/list_title_font_size"
+                                            android:fontFamily="@font/muliregular"/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:gravity="center">
+                                        <TextView
+                                            android:id="@+id/lbl_profile_home_credit"
+                                            android:text="$ 150.00"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/JGGOrange"
+                                            android:textSize="@dimen/title2_font_size"
+                                            android:fontFamily="@font/mulibold"/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1">
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/btn_view_all"
+                                android:layout_width="32dp"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/btn_post_new"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:background="@drawable/orange_border_dot">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:gravity="center_horizontal">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:gravity="center">
+                                        <TextView
+                                            android:text="Points"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:textColor="@color/JGGBlack"
+                                            android:textSize="@dimen/list_title_font_size"
+                                            android:fontFamily="@font/muliregular"/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1"
+                                        android:gravity="center">
+                                        <TextView
+                                            android:id="@+id/lbl_profile_home_point"
+                                            android:text="120 pts"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/JGGOrange"
+                                            android:textSize="@dimen/title2_font_size"
+                                            android:fontFamily="@font/mulibold"/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1">
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/btn_view_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal"
+                    android:background="@color/JGGWhite">
+                    <LinearLayout
+                        android:layout_width="96dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/img_avatar"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/nurse"
+                            android:background="@color/transparent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            app:riv_corner_radius="@dimen/circle_image_radius"
+                            app:riv_mutate_background="true"
+                            app:riv_oval="true"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+                        <TextView
+                            android:text="Alan.Tam"
+                            android:id="@+id/lbl_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/JGGBlack"
+                            android:fontFamily="@font/mulibold"
+                            android:textSize="@dimen/list_title_font_size"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_service_detail_next"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/button_next_orange"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp">
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:background="@color/JGGWhite">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <TextView
+                            android:text="Region:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="8dp"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/list_title_font_size"
+                            android:fontFamily="@font/muliregular"
+                            android:gravity="end" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:ccp_textSize="16dp"
+                            app:ccp_autoDetectCountry="true"
+                            app:ccp_clickable="false"
+                            app:ccp_defaultNameCode="SG"
+                            app:ccp_showFullName="false"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_change_region"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:text="Change Region"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/JGGOrange"
+                            android:textSize="@dimen/list_title_font_size"
+                            android:fontFamily="@font/mulibold"
+                            android:gravity="end" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="12dp">
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/JGGGrey4">
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

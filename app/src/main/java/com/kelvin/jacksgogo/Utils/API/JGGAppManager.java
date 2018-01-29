@@ -30,10 +30,10 @@ public class JGGAppManager {
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
 
-    public JGGUserProfileModel currentUser;
-    public ArrayList<JGGCategoryModel> categories;
-    public ArrayList<JGGRegionModel> regions;
-    public JGGRegionModel currentRegion;
+    public static JGGUserProfileModel currentUser;
+    public static ArrayList<JGGCategoryModel> categories;
+    public static ArrayList<JGGRegionModel> regions;
+    public static JGGRegionModel currentRegion;
 
     private JGGAppManager() {
 
@@ -103,8 +103,9 @@ public class JGGAppManager {
         return null;
     }
 
-    public void clearAll() {
+    public static void clearAll() {
         editor.clear();
         editor.commit();
+        currentUser = null;
     }
 }

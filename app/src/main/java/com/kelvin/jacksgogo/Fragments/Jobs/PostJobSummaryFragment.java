@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Fragments.Jobs;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -296,9 +298,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-//            Intent intent = new Intent(mContext, PostedServiceActivity.class);
-//            intent.putExtra("is_post", true);
-//            mContext.startActivity(intent);
+            Intent intent = new Intent(mContext, PostedServiceActivity.class);
+            intent.putExtra("is_post", true);
+            mContext.startActivity(intent);
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()

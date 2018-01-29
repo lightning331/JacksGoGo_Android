@@ -21,15 +21,15 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
 
 public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -43,8 +43,6 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     private ProgressDialog progressDialog;
     private String strPhoneNumber;
     private String strOTP;
-
-    public static final String SMSVerifyKey = "SMSVerifyKey";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,7 +137,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
 
     private void onShowMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(SMSVerifyKey, true);
+        intent.putExtra(SIGNUP_FINISHED, true);
         startActivity(intent);
     }
 

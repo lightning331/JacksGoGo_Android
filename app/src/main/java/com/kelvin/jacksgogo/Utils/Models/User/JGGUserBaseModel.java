@@ -28,6 +28,12 @@ public class JGGUserBaseModel {
     private String UserName;
 
     private int avatarUrl;
+    private String fullName;
+
+    public String getFullName() {
+        return Surname + " " + GivenName;
+    }
+
     public int getAvatarUrl() {
         return avatarUrl;
     }

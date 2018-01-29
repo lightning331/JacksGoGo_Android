@@ -32,6 +32,8 @@ public interface JGGAPIManager {
     Call<JGGUserProfileResponse> accountLogin(@Field("email") String email,
                                               @Field("password") String password);
 
+    @POST("api/Account/Logout")
+    Call<JGGBaseResponse> accountSignOut();
 
     @GET("api/Region/GetRegions")
     Call<JGGRegionResponse> getRegions();

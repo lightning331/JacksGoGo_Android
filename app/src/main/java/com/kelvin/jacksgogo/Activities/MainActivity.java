@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Activities.Profile.SignUpSMSVerifyActivity;
 import com.kelvin.jacksgogo.CustomView.Views.AppMainTabView;
 import com.kelvin.jacksgogo.CustomView.Views.FavouriteMainTabView;
 import com.kelvin.jacksgogo.CustomView.Views.SearchMainTabView;
@@ -30,9 +28,10 @@ import com.kelvin.jacksgogo.Fragments.Profile.SignInFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 
 import io.fabric.sdk.android.Fabric;
+
+import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
 
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {
 
@@ -41,7 +40,9 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     private SearchMainTabView searchTabView;
     private FavouriteMainTabView favouriteTabView;
     private FrameLayout mContainer;
-    private CoordinatorLayout.LayoutParams params;
+    private CoordinatorLayout.LayoutParams topNavLayoutParams;
+    private CoordinatorLayout.LayoutParams bottomNavLayoutParams;
+    private BottomNavigationView mbtmView;
     private MenuItem mItem;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
@@ -74,15 +75,18 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
     public void selectFragment() {
         Fragment frag = null;
-        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
-        params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+        // Show Top Navigation Bar
+        topNavLayoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
         mContainer.requestLayout();
-        // init corresponding fragment
+        // Hide Bottom NavigationView and ToolBar in Scroll
+        bottomNavLayoutParams.setBehavior(new BottomNavigationViewBehavior());
+
         switch (mItem.getItemId()) {
             case R.id.navigation_home:
                 frag = HomeFragment.newInstance(null,
                         null);
                 mToolbar.setTitle(R.string.title_home);
+
                 break;
             case R.id.navigation_search:
                 frag = SearchFragment.newInstance();
@@ -94,8 +98,10 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 frag = FavouriteFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                // Remove Top Navigationbar
-                params.setBehavior(null);
+                // Remove Top Navigation Bar
+                topNavLayoutParams.setBehavior(null);
+                // Disable Bottom Navigation Bar hidden
+                bottomNavLayoutParams.setBehavior(null);
                 mContainer.requestLayout();
 
                 String username = JGGAppManager.getInstance(this).getUsernamePassword()[0];
@@ -119,28 +125,26 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     }
 
     private void initView() {
+        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         mContainer = (FrameLayout) findViewById(R.id.container);
-        params = (CoordinatorLayout.LayoutParams) mContainer.getLayoutParams();
+        mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
 
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.navigation);
+        topNavLayoutParams = (CoordinatorLayout.LayoutParams) mContainer.getLayoutParams();
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        bottomNavLayoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+
         mbtmView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        boolean bSmsVeryfyKey = getIntent().getBooleanExtra(SignUpSMSVerifyActivity.SMSVerifyKey, false);
+        boolean bSmsVeryfyKey = getIntent().getBooleanExtra(SIGNUP_FINISHED, false);
         if (bSmsVeryfyKey) {
             mbtmView.setSelectedItemId(R.id.navigation_profile);
         } else {
             mbtmView.setSelectedItemId(R.id.navigation_home);
         }
 
-        // Hide Bottom NavigationView and ToolBar
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
-
         appMainTabView = new AppMainTabView(this);
         searchTabView = new SearchMainTabView(this);
         favouriteTabView = new FavouriteMainTabView(this);
 
-        mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         setSupportActionBar(mToolbar);
     }
 

@@ -149,7 +149,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.btn_back) {
             FragmentManager manager = getSupportFragmentManager();
             if (manager.getBackStackEntryCount() == 0) {
-                if (appType.equals("JOBS")) showAlertDialog();
+                if (appType == JGGAppBaseModel.AppointmentType.JOBS) showAlertDialog();
                 else super.onBackPressed();
             } else {
                 manager.popBackStack();
