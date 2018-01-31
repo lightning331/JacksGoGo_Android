@@ -1,6 +1,6 @@
 package com.kelvin.jacksgogo.Utils.API;
 
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
@@ -56,8 +56,8 @@ public interface JGGAPIManager {
     Call<JGGCategoryResponse> getCategory();
 
     @POST("api/Appointment/PostJob")
-    Call<JGGPostJobResponse> postNewJob(@Body JGGCreatingJobModel creatingJob);
+    Call<JGGPostJobResponse> postNewJob(@Body JGGJobModel creatingJob);
 
     @POST("api/Appointment/PostService")
-    Call<JGGPostJobResponse> postNewService(@Body JGGCreatingJobModel creatingJob);
+    Call<JGGPostJobResponse> postNewService(@Body JGGJobModel creatingJob);
 }

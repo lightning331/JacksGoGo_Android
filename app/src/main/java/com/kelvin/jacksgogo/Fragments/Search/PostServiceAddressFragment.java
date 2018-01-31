@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
@@ -44,7 +44,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
     private boolean isChecked = false;
     private JGGAppBaseModel.AppointmentType mType;
-    private JGGCreatingJobModel creatingJob;
+    private JGGJobModel creatingJob;
 
     public PostServiceAddressFragment() {
         // Required empty public constructor

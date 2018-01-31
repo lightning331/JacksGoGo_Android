@@ -24,7 +24,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.squareup.picasso.Picasso;
 
@@ -36,7 +36,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment.getDateString;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
@@ -62,7 +61,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
     private PostEditStatus editStatus;
     private JGGCategoryModel selectedCategory;
-    private JGGCreatingJobModel creatingService;
+    private JGGJobModel creatingService;
     private ProgressDialog progressDialog;
     private ArrayList<String> attachmentURLs;
     private String postedServiceID;

@@ -23,7 +23,7 @@ import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +44,7 @@ public class PostJobMainTabFragment extends Fragment {
     private FrameLayout describeContainer;
     private String tabName;
 
-    private JGGCreatingJobModel creatingJob;
+    private JGGJobModel creatingJob;
     private EditJobReportAdapter reportAdapter;
     private List<Integer> selectedIds = new ArrayList<>();
     private boolean isMultiSelect = false;

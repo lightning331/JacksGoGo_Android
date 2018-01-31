@@ -28,7 +28,7 @@ import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -69,7 +69,7 @@ public class PostServiceDescribeFragment extends Fragment
     private String strTags;
 
     private JGGAppBaseModel.AppointmentType appType;
-    private JGGCreatingJobModel creatingJob;
+    private JGGJobModel creatingJob;
 
     public PostServiceDescribeFragment() {
         // Required empty public constructor

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 public class PostJobPriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -37,7 +37,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private JGGCreatingJobModel creatingJob;
+    private JGGJobModel creatingJob;
     private int selectedPriceType = 0; // 0: None select, 1: No limit, 2: Fixed amount, 3: From amount
     private boolean nolimit;
     private boolean fixed;

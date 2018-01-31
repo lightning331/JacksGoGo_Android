@@ -19,7 +19,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -43,7 +43,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private JGGAppBaseModel.AppointmentType appType;
 
     public JGGCategoryModel selectedCategory;
-    public JGGCreatingJobModel creatingAppointment;
+    public JGGJobModel creatingAppointment;
     public int selectedPeopleType = 0;
     public ArrayList<JGGTimeSlotModel> arrayOnePersonTimeSlots;
     public ArrayList<JGGTimeSlotModel> arrayMultiplePeopleTimeSlots;
@@ -90,9 +90,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private void initFragment() {
 
         // Create New Appointment Model
-        creatingAppointment = new JGGCreatingJobModel();
-        creatingAppointment.setAddress(new JGGAddressModel());
-        creatingAppointment.setJobTime(new JGGJobTimeModel());
+        creatingAppointment = new JGGJobModel();
         creatingAppointment.setUserProfileID(JGGAppManager.getInstance(this).currentUser.getID());
         JGGRegionModel currentRegion = JGGAppManager.getInstance(this).getCurrentRegion();
         creatingAppointment.setRegion(currentRegion);

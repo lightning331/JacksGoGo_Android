@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 public class PostServicePriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -43,7 +43,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private JGGCreatingJobModel creatingService;
+    private JGGJobModel creatingService;
     private int selectedServiceType = 0; // 0: None select, 1: One-time, 2: Package
     private int priceType = 0;
     private boolean isOneTimeService;

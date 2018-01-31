@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +28,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -68,7 +67,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
 
     private AlertDialog alertDialog;
     private PostServiceActivity postServiceActivity;
-    private JGGCreatingJobModel creatingService;
+    private JGGJobModel creatingService;
     private ArrayList<JGGTimeSlotModel> selectedTimeSlots = new ArrayList<>();
     private Integer editingTimeSlot;
 

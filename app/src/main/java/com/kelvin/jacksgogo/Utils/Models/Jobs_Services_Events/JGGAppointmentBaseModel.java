@@ -18,15 +18,15 @@ public class JGGAppointmentBaseModel {
     private String Description;
     private String Tags;
     private String RegionID;
-    private JGGRegionModel Region;
-    private JGGCurrencyModel Currency;
+    private JGGRegionModel Region = new JGGRegionModel();
+    private JGGCurrencyModel Currency = new JGGCurrencyModel();
     private String CurrencyCode;
     private String UserProfileID;
-    private JGGUserProfileModel UserProfile;
+    private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private Date PostOn;
     private int Status = 0;
-    private JGGAddressModel Address;
-    private JGGAddressModel DAddress;
+    private JGGAddressModel Address = new JGGAddressModel();
+    private JGGAddressModel DAddress = new JGGAddressModel();
     private AppointmentType type;
 
     public enum AppointmentStatus {

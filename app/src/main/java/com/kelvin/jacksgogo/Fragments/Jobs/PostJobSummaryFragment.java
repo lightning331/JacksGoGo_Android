@@ -24,7 +24,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.squareup.picasso.Picasso;
 
@@ -62,7 +62,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private AlertDialog alertDialog;
     private PostJobStatus jobStatus;
     private JGGCategoryModel selectedCategory;
-    private JGGCreatingJobModel creatingJob;
+    private JGGJobModel creatingJob;
     private ProgressDialog progressDialog;
     private ArrayList<String> attachmentURLs;
     private String postedJobID;

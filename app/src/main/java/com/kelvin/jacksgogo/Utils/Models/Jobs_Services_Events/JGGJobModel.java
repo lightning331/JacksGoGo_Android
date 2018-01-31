@@ -1,5 +1,7 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
+import android.media.Image;
+
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -9,6 +11,7 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by PUMA on 10/28/2017.
@@ -17,7 +20,7 @@ import java.util.Date;
 public class JGGJobModel extends JGGAppointmentBaseModel {
 
     private String CategoryID;
-    private JGGCategoryModel Category;
+    private JGGCategoryModel Category = new JGGCategoryModel();
     private boolean IsRequest;
     private Integer ServiceType;
     private ArrayList<String> AttachmentURLs;
@@ -30,11 +33,18 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private String Repetition;
     private boolean IsQuickJob;
     private int ViewCount = 0;
-    private JGGJobTimeModel JobTime;
-    private ArrayList<JGGTimeSlotModel> Sessions;
-    private JGGProposalModel Proposal;
+    private JGGJobTimeModel JobTime = new JGGJobTimeModel();
+    private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
+    private JGGProposalModel Proposal = new JGGProposalModel();
     private Integer JobType;
     private Integer RepetitionType;
+
+    // Dump Data
+    private ArrayList<Image> attachmentImages;
+    private int selectedServiceType = 0;
+    private int selectedPriceType = 0;
+    private Integer timeSlotType;
+    private List<Integer> selectedRepeatingDays = new ArrayList<>();
 
     private ArrayList<JGGBiddingProviderModel> biddingProviders;
     private ArrayList<JGGProviderUserModel> invitedProviders;
@@ -51,6 +61,46 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     @Override
     public void setType(AppointmentType type) {
         super.setType(type);
+    }
+
+    public Global.TimeSlotSelectionStatus getTimeSlotType() {
+        return Global.TimeSlotSelectionStatus.valueOf(timeSlotType);
+    }
+
+    public void setTimeSlotType(Global.TimeSlotSelectionStatus timeSlotType) {
+        this.timeSlotType = timeSlotType.getValue();
+    }
+
+    public int getSelectedServiceType() {
+        return selectedServiceType;
+    }
+
+    public void setSelectedServiceType(int selectedServiceType) {
+        this.selectedServiceType = selectedServiceType;
+    }
+
+    public int getSelectedPriceType() {
+        return selectedPriceType;
+    }
+
+    public void setSelectedPriceType(int selectedPriceType) {
+        this.selectedPriceType = selectedPriceType;
+    }
+
+    public List<Integer> getSelectedRepeatingDays() {
+        return selectedRepeatingDays;
+    }
+
+    public void setSelectedRepeatingDays(List<Integer> selectedRepeatingDays) {
+        this.selectedRepeatingDays = selectedRepeatingDays;
+    }
+
+    public ArrayList<Image> getAttachmentImages() {
+        return attachmentImages;
+    }
+
+    public void setAttachmentImages(ArrayList<Image> attachmentImages) {
+        this.attachmentImages = attachmentImages;
     }
 
     public String getCategoryID() {
