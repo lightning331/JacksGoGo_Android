@@ -13,10 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
@@ -25,6 +23,8 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
@@ -80,7 +80,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
             @Override
             public void onItemClick(int position) {
                 PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE);
-                ((PostServiceActivity)mContext).selectedCategory = mCategories.get(position);
+                selectedCategory = mCategories.get(position);
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.post_service_container, frag)

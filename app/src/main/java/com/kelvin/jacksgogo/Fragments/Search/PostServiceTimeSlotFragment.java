@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 
 
 public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher {
@@ -100,7 +101,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         View view = inflater.inflate(R.layout.fragment_post_service_time_slot, container, false);
 
         postServiceActivity = ((PostServiceActivity)mContext);
-        creatingService = postServiceActivity.creatingAppointment;
+        creatingService = creatingAppointment;
         if (postServiceActivity.selectedPeopleType == 2) {
             selectedTimeSlots = postServiceActivity.arrayOnePersonTimeSlots;
         } else if (postServiceActivity.selectedPeopleType == 3) {
@@ -420,7 +421,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
             postServiceActivity.arrayMultiplePeopleTimeSlots = selectedTimeSlots;
         }
         creatingService.setSessions(selectedTimeSlots);
-        ((PostServiceActivity)mContext).creatingAppointment = creatingService;
+        creatingAppointment = creatingService;
     }
 
     @Override

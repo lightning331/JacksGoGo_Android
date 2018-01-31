@@ -19,6 +19,8 @@ import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+
 public class PostServicePriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
@@ -77,7 +79,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_post_service_price, container, false);
 
         initView(view);
-        creatingService = ((PostServiceActivity)mContext).creatingAppointment;
+        creatingService = creatingAppointment;
         selectedServiceType = creatingService.getSelectedServiceType();
         priceType = creatingService.getSelectedPriceType();
         updateData();
@@ -244,9 +246,9 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
                 selectedServiceType = 2;
             isPackageService = !isPackageService;
         } else if (view.getId() == R.id.btn_post_service_price_next) {
-            ((PostServiceActivity)mContext).creatingAppointment.setBudgetFrom(null);
-            ((PostServiceActivity)mContext).creatingAppointment.setBudgetTo(null);
-            ((PostServiceActivity)mContext).creatingAppointment.setBudget(null);
+            creatingAppointment.setBudgetFrom(null);
+            creatingAppointment.setBudgetTo(null);
+            creatingAppointment.setBudget(null);
             if (selectedServiceType == 1) {
                 creatingService.setServiceType(1);
                 if (priceType == 1) {
@@ -261,7 +263,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
                 creatingService.setBudget(Double.parseDouble(txtPackageAmount.getText().toString()));
             }
             creatingService.setSelectedServiceType(selectedServiceType);
-            ((PostServiceActivity)mContext).creatingAppointment = creatingService;
+            creatingAppointment = creatingService;
             listener.onNextButtonClick();
 
             return;

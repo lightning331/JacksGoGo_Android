@@ -121,16 +121,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Jobs.AcceptBidActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.SignUpEmailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.SignUpSMSVerifyActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.SignUpPhoneActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Jobs.PostedJobActivity"></activity>
     </application>
 
 </manifest>

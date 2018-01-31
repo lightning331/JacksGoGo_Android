@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
@@ -30,10 +31,15 @@ public class JGGAppManager {
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
 
+    // User
     public static JGGUserProfileModel currentUser;
     public static ArrayList<JGGCategoryModel> categories;
     public static ArrayList<JGGRegionModel> regions;
     public static JGGRegionModel currentRegion;
+
+    // Appointment
+    public static JGGCategoryModel selectedCategory;
+    public static JGGJobModel creatingAppointment;
 
     private JGGAppManager() {
 
@@ -54,6 +60,22 @@ public class JGGAppManager {
 
     public void setCurrentRegion(JGGRegionModel currentRegion) {
         this.currentRegion = currentRegion;
+    }
+
+    public static JGGCategoryModel getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public static void setSelectedCategory(JGGCategoryModel selectedCategory) {
+        JGGAppManager.selectedCategory = selectedCategory;
+    }
+
+    public static JGGJobModel getCreatingAppointment() {
+        return creatingAppointment;
+    }
+
+    public static void setCreatingAppointment(JGGJobModel creatingAppointment) {
+        JGGAppManager.creatingAppointment = creatingAppointment;
     }
 
     public void saveToken(String token, Long expire_in) {

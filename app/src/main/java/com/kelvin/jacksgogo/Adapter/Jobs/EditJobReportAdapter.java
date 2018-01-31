@@ -2,8 +2,6 @@ package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOpt
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
-import com.kelvin.jacksgogo.Utils.Models.RepeatingDayModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +54,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
             sectionTitleViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionTitleViewHolder;
         } else if (viewType > TYPE_SECTION_HEADER && viewType <= list.size()){
-            View beforeViewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_repor, parent, false);
+            View beforeViewHolder = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_report, parent, false);
             ReportViewHolder descTitleViewHolder = new ReportViewHolder(beforeViewHolder);
             return descTitleViewHolder;
         } else if (viewType == list.size() + 1){

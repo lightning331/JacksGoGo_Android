@@ -19,6 +19,8 @@ import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+
 public class PostJobPriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
@@ -90,7 +92,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnFixed.setOnClickListener(this);
         btnFrom.setOnClickListener(this);
 
-        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+        creatingJob = creatingAppointment;
         selectedPriceType = creatingJob.getSelectedServiceType();
         updateData();
     }
@@ -201,7 +203,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
                 creatingJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
             }
             creatingJob.setSelectedServiceType(selectedPriceType);
-            ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
+            creatingAppointment = creatingJob;
             listener.onNextButtonClick();
 
             return;

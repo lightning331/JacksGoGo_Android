@@ -30,6 +30,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+
 public class PostJobMainTabFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -81,11 +84,11 @@ public class PostJobMainTabFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_post_job_tab_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_post_job_tab_category_name);
         Picasso.with(mContext)
-                .load(((PostServiceActivity)mContext).selectedCategory.getImage())
+                .load(selectedCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(((PostServiceActivity)mContext).selectedCategory.getName());
-        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+        lblCategory.setText(selectedCategory.getName());
+        creatingJob = creatingAppointment;
 
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -188,7 +191,7 @@ public class PostJobMainTabFragment extends Fragment {
             describeContainer.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+            creatingJob = creatingAppointment;
             selectedIds = Global.selectedID(creatingJob.getReportType());
 
             reportAdapter = new EditJobReportAdapter(mContext, true, "JOBS");
@@ -251,7 +254,7 @@ public class PostJobMainTabFragment extends Fragment {
             }
         }
         creatingJob.setReportType(reportType);
-        ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
+        creatingAppointment = creatingJob;
     }
 
     public void onButtonPressed(Uri uri) {

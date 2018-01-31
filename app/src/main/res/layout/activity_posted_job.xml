@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity">
+    tools:context="com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity">
     <LinearLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/posted_service_actionbar"
+                android:id="@+id/posted_job_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -40,32 +40,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/jgg_map_view_activity_appbar"
             app:layout_constraintBottom_toBottomOf="parent">
-            <LinearLayout
-                android:id="@+id/posted_service_status_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:background="@color/JGGWhite"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-                    <TextView
-                        android:text="Submitted on 11 Dec, 2017, Pending verification."
-                        android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/caption_font_size"
-                        android:textColor="@color/JGGRed"
-                        android:layout_marginLeft="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/JGGGrey4">
-                </LinearLayout>
-            </LinearLayout>
             <ScrollView
                 android:id="@+id/posted_service_scroll_view"
                 android:layout_width="match_parent"
@@ -81,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="104dp"
                         android:gravity="center"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
                         <LinearLayout
                             android:layout_width="96dp"
@@ -89,14 +63,14 @@
                             android:orientation="vertical"
                             android:background="@color/JGGWhite">
                             <ImageView
-                                android:id="@+id/img_posted_service_category"
+                                android:id="@+id/img_posted_job_category"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="10dp"
                                 android:src="@mipmap/icon_cat_householdchores"/>
                             <TextView
-                                android:id="@+id/lbl_posted_service_category_name"
+                                android:id="@+id/lbl_posted_job_category_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -118,7 +92,7 @@
                             android:orientation="vertical"
                             android:background="@color/JGGWhite">
                             <TextView
-                                android:id="@+id/lbl_posted_service_title"
+                                android:id="@+id/lbl_posted_job_title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -148,8 +122,8 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="7dp"
-                                android:src="@mipmap/icon_budget"/>
+                                android:layout_marginTop="6dp"
+                                android:src="@mipmap/icon_time"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -160,17 +134,26 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="vertical">
                                 <TextView
-                                    android:id="@+id/lbl_posted_service_price"
-                                    android:text="$50.00"
+                                    android:id="@+id/lbl_posted_job_time_type"
+                                    android:text=""
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+                                    android:layout_marginTop="3dp"
                                     android:layout_marginRight="16dp"
                                     android:textColor="@color/JGGBlack"
                                     android:fontFamily="@font/mulibold"
                                     android:textSize="@dimen/list_title_font_size"/>
+                                <TextView
+                                    android:id="@+id/lbl_posted_job_time"
+                                    android:text=""
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="16dp"
+                                    android:textColor="@color/JGGBlack"
+                                    android:fontFamily="@font/mulibold"
+                                    android:textSize="@dimen/body_font_size"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -198,7 +181,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="7dp"
+                                android:layout_marginTop="6dp"
                                 android:src="@mipmap/icon_info"/>
                         </LinearLayout>
                         <LinearLayout
@@ -212,11 +195,11 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
                                 <TextView
-                                    android:id="@+id/lbl_posted_service_description"
-                                    android:text="Professional dog walker. All my furry clients love me!"
+                                    android:id="@+id/lbl_posted_job_description"
+                                    android:text=""
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+                                    android:layout_marginTop="3dp"
                                     android:layout_marginRight="16dp"
                                     android:textColor="@color/JGGBlack"
                                     android:fontFamily="@font/muliregular"
@@ -226,7 +209,7 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="5dp"
+                        android:layout_height="4dp"
                         android:orientation="vertical"
                         android:background="@color/JGGWhite">
                     </LinearLayout>
@@ -248,7 +231,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="7dp"
+                                android:layout_marginTop="6dp"
                                 android:src="@mipmap/icon_location"/>
                         </LinearLayout>
                         <LinearLayout
@@ -262,11 +245,120 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
                                 <TextView
-                                    android:id="@+id/lbl_posted_service_location"
-                                    android:text="Juron West Avenue 5"
+                                    android:id="@+id/lbl_posted_job_address"
+                                    android:text=""
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginRight="16dp"
+                                    android:textColor="@color/JGGBlack"
+                                    android:fontFamily="@font/muliregular"
+                                    android:textSize="@dimen/list_title_font_size"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:orientation="vertical"
+                        android:background="@color/JGGWhite">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:orientation="horizontal">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/JGGWhite"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="52dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="6dp"
+                                android:src="@mipmap/icon_budget"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="85"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/lbl_posted_job_budget"
+                                    android:text=""
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="16dp"
+                                    android:textColor="@color/JGGBlack"
+                                    android:fontFamily="@font/mulibold"
+                                    android:textSize="@dimen/list_title_font_size"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:orientation="vertical"
+                        android:background="@color/JGGWhite">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:orientation="horizontal">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/JGGWhite"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="52dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="6dp"
+                                android:src="@mipmap/icon_completion"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="85"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:text="Requests:"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="5dp"
+                                    android:textColor="@color/JGGBlack"
+                                    android:fontFamily="@font/mulibold"
+                                    android:textSize="@dimen/list_title_font_size"/>
+                                <TextView
+                                    android:id="@+id/lbl_posted_job_report_type"
+                                    android:text=""
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
                                     android:layout_marginRight="16dp"
                                     android:textColor="@color/JGGBlack"
                                     android:fontFamily="@font/muliregular"
@@ -293,53 +385,8 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="15dp"
+                        android:layout_height="14dp"
                         android:orientation="horizontal">
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical"
-                            android:background="@color/JGGWhite">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="16dp"
-                                android:textColor="@color/JGGBlack"
-                                android:textSize="@dimen/list_title_font_size"
-                                android:fontFamily="@font/mulibold"
-                                android:text="Time Slots Available"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/btn_posted_service_view_time_slots"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:background="@color/JGGWhite">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="viewEnd"
-                                android:layout_marginRight="16dp"
-                                android:textColor="@color/JGGGreen"
-                                android:textSize="@dimen/button_font_size"
-                                android:fontFamily="@font/mulibold"
-                                android:text="View Time Slots"
-                                android:gravity="end" />
-                        </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="vertical">
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -353,7 +400,7 @@
                             android:orientation="vertical">
                             <com.makeramen.roundedimageview.RoundedImageView
                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:id="@+id/img_posted_service_user_avatar"
+                                android:id="@+id/img_posted_job_user_avatar"
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
                                 android:src="@drawable/nurse"
@@ -377,7 +424,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:text="Alan.Tam"
-                                    android:id="@+id/lbl_posted_service_username"
+                                    android:id="@+id/lbl_posted_job_username"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="10dp"
@@ -386,7 +433,7 @@
                                     android:textSize="@dimen/button_font_size"/>
                                 <me.zhanghai.android.materialratingbar.MaterialRatingBar
                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:id="@+id/posted_service_user_rating"
+                                    android:id="@+id/posted_job_user_rating"
                                     style="@style/Widget.MaterialRatingBar.RatingBar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="13dp"
@@ -441,7 +488,7 @@
                         app:horizontal_interval="10dp"
                         app:tag_background_color="@color/JGGWhite"
                         app:tag_border_color="@color/JGGGrey3"
-                        app:tag_text_color="@color/JGGGreen"
+                        app:tag_text_color="@color/JGGCyan"
                         app:tag_text_size="@dimen/caption_font_size"
                         app:vertical_interval="10dp" />
                     <LinearLayout
@@ -452,62 +499,30 @@
                 </LinearLayout>
             </ScrollView>
             <LinearLayout
-                android:id="@+id/posted_service_chat_layout"
+                android:id="@+id/posted_job_viewd_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/JGGGrey4">
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical">
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@mipmap/jacks_gogo_logo"/>
-                    <TextView
-                        android:text="JGG Approval Agent"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="55"
-                        android:textColor="@color/JGGBlack"
-                        android:fontFamily="@font/mulibold"
-                        android:textSize="@dimen/button_font_size"
-                        android:gravity="center_vertical"/>
-                    <RelativeLayout
-                        android:id="@+id/btn_posted_service_chat"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="45"
-                        android:gravity="center"
-                        android:background="@color/JGGGreen">
-                        <ImageView
-                            android:id="@+id/chat_icon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:background="@mipmap/chat_filled"/>
-                        <TextView
-                            android:id="@+id/lblBadgeCount"
-                            android:text="1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/badge_number_size"
-                            android:layout_gravity="top|end"
-                            android:layout_centerVertical="true"
-                            android:textAlignment="center"
-                            android:background="@drawable/badge_red"
-                            android:fontFamily="@font/muliregular"
-                            android:textColor="@color/JGGWhite"
-                            android:textSize="@dimen/badge_font_size"
-                            android:layout_alignRight="@id/chat_icon"
-                            android:layout_alignTop="@id/chat_icon"/>
-                    </RelativeLayout>
-                </LinearLayout>
+                android:layout_height="32dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@color/JGGCyan10Percent">
+                <TextView
+                    android:id="@+id/lbl_booked_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/JGGBlack"
+                    android:textSize="@dimen/caption_font_size"
+                    android:fontFamily="@font/mulibold"
+                    android:text="21k"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:textColor="@color/JGGBlack"
+                    android:textSize="@dimen/caption_font_size"
+                    android:fontFamily="@font/muliregular"
+                    android:text="people have viewed this job recently!"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

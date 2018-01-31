@@ -2,7 +2,6 @@ package com.kelvin.jacksgogo.Activities.Search;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,21 +11,21 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.ArrayList;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -42,8 +41,6 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private String status;
     private JGGAppBaseModel.AppointmentType appType;
 
-    public JGGCategoryModel selectedCategory;
-    public JGGJobModel creatingAppointment;
     public int selectedPeopleType = 0;
     public ArrayList<JGGTimeSlotModel> arrayOnePersonTimeSlots;
     public ArrayList<JGGTimeSlotModel> arrayMultiplePeopleTimeSlots;
@@ -89,63 +86,76 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     private void initFragment() {
 
-        // Create New Appointment Model
-        creatingAppointment = new JGGJobModel();
-        creatingAppointment.setUserProfileID(JGGAppManager.getInstance(this).currentUser.getID());
-        JGGRegionModel currentRegion = JGGAppManager.getInstance(this).getCurrentRegion();
-        creatingAppointment.setRegion(currentRegion);
-        creatingAppointment.setRegionID(currentRegion.getID());
-        creatingAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        PostServiceSummaryFragment frag;
-        switch (status) {
-            case "Edit":
-                frag = new PostServiceSummaryFragment();
-                ft.replace(R.id.post_service_container, frag, frag.getTag());
-                frag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.EDIT);
-                ft.commit();
-                break;
-            case "Duplicate":
-                frag = new PostServiceSummaryFragment();
-                ft.replace(R.id.post_service_container, frag, frag.getTag());
-                frag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.DUPLICATE);
-                ft.commit();
-                break;
-            // Appointment Post
-            case "None":
-                switch (appType) {
-                    case SERVICES:
-                        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
-                        if (alreadyVerifiedSkills) {
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.post_service_container, new PostServiceSkillVerifiedFragment())
-                                    .commit();
-                        } else {
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.post_service_container, new PostServiceSkillNotVerifiedFragment())
-                                    .commit();
-                        }
-                        break;
-                    case JOBS:
-                        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
+        if (status.equals("None")) {
+            // Create New Appointment Model
+            creatingAppointment = new JGGJobModel();
+            creatingAppointment.setUserProfile(currentUser);
+            creatingAppointment.setUserProfileID(currentUser.getID());
+            JGGRegionModel currentRegion = JGGAppManager.getInstance(this).getCurrentRegion();
+            creatingAppointment.setRegion(currentRegion);
+            creatingAppointment.setRegionID(currentRegion.getID());
+            creatingAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
+            switch (appType) {
+                case SERVICES:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
+                    if (alreadyVerifiedSkills) {
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.post_service_container, new PostJobCategoryFragment())
+                                .replace(R.id.post_service_container, new PostServiceSkillVerifiedFragment())
                                 .commit();
-                        break;
-                    case GOCLUB:
-                        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.GOCLUB);
-                        break;
-                    default:
-                        break;
-                }
-                ft.commit();
-                break;
-            default:
-                break;
+                    } else {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.post_service_container, new PostServiceSkillNotVerifiedFragment())
+                                .commit();
+                    }
+                    break;
+                case JOBS:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_service_container, new PostJobCategoryFragment())
+                            .commit();
+                    break;
+                case GOCLUB:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.GOCLUB);
+                    break;
+                default:
+                    break;
+            }
+
+        } else if (status.equals("Edit") || status.equals("Duplicate")) {
+            switch (appType) {
+                case SERVICES:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
+                    PostServiceSummaryFragment serviceFag = new PostServiceSummaryFragment();
+                    if (status.equals("Edit"))
+                        serviceFag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.EDIT);
+                    else if (status.equals("Duplicate"))
+                        serviceFag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.DUPLICATE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_service_container, serviceFag)
+                            .commit();
+                    break;
+                case JOBS:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
+                    PostJobSummaryFragment jobFrag = new PostJobSummaryFragment();
+                    if (status.equals("Edit"))
+                        jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.EDIT);
+                    else if (status.equals("Duplicate"))
+                        jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.DUPLICATE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_service_container, jobFrag)
+                            .commit();
+                    break;
+                case GOCLUB:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.GOCLUB);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

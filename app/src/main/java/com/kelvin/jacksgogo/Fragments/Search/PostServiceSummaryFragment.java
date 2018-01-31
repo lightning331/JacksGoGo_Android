@@ -36,6 +36,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
@@ -60,7 +62,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private AlertDialog alertDialog;
 
     private PostEditStatus editStatus;
-    private JGGCategoryModel selectedCategory;
+    private JGGCategoryModel category;
     private JGGJobModel creatingService;
     private ProgressDialog progressDialog;
     private ArrayList<String> attachmentURLs;
@@ -95,14 +97,15 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         }
         attachmentURLs = new ArrayList<>();
         if (editStatus == PostEditStatus.NONE) {
-            selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
-            ((PostServiceActivity)mContext).creatingAppointment.setCategoryID(selectedCategory.getID());
-            creatingService = ((PostServiceActivity)mContext).creatingAppointment;
-            creatingService.setAttachmentURLs(attachmentURLs);
+
         } else if (editStatus == PostEditStatus.EDIT
                 || editStatus == PostEditStatus.DUPLICATE) {
 
         }
+        category = selectedCategory;
+        creatingAppointment.setCategoryID(category.getID());
+        creatingService = creatingAppointment;
+        creatingService.setAttachmentURLs(attachmentURLs);
     }
 
     @Override
@@ -143,10 +146,10 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (creatingService != null) {
             // Category
             Picasso.with(mContext)
-                    .load(selectedCategory.getImage())
+                    .load(category.getImage())
                     .placeholder(null)
                     .into(imgCategory);
-            lblCategory.setText(selectedCategory.getName());
+            lblCategory.setText(category.getName());
             // Describe
             lblDescribeTitle.setText(creatingService.getTitle());
             lblDescribeDesc.setText(creatingService.getDescription());
@@ -239,7 +242,8 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (view.getId() == R.id.btn_post_service) {
             switch (editStatus) {
                 case NONE:
-                    onPostService();
+                    showAlertDialog();
+                    //onPostService();
                     break;
                 case EDIT:
                     showAlertDialog();

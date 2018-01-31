@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
@@ -31,6 +30,8 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 public class PostJobCategoryFragment extends Fragment {
 
@@ -88,7 +89,7 @@ public class PostJobCategoryFragment extends Fragment {
 
                 } else {
                     PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE);
-                    ((PostServiceActivity)mContext).selectedCategory = categories.get(position - 1);
+                    selectedCategory = categories.get(position - 1);
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, frag)

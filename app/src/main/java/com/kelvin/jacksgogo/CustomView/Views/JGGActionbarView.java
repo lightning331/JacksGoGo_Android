@@ -228,6 +228,21 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgMore = R.mipmap.button_more_active_green;
                     setMoreButtonClicked(false);
                 } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                    mBackButtonTitleTextView.setText(R.string.title_appointment);
+                    param = new LinearLayout.LayoutParams(
+                            LayoutParams.MATCH_PARENT,
+                            LayoutParams.MATCH_PARENT,
+                            3.0f
+                    );
+                    mBackButton.setLayoutParams(param);
+                    moreButtonsLayout.setLayoutParams(param);
+                    param1 = new LinearLayout.LayoutParams(
+                            LayoutParams.MATCH_PARENT,
+                            LayoutParams.MATCH_PARENT,
+                            4.0f
+                    );
+                    centerTitleTextLayout.setLayoutParams(param1);
+
                     imgMoreOutLine = R.mipmap.button_more_cyan;
                     imgMore = R.mipmap.button_more_active_cyan;
                     setMoreButtonClicked(false);

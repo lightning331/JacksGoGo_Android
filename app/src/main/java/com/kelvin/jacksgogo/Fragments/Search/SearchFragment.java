@@ -213,6 +213,12 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
+//                ((MainActivity)mContext).bSmsVeryfyKey = true;
+//                ((MainActivity)mContext).initView();
+//                getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, new SignInFragment())
+//                        .commit();
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);

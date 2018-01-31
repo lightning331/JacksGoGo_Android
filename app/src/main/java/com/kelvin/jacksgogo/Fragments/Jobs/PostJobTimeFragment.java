@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+
 public class PostJobTimeFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
@@ -123,7 +125,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         btnOneTime.setOnClickListener(this);
         btnRepeating.setOnClickListener(this);
 
-        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+        creatingJob = creatingAppointment;
         selectedJobType = creatingJob.getJobType();
         isSpecific = creatingJob.getJobTime().isSpecific();
         selectedRepeatingType = creatingJob.getRepetitionType();
@@ -411,7 +413,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         }
         creatingJob.setRepetitionType(selectedRepeatingType);
         creatingJob.setJobType(selectedJobType);
-        ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
+        creatingAppointment = creatingJob;
     }
 
     private void onYellowButtonColor(TextView button) {

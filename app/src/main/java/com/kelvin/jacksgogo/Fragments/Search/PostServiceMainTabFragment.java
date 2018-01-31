@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
@@ -65,10 +65,10 @@ public class PostServiceMainTabFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_post_service_tab_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_post_service_tab_category_name);
         Picasso.with(mContext)
-                .load(((PostServiceActivity)mContext).selectedCategory.getImage())
+                .load(selectedCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(((PostServiceActivity)mContext).selectedCategory.getName());
+        lblCategory.setText(selectedCategory.getName());
 
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_service_tabbar_view);
         tabbarView = new PostServiceTabbarView(getContext());

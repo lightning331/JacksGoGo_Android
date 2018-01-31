@@ -16,8 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
-import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -33,10 +32,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import butterknife.BindView;
 import co.lujun.androidtagview.TagContainerLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -58,10 +61,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private TextView lblBudget;
     private TextView lblReport;
     private TagContainerLayout describeTagView;
+    @BindView(R.id.lbl_post_job) TextView lblPostJob;
 
     private AlertDialog alertDialog;
     private PostJobStatus jobStatus;
-    private JGGCategoryModel selectedCategory;
+    private JGGCategoryModel category;
     private JGGJobModel creatingJob;
     private ProgressDialog progressDialog;
     private ArrayList<String> attachmentURLs;
@@ -95,22 +99,16 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         }
         attachmentURLs = new ArrayList<>();
-        switch (jobStatus) {
-            case NONE:
-                selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
-                ((PostServiceActivity)mContext).creatingAppointment.setCategoryID(selectedCategory.getID());
-                creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
-                creatingJob.setAttachmentURLs(attachmentURLs);
-                break;
-            case EDIT:
+        if (jobStatus == PostJobStatus.NONE) {
 
-                break;
-            case DUPLICATE:
+        } else if (jobStatus == PostJobStatus.EDIT
+                || jobStatus == PostJobStatus.DUPLICATE) {
 
-                break;
-            default:
-                break;
         }
+        category = selectedCategory;
+        creatingAppointment.setCategoryID(category.getID());
+        creatingJob = creatingAppointment;
+        creatingJob.setAttachmentURLs(attachmentURLs);
     }
 
     @Override
@@ -142,6 +140,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         lblReport = view.findViewById(R.id.lbl_post_job_report);
         btnPostJob = view.findViewById(R.id.btn_post_job);
 
+        if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Update Job");
         btnDescribe.setOnClickListener(this);
         btnTime.setOnClickListener(this);
         btnAddress.setOnClickListener(this);
@@ -151,13 +150,14 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     }
 
     private void setDatas() {
-        Picasso.with(mContext)
-                .load(selectedCategory.getImage())
-                .placeholder(null)
-                .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
 
         if (creatingJob != null) {
+            // Category
+            Picasso.with(mContext)
+                    .load(category.getImage())
+                    .placeholder(null)
+                    .into(imgCategory);
+            lblCategory.setText(category.getName());
             // Describe
             lblDescribeTitle.setText(creatingJob.getTitle());
             lblDescribeDesc.setText(creatingJob.getDescription());
@@ -293,7 +293,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (view.getId() == R.id.btn_post_job) {
             switch (jobStatus) {
                 case NONE:
-                    onPostJob();
+                    showAlertDialog();
+                    //onPostJob();
                     break;
                 case EDIT:
                     showAlertDialog();
@@ -309,8 +310,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-            Intent intent = new Intent(mContext, PostedServiceActivity.class);
-            intent.putExtra("is_post", true);
+            getActivity().finish();
+            Intent intent = new Intent(mContext, PostedJobActivity.class);
             mContext.startActivity(intent);
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
             getActivity().getSupportFragmentManager()
