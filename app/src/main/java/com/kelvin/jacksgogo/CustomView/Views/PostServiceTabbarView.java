@@ -71,17 +71,13 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
         imgAddressLine      = (ImageView) mTabbarView.findViewById(R.id.img_address_line);
         imgReportLine = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
 
-        mDescribeButton.setOnClickListener(this);
-        mTimeButton.setOnClickListener(this);
-        mAddressButton.setOnClickListener(this);
-        mReportButton.setOnClickListener(this);
     }
 
     public TabName getTabName() {
         return tabName;
     }
 
-    public void setTabName(TabName name, boolean isRequest) {
+    public void setTabName(TabName name, boolean isPost) {
         this.tabName = name;
 
         mDescribeImage.setImageResource(R.mipmap.counter_greytick);
@@ -95,18 +91,24 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
         imgTimeLine.setImageResource(R.mipmap.line_dotted);
         imgReportLine.setImageResource(R.mipmap.line_dotted);
         imgAddressLine.setImageResource(R.mipmap.line_dotted);
-        if (isRequest) {
+        if (isPost) {
             mDescribeImage.setImageResource(R.mipmap.counter_grey);
             mAddressImage.setImageResource(R.mipmap.counter_grey);
             mTimeImage.setImageResource(R.mipmap.counter_grey);
             mReportImage.setImageResource(R.mipmap.counter_grey);
+        } else {
+            mDescribeButton.setOnClickListener(this);
+            mTimeButton.setOnClickListener(this);
+            mAddressButton.setOnClickListener(this);
+            mReportButton.setOnClickListener(this);
         }
 
         switch (name) {
             case DESCRIBE:
                 mDescribeImage.setImageResource(R.mipmap.counter_greentick);
                 mDescribeText.setTextColor(getResources().getColor(R.color.JGGGreen));
-                if (isRequest) {
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
                     mDescribeImage.setImageResource(R.mipmap.counter_greenactive);
                 }
                 break;
@@ -114,7 +116,9 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 mTimeImage.setImageResource(R.mipmap.counter_greentick);
                 mTimeText.setTextColor(getResources().getColor(R.color.JGGGreen));
-                if (isRequest) {
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
+                    mTimeButton.setOnClickListener(this);
                     mTimeImage.setImageResource(R.mipmap.counter_greenactive);
                     mDescribeImage.setImageResource(R.mipmap.counter_greytick);
                 }
@@ -124,7 +128,10 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
                 imgAddressLine.setImageResource(R.mipmap.line_full);
                 mAddressImage.setImageResource(R.mipmap.counter_greentick);
                 mAddressText.setTextColor(getResources().getColor(R.color.JGGGreen));
-                if (isRequest) {
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
+                    mTimeButton.setOnClickListener(this);
+                    mAddressButton.setOnClickListener(this);
                     mAddressImage.setImageResource(R.mipmap.counter_greenactive);
                     mDescribeImage.setImageResource(R.mipmap.counter_greytick);
                     mTimeImage.setImageResource(R.mipmap.counter_greytick);
@@ -136,7 +143,11 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
                 imgReportLine.setImageResource(R.mipmap.line_full);
                 mReportImage.setImageResource(R.mipmap.counter_greentick);
                 mReportText.setTextColor(getResources().getColor(R.color.JGGGreen));
-                if (isRequest) {
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
+                    mTimeButton.setOnClickListener(this);
+                    mAddressButton.setOnClickListener(this);
+                    mReportButton.setOnClickListener(this);
                     mReportImage.setImageResource(R.mipmap.counter_greenactive);
                     mDescribeImage.setImageResource(R.mipmap.counter_greytick);
                     mTimeImage.setImageResource(R.mipmap.counter_greytick);

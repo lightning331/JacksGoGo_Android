@@ -84,17 +84,17 @@ public class PostJobRepeatingDayAdapter extends RecyclerView.Adapter {
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
-}
 
-class RepeatingDayViewHolder extends RecyclerView.ViewHolder {
+    class RepeatingDayViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView btnDay;
-    public ImageView btnClose;
+        public TextView btnDay;
+        public ImageView btnClose;
 
-    public RepeatingDayViewHolder(View itemView) {
-        super(itemView);
+        public RepeatingDayViewHolder(View itemView) {
+            super(itemView);
 
-        btnDay = (TextView) itemView.findViewById(R.id.btn_post_job_repeating_day);
-        btnClose = (ImageView) itemView.findViewById(R.id.btn_post_job_repeating_day_close);
+            btnDay = (TextView) itemView.findViewById(R.id.btn_post_job_repeating_day);
+            btnClose = (ImageView) itemView.findViewById(R.id.btn_post_job_repeating_day_close);
+        }
     }
 }

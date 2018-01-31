@@ -91,7 +91,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnFrom.setOnClickListener(this);
 
         creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
-        selectedPriceType = creatingJob.getSelectedPriceType();
+        selectedPriceType = creatingJob.getSelectedServiceType();
         updateData();
     }
 
@@ -116,7 +116,6 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
                 btnFixed.setVisibility(View.GONE);
                 btnFrom.setVisibility(View.GONE);
                 lblResponding.setVisibility(View.VISIBLE);
-                btnNext.setVisibility(View.VISIBLE);
                 onNextButtonEnable();
                 break;
             case 2:
@@ -129,7 +128,6 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
                     fixed = true;
                     onNextButtonEnable();
                 }
-                btnNext.setVisibility(View.VISIBLE);
                 txtFixed.addTextChangedListener(this);
                 break;
             case 3:
@@ -145,7 +143,6 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
                     from = true;
                     onNextButtonEnable();
                 }
-                btnNext.setVisibility(View.VISIBLE);
                 txtFromMin.addTextChangedListener(this);
                 txtFromMax.addTextChangedListener(this);
                 break;
@@ -179,39 +176,36 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_job_no_limit) {
-            if (nolimit) {
+            if (nolimit)
                 selectedPriceType = 0;
-            } else {
+            else
                 selectedPriceType = 1;
-            }
             nolimit = !nolimit;
         } else if (view.getId() == R.id.btn_post_job_fixed_amount) {
-            if (fixed) {
+            if (fixed)
                 selectedPriceType = 0;
-            } else {
+            else
                 selectedPriceType = 2;
-            }
             fixed = !fixed;
         } else if (view.getId() == R.id.btn_post_job_From) {
-            if (from) {
+            if (from)
                 selectedPriceType = 0;
-            } else {
+            else
                 selectedPriceType = 3;
-            }
             from = !from;
         } else if (view.getId() == R.id.btn_post_job_budget_next) {
-            if (selectedPriceType == 2) {
+            if (selectedPriceType == 2)
                 creatingJob.setBudget(Double.parseDouble(txtFixed.getText().toString()));
-            } else if (selectedPriceType == 3) {
+            else if (selectedPriceType == 3) {
                 creatingJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
                 creatingJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
             }
+            creatingJob.setSelectedServiceType(selectedPriceType);
             ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
             listener.onNextButtonClick();
 
             return;
         }
-        creatingJob.setSelectedPriceType(selectedPriceType);
         updateData();
     }
 

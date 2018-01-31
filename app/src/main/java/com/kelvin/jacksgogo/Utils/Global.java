@@ -127,6 +127,34 @@ public class Global {
         }
     }
 
+    public enum TimeSlotSelectionStatus {
+        none(null),
+        progress(0),
+        now(1),
+        done(2);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        TimeSlotSelectionStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (TimeSlotSelectionStatus status : TimeSlotSelectionStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static TimeSlotSelectionStatus valueOf(Integer status) {
+            return (TimeSlotSelectionStatus) map.get(status);
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+    }
+
     public static final String APPOINTMENT_TYPE = "APPOINTMENT_TYPE";
     public static final String SERVICES = "SERVICES";
     public static final String JOBS = "JOBS";
@@ -203,6 +231,54 @@ public class Global {
         return null;
     }
 
+    public static String getDateString(Date date) {
+        if (date != null) {
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+            String day = dayFormat.format(date);
+            String month = monthFormat.format(date);
+            return day + " " + month;
+        }
+        return null;
+    }
+
+    public static String getTimePeriodString(Date date) {
+        if (date != null) {
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+            SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
+            boolean period = true;
+            String hour = hourFormat.format(date);
+            if (Integer.parseInt(hour) > 12) {
+                hour = "0" + Integer.toString(Integer.parseInt(hour) - 12);
+                period = false;
+            }
+            if (Integer.parseInt(hour) == 12)
+                period = false;
+            String minute = minuteFormat.format(date);
+            String time = "";
+            if (period)
+                time = hour + ":" + minute + " AM";
+            else
+                time = hour + ":" + minute + " PM";
+            return time;
+        }
+        return null;
+    }
+
+    public static String getTimeString(Date date) {
+        if (date != null) {
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+            SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
+            SimpleDateFormat secondFormat = new SimpleDateFormat("ss");
+            String hour = hourFormat.format(date);
+            String minute = minuteFormat.format(date);
+            String second = secondFormat.format(date);
+            String time = hour + ":" + minute + ":" + second;
+            return time;
+        }
+        return null;
+    }
+
     public static String getWeekName(int position) {
         String[] weekNames = {
                 "Sunday",
@@ -223,26 +299,6 @@ public class Global {
                 "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st"
         };
         return dayNames[position];
-    }
-
-    public static String getTimeString(Date date) {
-        SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
-        SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
-        boolean period = true;
-        String hour = hourFormat.format(date);
-        if (Integer.parseInt(hour) > 12) {
-            hour = "0" + Integer.toString(Integer.parseInt(hour) - 12);
-            period = false;
-        }
-        if (Integer.parseInt(hour) == 12)
-            period = false;
-        String minute = minuteFormat.format(date);
-        String time = "";
-        if (period)
-            time = hour + ":" + minute + " AM";
-        else
-            time = hour + ":" + minute + " PM";
-        return time;
     }
 
     public static String getPeriod(boolean status) {

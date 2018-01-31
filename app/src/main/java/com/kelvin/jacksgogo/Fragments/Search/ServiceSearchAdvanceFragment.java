@@ -29,6 +29,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 
@@ -164,7 +165,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, mType);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
             @Override
-            public void onDoneButtonClick(View view, String start, String end, Boolean startAM, Boolean endAM) {
+            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
                 if (view.getId() == R.id.btn_add_time_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {

@@ -9,11 +9,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
+import com.squareup.picasso.Picasso;
 
 public class PostServiceMainTabFragment extends Fragment {
 
@@ -27,8 +30,10 @@ public class PostServiceMainTabFragment extends Fragment {
 
     private PostServiceTabbarView tabbarView;
     private LinearLayout tabbarLayout;
-    private AlertDialog alertDialog;
+    private ImageView imgCategory;
+    private TextView lblCategory;
 
+    private AlertDialog alertDialog;
     private String tabName;
 
     public PostServiceMainTabFragment() {
@@ -56,6 +61,14 @@ public class PostServiceMainTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_main_tab, container, false);
+
+        imgCategory = (ImageView) view.findViewById(R.id.img_post_service_tab_category);
+        lblCategory = (TextView) view.findViewById(R.id.lbl_post_service_tab_category_name);
+        Picasso.with(mContext)
+                .load(((PostServiceActivity)mContext).selectedCategory.getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory.setText(((PostServiceActivity)mContext).selectedCategory.getName());
 
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_service_tabbar_view);
         tabbarView = new PostServiceTabbarView(getContext());

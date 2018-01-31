@@ -94,6 +94,23 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (getArguments() != null) {
 
         }
+        attachmentURLs = new ArrayList<>();
+        switch (jobStatus) {
+            case NONE:
+                selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
+                ((PostServiceActivity)mContext).creatingAppointment.setCategoryID(selectedCategory.getID());
+                creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
+                creatingJob.setAttachmentURLs(attachmentURLs);
+                break;
+            case EDIT:
+
+                break;
+            case DUPLICATE:
+
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -101,12 +118,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_job_summary, container, false);
-
-        attachmentURLs = new ArrayList<>();
-        selectedCategory = ((PostServiceActivity)mContext).selectedCategory;
-        ((PostServiceActivity)mContext).creatingAppointment.setCategoryID(selectedCategory.getID());
-        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
-        creatingJob.setAttachmentURLs(attachmentURLs);
 
         initView(view);
         setDatas();
@@ -155,9 +166,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             // Address
             lblAddress.setText(creatingJob.getAddress().getFullAddress());
             // Budget
-            if (creatingJob.getSelectedPriceType() == 1) lblBudget.setText("No limit");
-            else if (creatingJob.getSelectedPriceType() == 2) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
-            else if (creatingJob.getSelectedPriceType() == 3)
+            if (creatingJob.getSelectedServiceType() == 1) lblBudget.setText("No limit");
+            else if (creatingJob.getSelectedServiceType() == 2) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
+            else if (creatingJob.getSelectedServiceType() == 3)
                 lblBudget.setText("From $ " + creatingJob.getBudgetFrom().toString()
                         + " "
                         + "to $ " + creatingJob.getBudgetTo().toString());
@@ -170,24 +181,24 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                     if (creatingJob.getJobTime().getEndOn() != null)
                         time = "on "
                                 + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn())
+                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn())
                                 + " - "
-                                + Global.getTimeString(creatingJob.getJobTime().getEndOn());
+                                + Global.getTimePeriodString(creatingJob.getJobTime().getEndOn());
                     else
                         time = "on "
                                 + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn());
+                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn());
                 } else {
                     if (creatingJob.getJobTime().getEndOn() != null)
                         time = "any time until "
                                 + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn())
+                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn())
                                 + " - "
-                                + Global.getTimeString(creatingJob.getJobTime().getEndOn());
+                                + Global.getTimePeriodString(creatingJob.getJobTime().getEndOn());
                     else
                         time = "any time until "
                                 + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimeString(creatingJob.getJobTime().getStartOn());
+                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn());
                 }
                 lblTime.setText(time);
             } else if (creatingJob.getJobType() == Global.JGGJobType.repeating) {
@@ -271,7 +282,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         alertDialog.show();
     }
 
-    public String getDateString(Date date) {
+    public static String getDateString(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
         String dateString = dateFormat.format(date);
         return dateString;

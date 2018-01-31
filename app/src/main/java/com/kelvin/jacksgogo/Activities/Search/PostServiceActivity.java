@@ -23,6 +23,9 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobMode
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
+
+import java.util.ArrayList;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
@@ -35,12 +38,15 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private JGGActionbarView actionbarView;
     private android.app.AlertDialog alertDialog;
 
-    private boolean alreadyVerifiedSkills = getRandomBoolean();
+    private boolean alreadyVerifiedSkills = true;//getRandomBoolean();
     private String status;
     private JGGAppBaseModel.AppointmentType appType;
 
     public JGGCategoryModel selectedCategory;
     public JGGCreatingJobModel creatingAppointment;
+    public int selectedPeopleType = 0;
+    public ArrayList<JGGTimeSlotModel> arrayOnePersonTimeSlots;
+    public ArrayList<JGGTimeSlotModel> arrayMultiplePeopleTimeSlots;
 
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;

@@ -62,20 +62,59 @@
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGGreen"
                 android:background="@drawable/green_border_background"/>
-            <EditText
+            <LinearLayout
                 android:visibility="gone"
-                android:hint="Amount  $1.00"
-                android:id="@+id/txt_post_service_fixed_amount"
+                android:id="@+id/post_service_fixed_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:padding="@dimen/edit_text_padding_size"
-                android:fontFamily="@font/muliregular"
-                android:textSize="@dimen/list_title_font_size"
                 android:background="@drawable/grey_border_background">
-            </EditText>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25"
+                    tools:ignore="Suspicious0dp"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:hint="Amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:text="$"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="75">
+                    <EditText
+                        android:hint="1.00"
+                        android:id="@+id/txt_post_service_fixed_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="-5dp"
+                        android:inputType="number"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:background="@android:color/transparent"/>
+                </LinearLayout>
+            </LinearLayout>
             <TextView
                 android:visibility="gone"
                 android:text="From $... to $..."
@@ -90,34 +129,112 @@
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGGreen"
                 android:background="@drawable/green_border_background"/>
-            <EditText
+            <LinearLayout
                 android:visibility="gone"
-                android:hint="Min.  $1.00"
-                android:id="@+id/txt_post_service_from_min"
+                android:id="@+id/post_service_min_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:padding="@dimen/edit_text_padding_size"
-                android:fontFamily="@font/muliregular"
-                android:textSize="@dimen/list_title_font_size"
                 android:background="@drawable/grey_border_background">
-            </EditText>
-            <EditText
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    tools:ignore="Suspicious0dp"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:hint="Min."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:text="$"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80">
+                    <EditText
+                        android:hint="1.00"
+                        android:id="@+id/txt_post_service_from_min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="-5dp"
+                        android:inputType="number"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:background="@android:color/transparent"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:visibility="gone"
-                android:hint="Max.  $9999.00"
-                android:id="@+id/txt_post_service_from_max"
+                android:id="@+id/post_service_max_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:padding="@dimen/edit_text_padding_size"
-                android:fontFamily="@font/muliregular"
-                android:textSize="@dimen/list_title_font_size"
                 android:background="@drawable/grey_border_background">
-            </EditText>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    tools:ignore="Suspicious0dp"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:hint="Max."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:text="$"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80">
+                    <EditText
+                        android:hint="9999.00"
+                        android:id="@+id/txt_post_service_from_max"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="-5dp"
+                        android:inputType="number"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:background="@android:color/transparent"/>
+                </LinearLayout>
+            </LinearLayout>
             <TextView
                 android:text="Package service."
                 android:id="@+id/btn_post_service_package"
@@ -146,6 +263,7 @@
                 android:visibility="gone"
                 android:hint="No. of Services 2"
                 android:id="@+id/txt_post_service_package_num"
+                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -167,22 +285,61 @@
                 android:layout_marginLeft="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <EditText
+            <LinearLayout
                 android:visibility="gone"
-                android:hint="Amount             $1.00"
-                android:id="@+id/txt_post_service_package_amount"
+                android:id="@+id/post_service_package_amount_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:padding="@dimen/edit_text_padding_size"
-                android:fontFamily="@font/muliregular"
-                android:textSize="@dimen/list_title_font_size"
                 android:background="@drawable/grey_border_background">
-            </EditText>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25"
+                    tools:ignore="Suspicious0dp"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:hint="Amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:text="$"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="75">
+                    <EditText
+                        android:hint="1.00"
+                        android:id="@+id/txt_post_service_package_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="-5dp"
+                        android:inputType="number"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:background="@android:color/transparent"/>
+                </LinearLayout>
+            </LinearLayout>
             <RelativeLayout
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:id="@+id/btn_post_service_price_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

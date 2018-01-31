@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
@@ -34,6 +35,10 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     private CategoryCellAdapter adapter;
 
     private ArrayList<JGGCategoryModel> mCategories;
+
+    public PostServiceSkillVerifiedFragment() {
+        // Required empty public constructor
+    }
 
     public static PostServiceSkillVerifiedFragment newInstance(String param1, String param2) {
         PostServiceSkillVerifiedFragment fragment = new PostServiceSkillVerifiedFragment();
@@ -74,13 +79,11 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String name = mCategories.get(position).getName();
-                Toast.makeText(mContext, name,
-                        Toast.LENGTH_LONG).show();
-
+                PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE);
+                ((PostServiceActivity)mContext).selectedCategory = mCategories.get(position);
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE))
+                        .replace(R.id.post_service_container, frag)
                         .addToBackStack("post_service")
                         .commit();
             }
@@ -121,10 +124,6 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         } else {
 
         }
-    }
-
-    public PostServiceSkillVerifiedFragment() {
-        // Required empty public constructor
     }
 
     public interface OnFragmentInteractionListener {

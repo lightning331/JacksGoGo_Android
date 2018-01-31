@@ -4,10 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -19,13 +20,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Adapter.Services.PostServiceTimeSlotAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 
@@ -39,55 +49,31 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     private TextView btnNoTimeSlots;
     private TextView lblCreateService;
     private TextView btnOnePerson;
-    private TextView lblSetTime;
-    private TextView btnOnePersonNow;
-    private LinearLayout calendarBG;
+    private TextView lblSetTimeNow;
+    private TextView btnNow;
+    private TextView btnLater;
+    private LinearLayout calendarViewLayout;
     private MaterialCalendarView calendarView;
-    private LinearLayout addTimeBG;
+    private LinearLayout addTimeLayout;
     private EditText lblTimeSlotsTitle;
     private ImageView btnTitleEdit;
-    private LinearLayout timeBG;
-    private TextView lblTime;
-    private TextView lblPax;
-    private ImageView btnTimeEdit;
-    private ImageView btnTimeDelete;
     private LinearLayout btnAddTime;
     private TextView lblAddTimeButtonTitle;
     private RelativeLayout btnDuplicate;
     private RelativeLayout btnDone;
     private RelativeLayout btnViewTime;
-    private TextView btnOnePersonLater;
     private TextView btnMultiPeople;
     private RelativeLayout btnNext;
-
-    private ImageView btnStartTimeUp;
-    private ImageView btnStartTimeDown;
-    private ImageView btnStartMinuteUp;
-    private ImageView btnStartMinuteDown;
-    private ImageView btnStartTimeAM;
-    private ImageView btnStartTimePM;
-    private EditText txtStartTime;
-    private EditText txtStartMinute;
-    private ImageView btnEndTimeUp;
-    private ImageView btnEndTimeDown;
-    private ImageView btnEndMinuteUp;
-    private ImageView btnEndMinuteDown;
-    private ImageView btnEndTimeAM;
-    private ImageView btnEndTimePM;
-    private EditText txtEndTime;
-    private EditText txtEndMinute;
-    private ImageView btnPaxLeft;
-    private ImageView btnPaxRight;
-    private EditText txtPax;
-    private LinearLayout paxBackground;
-    private TextView btnCancel;
-    private TextView btnOk;
+    private RecyclerView recyclerView;
 
     private AlertDialog alertDialog;
+    private PostServiceActivity postServiceActivity;
+    private JGGCreatingJobModel creatingService;
+    private ArrayList<JGGTimeSlotModel> selectedTimeSlots = new ArrayList<>();
+    private Integer editingTimeSlot;
 
-    private String strTimeSlotTitle;
-    private boolean isOnePerson = false;
-    private boolean isTitleEdit = false;
+    private boolean isTitleEdit;
+    private boolean isEditTimeSlot;
 
     public PostServiceTimeSlotFragment() {
         // Required empty public constructor
@@ -114,7 +100,16 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_time_slot, container, false);
 
+        postServiceActivity = ((PostServiceActivity)mContext);
+        creatingService = postServiceActivity.creatingAppointment;
+        if (postServiceActivity.selectedPeopleType == 2) {
+            selectedTimeSlots = postServiceActivity.arrayOnePersonTimeSlots;
+        } else if (postServiceActivity.selectedPeopleType == 3) {
+            selectedTimeSlots = postServiceActivity.arrayMultiplePeopleTimeSlots;
+        }
+
         initView(view);
+        updateView();
 
         return view;
     }
@@ -124,30 +119,324 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         btnNoTimeSlots = view.findViewById(R.id.btn_post_service_no_time);
         lblCreateService = view.findViewById(R.id.lbl_post_timeslot_a_service);
         btnOnePerson =  view.findViewById(R.id.btn_post_service_one_person);
-        lblSetTime =  view.findViewById(R.id.lbl_post_service_set_time);
-        btnOnePersonNow =  view.findViewById(R.id.btn_post_one_person_now);
-        calendarBG =  view.findViewById(R.id.post_calendar_bg);
+        lblSetTimeNow =  view.findViewById(R.id.lbl_post_service_set_time);
+        btnNow =  view.findViewById(R.id.btn_post_one_person_now);
+        btnLater =  view.findViewById(R.id.btn_post_one_person_later);
+        calendarViewLayout =  view.findViewById(R.id.post_calendar_bg);
         calendarView =  view.findViewById(R.id.post_service_calendar);
-        addTimeBG =  view.findViewById(R.id.post_add_timeslot_bg);
+        addTimeLayout =  view.findViewById(R.id.post_add_timeslot_bg);
         lblTimeSlotsTitle =  view.findViewById(R.id.txt_post_timeslot);
         btnTitleEdit =  view.findViewById(R.id.btn_post_timeslot_title);
-        timeBG =  view.findViewById(R.id.post_timeslot_time_bg);
-        lblTime =  view.findViewById(R.id.lbl_time_slots_time);
-        lblPax =  view.findViewById(R.id.lbl_time_slots_pax);
-        btnTimeEdit =  view.findViewById(R.id.btn_time_slots_edit);
-        btnTimeDelete =  view.findViewById(R.id.btn_time_slots_delete);
         btnAddTime =  view.findViewById(R.id.btn_post_timeslot_add);
         lblAddTimeButtonTitle =  view.findViewById(R.id.lbl_post_timeslot_add);
         btnDuplicate =  view.findViewById(R.id.btn_post_timeslot_duplicate);
         btnDone =  view.findViewById(R.id.btn_post_timeslot_done);
         btnViewTime =  view.findViewById(R.id.btn_post_timeslot_view_time);
-        btnOnePersonLater =  view.findViewById(R.id.btn_post_one_person_later);
         btnMultiPeople =  view.findViewById(R.id.btn_post_service_multi_people);
         btnNext =  view.findViewById(R.id.btn_time_slot_next);
+        recyclerView = view.findViewById(R.id.post_service_time_slot_recycler_view);
 
+        if (creatingService.getSessions() != null
+                && creatingService.getSessions().size() > 0)
+            calendarView.setSelectedDate(creatingService.getSessions().get(0).getSessionStartOn());
+        else
+            calendarView.setSelectedDate(new Date());
         btnNoTimeSlots.setOnClickListener(this);
         btnOnePerson.setOnClickListener(this);
         btnMultiPeople.setOnClickListener(this);
+        btnNow.setOnClickListener(this);
+        btnLater.setOnClickListener(this);
+        btnTitleEdit.setOnClickListener(this);
+        btnAddTime.setOnClickListener(this);
+        btnDuplicate.setOnClickListener(this);
+        btnDone.setOnClickListener(this);
+        btnViewTime.setOnClickListener(this);
+        btnNext.setOnClickListener(this);
+    }
+
+    private void updateView() {
+        btnNoTimeSlots.setVisibility(View.VISIBLE);
+        btnOnePerson.setVisibility(View.VISIBLE);
+        btnMultiPeople.setVisibility(View.VISIBLE);
+        lblTimeAvailable.setVisibility(View.VISIBLE);
+        onGreenButtonColor(btnNoTimeSlots);
+        onGreenButtonColor(btnOnePerson);
+        onGreenButtonColor(btnMultiPeople);
+        lblSetTimeNow.setVisibility(View.GONE);
+        lblCreateService.setVisibility(View.GONE);
+        btnNow.setVisibility(View.GONE);
+        btnLater.setVisibility(View.GONE);
+        calendarViewLayout.setVisibility(View.GONE);
+        addTimeLayout.setVisibility(View.GONE);
+        btnDuplicate.setVisibility(View.GONE);
+        btnDone.setVisibility(View.GONE);
+        btnViewTime.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
+        if (postServiceActivity.selectedPeopleType == 2){                       // One Person
+            onYellowButtonColor(btnOnePerson);
+            btnNoTimeSlots.setVisibility(View.GONE);
+            btnMultiPeople.setVisibility(View.GONE);
+            lblTimeAvailable.setVisibility(View.GONE);
+            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none) {
+                btnNoTimeSlots.setVisibility(View.VISIBLE);
+                btnOnePerson.setVisibility(View.VISIBLE);
+                btnMultiPeople.setVisibility(View.VISIBLE);
+                onGreenButtonColor(btnOnePerson);
+            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+                lblCreateService.setVisibility(View.VISIBLE);
+                lblTimeAvailable.setVisibility(View.GONE);
+                lblSetTimeNow.setVisibility(View.VISIBLE);
+                btnNow.setVisibility(View.VISIBLE);
+                btnLater.setVisibility(View.VISIBLE);
+            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.now) {
+                btnOnePerson.setVisibility(View.GONE);
+                btnNow.setVisibility(View.GONE);
+                btnLater.setVisibility(View.GONE);
+                lblSetTimeNow.setVisibility(View.GONE);
+                calendarViewLayout.setVisibility(View.VISIBLE);
+                addTimeLayout.setVisibility(View.VISIBLE);
+                btnDone.setVisibility(View.VISIBLE);
+            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done) {
+                btnViewTime.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
+            }
+        } else if (postServiceActivity.selectedPeopleType == 3) {               // Multi Person
+            onYellowButtonColor(btnMultiPeople);
+            btnNoTimeSlots.setVisibility(View.GONE);
+            btnOnePerson.setVisibility(View.GONE);
+            lblTimeAvailable.setVisibility(View.GONE);
+            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none) {
+                btnNoTimeSlots.setVisibility(View.VISIBLE);
+                btnOnePerson.setVisibility(View.VISIBLE);
+                btnMultiPeople.setVisibility(View.VISIBLE);
+                onGreenButtonColor(btnMultiPeople);
+            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+                lblCreateService.setVisibility(View.VISIBLE);
+                lblTimeAvailable.setVisibility(View.GONE);
+                lblSetTimeNow.setVisibility(View.VISIBLE);
+                btnNow.setVisibility(View.VISIBLE);
+                btnLater.setVisibility(View.VISIBLE);
+            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.now) {
+                btnMultiPeople.setVisibility(View.GONE);
+                btnNow.setVisibility(View.GONE);
+                btnLater.setVisibility(View.GONE);
+                lblSetTimeNow.setVisibility(View.GONE);
+                calendarViewLayout.setVisibility(View.VISIBLE);
+                lblAddTimeButtonTitle.setText("Add Time Slots & No. Of Pax");
+                addTimeLayout.setVisibility(View.VISIBLE);
+                btnDone.setVisibility(View.VISIBLE);
+            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done) {
+                btnViewTime.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void onAddTimeClick() {
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+        if (postServiceActivity.selectedPeopleType == 2) // One person
+            builder.onShowPaxLayout(false);
+        else if (postServiceActivity.selectedPeopleType == 3) // Multi person
+            builder.onShowPaxLayout(true);
+        builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
+                if (view.getId() == R.id.btn_add_time_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_ok) {
+                    alertDialog.dismiss();
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MMM/yyyy");
+                    String month = format.format(calendarView.getSelectedDate().getDate());
+                    Date startOn = Global.getDate(month + " " + Global.getTimeString(start));
+                    Date endOn = Global.getDate(month + " " + Global.getTimeString(end));
+                    if (startOn.before(new Date())) {
+                        Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
+                    timeSlotModel.setSessionStartOn(startOn);
+                    timeSlotModel.setSessionEndOn(endOn);
+                    timeSlotModel.setPeoples(number);
+                    if (isEditTimeSlot) {
+                        selectedTimeSlots.set(editingTimeSlot, timeSlotModel);
+                    } else {
+                        if (selectedTimeSlots == null)
+                            selectedTimeSlots = new ArrayList<>();
+                        selectedTimeSlots.add(timeSlotModel);
+                    }
+                    updateRecyclerView();
+                }
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
+
+    private void updateRecyclerView() {
+        recyclerView.setVisibility(View.VISIBLE);
+        btnDuplicate.setVisibility(View.VISIBLE);
+        btnDuplicate.setOnClickListener(PostServiceTimeSlotFragment.this);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        }
+        final PostServiceTimeSlotAdapter adapter = new PostServiceTimeSlotAdapter(mContext, selectedTimeSlots);
+        adapter.setOnItemClickListener(new PostServiceTimeSlotAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(boolean isDelete, int position) {
+                editingTimeSlot = position;
+                if (isDelete) {
+                    isEditTimeSlot = false;
+                    selectedTimeSlots.remove(position);
+                    if (selectedTimeSlots.size() == 0)
+                        btnDuplicate.setVisibility(View.GONE);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    isEditTimeSlot = true;
+                    onAddTimeClick();
+                }
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void onShowDuplicateTimeCalendarView() {
+        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+        builder.calendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
+        builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, String month, String day, String year) {
+                if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
+                    alertDialog.dismiss();
+                }
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
+
+    private void onEditTitleClick() {
+        isTitleEdit = !isTitleEdit;
+
+        if (isTitleEdit) {
+            lblTimeSlotsTitle.setFocusableInTouchMode(true);
+            lblTimeSlotsTitle.setBackgroundResource(R.drawable.green_border_background);
+            lblTimeSlotsTitle.setGravity(Gravity.LEFT);
+            btnTitleEdit.setImageResource(R.mipmap.button_tick_green);
+        } else {
+            lblTimeSlotsTitle.setFocusable(false);
+            lblTimeSlotsTitle.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+            lblTimeSlotsTitle.setGravity(Gravity.CENTER);
+            btnTitleEdit.setImageResource(R.mipmap.button_edit_green);
+        }
+    }
+
+    private void onYellowButtonColor(TextView button) {
+        button.setBackgroundResource(R.drawable.yellow_background);
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
+    }
+
+    private void onGreenButtonColor(TextView button) {
+        button.setBackgroundResource(R.drawable.green_border_background);
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_post_service_no_time) {
+            postServiceActivity.selectedPeopleType = 1;
+            onSaveCreatingService();
+        }
+        else if (view.getId() == R.id.btn_post_service_one_person) {
+            postServiceActivity.selectedPeopleType = 2;
+            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none)
+                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
+            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+                postServiceActivity.selectedPeopleType = 0;
+                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+            }
+            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done)
+                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
+        }
+        else if (view.getId() == R.id.btn_post_service_multi_people) {
+            postServiceActivity.selectedPeopleType = 3;
+            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none)
+                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
+            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+                postServiceActivity.selectedPeopleType = 0;
+                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+            }
+            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done)
+                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
+        }
+        else if (view.getId() == R.id.btn_post_one_person_now) {
+            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.now);
+        } else if (view.getId() == R.id.btn_post_one_person_later) {
+            postServiceActivity.selectedPeopleType = 1;
+            onSaveCreatingService();
+        }
+        else if (view.getId() == R.id.btn_post_timeslot_title) {
+            onEditTitleClick();
+        } else if (view.getId() == R.id.btn_post_timeslot_add) {
+            onAddTimeClick();
+        } else if (view.getId() == R.id.btn_post_timeslot_done) {
+            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.done);
+            onSaveCreatingService();
+        } else if (view.getId() == R.id.btn_post_timeslot_view_time) {
+            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.now);
+            updateRecyclerView();
+        } else if (view.getId() == R.id.btn_time_slots_edit) {
+            onAddTimeClick();
+        } else if (view.getId() == R.id.btn_time_slots_delete) {
+            recyclerView.setVisibility(View.GONE);
+            btnDuplicate.setVisibility(View.GONE);
+        } else if (view.getId() == R.id.btn_post_timeslot_duplicate) {
+            onShowDuplicateTimeCalendarView();
+        } else if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_time_slot_next) {
+            listener.onNextButtonClick();
+        }
+        updateView();
+    }
+
+    private void onSaveCreatingService() {
+        if (postServiceActivity.selectedPeopleType == 1) {  // No time slots
+            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+            selectedTimeSlots.clear();
+            listener.onNextButtonClick();
+        }
+        if (postServiceActivity.selectedPeopleType == 2) {  // One person
+            postServiceActivity.selectedPeopleType = 2;
+            postServiceActivity.arrayOnePersonTimeSlots = selectedTimeSlots;
+        }
+        if (postServiceActivity.selectedPeopleType == 3) {  // Multiple person
+            postServiceActivity.selectedPeopleType = 3;
+            postServiceActivity.arrayMultiplePeopleTimeSlots = selectedTimeSlots;
+        }
+        creatingService.setSessions(selectedTimeSlots);
+        ((PostServiceActivity)mContext).creatingAppointment = creatingService;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -171,282 +460,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_service_no_time) {
-            listener.onNextButtonClick();
-        } else if (view.getId() == R.id.btn_post_service_one_person) {
-            isOnePerson = true;
-            onOnePersonClick();
-        } else if (view.getId() == R.id.btn_post_one_person_now) {
-            onNowClick();
-        } else if (view.getId() == R.id.btn_post_one_person_later) {
-            onLaterClick();
-        } else if (view.getId() == R.id.btn_post_timeslot_title) {
-            onEditTitleClick();
-        } else if (view.getId() == R.id.btn_post_timeslot_add) {
-            onAddTimeClick();
-        } else if (view.getId() == R.id.btn_post_timeslot_done) {
-            onDoneClick();
-        } else if (view.getId() == R.id.btn_post_timeslot_view_time) {
-            onViewTimeSlotClick();
-        } else if (view.getId() == R.id.btn_time_slot_next) {
-            listener.onNextButtonClick();
-        } else if (view.getId() == R.id.btn_post_service_multi_people) {
-            isOnePerson = false;
-            onOnePersonClick();
-        } else if (view.getId() == R.id.btn_add_start_time_up) {
-
-        } else if (view.getId() == R.id.btn_add_start_time_down) {
-
-        } else if (view.getId() == R.id.btn_add_start_time_minute_up) {
-
-        } else if (view.getId() == R.id.btn_add_start_time_minute_down) {
-
-        } else if (view.getId() == R.id.btn_add_end_time_up) {
-
-        } else if (view.getId() == R.id.btn_add_end_time_down) {
-
-        } else if (view.getId() == R.id.btn_add_end_time_minute_up) {
-
-        } else if (view.getId() == R.id.btn_add_end_time_minute_down) {
-
-        } else if (view.getId() == R.id.btn_add_start_time_am) {
-            onAmClick(view);
-        } else if (view.getId() == R.id.btn_add_start_time_pm) {
-            onPmClick(view);
-        } else if (view.getId() == R.id.btn_add_end_time_am) {
-            onAmClick(view);
-        } else if (view.getId() == R.id.btn_add_end_time_pm) {
-            onPmClick(view);
-        } else if (view.getId() == R.id.btn_add_time_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_add_time_ok) {
-            alertDialog.dismiss();
-            timeBG.setVisibility(View.VISIBLE);
-            btnDuplicate.setVisibility(View.VISIBLE);
-            btnDuplicate.setOnClickListener(this);
-            btnTimeEdit.setOnClickListener(this);
-            btnTimeDelete.setOnClickListener(this);
-            if (!isOnePerson) lblPax.setVisibility(View.VISIBLE);
-        } else if (view.getId() == R.id.btn_time_slots_edit) {
-            onAddTimeClick();
-        } else if (view.getId() == R.id.btn_time_slots_delete) {
-            timeBG.setVisibility(View.GONE);
-            btnDuplicate.setVisibility(View.GONE);
-        } else if (view.getId() == R.id.btn_post_timeslot_duplicate) {
-            onShowDuplicateTimeCalendarView();
-        } else if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-            alertDialog.dismiss();
-        }
-    }
-
-    private void onAmClick(View view) {
-        if (view.getId() == R.id.btn_add_start_time_am) {
-            btnStartTimeAM.setBackgroundResource(R.mipmap.button_am_active_green);
-            btnStartTimePM.setBackgroundResource(R.mipmap.button_pm_green);
-        } else {
-            btnEndTimeAM.setBackgroundResource(R.mipmap.button_am_active_green);
-            btnEndTimePM.setBackgroundResource(R.mipmap.button_pm_green);
-        }
-    }
-
-    private void onPmClick(View view) {
-        if (view.getId() == R.id.btn_add_start_time_pm) {
-            btnStartTimeAM.setBackgroundResource(R.mipmap.button_am_green);
-            btnStartTimePM.setBackgroundResource(R.mipmap.button_pm_active_green);
-        } else {
-            btnEndTimeAM.setBackgroundResource(R.mipmap.button_am_green);
-            btnEndTimePM.setBackgroundResource(R.mipmap.button_pm_active_green);
-        }
-    }
-
-    private void onAddTimeClick() {
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.view_post_service_add_time_slot, null);
-        builder.setView(alertView);
-        alertDialog = builder.create();
-
-        onShowAddTimeView(alertView);
-
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-
-    }
-
-    private void onShowAddTimeView(View view) {
-        btnStartTimeUp = (ImageView) view.findViewById(R.id.btn_add_start_time_up);
-        btnStartTimeUp.setOnClickListener(this);
-        txtStartTime = (EditText) view.findViewById(R.id.txt_add_start_time);
-        txtStartTime.addTextChangedListener(this);
-        btnStartTimeDown = (ImageView) view.findViewById(R.id.btn_add_start_time_down);
-        btnStartTimeDown.setOnClickListener(this);
-        btnStartMinuteUp = (ImageView) view.findViewById(R.id.btn_add_start_time_minute_up);
-        btnStartMinuteUp.setOnClickListener(this);
-        txtStartMinute = (EditText) view.findViewById(R.id.txt_add_start_minute_time);
-        txtStartMinute.addTextChangedListener(this);
-        btnStartMinuteDown = (ImageView) view.findViewById(R.id.btn_add_start_time_minute_down);
-        btnStartMinuteDown.setOnClickListener(this);
-        btnStartTimeAM = (ImageView) view.findViewById(R.id.btn_add_start_time_am);
-        btnStartTimeAM.setOnClickListener(this);
-        btnStartTimePM = (ImageView) view.findViewById(R.id.btn_add_start_time_pm);
-        btnStartTimePM.setOnClickListener(this);
-        btnEndTimeUp = (ImageView) view.findViewById(R.id.btn_add_end_time_up);
-        btnEndTimeUp.setOnClickListener(this);
-        txtEndTime = (EditText) view.findViewById(R.id.txt_add_end_time);
-        txtEndTime.addTextChangedListener(this);
-        btnEndTimeDown = (ImageView) view.findViewById(R.id.btn_add_end_time_down);
-        btnEndTimeDown.setOnClickListener(this);
-        btnEndMinuteUp = (ImageView) view.findViewById(R.id.btn_add_end_time_minute_up);
-        btnEndMinuteUp.setOnClickListener(this);
-        txtEndMinute = (EditText) view.findViewById(R.id.txt_add_end_minute_time);
-        txtEndMinute.addTextChangedListener(this);
-        btnEndMinuteDown = (ImageView) view.findViewById(R.id.btn_add_end_time_minute_down);
-        btnEndMinuteDown.setOnClickListener(this);
-        btnEndTimeAM = (ImageView) view.findViewById(R.id.btn_add_end_time_am);
-        btnEndTimeAM.setOnClickListener(this);
-        btnEndTimePM = (ImageView) view.findViewById(R.id.btn_add_end_time_pm);
-        btnEndTimePM.setOnClickListener(this);
-        btnPaxLeft = (ImageView) view.findViewById(R.id.btn_add_time_pax_left);
-        btnPaxLeft.setOnClickListener(this);
-        txtPax = (EditText) view.findViewById(R.id.txt_add_time_pax);
-        txtPax.addTextChangedListener(this);
-        btnPaxRight = (ImageView) view.findViewById(R.id.btn_add_time_pax_right);
-        btnPaxRight.setOnClickListener(this);
-        btnCancel = (TextView) view.findViewById(R.id.btn_add_time_cancel);
-        btnCancel.setOnClickListener(this);
-        btnOk = (TextView) view.findViewById(R.id.btn_add_time_ok);
-        btnOk.setOnClickListener(this);
-        paxBackground = (LinearLayout) view.findViewById(R.id.add_time_pax_background);
-        if (!isOnePerson) paxBackground.setVisibility(View.VISIBLE);
-    }
-
-    private void onShowDuplicateTimeCalendarView() {
-        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
-        builder.calendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
-        builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
-            @Override
-            public void onDoneButtonClick(View view, String month, String day, String year) {
-                if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
-                    alertDialog.dismiss();
-                } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-                    alertDialog.dismiss();
-                }
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
-
-    private void onViewTimeSlotClick() {
-        onNowClick();
-        btnViewTime.setVisibility(View.GONE);
-        btnNext.setVisibility(View.GONE);
-    }
-
-    private void onOnePersonClick() {
-        if (isOnePerson) {
-            btnOnePerson.setClickable(false);
-            btnOnePerson.setBackgroundResource(R.drawable.yellow_background);
-            btnOnePerson.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
-            btnMultiPeople.setVisibility(View.GONE);
-        } else {
-            btnMultiPeople.setClickable(false);
-            btnMultiPeople.setBackgroundResource(R.drawable.yellow_background);
-            btnMultiPeople.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
-            btnOnePerson.setVisibility(View.GONE);
-        }
-        lblCreateService.setVisibility(View.VISIBLE);
-        btnNoTimeSlots.setVisibility(View.GONE);
-        lblTimeAvailable.setVisibility(View.GONE);
-        lblSetTime.setVisibility(View.VISIBLE);
-        btnOnePersonNow.setVisibility(View.VISIBLE);
-        btnOnePersonNow.setOnClickListener(this);
-        btnOnePersonLater.setVisibility(View.VISIBLE);
-        btnOnePersonLater.setOnClickListener(this);
-    }
-
-    private void onNowClick() {
-        btnOnePerson.setVisibility(View.GONE);
-        btnOnePersonNow.setVisibility(View.GONE);
-        lblCreateService.setVisibility(View.GONE);
-        lblSetTime.setVisibility(View.GONE);
-        btnOnePersonLater.setVisibility(View.GONE);
-        calendarBG.setVisibility(View.VISIBLE);
-        addTimeBG.setVisibility(View.VISIBLE);
-        btnDone.setVisibility(View.VISIBLE);
-
-        if (!isOnePerson) {
-            lblAddTimeButtonTitle.setText("Add Time Slots & No. Of Pax");
-            btnMultiPeople.setVisibility(View.GONE);
-        }
-        btnTitleEdit.setOnClickListener(this);
-        btnAddTime.setOnClickListener(this);
-        btnDone.setOnClickListener(this);
-    }
-
-    private void onLaterClick() {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        if (manager.getBackStackEntryCount() == 0) {
-            getActivity().onBackPressed();
-        } else {
-            manager.popBackStack();
-        }
-    }
-
-    private void onEditTitleClick() {
-        isTitleEdit = !isTitleEdit;
-
-        if (isTitleEdit) {
-            lblTimeSlotsTitle.setFocusableInTouchMode(true);
-            lblTimeSlotsTitle.setBackgroundResource(R.drawable.green_border_background);
-            lblTimeSlotsTitle.setGravity(Gravity.LEFT);
-            btnTitleEdit.setImageResource(R.mipmap.button_tick_green);
-        } else {
-            lblTimeSlotsTitle.setFocusable(false);
-            lblTimeSlotsTitle.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            lblTimeSlotsTitle.setGravity(Gravity.CENTER);
-            btnTitleEdit.setImageResource(R.mipmap.button_edit_green);
-        }
-    }
-
-    private void onDoneClick() {
-        lblCreateService.setVisibility(View.VISIBLE);
-        calendarBG.setVisibility(View.GONE);
-        addTimeBG.setVisibility(View.GONE);
-        btnDone.setVisibility(View.GONE);
-        btnViewTime.setVisibility(View.VISIBLE);
-        btnNext.setVisibility(View.VISIBLE);
-        if (!isOnePerson) {
-            btnMultiPeople.setVisibility(View.VISIBLE);
-        } else {
-            btnOnePerson.setVisibility(View.VISIBLE);
-        }
-        btnViewTime.setOnClickListener(this);
-        btnNext.setOnClickListener(this);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 
     public interface OnFragmentInteractionListener {

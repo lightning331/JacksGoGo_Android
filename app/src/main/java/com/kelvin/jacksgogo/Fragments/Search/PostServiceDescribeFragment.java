@@ -103,6 +103,7 @@ public class PostServiceDescribeFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
+        creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
 
         initView(view);
         initRecyclerView(view);
@@ -132,9 +133,6 @@ public class PostServiceDescribeFragment extends Fragment
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
         if (appType == JGGAppBaseModel.AppointmentType.JOBS) {
-
-            creatingJob = ((PostServiceActivity)mContext).creatingAppointment;
-
             lblTitle.setText(R.string.post_job_desc_title);
             lblDescription.setText(R.string.post_job_desc_description);
             lblTags.setText(R.string.post_job_desc_tag);
@@ -243,14 +241,10 @@ public class PostServiceDescribeFragment extends Fragment
             strTitle = txtServiceTitle.getText().toString();
             strDesc = txtServiceDesc.getText().toString();
             strTags = txtServiceTag.getText().toString();
-            if (appType == JGGAppBaseModel.AppointmentType.JOBS) {
-                creatingJob.setTitle(strTitle);
-                creatingJob.setDescription(strDesc);
-                creatingJob.setTags(strTags);
-                ((PostServiceActivity) mContext).creatingAppointment = creatingJob;
-            } else if (appType == JGGAppBaseModel.AppointmentType.SERVICES) {
-
-            }
+            creatingJob.setTitle(strTitle);
+            creatingJob.setDescription(strDesc);
+            creatingJob.setTags(strTags);
+            ((PostServiceActivity) mContext).creatingAppointment = creatingJob;
             listener.onNextButtonClick();
         } else if (view.getId() == R.id.btn_post_service_take_photo) {
             selectImage();

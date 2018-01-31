@@ -19,7 +19,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private String CategoryID;
     private JGGCategoryModel Category;
     private boolean IsRequest;
-    private int ServiceType = 0;
+    private Integer ServiceType;
     private ArrayList<String> AttachmentURLs;
     private Double BudgetFrom;
     private Double BudgetTo;
@@ -77,11 +77,11 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         IsRequest = request;
     }
 
-    public int getServiceType() {
+    public Integer getServiceType() {
         return ServiceType;
     }
 
-    public void setServiceType(int serviceType) {
+    public void setServiceType(Integer serviceType) {
         ServiceType = serviceType;
     }
 

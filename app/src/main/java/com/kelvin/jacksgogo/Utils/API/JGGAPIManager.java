@@ -57,4 +57,7 @@ public interface JGGAPIManager {
 
     @POST("api/Appointment/PostJob")
     Call<JGGPostJobResponse> postNewJob(@Body JGGCreatingJobModel creatingJob);
+
+    @POST("api/Appointment/PostService")
+    Call<JGGPostJobResponse> postNewService(@Body JGGCreatingJobModel creatingJob);
 }

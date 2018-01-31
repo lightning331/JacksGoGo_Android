@@ -26,7 +26,6 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCreatingJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -131,11 +130,12 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         repetition = creatingJob.getRepetition();
         selectedRepeatingDays = creatingJob.getSelectedRepeatingDays();
         if (creatingJob.getJobTime().getStartOn() != null) {
-            lblDate.setText(getDateString(creatingJob.getJobTime().getStartOn()));
-            startTime = Global.getTimeString(creatingJob.getJobTime().getStartOn());
+            selectedDay = Global.getDateString(creatingJob.getJobTime().getStartOn());
+            lblDate.setText(selectedDay);
+            startTime = Global.getTimePeriodString(creatingJob.getJobTime().getStartOn());
             lblTime.setText(startTime);
             if (creatingJob.getJobTime().getEndOn() != null) {
-                endTime = Global.getTimeString(creatingJob.getJobTime().getEndOn());
+                endTime = Global.getTimePeriodString(creatingJob.getJobTime().getEndOn());
                 lblTime.setText(startTime + " - " + endTime);
             }
             onNextButtonEnable();
@@ -257,16 +257,20 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, JGGAppBaseModel.AppointmentType.JOBS);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
             @Override
-            public void onDoneButtonClick(View view, String start, String end, Boolean startAM, Boolean endAM) {
+            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
                 if (view.getId() == R.id.btn_add_time_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
                     alertDialog.dismiss();
-                    startTime = start; endTime = end;
-                    if (endTime.equals(""))
-                        lblTime.setText(start + " " + Global.getPeriod(startAM));
-                    else
-                        lblTime.setText(start + " " + Global.getPeriod(startAM) + " - " + end + " " + Global.getPeriod(endAM));
+                    startTime = Global.getTimePeriodString(start);
+                    startOn = start;
+                    if (end != null) {
+                        endTime = Global.getTimePeriodString(end);
+                        endOn = end;
+                        lblTime.setText(startTime + " - " + endTime);
+                    } else {
+                        lblTime.setText(startTime);
+                    }
                     if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
                         onNextButtonEnable();
                 }
@@ -396,8 +400,9 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         JGGJobTimeModel timeModel = new JGGJobTimeModel();
         if (selectedJobType == Global.JGGJobType.oneTime) {
             timeModel.setSpecific(isSpecific);
-            startOn = Global.getDate(selectedDay + " " + startTime + ":" + "00");
-            endOn = Global.getDate(selectedDay + " " + endTime + ":" + "00");
+            startOn = Global.getDate(selectedDay + " " + Global.getTimeString(startOn));
+            if (endOn != null)
+                endOn = Global.getDate(selectedDay + " " + Global.getTimeString(endOn));
             timeModel.setStartOn(startOn);
             timeModel.setEndOn(endOn);
             creatingJob.setJobTime(timeModel);
@@ -407,17 +412,6 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         creatingJob.setRepetitionType(selectedRepeatingType);
         creatingJob.setJobType(selectedJobType);
         ((PostServiceActivity)mContext).creatingAppointment = creatingJob;
-    }
-
-    public String getDateString(Date date) {
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
-        SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-        String month = monthFormat.format(date);
-        String day = dayFormat.format(date);
-        String year = yearFormat.format(date);
-        selectedDay = day + "/" + month + "/" + year;
-        return day + " " + month;
     }
 
     private void onYellowButtonColor(TextView button) {

@@ -19,7 +19,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
-                    android:id="@+id/img_detail"
+                    android:id="@+id/img_post_service_tab_category"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@mipmap/icon_cat_runningman"/>
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/lbl_title"
+                        android:id="@+id/lbl_post_service_tab_category_name"
                         android:text="Running Man"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

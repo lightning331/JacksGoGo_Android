@@ -10,7 +10,7 @@ public class JGGTimeSlotModel {
 
     private Date SessionStartOn;
     private Date SessionEndOn;
-    private int Peoples;
+    private Integer Peoples;
 
     public Date getSessionStartOn() {
         return SessionStartOn;
@@ -28,11 +28,11 @@ public class JGGTimeSlotModel {
         SessionEndOn = sessionEndOn;
     }
 
-    public int getPeoples() {
+    public Integer getPeoples() {
         return Peoples;
     }
 
-    public void setPeoples(int peoples) {
+    public void setPeoples(Integer peoples) {
         Peoples = peoples;
     }
 }
