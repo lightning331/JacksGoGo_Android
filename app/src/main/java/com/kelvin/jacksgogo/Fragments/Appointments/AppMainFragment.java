@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Appointments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,43 +15,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
+import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServicePackageModel;
-import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.CANCELLED;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.NONE;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel.AppointmentStatus.WITHDRAWN;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private OnFragmentInteractionListener mListener;
+    private Context mContext;
 
     private RecyclerView recyclerView;
     private SearchView searchView;
     private Object searchTag;
+    private ProgressDialog progressDialog;
 
-    ArrayList<JGGAppBaseModel> arrayQuickJobs = new ArrayList<>();
-    ArrayList<JGGAppBaseModel> arrayServicePackages = new ArrayList<>();
-    ArrayList<JGGAppBaseModel> arrayPendingJobs = new ArrayList<>();
-    ArrayList<JGGAppBaseModel> arrayConfirmedJobs = new ArrayList<>();
-    ArrayList<JGGAppBaseModel> arrayHistoryJobs = new ArrayList<>();
-    ArrayList<JGGAppBaseModel> filteredArrayList = new ArrayList<>();
+    ArrayList<JGGJobModel> arrayAllPendingAppointments = new ArrayList<>();
+    ArrayList<JGGJobModel> arrayLoadedQuickAppointments = new ArrayList<>();
+    ArrayList<JGGJobModel> arrayLoadedServicePackages = new ArrayList<>();
+    ArrayList<JGGJobModel> arrayLoadedPendingAppointments = new ArrayList<>();
+    ArrayList<JGGJobModel> arrayConfirmedAppointments = new ArrayList<>();
+    ArrayList<JGGJobModel> arrayHistoryAppointments = new ArrayList<>();
+    ArrayList<JGGJobModel> filteredArrayList = new ArrayList<>();
 
     private static AppointmentMainAdapter pendingListAdapter;
     private static AppointmentMainAdapter confirmedListAdapter;
     private static AppointmentMainAdapter historyListAdapter;
-
 
     public AppMainFragment() {
         // Required empty public constructor
@@ -79,12 +88,129 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
 
-        addDummyData();
-
         // create list and custom adapter
         refreshFragment("PENDING");
-
         return view;
+    }
+
+    private void resetData() {
+        arrayAllPendingAppointments.clear();
+        arrayLoadedQuickAppointments.clear();
+        arrayLoadedServicePackages.clear();
+        arrayLoadedPendingAppointments.clear();
+        arrayConfirmedAppointments.clear();
+        arrayHistoryAppointments.clear();
+        filteredArrayList.clear();
+    }
+
+    private void loadPendingAppointments() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+        retrofit2.Call<JGGGetJobResponse> call = apiManager.getPendingAppointments();
+        call.enqueue(new Callback<JGGGetJobResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    resetData();
+                    arrayAllPendingAppointments = response.body().getValue();
+                    filterJobs(response.body().getValue());
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetJobResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void filterJobs(ArrayList<JGGJobModel> jobs) {
+        for (JGGJobModel job : jobs) {
+            if (job.isQuickJob()) {
+                arrayLoadedQuickAppointments.add(job);
+            } else if (job.isRequest() == false && job.getServiceType() > 1) {
+                arrayLoadedServicePackages.add(job);
+            } else {
+                arrayLoadedPendingAppointments.add(job);
+            }
+        }
+        pendingListAdapter = new AppointmentMainAdapter(getContext());
+        if (arrayLoadedQuickAppointments.size() > 0) pendingListAdapter.addSection("Quick Jobs", arrayLoadedQuickAppointments);
+        if (arrayLoadedServicePackages.size() > 0) pendingListAdapter.addSection("Service Packages", arrayLoadedServicePackages);
+        if (arrayLoadedPendingAppointments.size() > 0) pendingListAdapter.addSection("Pending Jobs", arrayLoadedPendingAppointments);
+        recyclerView.setAdapter(pendingListAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.refreshDrawableState();
+
+        pendingListAdapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, Object object) {
+                // ListView item select
+                onSelectListViewItem(position, object);
+            }
+        });
+    }
+
+    private void loadConfirmedAppointments() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+        retrofit2.Call<JGGGetJobResponse> call = apiManager.getConfirmedAppointments(currentUser.getID());
+        call.enqueue(new Callback<JGGGetJobResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    resetData();
+                    arrayConfirmedAppointments = response.body().getValue();
+
+                    setDataToAdapter("Confirmed",
+                            arrayConfirmedAppointments, false);
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetJobResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadAppointmentsHistory() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+        String userID = currentUser.getID();
+        retrofit2.Call<JGGGetJobResponse> call = apiManager.getAppointmentHistory(userID);
+        call.enqueue(new Callback<JGGGetJobResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    resetData();
+                    arrayHistoryAppointments = response.body().getValue();
+
+                    setDataToAdapter("History",
+                            arrayHistoryAppointments, false);
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetJobResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void refreshFragment(Object textView) {
@@ -94,38 +220,21 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         searchTag = textView;
         if (textView == "PENDING") {
             searchView.setQueryHint("Search through Pending list");
-
-            pendingListAdapter = new AppointmentMainAdapter(getContext());
-            if (arrayQuickJobs.size() > 0) pendingListAdapter.addSection("Quick Jobs", arrayQuickJobs);
-            if (arrayServicePackages.size() > 0) pendingListAdapter.addSection("Service Packages", arrayServicePackages);
-            if (arrayPendingJobs.size() > 0) pendingListAdapter.addSection("Pending Jobs", arrayPendingJobs);
-            recyclerView.setAdapter(pendingListAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.refreshDrawableState();
-
-            pendingListAdapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position, Object object) {
-                    // ListView item select
-                    onSelectListViewItem(position, object);
-                }
-            });
+            loadPendingAppointments();
 
         } else if (textView == "CONFIRM") {
             searchView.setQueryHint("Search through Confirmed list");
-            setDataToAdapter(confirmedListAdapter, "Confirmed",
-                    arrayConfirmedJobs, false);
+            loadConfirmedAppointments();
 
         } else if (textView == "HISTORY") {
             searchView.setQueryHint("Search through History list");
-            setDataToAdapter(historyListAdapter, "History",
-                    arrayHistoryJobs, false);
+            loadAppointmentsHistory();
         }
     }
 
-    public void setDataToAdapter(AppointmentMainAdapter adapter, String sectionTitle,
-                                 ArrayList<JGGAppBaseModel> arrayList, Boolean isFilter) {
-        adapter = new AppointmentMainAdapter(getContext());
+    public void setDataToAdapter(String sectionTitle,
+                                 ArrayList<JGGJobModel> arrayList, Boolean isFilter) {
+        AppointmentMainAdapter adapter = new AppointmentMainAdapter(getContext());
 
         if (arrayList.size() > 0) {
             adapter.addSection(sectionTitle, arrayList);
@@ -146,64 +255,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         });
     }
 
-    private void addDummyData() {
-        // Quick Jobs
-        arrayQuickJobs.add(new JGGServicePackageModel(new Date(), "Fast Food Delivery", NONE, "Needed before 12:00 PM", 0));
-        // Service Packages
-//        arrayServicePackages.add(new JGGJobModel(null, "Group Swimming Class", NONE, "1 slot remaining", 0));
-        // Pending Jobs
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
-//        arrayPendingJobs.add(new JGGJobModel(new Date(), "Maid Needed", NONE, "Needed on 18 Dec, 2017", 3));
-        arrayPendingJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 25 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 18 Dec, 2017", 99));
-//        arrayPendingJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Help With The Garden", WITHDRAWN, "We love Badminton\\nEvent on 19 Jul, 2017 10:00 AM - 12:00 PM", 0));
-//        arrayPendingJobs.add(new JGGJobModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
-//        arrayPendingJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-//        arrayPendingJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
-        arrayPendingJobs.add(new JGGEventModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
-
-        // Confirmed Jobs
-//        arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Help With The Garden", WITHDRAWN, "We love Badminton\\nEvent on 19 Jul, 2017 10:00 AM - 12:00 PM", 0));
-        arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
-//        arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-//        arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Bring My Dog To Her Grooming Apartment", NONE, "Needed on 21 Dec, 2017", 1));
-        arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
-//        arrayConfirmedJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayConfirmedJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
-
-        // History Jobs
-//        arrayHistoryJobs.add(new JGGJobModel(new Date(), "Maid Needed", NONE, "Needed on 18 Dec, 2017", 3));
-        arrayHistoryJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 25 Dec, 2017", 0));
-//        arrayHistoryJobs.add(new JGGJobModel(new Date(), "Gardening", NONE, "Needed on 18 Dec, 2017", 99));
-//        arrayHistoryJobs.add(new JGGJobModel(new Date(), "Neighbourhood Clean Up", WITHDRAWN, "Needed on 27 Dec, 2017", 0));
-        arrayHistoryJobs.add(new JGGServiceModel(new Date(), "Help With The Garden", WITHDRAWN, "We love Badminton\\nEvent on 19 Jul, 2017 10:00 AM - 12:00 PM", 0));
-        arrayHistoryJobs.add(new JGGServiceModel(new Date(), "Gardening", NONE, "Needed on 29 Dec, 2017", 7));
-//        arrayHistoryJobs.add(new JGGJobModel(new Date(), "Delivery - Small Parcel", CANCELLED, "Needed on 31 Dec, 2017", 0));
-        arrayHistoryJobs.add(new JGGServiceModel(new Date(), "Delivery - Small Parcel", WITHDRAWN, "Needed on 31 Dec, 2017", 0));
-        arrayHistoryJobs.add(new JGGEventModel(new Date(), "Delivery - Small Parcel", NONE, "Needed on 31 Dec, 2017", 0));
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -215,7 +266,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         Log.d("Search Tag", "==========" + searchTag + "==========");
 
         if (searchTag == "PENDING") {
-            filteredArrayList = filter(arrayPendingJobs, newText);
+            filteredArrayList = filter(arrayAllPendingAppointments, newText);
 
             pendingListAdapter = new AppointmentMainAdapter(getContext());
             pendingListAdapter.addSection("Pending Jobs", filteredArrayList);
@@ -232,25 +283,25 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             });
 
         } else if (searchTag == "CONFIRM") {
-            filteredArrayList = filter(arrayConfirmedJobs, newText);
+            filteredArrayList = filter(arrayConfirmedAppointments, newText);
 
-            setDataToAdapter(confirmedListAdapter, "Confirmed",
+            setDataToAdapter("Confirmed",
                     filteredArrayList, true);
 
         } else if (searchTag == "HISTORY") {
-            filteredArrayList = filter(arrayHistoryJobs, newText);
+            filteredArrayList = filter(arrayHistoryAppointments, newText);
 
-            setDataToAdapter(historyListAdapter, "History",
+            setDataToAdapter("History",
                     filteredArrayList, true);
         }
 
         return true;
     }
 
-    private ArrayList<JGGAppBaseModel> filter(ArrayList<JGGAppBaseModel> models, String query) {
+    private ArrayList<JGGJobModel> filter(ArrayList<JGGJobModel> models, String query) {
         query = query.toLowerCase();
-        final ArrayList<JGGAppBaseModel> filteredModelList = new ArrayList<>();
-        for (JGGAppBaseModel model : models) {
+        final ArrayList<JGGJobModel> filteredModelList = new ArrayList<>();
+        for (JGGJobModel model : models) {
             final String text = model.getTitle().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
@@ -260,27 +311,40 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void onSelectListViewItem(int position, Object object) {
-        if (object instanceof JGGServiceModel) {
+        if (object instanceof JGGJobModel) {
             Log.d("Service Model Selected", "==========" + object + "============");
-            Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-            startActivity(intent);
-        } else if (object instanceof JGGJobModel) {
+
+            JGGJobModel appointment = (JGGJobModel) object;
+            selectedCategory = appointment.getCategory();
+            creatingAppointment = appointment;
+            if (appointment.isRequest()) {
+                Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+                startActivity(intent);
+            }
+        } else if (object instanceof JGGServiceModel) {
             Log.d("Job Model Selected", "==========" + object + "============");
         } else if (object instanceof JGGEventModel) {
             Log.d("Event Model Selected", "==========" + object + "============");
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

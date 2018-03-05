@@ -88,7 +88,7 @@ public class PostJobCategoryFragment extends Fragment {
                 if (position == 0) {
 
                 } else {
-                    PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE);
+                    PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobSummaryFragment.PostJobStatus.POST);
                     selectedCategory = categories.get(position - 1);
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()

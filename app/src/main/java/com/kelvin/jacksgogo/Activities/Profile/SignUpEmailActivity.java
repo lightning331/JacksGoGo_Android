@@ -93,6 +93,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         signUpCall.enqueue(new Callback<JGGBaseResponse>() {
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(strEmail, strPassword);
                     onShowPhoneVerify();
@@ -114,8 +115,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     /**
      * validate email address format.
      */
-    public static boolean emailValidator(String email)
-    {
+    public static boolean emailValidator(String email) {
         Pattern pattern;
         Matcher matcher;
         final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

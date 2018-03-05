@@ -207,7 +207,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         cancelButton.setVisibility(View.GONE);
 
         okButton.setOnClickListener(this);
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
@@ -242,15 +242,15 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (view.getId() == R.id.btn_post_service) {
             switch (editStatus) {
                 case NONE:
-                    showAlertDialog();
-                    //onPostService();
+                    //showAlertDialog();
+                    onPostService();
                     break;
                 case EDIT:
                     showAlertDialog();
                     break;
                 case DUPLICATE:
                     Intent intent = new Intent(mContext, PostServiceActivity.class);
-                    intent.putExtra("EDIT_STATUS", "None");
+                    intent.putExtra("EDIT_STATUS", "Post");
                     intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                     startActivity(intent);
                     break;

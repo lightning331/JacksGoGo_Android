@@ -16,7 +16,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginLeft="1dp"
         android:layout_marginRight="16dp"
-        android:padding="15dp"
+        android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/JGGBlack"
         android:textSize="@dimen/button_font_size"
@@ -29,12 +29,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/JGGBlack"
         android:fontFamily="@font/muliregular"
         android:textSize="@dimen/list_title_font_size"
         android:text="Deleted jobs can be found in Appointment, under History tab."/>
+
+    <EditText
+        android:visibility="gone"
+        android:hint="Reason"
+        android:id="@+id/txt_alert_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="@dimen/edit_text_padding_size"
+        android:fontFamily="@font/muliregular"
+        android:textSize="@dimen/list_title_font_size"
+        android:background="@drawable/grey_border_background">
+    </EditText>
 
     <LinearLayout
         android:layout_width="match_parent"

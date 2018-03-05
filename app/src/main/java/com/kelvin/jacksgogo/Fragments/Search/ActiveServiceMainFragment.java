@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
@@ -27,6 +28,7 @@ import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnFragmentInteractionListener {
 
     private OnFragmentInteractionListener mListener;
+    private Context mContext;
 
     private RecyclerView recyclerView;
     private ActiveServiceTabView tabView;
@@ -92,7 +94,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-
+                    Intent intent = new Intent(mContext, PostedJobActivity.class);
+                    startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -141,6 +144,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
 

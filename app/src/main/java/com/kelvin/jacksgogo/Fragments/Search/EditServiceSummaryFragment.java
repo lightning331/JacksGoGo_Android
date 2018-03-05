@@ -23,7 +23,7 @@ import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
-public class EditServiceMainFragment extends Fragment implements EditServiceFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class EditServiceSummaryFragment extends Fragment implements EditServiceFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     private Context mContext;
     private RecyclerView recyclerView;
@@ -37,12 +37,12 @@ public class EditServiceMainFragment extends Fragment implements EditServiceFrag
 
     private OnFragmentInteractionListener mListener;
 
-    public EditServiceMainFragment() {
+    public EditServiceSummaryFragment() {
         // Required empty public constructor
     }
 
-    public static EditServiceMainFragment newInstance(boolean b) {
-        EditServiceMainFragment fragment = new EditServiceMainFragment();
+    public static EditServiceSummaryFragment newInstance(boolean b) {
+        EditServiceSummaryFragment fragment = new EditServiceSummaryFragment();
         Bundle args = new Bundle();
         args.putBoolean("isRequest", b);
         fragment.setArguments(args);
@@ -60,7 +60,7 @@ public class EditServiceMainFragment extends Fragment implements EditServiceFrag
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_edit_service_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_service_summary, container, false);
 
         initView(view);
         initRecyclerView(view);
@@ -142,7 +142,7 @@ public class EditServiceMainFragment extends Fragment implements EditServiceFrag
             editServiceFragment = EditServiceFragment.newInstance(status, false);
             ft.replace(R.id.app_detail_container, editServiceFragment, editServiceFragment.getTag());
         }
-        editServiceFragment.setmListener(EditServiceMainFragment.this);
+        editServiceFragment.setmListener(EditServiceSummaryFragment.this);
         ft.addToBackStack("edit_job");
         ft.commit();
     }

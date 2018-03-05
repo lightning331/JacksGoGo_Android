@@ -10,7 +10,6 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +18,7 @@ import java.util.List;
 
 public class JGGJobModel extends JGGAppointmentBaseModel {
 
+    private String ID;
     private String CategoryID;
     private JGGCategoryModel Category = new JGGCategoryModel();
     private boolean IsRequest;
@@ -27,7 +27,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
-    private Date ExpiredOn;
+    private String ExpiredOn;   // Originally date type
     private int ReportType = 0;
     private boolean IsRescheduled;
     private String Repetition;
@@ -48,9 +48,16 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
 
     private ArrayList<JGGBiddingProviderModel> biddingProviders;
     private ArrayList<JGGProviderUserModel> invitedProviders;
-
     public JGGJobModel() {
         super();
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     @Override
@@ -167,11 +174,11 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         Budget = budget;
     }
 
-    public Date getExpiredOn() {
+    public String getExpiredOn() {
         return ExpiredOn;
     }
 
-    public void setExpiredOn(Date expiredOn) {
+    public void setExpiredOn(String expiredOn) {
         ExpiredOn = expiredOn;
     }
 

@@ -86,7 +86,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
     public void onClick(View view) {
         if (view.getId() == R.id.service_listing_detail_navigation) {
             Intent intent = new Intent(this, PostServiceActivity.class);
-            intent.putExtra("EDIT_STATUS", "None");
+            intent.putExtra("EDIT_STATUS", "Post");
             intent.putExtra(APPOINTMENT_TYPE, SERVICES);
             startActivity(intent);
         }

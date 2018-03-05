@@ -11,14 +11,17 @@ import android.widget.ArrayAdapter;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 /**
  * Created by PUMA on 10/31/2017.
@@ -27,8 +30,8 @@ import java.util.Map;
 
 public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<JGGAppBaseModel> dataSet;
-    public final Map<String, ArrayList<JGGAppBaseModel>> sections = new LinkedHashMap<>();
+    private ArrayList<JGGJobModel> dataSet;
+    public final Map<String, ArrayList<JGGJobModel>> sections = new LinkedHashMap<>();
     public final ArrayAdapter<String> headers;
     public final static int TYPE_SECTION_HEADER = 0;
 
@@ -49,7 +52,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         headers = new ArrayAdapter<String>(context, R.layout.view_section_title); // this is the header desing page.
     }
 
-    public void addSection(String section, ArrayList<JGGAppBaseModel> arrayList) {
+    public void addSection(String section, ArrayList<JGGJobModel> arrayList) {
         this.headers.add(section);
         this.sections.put(section, arrayList);
     }
@@ -75,45 +78,51 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             SectionTitleView sectionView = (SectionTitleView) holder;
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle((String) itemData);
-        } else if (itemData instanceof JGGAppBaseModel) {
+        } else if (itemData instanceof JGGJobModel) {
             // RecyclerView Cell
             ApptHistoryListCell cellView = (ApptHistoryListCell) holder;
-            JGGAppBaseModel appointment = (JGGAppBaseModel) itemData;
+            JGGJobModel appointment = (JGGJobModel) itemData;
 
             cellView.lbl_Title.setText(appointment.getTitle());
-            cellView.lbl_Comment.setText(appointment.getComment());
-            cellView.lbl_Day.setText(appointment.getAppointmentDay());
-            cellView.lbl_Month.setText(appointment.getAppointmentMonth());
+            cellView.lbl_Comment.setText(appointment.getDescription());
+            String dateString = appointment.getPostOn();
+            Date appDay = appointment.appointmentDate(dateString);
+            cellView.lbl_Day.setText(appointment.appointmentDay(appDay));
+            cellView.lbl_Month.setText(appointment.appointmentMonth(appDay));
+            Picasso.with(mContext)
+                    .load(appointment.getUserProfile().getUser().getPhotoURL())
+                    .placeholder(null)
+                    .into(cellView.img_Profile);
 
-            if (appointment.getStatus() == JGGAppBaseModel.AppointmentStatus.CANCELLED) {
+            if (appointment.getStatus() == 1) {
                 cellView.lbl_Status.setText("Cancelled");
-            } else if (appointment.getStatus() == JGGAppBaseModel.AppointmentStatus.WITHDRAWN) {
+            } else if (appointment.getStatus() == 2) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
                 cellView.lbl_Status.setVisibility(View.GONE);
             }
-            if (appointment.getBadgeNumber() < 1) {
-                // Badge view hide when count is less than 1
-                cellView.lbl_BadgeNumber.setVisibility(View.INVISIBLE);
-                cellView.mViewStatusBar.setVisibility(View.INVISIBLE);
-            } else {
-                cellView.lbl_BadgeNumber.setVisibility(View.VISIBLE);
-                cellView.mViewStatusBar.setVisibility(View.VISIBLE);
-                // Show Badge Count
-                Integer badgeCount = appointment.getBadgeNumber();
-                cellView.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
-            }
+//            if (appointment.getBadgeNumber() < 1) {
+//                // Badge view hide when count is less than 1
+//                cellView.lbl_BadgeNumber.setVisibility(View.INVISIBLE);
+//                cellView.mViewStatusBar.setVisibility(View.INVISIBLE);
+//            } else {
+//                cellView.lbl_BadgeNumber.setVisibility(View.VISIBLE);
+//                cellView.mViewStatusBar.setVisibility(View.VISIBLE);
+//                // Show Badge Count
+//                Integer badgeCount = appointment.getBadgeNumber();
+//                cellView.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
+//            }
 
-            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-//            if (appointment instanceof JGGJobModel) {
-//                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-//                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-//            } else
-            if (appointment instanceof JGGEventModel) {
-                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
-                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            if (appointment.isRequest() == false) {
+                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             }
+//            else if (appointment instanceof JGGEventModel) {
+//                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+//                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+//            }
 
             if (cellView != null) {
                 cellView.itemView.setOnClickListener(new View.OnClickListener() {
@@ -129,14 +138,14 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemCount() {
         int total = 0;
-        for (ArrayList<JGGAppBaseModel> arrayList : this.sections.values())
+        for (ArrayList<JGGJobModel> arrayList : this.sections.values())
             total += arrayList.size() + 1;
         return total;
     }
 
     public Object getItem(int position) {
         for (Object section : this.sections.keySet()) {
-            ArrayList<JGGAppBaseModel> arrayList = sections.get(section);
+            ArrayList<JGGJobModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
@@ -153,7 +162,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemViewType(int position) {
         int type = 1;
         for (Object section : this.sections.keySet()) {
-            ArrayList<JGGAppBaseModel> arrayList = sections.get(section);
+            ArrayList<JGGJobModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
@@ -172,7 +181,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     // Search Filter
-    public void setFilter(ArrayList<JGGAppBaseModel> filteredArray) {
+    public void setFilter(ArrayList<JGGJobModel> filteredArray) {
         dataSet = new ArrayList<>();
         dataSet.addAll(filteredArray);
         notifyDataSetChanged();

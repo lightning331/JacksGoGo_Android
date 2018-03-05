@@ -6,7 +6,7 @@ package com.kelvin.jacksgogo.Utils.Models.Base;
 
 public class JGGBaseModel {
 
-    private String CeateBy;
+    private String CreateBy;
     private String CreateByID;
     private String CreateAt;
     private String ModifyBy;
@@ -14,12 +14,12 @@ public class JGGBaseModel {
     private String ModifyAt;
     private String IsActive;
 
-    public String getCeateBy() {
-        return CeateBy;
+    public String getCreateBy() {
+        return CreateBy;
     }
 
-    public void setCeateBy(String ceateBy) {
-        CeateBy = ceateBy;
+    public void setCreateBy(String createBy) {
+        CreateBy = createBy;
     }
 
     public String getCreateByID() {

@@ -93,6 +93,7 @@
     <string name="alert_posted_service_delete_desc">Deleted services can be found in Service Listing.</string>
     <string name="alert_posted_job_delete_title">Delete Job?</string>
     <string name="alert_posted_job_delete_desc">Deleted jobs can be found in Appointments, under History tab.</string>
+    <string name="alert_edit_job_delete_desc">Let the providers know why you are cancelling the job.</string>
     <string name="alert_email_sent_title">Email Sent!</string>
     <string name="alert_email_sent_desc">Check your email for the next steps.</string>
 
@@ -152,6 +153,7 @@
 
     <string name="accept_bid_title">Accept Bid</string>
     <string name="job_report_title">Job Report</string>
+    <string name="edit_job_back">Back</string>
     <string name="accept_bid_header_title">Congratulations on finding a good match!</string>
     <string name="accept_bid_description">Next, Lets set up a payment method. The payment will only be released when the job is completed.</string>
 </resources>

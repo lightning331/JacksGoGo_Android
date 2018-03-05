@@ -181,7 +181,7 @@ public class SearchFragment extends Fragment {
             }
         }
         mIntent.putExtra(APPOINTMENT_TYPE, appType);
-        mIntent.putExtra("EDIT_STATUS", "None");
+        mIntent.putExtra("EDIT_STATUS", "Post");
         view.getContext().startActivity(mIntent);
     }
 

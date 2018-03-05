@@ -101,6 +101,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         p1.setUser(user1);
         p1.setStatus(Global.BiddingStatus.NEWPROPOSAL);
         p1.setPrice(100.00f);
+        p1.setMessageCount(0);
         quotationArray.add(p1);
 
         JGGBiddingProviderModel p2 = new JGGBiddingProviderModel();
@@ -111,6 +112,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         p2.setUser(user2);
         p2.setStatus(Global.BiddingStatus.PENDING);
         p2.setPrice(105.00f);
+        p2.setMessageCount(3);
         quotationArray.add(p2);
 
         JGGBiddingProviderModel p3 = new JGGBiddingProviderModel();
@@ -121,6 +123,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         p3.setUser(user3);
         p3.setStatus(Global.BiddingStatus.PENDING);
         p3.setPrice(110.00f);
+        p3.setMessageCount(0);
         quotationArray.add(p3);
 
         JGGBiddingProviderModel p4 = new JGGBiddingProviderModel();
@@ -130,6 +133,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         user4.setRate(5.0);
         p4.setUser(user4);
         p4.setStatus(Global.BiddingStatus.NOTRESPONDED);
+        p4.setMessageCount(0);
         quotationArray.add(p4);
 
         JGGBiddingProviderModel p5 = new JGGBiddingProviderModel();
@@ -139,6 +143,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         user5.setRate(3.5);
         p5.setUser(user5);
         p5.setStatus(Global.BiddingStatus.DECLINED);
+        p5.setMessageCount(0);
         quotationArray.add(p5);
 
         JGGBiddingProviderModel p6 = new JGGBiddingProviderModel();
@@ -149,6 +154,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
         p6.setUser(user6);
         p6.setStatus(Global.BiddingStatus.REJECTED);
         p6.setPrice(90.00f);
+        p6.setMessageCount(0);
         quotationArray.add(p6);
 
         return quotationArray;

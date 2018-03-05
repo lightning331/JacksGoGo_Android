@@ -79,7 +79,8 @@ public class PostedJobActivity extends AppCompatActivity {
             }
         });
 
-        setData();
+        if (selectedCategory != null && creatingAppointment != null)
+            setData();
     }
 
     private void setData() {

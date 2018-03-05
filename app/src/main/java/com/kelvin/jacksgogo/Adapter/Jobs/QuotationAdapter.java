@@ -31,24 +31,24 @@ public class QuotationAdapter extends RecyclerView.Adapter implements View.OnCli
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == 0) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            return new SectionTitleView(view);
-        } else {
+//        if (viewType == 0) {
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
+//            return new SectionTitleView(view);
+//        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_bidding_provider, parent, false);
             return new AppBiddingProviderCell(mContext, view);
-        }
+//        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        if (position == 0) {
-            SectionTitleView sectionView = (SectionTitleView) holder;
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            sectionView.setTitle("Bidding service providers:");
-        } else {
-            provider = providerArray.get(position - 1);
+//        if (position == 0) {
+//            SectionTitleView sectionView = (SectionTitleView) holder;
+//            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+//            sectionView.setTitle("Bidding service providers:");
+//        } else {
+            provider = providerArray.get(position);
 
             AppBiddingProviderCell cell = (AppBiddingProviderCell) holder;
             cell.setData(provider);
@@ -56,16 +56,16 @@ public class QuotationAdapter extends RecyclerView.Adapter implements View.OnCli
                 @Override
                 public void onClick(View view) {
                     if (view.getId() == R.id.img_proposal) {
-                        listener.onItemClick(position - 1);
+                        listener.onItemClick(position);
                     }
                 }
             });
-        }
+//        }
     }
 
     @Override
     public int getItemCount() {
-        return providerArray.size() + 1;
+        return providerArray.size();
     }
 
     @Override

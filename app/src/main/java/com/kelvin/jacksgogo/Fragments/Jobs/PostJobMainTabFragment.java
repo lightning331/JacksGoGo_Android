@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
@@ -46,6 +45,7 @@ public class PostJobMainTabFragment extends Fragment {
 
     private FrameLayout describeContainer;
     private String tabName;
+    private String postStatus;
 
     private JGGJobModel creatingJob;
     private EditJobReportAdapter reportAdapter;
@@ -58,10 +58,11 @@ public class PostJobMainTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PostJobMainTabFragment newInstance(PostJobTabbarView.TabName name) {
+    public static PostJobMainTabFragment newInstance(PostJobTabbarView.TabName name, PostJobSummaryFragment.PostJobStatus status) {
         PostJobMainTabFragment fragment = new PostJobMainTabFragment();
         Bundle args = new Bundle();
         args.putString("tabName", name.toString());
+        args.putString("postStatus", status.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,6 +72,7 @@ public class PostJobMainTabFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             tabName = getArguments().getString("tabName");
+            postStatus = getArguments().getString("postStatus");
         }
     }
 
@@ -203,7 +205,10 @@ public class PostJobMainTabFragment extends Fragment {
                     if (position == itemCount - 1) {
                         onSaveCreatingJob();
                         PostJobSummaryFragment fragment = new PostJobSummaryFragment();
-                        fragment.setEditStatus(PostJobSummaryFragment.PostJobStatus.NONE);
+                        if (postStatus.equals("POST"))
+                            fragment.setEditStatus(PostJobSummaryFragment.PostJobStatus.POST);
+                        else if (postStatus.equals("EDIT") || postStatus.equals("DUPLICATE"))
+                            fragment.setEditStatus(PostJobSummaryFragment.PostJobStatus.EDIT);
 
                         getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.post_service_container, fragment, fragment.getTag())

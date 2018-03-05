@@ -69,7 +69,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         INVITE,
         BID,
         ACCEPT_BIDE,
-        JOB_REPORT
+        JOB_REPORT,
+        EDIT_JOB
     }
 
     public JGGActionbarView(Context context) {
@@ -165,7 +166,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 }
                 break;
             case SERVICE_LISTING:
-                setOrangeBackButton(R.string.title_service_listing, R.string.title_profile);
+                setOrangeBackButton(R.string.title_service_listing, "Profile");
                 break;
             case ACTIVE_AROUND:
                 if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
@@ -207,17 +208,20 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 setGreenBackButton("", R.string.title_request_quotation);
                 break;
             case VERIFY_SKILL:
-                setOrangeBackButton(R.string.title_verify_new_skill, R.string.title_empty);
+                setOrangeBackButton(R.string.title_verify_new_skill, "");
                 break;
             case BID:
-                setOrangeBackButton(R.string.title_bid, R.string.title_empty);
+                setOrangeBackButton(R.string.title_bid, "");
                 break;
             case ACCEPT_BIDE:
-                setOrangeBackButton(R.string.accept_bid_title, R.string.title_empty);
+                setOrangeBackButton(R.string.accept_bid_title, "");
                 break;
             case JOB_REPORT:
-                setOrangeBackButton(R.string.job_report_title, R.string.title_empty);
+                setOrangeBackButton(R.string.job_report_title, "");
                 //mBackButtonImage.setBackgroundColor();
+                break;
+            case EDIT_JOB:
+                setOrangeBackButton(R.string.title_empty, "Back");
                 break;
             case POSTED:
                 mTitleTextView.setText("");
@@ -271,7 +275,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 }
                 break;
             case INVITE:
-                setOrangeBackButton(R.string.invite_actionbar_title, R.string.title_empty);
+                setOrangeBackButton(R.string.invite_actionbar_title, "");
                 break;
             case SERVICE_LISTING_DETAIL:
                 mTitleTextView.setText("");
@@ -308,7 +312,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
     }
 
-    private void setOrangeBackButton(int title, int backButtonTitle) {
+    private void setOrangeBackButton(int title, String backButtonTitle) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backButtonTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);

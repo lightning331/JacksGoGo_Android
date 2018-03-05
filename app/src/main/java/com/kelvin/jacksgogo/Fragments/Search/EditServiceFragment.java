@@ -181,9 +181,9 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
                         return;
                     }
 
-                    EditServiceMainFragment editServiceMainFragment = EditServiceMainFragment.newInstance(true);
+                    EditServiceSummaryFragment editServiceSummaryFragment = EditServiceSummaryFragment.newInstance(true);
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.request_quotation_container, editServiceMainFragment, editServiceMainFragment.getTag());
+                    ft.replace(R.id.request_quotation_container, editServiceSummaryFragment, editServiceSummaryFragment.getTag());
                     ft.commit();
                 }
                 @Override

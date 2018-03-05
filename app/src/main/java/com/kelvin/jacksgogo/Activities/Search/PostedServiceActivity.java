@@ -85,7 +85,8 @@ public class PostedServiceActivity extends AppCompatActivity {
             }
         });
 
-        initView();
+        if (selectedCategory != null && creatingAppointment != null)
+            initView();
     }
 
     private void initView() {

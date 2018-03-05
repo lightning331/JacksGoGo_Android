@@ -1,43 +1,79 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Profile.SignUpPhoneActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Search.EditServiceMainFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.Search.EditServiceSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobMainFragment;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
 
-public class JobDetailActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private Toolbar mToolbar;
-    JGGActionbarView actionbarView;
-    JobMainFragment jobMainFragment;
-    EditServiceMainFragment editServiceMainFragment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.getDateString;
+
+public class JobDetailActivity extends AppCompatActivity implements TextWatcher {
+
+    @BindView(R.id.app_detail_actionbar) Toolbar mToolbar;
+    @BindView(R.id.img_detail) ImageView imgCategory;
+    @BindView(R.id.lbl_title) TextView lblCategory;
+    @BindView(R.id.lbl_date) TextView lblTime;
+    private EditText reason;
+
+    private JGGActionbarView actionbarView;
+    private EditServiceSummaryFragment editServiceSummaryFragment;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
 
+        ButterKnife.bind(this);
+
         actionbarView = new JGGActionbarView(this);
         /* ---------    Custom view add to TopToolbar     --------- */
-        mToolbar = (Toolbar) findViewById(R.id.app_detail_actionbar);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
+        if (selectedCategory != null && creatingAppointment != null)
+            initView();
         showJobMainFragment();
 
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
@@ -47,6 +83,63 @@ public class JobDetailActivity extends AppCompatActivity {
                 actionbarViewItemClick(view);
             }
         });
+    }
+
+    private void initView() {
+        // Category
+        Picasso.with(this)
+                .load(selectedCategory.getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory.setText(selectedCategory.getName());
+        // Time
+        if (creatingAppointment.getJobType() == Global.JGGJobType.oneTime) {
+            String time = "";
+            if (creatingAppointment.getJobTime().isSpecific()) {
+                if (creatingAppointment.getJobTime().getEndOn() != null)
+                    time = "on "
+                            + getDateString(creatingAppointment.getJobTime().getStartOn())
+                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn())
+                            + " - "
+                            + Global.getTimePeriodString(creatingAppointment.getJobTime().getEndOn());
+                else
+                    time = "on "
+                            + getDateString(creatingAppointment.getJobTime().getStartOn())
+                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn());
+            } else {
+                if (creatingAppointment.getJobTime().getEndOn() != null)
+                    time = "any time until "
+                            + getDateString(creatingAppointment.getJobTime().getStartOn())
+                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn())
+                            + " - "
+                            + Global.getTimePeriodString(creatingAppointment.getJobTime().getEndOn());
+                else
+                    time = "any time until "
+                            + getDateString(creatingAppointment.getJobTime().getStartOn())
+                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn());
+            }
+            lblTime.setText(time);
+        } else if (creatingAppointment.getJobType() == Global.JGGJobType.repeating) {
+            String time = "";
+            String dayString = creatingAppointment.getRepetition();
+            String[] items = dayString.split(",");
+            if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.weekly) {
+                for (int i = 0; i < items.length; i ++) {
+                    if (time.equals(""))
+                        time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                    else
+                        time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                }
+            } else if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.monthly) {
+                for (int i = 0; i < items.length; i ++) {
+                    if (time.equals(""))
+                        time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                    else
+                        time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                }
+            }
+            lblTime.setText(time);
+        }
     }
 
     private void actionbarViewItemClick(View view) {
@@ -127,18 +220,18 @@ public class JobDetailActivity extends AppCompatActivity {
     private void showJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        jobMainFragment = new JobMainFragment();
+        JobMainFragment frag = new JobMainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, jobMainFragment, jobMainFragment.getTag());
+        ft.replace(R.id.app_detail_container, frag, frag.getTag());
         ft.commit();
     }
 
     private void backToEditJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        editServiceMainFragment = EditServiceMainFragment.newInstance(false);
+        editServiceSummaryFragment = EditServiceSummaryFragment.newInstance(false);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, editServiceMainFragment, editServiceMainFragment.getTag());
+        ft.replace(R.id.app_detail_container, editServiceSummaryFragment, editServiceSummaryFragment.getTag());
         ft.commit();
     }
 
@@ -147,12 +240,17 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void openEditJobMainFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        //actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        editServiceMainFragment = EditServiceMainFragment.newInstance(false);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, editServiceMainFragment, editServiceMainFragment.getTag());
-        ft.commit();
+//        EditServiceSummaryFragment frag = EditServiceSummaryFragment.newInstance(false);
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.app_detail_container, frag, frag.getTag());
+//        ft.commit();
+
+        Intent intent = new Intent(this, PostServiceActivity.class);
+        intent.putExtra("EDIT_STATUS", "Edit");
+        intent.putExtra(APPOINTMENT_TYPE, JOBS);
+        startActivity(intent);
     }
 
     private void showDeleteJobDialog() {
@@ -161,8 +259,13 @@ public class JobDetailActivity extends AppCompatActivity {
         LayoutInflater inflater = (JobDetailActivity.this).getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(dialogView);
+        TextView desc = (TextView) dialogView.findViewById(R.id.lbl_alert_description);
+        desc.setText(R.string.alert_edit_job_delete_desc);
         TextView cancelButton = (TextView) dialogView.findViewById(R.id.btn_alert_cancel);
         TextView deleteButton = (TextView) dialogView.findViewById(R.id.btn_alert_ok);
+        reason = (EditText) dialogView.findViewById(R.id.txt_alert_reason);
+        reason.addTextChangedListener(this);
+        reason.setVisibility(View.VISIBLE);
         final AlertDialog alertDialog = builder.create();
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,10 +277,39 @@ public class JobDetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                alertDialog.dismiss();
+                deleteJob();
             }
         });
         alertDialog.show();
+    }
+
+    private void deleteJob() {
+        progressDialog = Global.createProgressDialog(this);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        String jobID = creatingAppointment.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(JobDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpPhoneActivity", t.getMessage());
+                Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+
     }
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {
@@ -200,5 +332,22 @@ public class JobDetailActivity extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (reason.getText().length() > 0) {
+
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }

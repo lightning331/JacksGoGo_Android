@@ -1,11 +1,12 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
-import com.google.gson.annotations.SerializedName;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -23,7 +24,7 @@ public class JGGAppointmentBaseModel {
     private String CurrencyCode;
     private String UserProfileID;
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
-    private Date PostOn;
+    private String PostOn;  // Originally date type
     private int Status = 0;
     private JGGAddressModel Address = new JGGAddressModel();
     private JGGAddressModel DAddress = new JGGAddressModel();
@@ -126,11 +127,11 @@ public class JGGAppointmentBaseModel {
         UserProfile = userProfile;
     }
 
-    public Date getPostOn() {
+    public String getPostOn() {
         return PostOn;
     }
 
-    public void setPostOn(Date postOn) {
+    public void setPostOn(String postOn) {
         PostOn = postOn;
     }
 
@@ -165,4 +166,36 @@ public class JGGAppointmentBaseModel {
     public void setType(AppointmentType type) {
         this.type = type;
     }
+
+    public static String appointmentDay(Date date) {
+        if (date != null) {
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            String day = dayFormat.format(date);
+            return day;
+        }
+        return null;
+    }
+
+    public static String appointmentMonth(Date date) {
+        if (date != null) {
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+            String month = monthFormat.format(date);
+            return month;
+        }
+        return null;
+    }
+
+    public static Date appointmentDate(String dateString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        try {
+
+            Date date = formatter.parse(dateString);
+            return date;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

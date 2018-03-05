@@ -13,6 +13,7 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
     private JGGUserBaseModel user;
     private Float price = 0.0f;
     private Global.BiddingStatus status;
+    private int messageCount;
 
     public JGGBiddingProviderModel() {
         super();
@@ -46,5 +47,13 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
 
     public void setStatus(Global.BiddingStatus status) {
         this.status = status;
+    }
+
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
     }
 }

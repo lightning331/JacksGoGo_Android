@@ -32,6 +32,8 @@ public class AppBiddingProviderCell extends RecyclerView.ViewHolder {
     public MaterialRatingBar ratingBar;
     public ImageView imgProposal;
     public LinearLayout btnProposal;
+    public ImageView imgChat;
+    public TextView lblMessageCount;
 
     public AppBiddingProviderCell(Context context, View itemView) {
         super(itemView);
@@ -45,6 +47,8 @@ public class AppBiddingProviderCell extends RecyclerView.ViewHolder {
         ratingBar = itemView.findViewById(R.id.bidding_provider_ratingBar);
         imgProposal = itemView.findViewById(R.id.img_proposal);
         btnProposal = itemView.findViewById(R.id.btn_proposal);
+        imgChat = itemView.findViewById(R.id.chat_icon);
+        lblMessageCount = itemView.findViewById(R.id.lblBadgeCount);
     }
 
     public void setData(JGGBiddingProviderModel provider) {
@@ -70,6 +74,15 @@ public class AppBiddingProviderCell extends RecyclerView.ViewHolder {
             this.status.setVisibility(View.VISIBLE);
             itemView.setAlpha(.5f);
         }
+        if (provider.getMessageCount() == 0) {
+            imgChat.setImageResource(R.mipmap.chat_green);
+            lblMessageCount.setVisibility(View.GONE);
+        }
+        else if (provider.getMessageCount() > 0) {
+            imgChat.setImageResource(R.mipmap.chat_filled_green);
+            lblMessageCount.setText(String.valueOf(provider.getMessageCount()));
+        }
+
         avatar.setImageResource(user.getAvatarUrl());
         userName.setText(user.getSurname());
         ratingBar.setRating(user.getRate().floatValue());

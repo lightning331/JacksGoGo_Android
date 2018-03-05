@@ -86,7 +86,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     private void initFragment() {
 
-        if (status.equals("None")) {
+        if (status.equals("Post")) {
             // Create New Appointment Model
             creatingAppointment = new JGGJobModel();
             creatingAppointment.setUserProfile(currentUser);
@@ -139,7 +139,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                             .commit();
                     break;
                 case JOBS:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_JOB, JGGAppBaseModel.AppointmentType.UNKNOWN);
                     PostJobSummaryFragment jobFrag = new PostJobSummaryFragment();
                     if (status.equals("Edit"))
                         jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.EDIT);

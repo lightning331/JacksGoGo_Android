@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import butterknife.BindView;
 import co.lujun.androidtagview.TagContainerLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +60,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private TextView lblBudget;
     private TextView lblReport;
     private TagContainerLayout describeTagView;
-    @BindView(R.id.lbl_post_job) TextView lblPostJob;
+    private TextView lblPostJob;
 
     private AlertDialog alertDialog;
     private PostJobStatus jobStatus;
@@ -71,8 +70,10 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private ArrayList<String> attachmentURLs;
     private String postedJobID;
 
+    private PostJobMainTabFragment fragment;
+
     public enum PostJobStatus {
-        NONE,
+        POST,
         EDIT,
         DUPLICATE
     }
@@ -99,7 +100,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         }
         attachmentURLs = new ArrayList<>();
-        if (jobStatus == PostJobStatus.NONE) {
+        if (jobStatus == PostJobStatus.POST) {
 
         } else if (jobStatus == PostJobStatus.EDIT
                 || jobStatus == PostJobStatus.DUPLICATE) {
@@ -139,8 +140,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         lblBudget = view.findViewById(R.id.lbl_post_job_budget);
         lblReport = view.findViewById(R.id.lbl_post_job_report);
         btnPostJob = view.findViewById(R.id.btn_post_job);
+        lblPostJob = view.findViewById(R.id.lbl_post_job);
 
-        if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Update Job");
+        if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Save Changes");
         btnDescribe.setOnClickListener(this);
         btnTime.setOnClickListener(this);
         btnAddress.setOnClickListener(this);
@@ -258,6 +260,10 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         });
     }
 
+    private void onEditJob() {
+
+    }
+
     private void showAlertDialog() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -292,58 +298,60 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_job) {
             switch (jobStatus) {
-                case NONE:
-                    showAlertDialog();
-                    //onPostJob();
+                case POST:
+                    //showAlertDialog();
+                    onPostJob();
                     break;
                 case EDIT:
-                    showAlertDialog();
+                    onEditJob();
                     break;
                 case DUPLICATE:
 //                    Intent intent = new Intent(mContext, PostServiceActivity.class);
-//                    intent.putExtra("EDIT_STATUS", "None");
+//                    intent.putExtra("EDIT_STATUS", "Post");
 //                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
 //                    startActivity(intent);
                     break;
                 default:
                     break;
             }
+            return;
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
             getActivity().finish();
             Intent intent = new Intent(mContext, PostedJobActivity.class);
             mContext.startActivity(intent);
+            return;
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE))
-                    .addToBackStack("post_job")
-                    .commit();
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobStatus.POST);
+            if (jobStatus == PostJobStatus.EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobStatus.EDIT);
+            }
         } else if (view.getId() == R.id.btn_post_job_summary_time) {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.TIME))
-                    .addToBackStack("post_job")
-                    .commit();
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.TIME, PostJobStatus.POST);
+            if (jobStatus == PostJobStatus.EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.TIME, PostJobStatus.EDIT);
+            }
         } else if (view.getId() == R.id.btn_post_job_summary_address) {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.ADDRESS))
-                    .addToBackStack("post_job")
-                    .commit();
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.ADDRESS, PostJobStatus.POST);
+            if (jobStatus == PostJobStatus.EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.ADDRESS, PostJobStatus.EDIT);
+            }
         }  else if (view.getId() == R.id.btn_post_job_summary_budget) {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.BUDGET))
-                    .addToBackStack("post_job")
-                    .commit();
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.BUDGET, PostJobStatus.POST);
+            if (jobStatus == PostJobStatus.EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.BUDGET, PostJobStatus.EDIT);
+            }
         } else if (view.getId() == R.id.btn_post_job_summary_report) {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_service_container, PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.REPORT))
-                    .addToBackStack("post_job")
-                    .commit();
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.REPORT, PostJobStatus.POST);
+            if (jobStatus == PostJobStatus.EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.REPORT, PostJobStatus.EDIT);
+            }
         }
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.post_service_container, fragment)
+                .addToBackStack("post_job")
+                .commit();
     }
 
     public void onButtonPressed(Uri uri) {
