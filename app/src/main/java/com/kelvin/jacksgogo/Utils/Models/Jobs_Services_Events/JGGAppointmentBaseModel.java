@@ -28,7 +28,7 @@ public class JGGAppointmentBaseModel {
     private int Status = 0;
     private JGGAddressModel Address = new JGGAddressModel();
     private JGGAddressModel DAddress = new JGGAddressModel();
-    private AppointmentType type;
+//    private AppointmentType type;
 
     public enum AppointmentStatus {
         NONE,
@@ -41,18 +41,18 @@ public class JGGAppointmentBaseModel {
         WAITINGFORREVIEW
     }
 
-    public enum AppointmentType {
-        JOBS,
-        SERVICES,
-        EVENT,
-        GOCLUB,
-        UNKNOWN
-    }
+//    public enum AppointmentType {
+//        JOBS,
+//        SERVICES,
+//        EVENT,
+//        GOCLUB,
+//        UNKNOWN
+//    }
 
     public JGGAppointmentBaseModel() {
         super();
 
-        type = AppointmentType.UNKNOWN;
+//        type = AppointmentType.UNKNOWN;
     }
 
     public String getTitle() {
@@ -159,13 +159,13 @@ public class JGGAppointmentBaseModel {
         this.DAddress = DAddress;
     }
 
-    public AppointmentType getType() {
-        return type;
-    }
-
-    public void setType(AppointmentType type) {
-        this.type = type;
-    }
+//    public AppointmentType getType() {
+//        return type;
+//    }
+//
+//    public void setType(AppointmentType type) {
+//        this.type = type;
+//    }
 
     public static String appointmentDay(Date date) {
         if (date != null) {
@@ -173,7 +173,7 @@ public class JGGAppointmentBaseModel {
             String day = dayFormat.format(date);
             return day;
         }
-        return null;
+        return "";
     }
 
     public static String appointmentMonth(Date date) {
@@ -182,20 +182,46 @@ public class JGGAppointmentBaseModel {
             String month = monthFormat.format(date);
             return month;
         }
-        return null;
+        return "";
     }
 
     public static Date appointmentDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss.SSS");
         try {
 
-            Date date = formatter.parse(dateString);
-            return date;
+            if (dateString != null) {
+                Date date = formatter.parse(dateString);
+                return date;
+            }
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Date appointmentMonthDate(String dateString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        try {
+
+            if (dateString != null) {
+                Date date = formatter.parse(dateString);
+                return date;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String appointmentDateString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss.SSS");
+        if (date != null) {
+            String dateString = dateFormat.format(date);
+            return dateString;
+        }
+        return "";
     }
 
 }

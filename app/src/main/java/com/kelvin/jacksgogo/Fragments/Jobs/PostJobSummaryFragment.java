@@ -27,10 +27,8 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 import co.lujun.androidtagview.TagContainerLayout;
 import retrofit2.Call;
@@ -39,6 +37,9 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -168,42 +169,45 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             // Address
             lblAddress.setText(creatingJob.getAddress().getFullAddress());
             // Budget
-            if (creatingJob.getSelectedServiceType() == 1) lblBudget.setText("No limit");
-            else if (creatingJob.getSelectedServiceType() == 2) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
-            else if (creatingJob.getSelectedServiceType() == 3)
+            if (creatingJob.getBudget() == null && creatingJob.getBudgetFrom() == null) lblBudget.setText("No limit");
+            else if (creatingJob.getBudget() != null) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
+            else if (creatingJob.getBudgetFrom() != null && creatingJob.getBudgetTo() != null)
                 lblBudget.setText("From $ " + creatingJob.getBudgetFrom().toString()
                         + " "
                         + "to $ " + creatingJob.getBudgetTo().toString());
             // Report
             lblReport.setText(Global.reportTypeName(creatingJob.getReportType()));
             // Time
-            if (creatingJob.getJobType() == Global.JGGJobType.oneTime) {
+            if (creatingJob.getAppointmentType() == 1) {
                 String time = "";
-                if (creatingJob.getJobTime().isSpecific()) {
-                    if (creatingJob.getJobTime().getEndOn() != null)
-                        time = "on "
-                                + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn())
-                                + " - "
-                                + Global.getTimePeriodString(creatingJob.getJobTime().getEndOn());
-                    else
-                        time = "on "
-                                + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn());
-                } else {
-                    if (creatingJob.getJobTime().getEndOn() != null)
-                        time = "any time until "
-                                + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn())
-                                + " - "
-                                + Global.getTimePeriodString(creatingJob.getJobTime().getEndOn());
-                    else
-                        time = "any time until "
-                                + getDateString(creatingJob.getJobTime().getStartOn())
-                                + " " + Global.getTimePeriodString(creatingJob.getJobTime().getStartOn());
+                if (creatingJob.getSessions() != null
+                        && creatingJob.getSessions().size() > 0) {
+                    if (creatingJob.getSessions().get(0).isSpecific()) {
+                        if (creatingJob.getSessions().get(0).getSessionEndOn() != null)
+                            time = "on "
+                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + " - "
+                                    + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                        else
+                            time = "on "
+                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                    } else {
+                        if (creatingJob.getSessions().get(0).getSessionEndOn() != null)
+                            time = "any time until "
+                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + " - "
+                                    + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                        else
+                            time = "any time until "
+                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                    }
                 }
                 lblTime.setText(time);
-            } else if (creatingJob.getJobType() == Global.JGGJobType.repeating) {
+            } else if (creatingJob.getAppointmentType() == 0) {
                 String time = "";
                 String dayString = creatingJob.getRepetition();
                 String[] items = dayString.split(",");
@@ -286,12 +290,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
-    }
-
-    public static String getDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
-        String dateString = dateFormat.format(date);
-        return dateString;
     }
 
     @Override

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.ReviewCell;
 import com.kelvin.jacksgogo.R;
@@ -78,7 +78,7 @@ public class JobReviewFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        ((JobDetailActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
+        ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

@@ -1,31 +1,29 @@
 package com.kelvin.jacksgogo.Utils.Models.System;
 
-import java.util.Date;
-
 /**
  * Created by PUMA on 1/18/2018.
  */
 
 public class JGGJobTimeModel {
 
-    private Date StartOn;
-    private Date EndOn;
+    private String StartOn;
+    private String EndOn;
     private Boolean IsSpecific;
     private int Peoples;
 
-    public Date getStartOn() {
+    public String getStartOn() {
         return StartOn;
     }
 
-    public void setStartOn(Date startOn) {
+    public void setStartOn(String startOn) {
         StartOn = startOn;
     }
 
-    public Date getEndOn() {
+    public String getEndOn() {
         return EndOn;
     }
 
-    public void setEndOn(Date endOn) {
+    public void setEndOn(String endOn) {
         EndOn = endOn;
     }
 

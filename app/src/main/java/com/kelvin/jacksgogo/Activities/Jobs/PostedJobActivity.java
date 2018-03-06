@@ -38,6 +38,9 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 public class PostedJobActivity extends AppCompatActivity {
 
@@ -94,31 +97,34 @@ public class PostedJobActivity extends AppCompatActivity {
         // Time
         String time = "";
         String type = "";
-        if (creatingAppointment.getJobType() == Global.JGGJobType.oneTime) {
-            if (creatingAppointment.getJobTime().isSpecific()) {
-                type = "on";
-                if (creatingAppointment.getJobTime().getEndOn() != null)
-                    time = getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn())
-                            + " - "
-                            + Global.getTimePeriodString(creatingAppointment.getJobTime().getEndOn());
-                else
-                    time = getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn());
-            } else {
-                type = "any time until";
-                if (creatingAppointment.getJobTime().getEndOn() != null)
-                    time = getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn())
-                            + " - "
-                            + Global.getTimePeriodString(creatingAppointment.getJobTime().getEndOn());
-                else
-                    time = getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn());
+        if (creatingAppointment.getAppointmentType() == 1) {    // One-time
+            if (creatingAppointment.getSessions() != null
+                    && creatingAppointment.getSessions().size() > 0) {
+                if (creatingAppointment.getSessions().get(0).isSpecific()) {
+                    type = "on";
+                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " - "
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                    else
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                } else {
+                    type = "any time until";
+                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " - "
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                    else
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                }
             }
             lblType.setText(type);
             lblTime.setText(time);
-        } else if (creatingAppointment.getJobType() == Global.JGGJobType.repeating) {
+        } else if (creatingAppointment.getAppointmentType() == 0) {     // Repeating
             String dayString = creatingAppointment.getRepetition();
             String[] items = dayString.split(",");
             if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.weekly) {
@@ -144,12 +150,12 @@ public class PostedJobActivity extends AppCompatActivity {
         // Address
         lblAddress.setText(creatingAppointment.getAddress().getFullAddress());
         // Price
-        if (creatingAppointment.getSelectedServiceType() == 1) lblBudget.setText("No limit");
-        else if (creatingAppointment.getSelectedServiceType() == 2) lblBudget.setText("$ " + creatingAppointment.getBudget().toString());
-        else if (creatingAppointment.getSelectedServiceType() == 3)
-            lblBudget.setText("$ " + creatingAppointment.getBudgetFrom().toString()
+        if (creatingAppointment.getBudget() == null && creatingAppointment.getBudgetFrom() == null) lblBudget.setText("No limit");
+        else if (creatingAppointment.getBudget() != null) lblBudget.setText("Fixed $ " + creatingAppointment.getBudget().toString());
+        else if (creatingAppointment.getBudgetFrom() != null && creatingAppointment.getBudgetTo() != null)
+            lblBudget.setText("From $ " + creatingAppointment.getBudgetFrom().toString()
                     + " "
-                    + "$ " + creatingAppointment.getBudgetTo().toString());
+                    + "to $ " + creatingAppointment.getBudgetTo().toString());
         // Report
         lblReportType.setText(Global.reportTypeName(creatingAppointment.getReportType()));
         // User
@@ -271,11 +277,5 @@ public class PostedJobActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
-    }
-
-    public static String getDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
-        String dateString = dateFormat.format(date);
-        return dateString;
     }
 }

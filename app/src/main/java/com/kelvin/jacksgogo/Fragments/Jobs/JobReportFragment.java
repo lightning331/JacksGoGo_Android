@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
@@ -140,7 +140,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
         if (getArguments() != null) {
             isVerified = getArguments().getBoolean("isVerified");
         }
-        ((JobDetailActivity) context).setStatus(JGGActionbarView.EditStatus.JOB_REPORT);
+        ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.JOB_REPORT);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

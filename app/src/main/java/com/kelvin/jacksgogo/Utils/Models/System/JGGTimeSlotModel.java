@@ -8,23 +8,24 @@ import java.util.Date;
 
 public class JGGTimeSlotModel {
 
-    private Date SessionStartOn;
-    private Date SessionEndOn;
+    private String SessionStartOn;
+    private String SessionEndOn;
+    private Boolean IsSpecific;
     private Integer Peoples;
 
-    public Date getSessionStartOn() {
+    public String getSessionStartOn() {
         return SessionStartOn;
     }
 
-    public void setSessionStartOn(Date sessionStartOn) {
+    public void setSessionStartOn(String sessionStartOn) {
         SessionStartOn = sessionStartOn;
     }
 
-    public Date getSessionEndOn() {
+    public String getSessionEndOn() {
         return SessionEndOn;
     }
 
-    public void setSessionEndOn(Date sessionEndOn) {
+    public void setSessionEndOn(String sessionEndOn) {
         SessionEndOn = sessionEndOn;
     }
 
@@ -34,5 +35,13 @@ public class JGGTimeSlotModel {
 
     public void setPeoples(Integer peoples) {
         Peoples = peoples;
+    }
+
+    public Boolean isSpecific() {
+        return IsSpecific;
+    }
+
+    public void setSpecific(Boolean specific) {
+        IsSpecific = specific;
     }
 }

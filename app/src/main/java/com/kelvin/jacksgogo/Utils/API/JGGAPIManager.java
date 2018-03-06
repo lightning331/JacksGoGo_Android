@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Utils.API;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
@@ -75,7 +76,7 @@ public interface JGGAPIManager {
     @POST("api/Appointment/PostService")
     Call<JGGPostJobResponse> postNewService(@Body JGGJobModel creatingService);
 
-    @GET("api/Appointment/DeleteJob")
+    @GET("api/Appointment/DeleteService")
     Call<JGGBaseResponse> deleteService(@Query("ID") String serviceID);
 
     @GET("api/Appointment/GetPendingAppointments")
@@ -86,4 +87,16 @@ public interface JGGAPIManager {
 
     @GET("api/Appointment/GetAppointmentHistory")
     Call<JGGGetJobResponse> getAppointmentHistory(@Query("ID") String userProfileID);
+
+    /*
+     *  Proposal
+     */
+    @FormUrlEncoded
+    @POST("api/Proposal/GetUsersForInvite")
+    Call<JGGInviteUsersResponse> getUsersForInvite(@Field("CategoryID") String categoryID,
+                                                   @Field("City") String city,
+                                                   @Field("State") String state,
+                                                   @Field("PostalCode") String postalCode,
+                                                   @Field("pageIndex") Integer pageIndex,
+                                                   @Field("pageSize") Integer pageSize);
 }

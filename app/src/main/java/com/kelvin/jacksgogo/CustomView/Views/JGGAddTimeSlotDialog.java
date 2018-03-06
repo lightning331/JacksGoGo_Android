@@ -11,12 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
 
 /**
  * Created by PUMA on 1/20/2018.
@@ -312,7 +313,7 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
             Toast.makeText(mContext, "Please set end time later than start time.", Toast.LENGTH_SHORT).show();
             return;
         }
-        DateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
         Date currentDate = new Date();
         Date startDate = null;
         Date endDate = null;
@@ -322,42 +323,42 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
             if (!startAM && startHour < 12) {
                 String tmpHour = Integer.toString(startHour + 12);
                 startDateString = dateFormat.format(currentDate)
-                        + " "
+                        + "T"
                         + tmpHour
                         + ":"
                         + txtStartMinute.getText().toString()
-                        + ":" + "00";
+                        + ":" + "00.000";
 
             } else {
                 startDateString = dateFormat.format(currentDate)
-                        + " "
+                        + "T"
                         + txtStartTime.getText().toString()
                         + ":"
                         + txtStartMinute.getText().toString()
-                        + ":" + "00";
+                        + ":" + "00.000";
             }
-            startDate = Global.getDate(startDateString);
+            startDate = appointmentDate(startDateString);
         }
         if (endTimeEnable) {
             if (endHour != null && endMinute != null) {
                 if (!endAM && endHour < 12) {
                     String tmpHour = Integer.toString(endHour + 12);
                     endDateString = dateFormat.format(currentDate)
-                            + " "
+                            + "T"
                             + tmpHour
                             + ":"
                             + txtEndMinute.getText().toString()
-                            + ":" + "00";
+                            + ":" + "00.000";
 
                 } else {
                     endDateString = dateFormat.format(currentDate)
-                            + " "
+                            + "T"
                             + endHour.toString()
                             + ":"
                             + txtEndMinute.getText().toString()
-                            + ":" + "00";
+                            + ":" + "00.000";
                 }
-                endDate = Global.getDate(endDateString);
+                endDate = appointmentDate(endDateString);
             }
         }
         if (!isPax) paxNo = null;

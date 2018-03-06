@@ -167,7 +167,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 else
                     price = "No set";
             } else {
-                price = String.valueOf(creatingService.getServiceType()) + " Services, ";
+                price = String.valueOf(creatingService.getAppointmentType()) + " Services, ";
                 if (creatingService.getBudget() != null)
                     price = price + "$ " + String.valueOf(creatingService.getBudget()) + " per service";
             }

@@ -14,6 +14,8 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.List;
 
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
+
 /**
  * Created by PUMA on 1/30/2018.
  */
@@ -85,10 +87,10 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(JGGTimeSlotModel time) {
-            String startTime = Global.getTimePeriodString(time.getSessionStartOn());
+            String startTime = Global.getTimePeriodString(appointmentDate(time.getSessionStartOn()));
             String endTime = "";
             if (time.getSessionEndOn() != null) {
-                endTime = Global.getTimePeriodString(time.getSessionEndOn());
+                endTime = Global.getTimePeriodString(appointmentDate(time.getSessionEndOn()));
                 lblTime.setText(startTime + " - " + endTime);
             } else {
                 lblTime.setText(startTime);

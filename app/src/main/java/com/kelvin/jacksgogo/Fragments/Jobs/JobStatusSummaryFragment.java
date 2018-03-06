@@ -19,19 +19,19 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainTipView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainWorkProgressView;
 import com.kelvin.jacksgogo.R;
 
-public class JobMainFragment extends Fragment implements View.OnClickListener {
+public class JobStatusSummaryFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
 
     private LinearLayout btnPostedJob;
 
-    public JobMainFragment() {
+    public JobStatusSummaryFragment() {
         // Required empty public constructor
     }
 
-    public static JobMainFragment newInstance(String param1, String param2) {
-        JobMainFragment fragment = new JobMainFragment();
+    public static JobStatusSummaryFragment newInstance(String param1, String param2) {
+        JobStatusSummaryFragment fragment = new JobStatusSummaryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

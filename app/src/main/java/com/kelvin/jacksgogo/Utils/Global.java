@@ -218,20 +218,7 @@ public class Global {
         }
     }
 
-    public static Date getDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
-        try {
-
-            Date date = formatter.parse(dateString);
-            return date;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static String getDateString(Date date) {
+    public static String getDayMonth(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
             SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
@@ -239,7 +226,16 @@ public class Global {
             String month = monthFormat.format(date);
             return day + " " + month;
         }
-        return null;
+        return "";
+    }
+
+    public static String getDayMonthYear(Date date) {
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+            String dateString = dateFormat.format(date);
+            return dateString;
+        }
+        return "";
     }
 
     public static String getTimePeriodString(Date date) {
@@ -262,7 +258,7 @@ public class Global {
                 time = hour + ":" + minute + " PM";
             return time;
         }
-        return null;
+        return "";
     }
 
     public static String getTimeString(Date date) {
@@ -270,13 +266,15 @@ public class Global {
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
             SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
             SimpleDateFormat secondFormat = new SimpleDateFormat("ss");
+            SimpleDateFormat mSecondFormat = new SimpleDateFormat("SSS");
             String hour = hourFormat.format(date);
             String minute = minuteFormat.format(date);
             String second = secondFormat.format(date);
-            String time = hour + ":" + minute + ":" + second;
+            String mSecond = mSecondFormat.format(date);
+            String time = hour + ":" + minute + ":" + second + "." + mSecond;
             return time;
         }
-        return null;
+        return "";
     }
 
     public static String getWeekName(int position) {

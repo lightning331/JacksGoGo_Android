@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
@@ -46,7 +46,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
     private TextView lblNext;
 
     private JGGJobModel creatingService;
-    private int selectedServiceType = 0; // 0: None select, 1: One-time, 2: Package
+    private Integer selectedServiceType = 0; // 0: None select, 1: One-time, 2: Package
     private int priceType = 0;
     private boolean isOneTimeService;
     private boolean isPackageService;
@@ -182,10 +182,10 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
                 txtPackageNum.setVisibility(View.VISIBLE);
                 lblPackageAmount.setVisibility(View.VISIBLE);
                 packageAmountLayout.setVisibility(View.VISIBLE);
-                if (creatingService.getServiceType() != null
+                if (creatingService.getAppointmentType() != null
                         && creatingService.getBudget() != null) {
                     isPackageService = true;
-                    txtPackageNum.setText(creatingService.getServiceType().toString());
+                    txtPackageNum.setText(creatingService.getAppointmentType().toString());
                     txtPackageAmount.setText(creatingService.getBudget().toString());
                     onNextButtonEnable();
                 }
@@ -250,7 +250,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
             creatingAppointment.setBudgetTo(null);
             creatingAppointment.setBudget(null);
             if (selectedServiceType == 1) {
-                creatingService.setServiceType(1);
+                creatingService.setAppointmentType(1);
                 if (priceType == 1) {
                     creatingService.setBudget(Double.parseDouble(txtFixedAmount.getText().toString()));
                 } else if (priceType == 2) {
@@ -259,7 +259,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
                 }
                 creatingService.setSelectedPriceType(priceType);
             } else if (selectedServiceType == 2){
-                creatingService.setServiceType(Integer.parseInt(txtPackageNum.getText().toString()));
+                creatingService.setAppointmentType(Integer.parseInt(txtPackageNum.getText().toString()));
                 creatingService.setBudget(Double.parseDouble(txtPackageAmount.getText().toString()));
             }
             creatingService.setSelectedServiceType(selectedServiceType);

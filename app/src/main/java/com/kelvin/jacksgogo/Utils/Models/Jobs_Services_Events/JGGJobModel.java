@@ -22,7 +22,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private String CategoryID;
     private JGGCategoryModel Category = new JGGCategoryModel();
     private boolean IsRequest;
-    private Integer ServiceType;
+    private Integer AppointmentType;    // 0: Repeating, 1: One-time
     private ArrayList<String> AttachmentURLs;
     private Double BudgetFrom;
     private Double BudgetTo;
@@ -33,10 +33,10 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private String Repetition;
     private boolean IsQuickJob;
     private int ViewCount = 0;
-    private JGGJobTimeModel JobTime = new JGGJobTimeModel();
+//    private JGGTimeSlotModel JobTime = new JGGTimeSlotModel();
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
     private JGGProposalModel Proposal = new JGGProposalModel();
-    private Integer JobType;
+//    private Integer JobType;
     private Integer RepetitionType;
 
     // Dump Data
@@ -60,7 +60,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         this.ID = ID;
     }
 
-    @Override
+    /*@Override
     public AppointmentType getType() {
         return AppointmentType.JOBS;
     }
@@ -68,7 +68,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     @Override
     public void setType(AppointmentType type) {
         super.setType(type);
-    }
+    }*/
 
     public Global.TimeSlotSelectionStatus getTimeSlotType() {
         return Global.TimeSlotSelectionStatus.valueOf(timeSlotType);
@@ -134,13 +134,13 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         IsRequest = request;
     }
 
-    public Integer getServiceType() {
-        return ServiceType;
-    }
-
-    public void setServiceType(Integer serviceType) {
-        ServiceType = serviceType;
-    }
+//    public Integer getAppointmentType() {
+//        return AppointmentType;
+//    }
+//
+//    public void setAppointmentType(Integer appointmentType) {
+//        AppointmentType = appointmentType;
+//    }
 
     public ArrayList<String> getAttachmentURLs() {
         return AttachmentURLs;
@@ -238,20 +238,20 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         Repetition = repetition;
     }
 
-    public JGGJobTimeModel getJobTime() {
-        return JobTime;
+//    public JGGTimeSlotModel getJobTime() {
+//        return JobTime;
+//    }
+//
+//    public void setJobTime(JGGTimeSlotModel jobTime) {
+//        JobTime = jobTime;
+//    }
+
+    public Integer getAppointmentType() {
+        return AppointmentType;
     }
 
-    public void setJobTime(JGGJobTimeModel jobTime) {
-        JobTime = jobTime;
-    }
-
-    public Global.JGGJobType getJobType() {
-        return Global.JGGJobType.valueOf(JobType);
-    }
-
-    public void setJobType(Global.JGGJobType jobType) {
-        JobType = jobType.getValue();
+    public void setAppointmentType(Integer jobType) {
+        AppointmentType = jobType;
     }
 
     public Global.JGGRepetitionType getRepetitionType() {

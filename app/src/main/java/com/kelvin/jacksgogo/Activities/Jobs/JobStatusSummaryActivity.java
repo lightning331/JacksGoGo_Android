@@ -20,17 +20,15 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Profile.SignUpPhoneActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.JobStatusSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Search.EditServiceSummaryFragment;
-import com.kelvin.jacksgogo.Fragments.Jobs.JobMainFragment;
+import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.squareup.picasso.Picasso;
 
@@ -46,9 +44,10 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.Global.getDateString;
+import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
-public class JobDetailActivity extends AppCompatActivity implements TextWatcher {
+public class JobStatusSummaryActivity extends AppCompatActivity implements TextWatcher {
 
     @BindView(R.id.app_detail_actionbar) Toolbar mToolbar;
     @BindView(R.id.img_detail) ImageView imgCategory;
@@ -73,7 +72,7 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
         setSupportActionBar(mToolbar);
 
         if (selectedCategory != null && creatingAppointment != null)
-            initView();
+            setCategory();
         showJobMainFragment();
 
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
@@ -85,7 +84,7 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
         });
     }
 
-    private void initView() {
+    private void setCategory() {
         // Category
         Picasso.with(this)
                 .load(selectedCategory.getImage())
@@ -93,36 +92,42 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
                 .into(imgCategory);
         lblCategory.setText(selectedCategory.getName());
         // Time
-        if (creatingAppointment.getJobType() == Global.JGGJobType.oneTime) {
+        if (creatingAppointment.getAppointmentType() == 1) {    // One-time Job
             String time = "";
-            if (creatingAppointment.getJobTime().isSpecific()) {
-                if (creatingAppointment.getJobTime().getEndOn() != null)
-                    time = "on "
-                            + getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn())
-                            + " - "
-                            + Global.getTimePeriodString(creatingAppointment.getJobTime().getEndOn());
-                else
-                    time = "on "
-                            + getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn());
-            } else {
-                if (creatingAppointment.getJobTime().getEndOn() != null)
-                    time = "any time until "
-                            + getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn())
-                            + " - "
-                            + Global.getTimePeriodString(creatingAppointment.getJobTime().getEndOn());
-                else
-                    time = "any time until "
-                            + getDateString(creatingAppointment.getJobTime().getStartOn())
-                            + " " + Global.getTimePeriodString(creatingAppointment.getJobTime().getStartOn());
+            if (creatingAppointment.getSessions() != null
+                    && creatingAppointment.getSessions().size() > 0) {
+                if (creatingAppointment.getSessions().get(0).isSpecific()) {
+                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                        time = "on "
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " - "
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                    else
+                        time = "on "
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                } else {
+                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                        time = "any time until "
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " - "
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                    else
+                        time = "any time until "
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                }
             }
             lblTime.setText(time);
-        } else if (creatingAppointment.getJobType() == Global.JGGJobType.repeating) {
+        } else if (creatingAppointment.getAppointmentType() == 0) {     // Repeating Job
             String time = "";
             String dayString = creatingAppointment.getRepetition();
-            String[] items = dayString.split(",");
+            String[] items = new String[0];
+            if (dayString != null) {
+                items = dayString.split(",");
+            }
             if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.weekly) {
                 for (int i = 0; i < items.length; i ++) {
                     if (time.equals(""))
@@ -196,7 +201,7 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
     private void onShowEditPopUpMenu(View view) {
         actionbarView.setEditMoreButtonClicked(true);
 
-        PopupMenu popupMenu = new PopupMenu(JobDetailActivity.this, view);
+        PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.inflate(R.menu.edit_menu);
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
@@ -220,7 +225,7 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
     private void showJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        JobMainFragment frag = new JobMainFragment();
+        JobStatusSummaryFragment frag = new JobStatusSummaryFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, frag, frag.getTag());
         ft.commit();
@@ -240,8 +245,7 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private void openEditJobMainFragment() {
-        //actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
-
+//        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
 //        EditServiceSummaryFragment frag = EditServiceSummaryFragment.newInstance(false);
 //        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.app_detail_container, frag, frag.getTag());
@@ -255,8 +259,8 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
 
     private void showDeleteJobDialog() {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(JobDetailActivity.this);
-        LayoutInflater inflater = (JobDetailActivity.this).getLayoutInflater();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (this).getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(dialogView);
         TextView desc = (TextView) dialogView.findViewById(R.id.lbl_alert_description);
@@ -298,14 +302,14 @@ public class JobDetailActivity extends AppCompatActivity implements TextWatcher 
 
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(JobDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JobStatusSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
                 Log.d("SignUpPhoneActivity", t.getMessage());
-                Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JobStatusSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });

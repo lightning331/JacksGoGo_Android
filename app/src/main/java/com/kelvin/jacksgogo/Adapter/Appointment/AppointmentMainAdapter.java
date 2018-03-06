@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.squareup.picasso.Picasso;
 
@@ -21,7 +20,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDay;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonth;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 /**
  * Created by PUMA on 10/31/2017.
@@ -86,9 +87,9 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             cellView.lbl_Title.setText(appointment.getTitle());
             cellView.lbl_Comment.setText(appointment.getDescription());
             String dateString = appointment.getPostOn();
-            Date appDay = appointment.appointmentDate(dateString);
-            cellView.lbl_Day.setText(appointment.appointmentDay(appDay));
-            cellView.lbl_Month.setText(appointment.appointmentMonth(appDay));
+            Date appDay = appointmentMonthDate(dateString);
+            cellView.lbl_Day.setText(appointmentDay(appDay));
+            cellView.lbl_Month.setText(appointmentMonth(appDay));
             Picasso.with(mContext)
                     .load(appointment.getUserProfile().getUser().getPhotoURL())
                     .placeholder(null)

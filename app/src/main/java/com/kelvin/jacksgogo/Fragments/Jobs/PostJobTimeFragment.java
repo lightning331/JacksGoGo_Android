@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.PostJobRepeatingDayAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
@@ -24,13 +23,15 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDateString;
 
 public class PostJobTimeFragment extends Fragment implements View.OnClickListener {
 
@@ -57,7 +58,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
 
     private AlertDialog alertDialog;
     private JGGJobModel creatingJob;
-    private Global.JGGJobType selectedJobType;
+    private Integer selectedAppType;
     private Boolean isSpecific;
     private Global.JGGRepetitionType selectedRepeatingType;
     private List<Integer> selectedRepeatingDays = new ArrayList<Integer>();
@@ -126,21 +127,24 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         btnRepeating.setOnClickListener(this);
 
         creatingJob = creatingAppointment;
-        selectedJobType = creatingJob.getJobType();
-        isSpecific = creatingJob.getJobTime().isSpecific();
+        selectedAppType = creatingJob.getAppointmentType();
         selectedRepeatingType = creatingJob.getRepetitionType();
         repetition = creatingJob.getRepetition();
         selectedRepeatingDays = creatingJob.getSelectedRepeatingDays();
-        if (creatingJob.getJobTime().getStartOn() != null) {
-            selectedDay = Global.getDateString(creatingJob.getJobTime().getStartOn());
-            lblDate.setText(selectedDay);
-            startTime = Global.getTimePeriodString(creatingJob.getJobTime().getStartOn());
-            lblTime.setText(startTime);
-            if (creatingJob.getJobTime().getEndOn() != null) {
-                endTime = Global.getTimePeriodString(creatingJob.getJobTime().getEndOn());
-                lblTime.setText(startTime + " - " + endTime);
+        if (creatingJob.getSessions() != null
+                && creatingJob.getSessions().size() > 0) {
+            isSpecific = creatingJob.getSessions().get(0).isSpecific();
+            if (creatingJob.getSessions().get(0).getSessionStartOn() != null) {
+                selectedDay = Global.getDayMonth(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                lblDate.setText(selectedDay);
+                startTime = Global.getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                lblTime.setText(startTime);
+                if (creatingJob.getSessions().get(0).getSessionEndOn() != null) {
+                    endTime = Global.getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                    lblTime.setText(startTime + " - " + endTime);
+                }
+                onNextButtonEnable();
             }
-            onNextButtonEnable();
         }
         updateData();
     }
@@ -161,74 +165,70 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         onNextButtonDisable();
         onCyanButtonColor(btnOneTime);
         onCyanButtonColor(btnRepeating);
-        switch (selectedJobType) {
-            case none:
-                lblDone.setVisibility(View.GONE);
-                btnNext.setVisibility(View.GONE);
-                break;
-            case oneTime:
-                onYellowButtonColor(btnOneTime);
-                onCyanButtonColor(btnSpecific);
-                onCyanButtonColor(btnAnyDay);
-                btnSpecific.setVisibility(View.VISIBLE);
-                btnAnyDay.setVisibility(View.VISIBLE);
-                dateTimeLayout.setVisibility(View.VISIBLE);
-                btnRepeating.setVisibility(View.GONE);
-                btnSpecific.setOnClickListener(this);
-                btnAnyDay.setOnClickListener(this);
-                if (isSpecific == null) {
-                    dateTimeLayout.setVisibility(View.GONE);
+        if (selectedAppType == null || selectedAppType < 0) {
+            lblDone.setVisibility(View.GONE);
+            btnNext.setVisibility(View.GONE);
+        } else if (selectedAppType == 0) {      // Repeating
+            onYellowButtonColor(btnRepeating);
+            onCyanButtonColor(btnWeekly);
+            onCyanButtonColor(btnMonthly);
+            btnOneTime.setVisibility(View.GONE);
+            btnWeekly.setVisibility(View.VISIBLE);
+            btnMonthly.setVisibility(View.VISIBLE);
+            lblDone.setVisibility(View.VISIBLE);
+            btnWeekly.setOnClickListener(this);
+            btnMonthly.setOnClickListener(this);
+            if (selectedRepeatingDays.size() > 0) {
+                btnAnotherDay.setVisibility(View.VISIBLE);
+                btnAnotherDay.setOnClickListener(this);
+                onNextButtonEnable();
+            }
+            switch (selectedRepeatingType) {
+                case none:
                     btnNext.setVisibility(View.GONE);
-                } else if (isSpecific) {
-                    specific = true;
-                    repeatingJob = true;
-                    onYellowButtonColor(btnSpecific);
-                    btnAnyDay.setVisibility(View.GONE);
-                    btnDate.setOnClickListener(this);
-                    btnTime.setOnClickListener(this);
-                } else if (!isSpecific) {
-                    anyTime = true;
-                    repeatingJob = true;
-                    onYellowButtonColor(btnAnyDay);
-                    btnSpecific.setVisibility(View.GONE);
-                    lblCertainDateTime.setVisibility(View.VISIBLE);
-                    btnDate.setOnClickListener(this);
-                    btnTime.setOnClickListener(this);
-                }
-                break;
-            case repeating:
-                onYellowButtonColor(btnRepeating);
-                onCyanButtonColor(btnWeekly);
-                onCyanButtonColor(btnMonthly);
-                btnOneTime.setVisibility(View.GONE);
-                btnWeekly.setVisibility(View.VISIBLE);
-                btnMonthly.setVisibility(View.VISIBLE);
-                lblDone.setVisibility(View.VISIBLE);
-                btnWeekly.setOnClickListener(this);
-                btnMonthly.setOnClickListener(this);
-                if (selectedRepeatingDays.size() > 0) {
-                    btnAnotherDay.setVisibility(View.VISIBLE);
-                    btnAnotherDay.setOnClickListener(this);
-                    onNextButtonEnable();
-                }
-                switch (selectedRepeatingType) {
-                    case none:
-                        btnNext.setVisibility(View.GONE);
-                        break;
-                    case weekly:
-                        weekly = true;
-                        onYellowButtonColor(btnWeekly);
-                        initRecyclerView(selectedRepeatingType);
-                        btnWeekly.setVisibility(View.VISIBLE);
-                        break;
-                    case monthly:
-                        monthly = true;
-                        onYellowButtonColor(btnMonthly);
-                        initRecyclerView(selectedRepeatingType);
-                        btnMonthly.setVisibility(View.VISIBLE);
-                        break;
-                }
-                break;
+                    break;
+                case weekly:
+                    weekly = true;
+                    onYellowButtonColor(btnWeekly);
+                    initRecyclerView(selectedRepeatingType);
+                    btnWeekly.setVisibility(View.VISIBLE);
+                    break;
+                case monthly:
+                    monthly = true;
+                    onYellowButtonColor(btnMonthly);
+                    initRecyclerView(selectedRepeatingType);
+                    btnMonthly.setVisibility(View.VISIBLE);
+                    break;
+            }
+        } else if (selectedAppType == 1) {      // One-time
+            onYellowButtonColor(btnOneTime);
+            onCyanButtonColor(btnSpecific);
+            onCyanButtonColor(btnAnyDay);
+            btnSpecific.setVisibility(View.VISIBLE);
+            btnAnyDay.setVisibility(View.VISIBLE);
+            dateTimeLayout.setVisibility(View.VISIBLE);
+            btnRepeating.setVisibility(View.GONE);
+            btnSpecific.setOnClickListener(this);
+            btnAnyDay.setOnClickListener(this);
+            if (isSpecific == null) {
+                dateTimeLayout.setVisibility(View.GONE);
+                btnNext.setVisibility(View.GONE);
+            } else if (isSpecific) {
+                specific = true;
+                repeatingJob = true;
+                onYellowButtonColor(btnSpecific);
+                btnAnyDay.setVisibility(View.GONE);
+                btnDate.setOnClickListener(this);
+                btnTime.setOnClickListener(this);
+            } else if (!isSpecific) {
+                anyTime = true;
+                repeatingJob = true;
+                onYellowButtonColor(btnAnyDay);
+                btnSpecific.setVisibility(View.GONE);
+                lblCertainDateTime.setVisibility(View.VISIBLE);
+                btnDate.setOnClickListener(this);
+                btnTime.setOnClickListener(this);
+            }
         }
     }
 
@@ -242,7 +242,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                 if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-                    selectedDay = day + "/" + month + "/" + year;
+                    selectedDay = year + "-" + month + "-" + day;
                     lblDate.setText(day + " " + month);
                     alertDialog.dismiss();
                     if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
@@ -350,14 +350,14 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_job_one_time) {
-            if (oneTimeJob) selectedJobType = Global.JGGJobType.none;
-            else selectedJobType = Global.JGGJobType.oneTime; isSpecific = null; specific = false;
+            if (oneTimeJob) selectedAppType = -1;
+            else selectedAppType = 1; isSpecific = null; specific = false;
             lblDate.setText(null);
             lblTime.setText(null);
             oneTimeJob = !oneTimeJob;
         } else if (view.getId() == R.id.btn_post_job_repeating) {
-            if (repeatingJob) selectedJobType = Global.JGGJobType.none;
-            else selectedJobType = Global.JGGJobType.repeating; selectedRepeatingType = Global.JGGRepetitionType.none; weekly = false; monthly = false;
+            if (repeatingJob) selectedAppType = -1;
+            else selectedAppType = 0; selectedRepeatingType = Global.JGGRepetitionType.none; weekly = false; monthly = false;
             repeatingJob = !repeatingJob;
         } else if (view.getId() == R.id.btn_post_job_specific) {
             if (specific) isSpecific = null;
@@ -399,20 +399,22 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     }
 
     private void onSaveCreatingJob() {
-        JGGJobTimeModel timeModel = new JGGJobTimeModel();
-        if (selectedJobType == Global.JGGJobType.oneTime) {
+        ArrayList<JGGTimeSlotModel> selectedTimeSlots = new ArrayList<>();
+        JGGTimeSlotModel timeModel = new JGGTimeSlotModel();
+        if (selectedAppType == 1) {     // One-time
             timeModel.setSpecific(isSpecific);
-            startOn = Global.getDate(selectedDay + " " + Global.getTimeString(startOn));
+            startOn = appointmentDate(selectedDay + "T" + Global.getTimeString(startOn));
             if (endOn != null)
-                endOn = Global.getDate(selectedDay + " " + Global.getTimeString(endOn));
-            timeModel.setStartOn(startOn);
-            timeModel.setEndOn(endOn);
-            creatingJob.setJobTime(timeModel);
-        } else if (selectedJobType == Global.JGGJobType.repeating) {
+                endOn = appointmentDate(selectedDay + "T" + Global.getTimeString(endOn));
+            timeModel.setSessionStartOn(appointmentDateString(startOn));
+            timeModel.setSessionEndOn(appointmentDateString(endOn));
+            selectedTimeSlots.add(timeModel);
+            creatingJob.setSessions(selectedTimeSlots);
+        } else if (selectedAppType == 0) {      // Repeating
             creatingJob.setRepetition(repetition);
         }
         creatingJob.setRepetitionType(selectedRepeatingType);
-        creatingJob.setJobType(selectedJobType);
+        creatingJob.setAppointmentType(selectedAppType);
         creatingAppointment = creatingJob;
     }
 

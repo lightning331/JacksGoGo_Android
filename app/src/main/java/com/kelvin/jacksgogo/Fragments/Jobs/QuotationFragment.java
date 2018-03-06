@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.BidDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
-import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.QuotationAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Utils.Global;
@@ -170,7 +170,7 @@ public class QuotationFragment extends Fragment implements View.OnClickListener 
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        ((JobDetailActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
+        ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -82,6 +82,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         View view = inflater.inflate(R.layout.fragment_app_main, container, false);
         searchView = (SearchView) view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
+        pendingListAdapter = new AppointmentMainAdapter(getContext());
 
         recyclerView = (RecyclerView) view.findViewById(R.id.appointment_recycler_view);
         if (recyclerView != null) {
@@ -133,13 +134,12 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         for (JGGJobModel job : jobs) {
             if (job.isQuickJob()) {
                 arrayLoadedQuickAppointments.add(job);
-            } else if (job.isRequest() == false && job.getServiceType() > 1) {
+            } else if (job.isRequest() == false && job.getAppointmentType() > 1) {
                 arrayLoadedServicePackages.add(job);
             } else {
                 arrayLoadedPendingAppointments.add(job);
             }
         }
-        pendingListAdapter = new AppointmentMainAdapter(getContext());
         if (arrayLoadedQuickAppointments.size() > 0) pendingListAdapter.addSection("Quick Jobs", arrayLoadedQuickAppointments);
         if (arrayLoadedServicePackages.size() > 0) pendingListAdapter.addSection("Service Packages", arrayLoadedServicePackages);
         if (arrayLoadedPendingAppointments.size() > 0) pendingListAdapter.addSection("Pending Jobs", arrayLoadedPendingAppointments);
@@ -318,7 +318,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             selectedCategory = appointment.getCategory();
             creatingAppointment = appointment;
             if (appointment.isRequest()) {
-                Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+                Intent intent = new Intent(getActivity(), JobStatusSummaryActivity.class);
                 startActivity(intent);
             }
         } else if (object instanceof JGGServiceModel) {

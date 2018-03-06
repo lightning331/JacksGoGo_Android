@@ -9,16 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
-import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailInviteButtonCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 
-import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 
 /**
@@ -54,23 +56,23 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
                 JobDetailLocationCell jobDetailLocationCell = new JobDetailLocationCell(addressView);
                 return jobDetailLocationCell;
-            case 4:
+            /*case 4:
                 View schedulView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell schedulViewHolder = new JobDetailDescriptionCell(schedulView);
                 return schedulViewHolder;
             case 5:
                 View cancellView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell cancellViewHolder = new JobDetailDescriptionCell(cancellView);
-                return cancellViewHolder;
-            case 6:
+                return cancellViewHolder;*/
+            case 4:
                 View requestView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                 JobDetailDescriptionCell requestViewHolder = new JobDetailDescriptionCell(requestView);
                 return requestViewHolder;
-            case 7:
+            case 5:
                 View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_reference_no, parent, false);
                 JobDetailReferenceNoCell jobDetailReferenceNoCell = new JobDetailReferenceNoCell(referenceView);
                 return jobDetailReferenceNoCell;
-            case 8:
+            case 6:
                 View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_invite_button, parent, false);
                 JobDetailInviteButtonCell originalViewHolder = new JobDetailInviteButtonCell(originalView);
                 return originalViewHolder;
@@ -94,18 +96,22 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             case 1:
                 JobDetailDescriptionCell priceViewHolder = (JobDetailDescriptionCell)holder;
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
-                priceViewHolder.description.setText("$50-$100");
+                if (creatingAppointment.getBudget() == null && creatingAppointment.getBudgetFrom() == null) priceViewHolder.description.setText("No limit");
+                else if (creatingAppointment.getBudget() != null) priceViewHolder.description.setText("Fixed $ " + creatingAppointment.getBudget().toString());
+                else if (creatingAppointment.getBudgetFrom() != null && creatingAppointment.getBudgetTo() != null)
+                    priceViewHolder.description.setText("From $ " + creatingAppointment.getBudgetFrom().toString()
+                            + " "
+                            + "to $ " + creatingAppointment.getBudgetTo().toString());
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 break;
             case 2:
                 JobDetailDescriptionCell jobDetailDescriptionCell = (JobDetailDescriptionCell)holder;
                 jobDetailDescriptionCell.descriptionImage.setImageResource(R.mipmap.icon_info);
-                jobDetailDescriptionCell.description.setText("We are experts at gardening & landscaping. Please state in your quotation:size of your garden, " +
-                        "what tasks you need done, and any special requirements.");
+                jobDetailDescriptionCell.description.setText(creatingAppointment.getDescription());
                 break;
             case 3:
                 JobDetailLocationCell jobDetailLocationCell = (JobDetailLocationCell)holder;
-                jobDetailLocationCell.description.setText("2 Jurong West Avenue 5 64386");
+                jobDetailLocationCell.description.setText(creatingAppointment.getAddress().getFullAddress());
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -113,7 +119,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 });
                 break;
-            case 4:
+            /*case 4:
                 JobDetailDescriptionCell schedulViewHolder = (JobDetailDescriptionCell)holder;
                 schedulViewHolder.descriptionImage.setImageResource(R.mipmap.icon_reschedule);
                 schedulViewHolder.setTitle("Rescheduling:", true);
@@ -124,26 +130,31 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 cancellViewHolder.descriptionImage.setImageResource(R.mipmap.icon_cancellation);
                 cancellViewHolder.setTitle("Cancelling:", true);
                 cancellViewHolder.setDescription("at least 1 day before.");
-                break;
-            case 6:
+                break;*/
+            case 4:
                 JobDetailDescriptionCell requestViewHolder = (JobDetailDescriptionCell)holder;
                 requestViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
-                requestViewHolder.setTitle("Rescheduling:", true);
-                requestViewHolder.setDescription("Before & After photos");
+                requestViewHolder.setTitle("Requests:", true);
+                requestViewHolder.setDescription(Global.reportTypeName(creatingAppointment.getReportType()));
                 break;
-            case 7:
+            case 5:
                 JobDetailReferenceNoCell jobDetailReferenceNoCell = (JobDetailReferenceNoCell)holder;
+                jobDetailReferenceNoCell.lblReferenceNo.setText("Job reference no: " + creatingAppointment.getID());
+                jobDetailReferenceNoCell.lblPostedDate.setText("Posted on " + getDayMonthYear(appointmentMonthDate(creatingAppointment.getPostOn())));
                 break;
-            case 8:
+            case 6:
                 JobDetailInviteButtonCell originalViewHolder = (JobDetailInviteButtonCell)holder;
                 originalViewHolder.inviteButton.setText("View Original Job Post");
                 originalViewHolder.inviteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                        intent.putExtra("is_service", false);
-                        intent.putExtra(APPOINTMENT_TYPE, SERVICES);
-                        mContext.startActivity(intent);
+                    /*Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                    intent.putExtra("is_service", false);
+                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
+                    mContext.startActivity(intent);*/
+
+                    Intent intent = new Intent(mContext, PostedJobActivity.class);
+                    mContext.startActivity(intent);
                     }
                 });
                 break;
@@ -152,7 +163,7 @@ public class JobDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return 9;
+        return 7;
     }
 
     @Override

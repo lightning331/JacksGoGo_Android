@@ -17,7 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
@@ -227,7 +227,7 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             status = getArguments().getString("tabName");
             isRequest = getArguments().getBoolean("isRequest");
             if (isRequest)((RequestQuotationActivity)context).setBottomViewHidden(true);
-            else ((JobDetailActivity) context).setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
+            else ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
         }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
