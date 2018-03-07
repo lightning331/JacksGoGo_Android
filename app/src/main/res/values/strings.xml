@@ -149,6 +149,11 @@
 
     <!-- TODO: Invite Service Provider Job -->
     <string name="invite_actionbar_title">Invite</string>
+    <string name="waiting_service_provider">Waiting for Service Providers to responding...</string>
+    <string name="invite_service_provider">Invite Service Providers</string>
+    <string name="job_request_posted">New job request posted.</string>
+    <string name="view_quotation">View Quotations</string>
+    <string name="outgoing_job">You posted this outgoing job in jobs.</string>
     <string name="invite_header_title">Here are some recommendations for your posted job. Inviting people to your job increases the chances of finding a perfect match.</string>
 
     <string name="accept_bid_title">Accept Bid</string>

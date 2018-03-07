@@ -58,8 +58,8 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
         pendingButton.setOnClickListener(this);
         confirmButton.setOnClickListener(this);
         historyButton.setOnClickListener(this);
-        confirmTextView.setTag("CONFIRM");
         pendingTextView.setTag("PENDING");
+        confirmTextView.setTag("CONFIRM");
         historyTextView.setTag("HISTORY");
     }
 

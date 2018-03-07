@@ -104,6 +104,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         }
         category = selectedCategory;
         creatingAppointment.setCategoryID(category.getID());
+        creatingAppointment.setRequest(false);
         creatingService = creatingAppointment;
         creatingService.setAttachmentURLs(attachmentURLs);
     }

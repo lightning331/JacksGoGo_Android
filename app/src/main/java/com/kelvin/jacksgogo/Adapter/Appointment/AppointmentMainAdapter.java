@@ -35,6 +35,8 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public final Map<String, ArrayList<JGGJobModel>> sections = new LinkedHashMap<>();
     public final ArrayAdapter<String> headers;
     public final static int TYPE_SECTION_HEADER = 0;
+    public final static int TYPE_SERVICE = 1;
+    public final static int TYPE_JOB = 2;
 
     Context mContext;
 
@@ -63,10 +65,14 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (viewType == TYPE_SECTION_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             return new SectionTitleView(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_history_list, parent, false);
-            return new ApptHistoryListCell(view);
+        } else if (viewType == TYPE_JOB) {
+            View jobView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_job_history, parent, false);
+            return new ApptHistoryListCell(jobView);
+        } else if (viewType == TYPE_SERVICE) {
+            View serviceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_service_history, parent, false);
+            return new ApptHistoryListCell(serviceView);
         }
+        return null;
     }
 
     @Override
@@ -102,6 +108,19 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 cellView.lbl_Status.setVisibility(View.GONE);
             }
+
+            if (appointment.isRequest()) {
+                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            } else {
+                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+            }
+//            else if (appointment instanceof JGGEventModel) {
+//                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+//                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
+//            }
+
 //            if (appointment.getBadgeNumber() < 1) {
 //                // Badge view hide when count is less than 1
 //                cellView.lbl_BadgeNumber.setVisibility(View.INVISIBLE);
@@ -112,17 +131,6 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //                // Show Badge Count
 //                Integer badgeCount = appointment.getBadgeNumber();
 //                cellView.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
-//            }
-
-            cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-            cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-            if (appointment.isRequest() == false) {
-                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-            }
-//            else if (appointment instanceof JGGEventModel) {
-//                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
-//                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
 //            }
 
             if (cellView != null) {
@@ -161,18 +169,23 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemViewType(int position) {
-        int type = 1;
         for (Object section : this.sections.keySet()) {
             ArrayList<JGGJobModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
-            if (position == 0) return TYPE_SECTION_HEADER;
-            if (position < size) return 1;
+            if (position == 0)
+                return TYPE_SECTION_HEADER;
+            if (position < size) {
+                JGGJobModel jobModel = arrayList.get(position - 1);
+                if (jobModel.isRequest())
+                    return TYPE_JOB;
+                else
+                    return TYPE_SERVICE;
+            }
 
             // otherwise jump into next section
             position -= size;
-            type += arrayList.size();
         }
         return -1;
     }

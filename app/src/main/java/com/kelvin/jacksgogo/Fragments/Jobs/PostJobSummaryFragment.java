@@ -109,6 +109,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
         category = selectedCategory;
         creatingAppointment.setCategoryID(category.getID());
+        creatingAppointment.setRequest(true);
         creatingJob = creatingAppointment;
         creatingJob.setAttachmentURLs(attachmentURLs);
     }

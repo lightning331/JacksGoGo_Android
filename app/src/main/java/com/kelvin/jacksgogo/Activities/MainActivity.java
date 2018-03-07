@@ -124,6 +124,12 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         initView();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+    }
+
     private void initView() {
         mToolbar = (Toolbar) findViewById(R.id.myToolbar);
         mContainer = (FrameLayout) findViewById(R.id.container);
@@ -156,17 +162,13 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
             if (frag instanceof AppMainFragment) {
                 this.addTopActionBarForAppointment(frag);
-            } else {
-                this.removeTopActionBarForAppointment();
-            }
-            if (frag instanceof SearchFragment) {
+            } else if (frag instanceof SearchFragment) {
                 this.addTopActionBarForSearch(frag);
-            } else {
-                this.removeToActionBarForSearch();
-            }
-            if (frag instanceof FavouriteFragment) {
+            } else if (frag instanceof FavouriteFragment) {
                 this.addTopActionBarForFavourite(frag);
             } else {
+                this.removeTopActionBarForAppointment();
+                this.removeToActionBarForSearch();
                 this.removeToActionBarForFavourite();
             }
         }

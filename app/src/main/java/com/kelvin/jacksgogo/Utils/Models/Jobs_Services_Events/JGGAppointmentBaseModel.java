@@ -28,31 +28,9 @@ public class JGGAppointmentBaseModel {
     private int Status = 0;
     private JGGAddressModel Address = new JGGAddressModel();
     private JGGAddressModel DAddress = new JGGAddressModel();
-//    private AppointmentType type;
-
-    public enum AppointmentStatus {
-        NONE,
-        PENDING,
-        WORKINPROGRESS,
-        REJECTED,
-        CANCELLED,
-        WITHDRAWN,
-        COMPLETED,
-        WAITINGFORREVIEW
-    }
-
-//    public enum AppointmentType {
-//        JOBS,
-//        SERVICES,
-//        EVENT,
-//        GOCLUB,
-//        UNKNOWN
-//    }
 
     public JGGAppointmentBaseModel() {
         super();
-
-//        type = AppointmentType.UNKNOWN;
     }
 
     public String getTitle() {
@@ -224,4 +202,12 @@ public class JGGAppointmentBaseModel {
         return "";
     }
 
+    public static String appointmentMonthDateString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        if (date != null) {
+            String dateString = dateFormat.format(date);
+            return dateString;
+        }
+        return "";
+    }
 }

@@ -14,6 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
             android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/job_main_footer_layout"
@@ -85,6 +86,7 @@
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/lbl_posted_time"
                         android:text="12 Jul 2017 8:15 PM"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,7 +102,7 @@
                         android:gravity="center_vertical">
                         <TextView
                             android:id="@+id/lbl_next_step_title"
-                            android:text="You posted this job in Jobs."
+                            android:text="New job request posted."
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

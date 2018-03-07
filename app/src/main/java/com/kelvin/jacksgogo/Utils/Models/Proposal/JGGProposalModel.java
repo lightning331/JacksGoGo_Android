@@ -7,6 +7,9 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import java.util.Date;
 
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDateString;
+
 /**
  * Created by PUMA on 1/26/2018.
  */
@@ -25,14 +28,14 @@ public class JGGProposalModel extends JGGBaseModel {
     private Double Budget;
     private String CurrencyCode;
     private boolean RescheduleAllowed;
-    private Date RescheduleDate;
+    private String RescheduleDate;
     private String RescheduleNote;
     private boolean CancellationAllowed;
-    private Date CancellationDate;
+    private String CancellationDate;
     private String CancellationNote;
     private boolean IsInvited;
-    private Date SubmitOn;
-    private Date ExpireOn;
+    private String SubmitOn;
+    private String ExpireOn;
     private int Status = 0;
     private boolean IsViewed;
 
@@ -137,11 +140,11 @@ public class JGGProposalModel extends JGGBaseModel {
     }
 
     public Date getRescheduleDate() {
-        return RescheduleDate;
+        return appointmentMonthDate(RescheduleDate);
     }
 
     public void setRescheduleDate(Date rescheduleDate) {
-        RescheduleDate = rescheduleDate;
+        RescheduleDate = appointmentMonthDateString(rescheduleDate);
     }
 
     public String getRescheduleNote() {
@@ -161,11 +164,11 @@ public class JGGProposalModel extends JGGBaseModel {
     }
 
     public Date getCancellationDate() {
-        return CancellationDate;
+        return appointmentMonthDate(CancellationDate);
     }
 
     public void setCancellationDate(Date cancellationDate) {
-        CancellationDate = cancellationDate;
+        CancellationDate = appointmentMonthDateString(cancellationDate);
     }
 
     public String getCancellationNote() {
@@ -185,19 +188,19 @@ public class JGGProposalModel extends JGGBaseModel {
     }
 
     public Date getSubmitOn() {
-        return SubmitOn;
+        return appointmentMonthDate(SubmitOn);
     }
 
     public void setSubmitOn(Date submitOn) {
-        SubmitOn = submitOn;
+        SubmitOn = appointmentMonthDateString(submitOn);
     }
 
     public Date getExpireOn() {
-        return ExpireOn;
+        return appointmentMonthDate(ExpireOn);
     }
 
     public void setExpireOn(Date expireOn) {
-        ExpireOn = expireOn;
+        ExpireOn = appointmentMonthDateString(expireOn);
     }
 
     public int getStatus() {

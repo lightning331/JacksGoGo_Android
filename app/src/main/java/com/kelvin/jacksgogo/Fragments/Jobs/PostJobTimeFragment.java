@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDateString;
 
@@ -137,10 +138,10 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
             if (creatingJob.getSessions().get(0).getSessionStartOn() != null) {
                 selectedDay = Global.getDayMonth(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
                 lblDate.setText(selectedDay);
-                startTime = Global.getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                startTime = getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
                 lblTime.setText(startTime);
                 if (creatingJob.getSessions().get(0).getSessionEndOn() != null) {
-                    endTime = Global.getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                    endTime = getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
                     lblTime.setText(startTime + " - " + endTime);
                 }
                 onNextButtonEnable();
@@ -264,10 +265,10 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
                     alertDialog.dismiss();
-                    startTime = Global.getTimePeriodString(start);
+                    startTime = getTimePeriodString(start);
                     startOn = start;
                     if (end != null) {
-                        endTime = Global.getTimePeriodString(end);
+                        endTime = getTimePeriodString(end);
                         endOn = end;
                         lblTime.setText(startTime + " - " + endTime);
                     } else {

@@ -76,6 +76,16 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (!getUserVisibleHint()) {
+            return;
+        }
+        // create list and custom adapter
+        refreshFragment("PENDING");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -89,8 +99,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
 
-        // create list and custom adapter
-        refreshFragment("PENDING");
         return view;
     }
 

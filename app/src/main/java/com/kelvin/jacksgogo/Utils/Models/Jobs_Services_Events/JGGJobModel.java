@@ -33,10 +33,8 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private String Repetition;
     private boolean IsQuickJob;
     private int ViewCount = 0;
-//    private JGGTimeSlotModel JobTime = new JGGTimeSlotModel();
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
     private JGGProposalModel Proposal = new JGGProposalModel();
-//    private Integer JobType;
     private Integer RepetitionType;
 
     // Dump Data
@@ -59,16 +57,6 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     public void setID(String ID) {
         this.ID = ID;
     }
-
-    /*@Override
-    public AppointmentType getType() {
-        return AppointmentType.JOBS;
-    }
-
-    @Override
-    public void setType(AppointmentType type) {
-        super.setType(type);
-    }*/
 
     public Global.TimeSlotSelectionStatus getTimeSlotType() {
         return Global.TimeSlotSelectionStatus.valueOf(timeSlotType);
@@ -133,14 +121,6 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     public void setRequest(boolean request) {
         IsRequest = request;
     }
-
-//    public Integer getAppointmentType() {
-//        return AppointmentType;
-//    }
-//
-//    public void setAppointmentType(Integer appointmentType) {
-//        AppointmentType = appointmentType;
-//    }
 
     public ArrayList<String> getAttachmentURLs() {
         return AttachmentURLs;
@@ -237,14 +217,6 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     public void setRepetition(String repetition) {
         Repetition = repetition;
     }
-
-//    public JGGTimeSlotModel getJobTime() {
-//        return JobTime;
-//    }
-//
-//    public void setJobTime(JGGTimeSlotModel jobTime) {
-//        JobTime = jobTime;
-//    }
 
     public Integer getAppointmentType() {
         return AppointmentType;

@@ -3,9 +3,10 @@ package com.kelvin.jacksgogo.Utils.API;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
@@ -99,4 +100,9 @@ public interface JGGAPIManager {
                                                    @Field("PostalCode") String postalCode,
                                                    @Field("pageIndex") Integer pageIndex,
                                                    @Field("pageSize") Integer pageSize);
+
+    @GET("api/Proposal/GetProposalsByJob")
+    Call<JGGProposalResponse> getProposalsByJob(@Query("ID") String jobID,
+                                                @Query("pageIndex") Integer pageIndex,
+                                                @Query("pageSize") Integer pageSize);
 }

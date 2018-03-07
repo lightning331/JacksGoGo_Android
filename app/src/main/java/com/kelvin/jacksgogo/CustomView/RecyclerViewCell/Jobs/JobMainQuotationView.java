@@ -1,8 +1,11 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +19,9 @@ public class JobMainQuotationView extends RelativeLayout implements View.OnClick
 
     private Context mContext;
 
+    public TextView lblTitle;
+    public ImageView imgQuotation;
+    public LinearLayout quotationLine;
     public TextView btnViewQuotation;
 
     public JobMainQuotationView(Context context) {
@@ -29,6 +35,9 @@ public class JobMainQuotationView extends RelativeLayout implements View.OnClick
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view                            = mLayoutInflater.inflate(R.layout.view_job_main_quotation, this);
 
+        lblTitle = (TextView) view.findViewById(R.id.lbl_title);
+        imgQuotation = (ImageView) view.findViewById(R.id.img_quotation);
+        quotationLine = (LinearLayout) view.findViewById(R.id.quotation_line);
         btnViewQuotation = (TextView) view.findViewById(R.id.btn_view_quotation);
         btnViewQuotation.setOnClickListener(this);
     }
