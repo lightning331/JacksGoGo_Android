@@ -53,6 +53,12 @@
                 android:orientation="horizontal">
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/job_main_cancelled_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/job_main_confirmed_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +89,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/lbl_posted_time"
@@ -98,7 +103,8 @@
                         android:id="@+id/btn_posted_job"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="32dp"
                         android:gravity="center_vertical">
                         <TextView
                             android:id="@+id/lbl_next_step_title"

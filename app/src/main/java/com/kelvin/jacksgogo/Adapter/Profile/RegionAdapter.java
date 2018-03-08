@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by PUMA on 1/5/2018.
  */
 
-public class RegionAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class RegionAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private ArrayList<JGGRegionModel> regions;
@@ -38,12 +38,17 @@ public class RegionAdapter extends RecyclerView.Adapter implements View.OnClickL
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         SignupRegionCell cell = (SignupRegionCell)holder;
-        cell.itemView.setOnClickListener(this);
 
         if (regions.size() > 0) {
-            JGGRegionModel region = regions.get(position);
+            final JGGRegionModel region = regions.get(position);
             cell.lblRegion.setText(region.getRegionName());
             cell.setImage(region.getImage());
+            cell.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(region.getID());
+                }
+            });
         }
     }
 
@@ -56,15 +61,10 @@ public class RegionAdapter extends RecyclerView.Adapter implements View.OnClickL
         return regions.size();
     }
 
-    @Override
-    public void onClick(View view) {
-        listener.onItemClick();
-    }
-
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick();
+        void onItemClick(String regionID);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

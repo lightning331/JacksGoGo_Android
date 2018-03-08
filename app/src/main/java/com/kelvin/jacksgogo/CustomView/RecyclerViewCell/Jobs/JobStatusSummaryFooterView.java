@@ -12,7 +12,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobMainFooterView extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryFooterView extends RelativeLayout implements View.OnClickListener {
 
     private Context mContext;
 
@@ -22,7 +22,7 @@ public class JobMainFooterView extends RelativeLayout implements View.OnClickLis
     private LinearLayout tipLayout;
     private LinearLayout rehireLayout;
 
-    public JobMainFooterView(Context context) {
+    public JobStatusSummaryFooterView(Context context) {
         super(context);
         this.mContext = context;
 
@@ -31,7 +31,7 @@ public class JobMainFooterView extends RelativeLayout implements View.OnClickLis
 
     private void initView() {
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view                            = mLayoutInflater.inflate(R.layout.view_job_main_footer, this);
+        View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_footer, this);
 
         reportLayout = (LinearLayout) view.findViewById(R.id.job_report_layout);
         invoiceLayout = (LinearLayout) view.findViewById(R.id.job_invoice_layout);

@@ -53,11 +53,13 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     @BindView(R.id.img_detail) ImageView imgCategory;
     @BindView(R.id.lbl_title) TextView lblCategory;
     @BindView(R.id.lbl_date) TextView lblTime;
+    @BindView(R.id.lblStatus) TextView lblCancel;
     private EditText reason;
 
     private JGGActionbarView actionbarView;
     private EditServiceSummaryFragment editServiceSummaryFragment;
     private ProgressDialog progressDialog;
+    private JobStatusSummaryFragment frag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,7 +227,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     private void showJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
 
-        JobStatusSummaryFragment frag = new JobStatusSummaryFragment();
+        frag = new JobStatusSummaryFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.app_detail_container, frag, frag.getTag());
         ft.commit();
@@ -282,38 +284,14 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                deleteJob();
+                frag.deleteJob();
             }
         });
         alertDialog.show();
     }
 
-    private void deleteJob() {
-        progressDialog = Global.createProgressDialog(this);
-
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        String jobID = creatingAppointment.getID();
-        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID);
-        call.enqueue(new Callback<JGGBaseResponse>() {
-            @Override
-            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(JobStatusSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Log.d("SignUpPhoneActivity", t.getMessage());
-                Toast.makeText(JobStatusSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-
+    public void deleteJobFinished() {
+        lblCancel.setVisibility(View.VISIBLE);
     }
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {

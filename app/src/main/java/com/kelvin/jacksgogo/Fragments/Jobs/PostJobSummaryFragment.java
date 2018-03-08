@@ -243,14 +243,14 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostJobResponse> call = manager.postNewJob(creatingJob);
+        Call<JGGPostJobResponse> call = manager.editJob(creatingJob);
         call.enqueue(new Callback<JGGPostJobResponse>() {
             @Override
             public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     postedJobID = response.body().getValue();
-                    showAlertDialog();
+                    showPostJobAlertDialog(false);
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -266,10 +266,31 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     }
 
     private void onEditJob() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostJobResponse> call = manager.editJob(creatingJob);
+        call.enqueue(new Callback<JGGPostJobResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    postedJobID = response.body().getValue();
+                    showPostJobAlertDialog(true);
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<JGGPostJobResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
-    private void showAlertDialog() {
+    private void showPostJobAlertDialog(final boolean isEdit) {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
 
@@ -282,12 +303,31 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
         TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
 
-        title.setText(R.string.alert_job_posted_title);
-        desc.setText("Job reference no: " + postedJobID + '\n' +  '\n' + "Good luck!");
+        if (isEdit) {
+            title.setText(R.string.alert_job_edit_title);
+            desc.setText(R.string.alert_job_edit_desc);
+            okButton.setText(R.string.alert_ok);
+            okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+        } else {
+            title.setText(R.string.alert_job_posted_title);
+            desc.setText("Job reference no: " + postedJobID + '\n' +  '\n' + "Good luck!");
+            okButton.setText(R.string.alert_view_job_button);
+            okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+        }
         cancelButton.setVisibility(View.GONE);
-        okButton.setText(R.string.alert_view_job_button);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
-        okButton.setOnClickListener(this);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                if (isEdit) {
+                    getActivity().onBackPressed();
+                } else {
+                    //getActivity().finish();
+                    Intent intent = new Intent(mContext, PostedJobActivity.class);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
 
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
@@ -313,12 +353,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 default:
                     break;
             }
-            return;
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
-            getActivity().finish();
-            Intent intent = new Intent(mContext, PostedJobActivity.class);
-            mContext.startActivity(intent);
             return;
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
             fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobStatus.POST);

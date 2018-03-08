@@ -40,7 +40,7 @@
             android:text="Appointment Confirmed."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:maxLines="1"
             android:textColor="@color/JGGBlack"
             android:fontFamily="@font/mulibold"
@@ -49,9 +49,23 @@
             android:text="We'll drop you a notification a day before your appointment."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/JGGBlack"
             android:fontFamily="@font/muliregular"
             android:textSize="@dimen/list_title_font_size"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/btn_set_appointment_date"
+            android:text="Set Appointment Date"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:padding="@dimen/edit_text_padding_size"
+            android:textAlignment="center"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/list_title_font_size"
+            android:textColor="@color/JGGWhite"
+            android:background="@drawable/green_background">
+        </TextView>
     </LinearLayout>
 </LinearLayout>

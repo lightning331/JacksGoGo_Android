@@ -3,7 +3,6 @@ package com.kelvin.jacksgogo.Activities.Profile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -21,7 +20,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGUserBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +28,7 @@ import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -43,12 +43,16 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     private ProgressDialog progressDialog;
     private String strEmail;
     private String strPassword;
+    private String regionID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_email);
-
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            regionID = extra.getString("SELECTED_REGION_ID");
+        }
         initView();
     }
 
@@ -79,7 +83,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this,"Password Not matching",Toast.LENGTH_SHORT).show();
             return;
         } else {
-            if (strPassword.length() <= 6) {
+            if (strPassword.length() <= 5) {
                 Toast.makeText(this,"Passwords must have at least 6 digit.",
                         Toast.LENGTH_SHORT).show();
                 return;
@@ -89,14 +93,46 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         progressDialog = Global.createProgressDialog(this);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGBaseResponse> signUpCall = signInManager.accountSignUp(strEmail, strPassword);
+        Call<JGGBaseResponse> signUpCall = signInManager.accountSignUp(strEmail, strPassword, regionID);
         signUpCall.enqueue(new Callback<JGGBaseResponse>() {
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(strEmail, strPassword);
-                    onShowPhoneVerify();
+                    if (response.body().getSuccess()) {
+
+                        Retrofit retrofit = JGGURLManager.getClient();
+                        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
+                        Call<JGGTokenResponse> tokenCall = apiManager.authTocken(strEmail, strPassword, "password");
+                        tokenCall.enqueue(new Callback<JGGTokenResponse>() {
+                            @Override
+                            public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
+                                if (response.isSuccessful()) {
+
+                                    String access_token = response.body().getAccess_token();
+                                    Long expire_in = response.body().getExpires_in();
+
+                                    JGGAppManager.getInstance(SignUpEmailActivity.this).saveToken(access_token, expire_in);
+                                    JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(strEmail, strPassword);
+
+                                    onShowPhoneVerify();
+                                } else {
+                                    progressDialog.dismiss();
+                                    int statusCode  = response.code();
+                                    Toast.makeText(SignUpEmailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<JGGTokenResponse> call, Throwable t) {
+                                Toast.makeText(SignUpEmailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(SignUpEmailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(SignUpEmailActivity.this, response.message(), Toast.LENGTH_SHORT).show();

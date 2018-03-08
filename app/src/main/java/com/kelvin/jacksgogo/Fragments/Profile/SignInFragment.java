@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Fragments.Profile;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
+import com.kelvin.jacksgogo.Activities.Profile.SignUpPhoneActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
@@ -114,10 +116,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         } else if (view.getId() == R.id.btn_alert_send) {
             alertDialog.dismiss();
             onShowAlertDialog();
-        } else if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
         }
     }
 
@@ -147,14 +145,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
 
                                 JGGUserProfileModel user = response.body().getValue();
                                 JGGAppManager.getInstance(mContext).currentUser = user;
-                                JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
 
-                                getActivity().getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.container, ProfileHomeFragment.newInstance())
-                                        .commit();
-                                // Refresh MainActivity
-                                ((MainActivity)getActivity()).selectFragment();
+                                if (user.getUser().getPhoneNumberConfirmed()) {
+                                    JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
+                                    loggedIn();
+                                } else {
+                                    onShowPhoneVerifyDialog();
+                                }
+
                             } else {
                                 int statusCode  = response.code();
                                 Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -183,6 +181,15 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         });
     }
 
+    private void loggedIn() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, ProfileHomeFragment.newInstance())
+                .commit();
+        // Refresh MainActivity
+        ((MainActivity)getActivity()).selectFragment();
+    }
+
     private void SignUp() {
         SignUpRegionFragment frag = SignUpRegionFragment.newInstance();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -192,7 +199,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
     }
 
     private void onShowForgotPassDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
 
         View alertView = inflater.inflate(R.layout.jgg_forgot_password_view, null);
@@ -203,8 +210,52 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
 
         okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
 
-        okButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
+
+    private void onShowPhoneVerifyDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = (this).getLayoutInflater();
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText("Warning");
+        desc.setText("You have not verified account. Would you verify with your phone number?");
+        okButton.setText(R.string.alert_reject_ok);
+        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
+        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
+        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, SignUpPhoneActivity.class);
+                startActivity(intent);
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
     }
@@ -227,7 +278,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
         cancelButton.setVisibility(View.GONE);
 
-        okButton.setOnClickListener(this);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
         alertDialog.show();
     }
 

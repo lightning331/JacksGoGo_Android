@@ -40,11 +40,7 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
     private LinearLayout btnSignIn;
     private ArrayList<JGGRegionModel> regions = new ArrayList<JGGRegionModel>();
     private ProgressDialog progressDialog;
-
-    public SignUpRegionFragment() {
-        // Required empty public constructor
-    }
-
+    
     public static SignUpRegionFragment newInstance() {
         SignUpRegionFragment fragment = new SignUpRegionFragment();
         Bundle args = new Bundle();
@@ -61,7 +57,7 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up_region, container, false);
@@ -81,8 +77,9 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
         mAdapter = new RegionAdapter(mContext, regions);
         mAdapter.setOnItemClickListener(new RegionAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick() {
+            public void onItemClick(String regionID) {
                 Intent intent = new Intent(mContext, SignUpEmailActivity.class);
+                intent.putExtra("SELECTED_REGION_ID", regionID);
                 startActivity(intent);
             }
         });

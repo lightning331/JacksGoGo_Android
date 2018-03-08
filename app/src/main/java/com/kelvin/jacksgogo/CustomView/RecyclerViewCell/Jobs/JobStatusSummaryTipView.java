@@ -11,11 +11,11 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobMainWorkProgressView extends RelativeLayout {
+public class JobStatusSummaryTipView extends RelativeLayout {
 
     private Context mContext;
 
-    public JobMainWorkProgressView(Context context) {
+    public JobStatusSummaryTipView(Context context) {
         super(context);
         this.mContext = context;
 
@@ -24,7 +24,7 @@ public class JobMainWorkProgressView extends RelativeLayout {
 
     private void initView() {
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view                            = mLayoutInflater.inflate(R.layout.view_job_main_work_progress, this);
+        View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_tip, this);
 
     }
 }

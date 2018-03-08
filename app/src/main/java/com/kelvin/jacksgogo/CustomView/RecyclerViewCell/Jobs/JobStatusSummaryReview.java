@@ -13,7 +13,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobMainReview extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryReview extends RelativeLayout implements View.OnClickListener {
 
     private Context mContext;
 
@@ -21,7 +21,7 @@ public class JobMainReview extends RelativeLayout implements View.OnClickListene
     public TextView lblReviewTitle;
     public LinearLayout btnReview;
 
-    public JobMainReview(Context context) {
+    public JobStatusSummaryReview(Context context) {
         super(context);
         this.mContext = context;
 
@@ -30,7 +30,7 @@ public class JobMainReview extends RelativeLayout implements View.OnClickListene
 
     private void initView() {
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view                            = mLayoutInflater.inflate(R.layout.view_job_main_review, this);
+        View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_review, this);
 
         lblReviewDate = (TextView) view.findViewById(R.id.lbl_job_main_review_date);
         lblReviewTitle = (TextView) view.findViewById(R.id.lbl_job_main_review_title);

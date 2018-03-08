@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
-import com.kelvin.jacksgogo.Adapter.Jobs.InviteProviderAdapter;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobMainQuotationView;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
-import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainTabFragment;
+import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryQuotationView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 
 import java.util.ArrayList;
@@ -37,8 +36,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
@@ -56,6 +53,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     private View view;
 
     private ArrayList<JGGProposalModel> proposals;
+    private boolean isDeleted;
 
     public JobStatusSummaryFragment() {
         // Required empty public constructor
@@ -125,15 +123,45 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         lblPostedJob = view.findViewById(R.id.lbl_next_step_title);
         btnPostedJob = view.findViewById(R.id.btn_posted_job);
         btnPostedJob.setOnClickListener(this);
+    }
 
-        Date postOn = appointmentMonthDate(creatingAppointment.getPostOn());
-        lblPostedTime.setText(getDayMonthYear(postOn) + " " + getTimePeriodString(postOn));
+    public void deleteJob() {
+        progressDialog = Global.createProgressDialog(mContext);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        String jobID = creatingAppointment.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    ((JobStatusSummaryActivity)mContext).deleteJobFinished();
+                    isDeleted = true;
+                    setData();
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpPhoneActivity", t.getMessage());
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+
     }
 
     private void setData() {
-        /*LinearLayout footerLayout = (LinearLayout)view.findViewById(R.id.job_main_footer_layout);
-        JobMainFooterView footerView = new JobMainFooterView(mContext);
-        footerView.setOnItemClickListener(new JobMainFooterView.OnItemClickListener() {
+        Date postOn = appointmentMonthDate(creatingAppointment.getPostOn());
+        lblPostedTime.setText(getDayMonthYear(postOn) + " " + getTimePeriodString(postOn));
+
+       /*LinearLayout footerLayout = (LinearLayout)view.findViewById(R.id.job_main_footer_layout);
+        JobStatusSummaryFooterView footerView = new JobStatusSummaryFooterView(mContext);
+        footerView.setOnItemClickListener(new JobStatusSummaryFooterView.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
                 if (item.getId() == R.id.job_report_layout) {
@@ -148,9 +176,9 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         footerLayout.addView(footerView);
 
         LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
-        JobMainReview givenReviewView = new JobMainReview(mContext);
+        JobStatusSummaryReview givenReviewView = new JobStatusSummaryReview(mContext);
         givenReviewLayout.addView(givenReviewView);
-        givenReviewView.setOnItemClickListener(new JobMainReview.OnItemClickListener() {
+        givenReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
                 onShowReviewFragment();
@@ -158,9 +186,9 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         });
 
         LinearLayout getReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_get_review_layout);
-        JobMainReview getReviewView = new JobMainReview(mContext);
+        JobStatusSummaryReview getReviewView = new JobStatusSummaryReview(mContext);
         getReviewLayout.addView(getReviewView);
-        getReviewView.setOnItemClickListener(new JobMainReview.OnItemClickListener() {
+        getReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
                 onShowReviewFragment();
@@ -168,12 +196,12 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         });
 
         LinearLayout tipLayout = (LinearLayout)view.findViewById(R.id.job_main_tip_layout);
-        JobMainTipView tipView = new JobMainTipView(mContext);
+        JobStatusSummaryTipView tipView = new JobStatusSummaryTipView(mContext);
         tipLayout.addView(tipView);
 
         LinearLayout paymentLayout = (LinearLayout)view.findViewById(R.id.job_main_payment_layout);
-        JobMainPaymentView paymentView = new JobMainPaymentView(mContext);
-        paymentView.setOnItemClickListener(new JobMainPaymentView.OnItemClickListener() {
+        JobStatusSummaryPaymentView paymentView = new JobStatusSummaryPaymentView(mContext);
+        paymentView.setOnItemClickListener(new JobStatusSummaryPaymentView.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
                 JobReportFragment frag = JobReportFragment.newInstance(false);
@@ -186,17 +214,26 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         paymentLayout.addView(paymentView);
 
         LinearLayout progressLayout = (LinearLayout)view.findViewById(R.id.job_main_work_progress_layout);
-        JobMainWorkProgressView progressView = new JobMainWorkProgressView(mContext);
+        JobStatusSummaryWorkProgressView progressView = new JobStatusSummaryWorkProgressView(mContext);
         progressLayout.addView(progressView);
 
         LinearLayout confirmedLayout = (LinearLayout)view.findViewById(R.id.job_main_confirmed_layout);
-        JobMainConfirmedView confirmedView = new JobMainConfirmedView(mContext);
+        JobStatusSummaryConfirmedView confirmedView = new JobStatusSummaryConfirmedView(mContext);
         confirmedLayout.addView(confirmedView);*/
 
         LinearLayout quotationLayout = (LinearLayout)view.findViewById(R.id.job_main_quotation_layout);
-        JobMainQuotationView quotationView = new JobMainQuotationView(mContext);
-        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_green);
+        JobStatusSummaryQuotationView quotationView = new JobStatusSummaryQuotationView(mContext);
+        if (isDeleted) {
+            LinearLayout cancelledLayout = (LinearLayout) view.findViewById(R.id.job_main_cancelled_layout);
+            JobStatusSummaryCancelled cancelledView = new JobStatusSummaryCancelled(mContext);
+            cancelledLayout.addView(cancelledView);
+
+            quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+            quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        } else {
+            quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+            quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_green);
+        }
         if (proposals.size() == 0 || proposals == null) {
             quotationView.lblTitle.setText(R.string.waiting_service_provider);
             quotationView.btnViewQuotation.setText(R.string.invite_service_provider);
@@ -206,7 +243,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
             quotationView.btnViewQuotation.setText(R.string.view_quotation);
             lblPostedJob.setText(R.string.outgoing_job);
         }
-        quotationView.setOnItemClickListener(new JobMainQuotationView.OnItemClickListener() {
+        quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
 

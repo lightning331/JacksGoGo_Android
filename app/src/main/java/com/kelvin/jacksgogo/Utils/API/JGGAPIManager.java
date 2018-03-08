@@ -36,8 +36,8 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("api/Account/Login")
-    Call<JGGUserProfileResponse> accountLogin(@Field("email") String email,
-                                              @Field("password") String password);
+    Call<JGGUserProfileResponse> accountLogin(@Field("Email") String email,
+                                              @Field("Password") String password);
 
     @POST("api/Account/Logout")
     Call<JGGBaseResponse> accountSignOut();
@@ -47,8 +47,9 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("api/Account/Register")
-    Call<JGGBaseResponse> accountSignUp(@Field("email") String email,
-                                       @Field("password") String password);
+    Call<JGGBaseResponse> accountSignUp(@Field("Email") String email,
+                                        @Field("Password") String password,
+                                        @Field("RegionID") String regionID);
 
     @FormUrlEncoded
     @POST("api/Account/AddPhoneNumber")
@@ -70,6 +71,9 @@ public interface JGGAPIManager {
      */
     @POST("api/Appointment/PostJob")
     Call<JGGPostJobResponse> postNewJob(@Body JGGJobModel creatingJob);
+
+    @POST("api/Appointment/EditJob")
+    Call<JGGPostJobResponse> editJob(@Body JGGJobModel editingJob);
 
     @GET("api/Appointment/DeleteJob")
     Call<JGGBaseResponse> deleteJob(@Query("ID") String jobID);

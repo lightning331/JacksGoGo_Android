@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
-        android:id="@+id/job_main_tip_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -17,11 +16,12 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/icon_budget"/>
+                android:src="@mipmap/icon_info"/>
             <LinearLayout
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
                 android:background="@color/JGGGrey3">
             </LinearLayout>
         </LinearLayout>
@@ -32,31 +32,36 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="32dp"
             android:orientation="vertical">
-            <LinearLayout
+            <TextView
+                android:id="@+id/lbl_job_main_review_date"
+                android:text="12 Jul 2017 8:15 PM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginRight="10dp"
+                android:textColor="@color/JGGGrey2"
+                android:fontFamily="@font/muliregular"
+                android:textSize="12dp"/>
+            <LinearLayout
+                android:id="@+id/btn_job_main_review"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp">
                 <TextView
-                    android:text="12 Jul 2017 8:15 PM"
-                    android:layout_width="match_parent"
+                    android:id="@+id/lbl_job_main_review_title"
+                    android:text="you have given catherinedesilva a review."
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginRight="10dp"
-                    android:textColor="@color/JGGGrey2"
+                    android:textColor="@color/JGGBlack"
                     android:fontFamily="@font/muliregular"
-                    android:textSize="12dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:text="You have given catherinedesilva a tip of $20.00."
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/JGGBlack"
-                        android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/list_title_font_size"/>
-                </LinearLayout>
+                    android:textSize="@dimen/list_title_font_size"/>
+
+                <ImageView
+                    android:src="@mipmap/button_right_green"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
