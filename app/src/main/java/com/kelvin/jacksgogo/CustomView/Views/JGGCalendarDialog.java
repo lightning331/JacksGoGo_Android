@@ -95,8 +95,7 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
             String day = dayFormat.format(calendar.getSelectedDate().getDate());
             String year = yearFormat.format(calendar.getSelectedDate().getDate());
             listener.onDoneButtonClick(view, month, day, year);
-        }
-        else
+        } else
             listener.onDoneButtonClick(view, null, null, null);
     }
 

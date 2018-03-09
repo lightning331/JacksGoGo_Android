@@ -1,16 +1,14 @@
 package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppBiddingProviderCell;
-import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 
 import java.util.ArrayList;
 
@@ -31,36 +29,25 @@ public class QuotationAdapter extends RecyclerView.Adapter implements View.OnCli
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        if (viewType == 0) {
-//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-//            return new SectionTitleView(view);
-//        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_bidding_provider, parent, false);
-            return new AppBiddingProviderCell(mContext, view);
-//        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_bidding_provider, parent, false);
+        return new AppBiddingProviderCell(mContext, view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-//        if (position == 0) {
-//            SectionTitleView sectionView = (SectionTitleView) holder;
-//            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-//            sectionView.setTitle("Bidding service providers:");
-//        } else {
-            provider = providerArray.get(position);
+        provider = providerArray.get(position);
 
-            AppBiddingProviderCell cell = (AppBiddingProviderCell) holder;
-            cell.setData(provider);
-            cell.imgProposal.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (view.getId() == R.id.img_proposal) {
-                        listener.onItemClick(position);
-                    }
+        AppBiddingProviderCell cell = (AppBiddingProviderCell) holder;
+        cell.setData(provider);
+        cell.imgProposal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == R.id.img_proposal) {
+                    listener.onItemClick(position);
                 }
-            });
-//        }
+            }
+        });
     }
 
     @Override

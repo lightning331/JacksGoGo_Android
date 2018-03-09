@@ -98,7 +98,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         this.btnSignUp = view.findViewById(R.id.btn_sign_up);
         this.btnSignUp.setOnClickListener(this);
 
-        txtEmail.setText("rose.lim@jgg.co");
+        txtEmail.setText("cristina@jgg.co");
         txtPassword.setText("abc123Q!@#");
 
     }
@@ -239,13 +239,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
 
         title.setText("Warning");
         desc.setText("You have not verified account. Would you verify with your phone number?");
-        okButton.setText(R.string.alert_reject_ok);
+        okButton.setText(R.string.alert_ok);
         okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
         cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
         cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.dismiss();
                 Intent intent = new Intent(mContext, SignUpPhoneActivity.class);
                 startActivity(intent);
             }
@@ -256,7 +257,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                 alertDialog.dismiss();
             }
         });
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 

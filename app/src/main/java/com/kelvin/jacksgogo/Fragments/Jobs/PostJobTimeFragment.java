@@ -25,14 +25,15 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.getDayMonthString;
 import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDateString;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 public class PostJobTimeFragment extends Fragment implements View.OnClickListener {
 
@@ -135,13 +136,16 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         if (creatingJob.getSessions() != null
                 && creatingJob.getSessions().size() > 0) {
             isSpecific = creatingJob.getSessions().get(0).isSpecific();
-            if (creatingJob.getSessions().get(0).getSessionStartOn() != null) {
-                selectedDay = Global.getDayMonth(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
-                lblDate.setText(selectedDay);
-                startTime = getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+            if (creatingJob.getSessions().get(0).getStartOn() != null) {
+                String strDate = creatingJob.getSessions().get(0).getStartOn();
+                Date date = appointmentMonthDate(strDate);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                selectedDay = dateFormat.format(date);
+                lblDate.setText(getDayMonthString(date));
+                startTime = getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()));
                 lblTime.setText(startTime);
-                if (creatingJob.getSessions().get(0).getSessionEndOn() != null) {
-                    endTime = getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                if (creatingJob.getSessions().get(0).getEndOn() != null) {
+                    endTime = getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getEndOn()));
                     lblTime.setText(startTime + " - " + endTime);
                 }
                 onNextButtonEnable();
@@ -243,7 +247,15 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                 if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-                    selectedDay = year + "-" + month + "-" + day;
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                    try {
+                        Date varDate=dateFormat.parse(year + "-" + month + "-" + day);
+                        dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                        selectedDay = dateFormat.format(varDate);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
                     lblDate.setText(day + " " + month);
                     alertDialog.dismiss();
                     if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
@@ -404,11 +416,12 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         JGGTimeSlotModel timeModel = new JGGTimeSlotModel();
         if (selectedAppType == 1) {     // One-time
             timeModel.setSpecific(isSpecific);
-            startOn = appointmentDate(selectedDay + "T" + Global.getTimeString(startOn));
-            if (endOn != null)
-                endOn = appointmentDate(selectedDay + "T" + Global.getTimeString(endOn));
-            timeModel.setSessionStartOn(appointmentDateString(startOn));
-            timeModel.setSessionEndOn(appointmentDateString(endOn));
+            String startTime = selectedDay + "T" + Global.getTimeString(startOn);
+            timeModel.setStartOn(startTime);
+            if (endOn != null) {
+                String endTime = selectedDay + "T" + Global.getTimeString(endOn);
+                timeModel.setEndOn(endTime);
+            }
             selectedTimeSlots.add(timeModel);
             creatingJob.setSessions(selectedTimeSlots);
         } else if (selectedAppType == 0) {      // Repeating

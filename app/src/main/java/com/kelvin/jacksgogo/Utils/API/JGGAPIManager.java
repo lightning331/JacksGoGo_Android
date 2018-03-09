@@ -76,7 +76,8 @@ public interface JGGAPIManager {
     Call<JGGPostJobResponse> editJob(@Body JGGJobModel editingJob);
 
     @GET("api/Appointment/DeleteJob")
-    Call<JGGBaseResponse> deleteJob(@Query("ID") String jobID);
+    Call<JGGBaseResponse> deleteJob(@Query("ID") String jobID,
+                                    @Query("Reason") String reason);
 
     @POST("api/Appointment/PostService")
     Call<JGGPostJobResponse> postNewService(@Body JGGJobModel creatingService);

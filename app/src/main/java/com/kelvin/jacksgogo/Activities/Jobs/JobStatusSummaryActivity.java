@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,33 +17,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobStatusSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Search.EditServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 public class JobStatusSummaryActivity extends AppCompatActivity implements TextWatcher {
@@ -99,27 +92,27 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
             if (creatingAppointment.getSessions() != null
                     && creatingAppointment.getSessions().size() > 0) {
                 if (creatingAppointment.getSessions().get(0).isSpecific()) {
-                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
                         time = "on "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                                + getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
                     else
                         time = "on "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
                 } else {
-                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
                         time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                                + getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
                     else
                         time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
                 }
             }
             lblTime.setText(time);
@@ -284,7 +277,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                frag.deleteJob();
+                frag.deleteJob(reason.getText().toString());
             }
         });
         alertDialog.show();
@@ -292,6 +285,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
 
     public void deleteJobFinished() {
         lblCancel.setVisibility(View.VISIBLE);
+        actionbarView.setDeleteJobStatus();
     }
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {

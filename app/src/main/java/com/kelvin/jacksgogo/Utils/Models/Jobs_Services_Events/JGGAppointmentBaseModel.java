@@ -164,7 +164,7 @@ public class JGGAppointmentBaseModel {
     }
 
     public static Date appointmentDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
         try {
 
             if (dateString != null) {
@@ -179,7 +179,7 @@ public class JGGAppointmentBaseModel {
     }
 
     public static Date appointmentMonthDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
 
             if (dateString != null) {
@@ -194,7 +194,7 @@ public class JGGAppointmentBaseModel {
     }
 
     public static String appointmentDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
         if (date != null) {
             String dateString = dateFormat.format(date);
             return dateString;
@@ -203,7 +203,7 @@ public class JGGAppointmentBaseModel {
     }
 
     public static String appointmentMonthDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         if (date != null) {
             String dateString = dateFormat.format(date);
             return dateString;

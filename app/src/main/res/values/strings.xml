@@ -151,6 +151,7 @@
 
     <!-- TODO: Invite Service Provider Job -->
     <string name="invite_actionbar_title">Invite</string>
+    <string name="service_provider_actionbar_title">Service Providers</string>
     <string name="waiting_service_provider">Waiting for Service Providers to responding...</string>
     <string name="invite_service_provider">Invite Service Providers</string>
     <string name="job_request_posted">New job request posted.</string>

@@ -87,10 +87,10 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(JGGTimeSlotModel time) {
-            String startTime = Global.getTimePeriodString(appointmentDate(time.getSessionStartOn()));
+            String startTime = Global.getTimePeriodString(appointmentDate(time.getStartOn()));
             String endTime = "";
-            if (time.getSessionEndOn() != null) {
-                endTime = Global.getTimePeriodString(appointmentDate(time.getSessionEndOn()));
+            if (time.getEndOn() != null) {
+                endTime = Global.getTimePeriodString(appointmentDate(time.getEndOn()));
                 lblTime.setText(startTime + " - " + endTime);
             } else {
                 lblTime.setText(startTime);

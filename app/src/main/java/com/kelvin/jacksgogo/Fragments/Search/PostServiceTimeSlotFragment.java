@@ -40,6 +40,7 @@ import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SE
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDateString;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 
 public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher {
@@ -140,7 +141,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
 
         if (creatingService.getSessions() != null
                 && creatingService.getSessions().size() > 0)
-            calendarView.setSelectedDate(appointmentDate(creatingService.getSessions().get(0).getSessionStartOn()));
+            calendarView.setSelectedDate(appointmentDate(creatingService.getSessions().get(0).getStartOn()));
         else
             calendarView.setSelectedDate(new Date());
         btnNoTimeSlots.setOnClickListener(this);
@@ -247,17 +248,17 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
                     alertDialog.dismiss();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     String month = format.format(calendarView.getSelectedDate().getDate());
-                    Date startOn = appointmentDate(month + "T" + Global.getTimeString(start));
-                    Date endOn = appointmentDate(month + "T" + Global.getTimeString(end));
+                    Date startOn = appointmentMonthDate(month + "T" + Global.getTimeString(start));
+                    Date endOn = appointmentMonthDate(month + "T" + Global.getTimeString(end));
                     if (startOn.before(new Date())) {
                         Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
-                    timeSlotModel.setSessionStartOn(appointmentDateString(startOn));
-                    timeSlotModel.setSessionEndOn(appointmentDateString(endOn));
+                    timeSlotModel.setStartOn(appointmentDateString(startOn));
+                    timeSlotModel.setEndOn(appointmentDateString(endOn));
                     timeSlotModel.setPeoples(number);
                     if (isEditTimeSlot) {
                         selectedTimeSlots.set(editingTimeSlot, timeSlotModel);

@@ -39,7 +39,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -184,27 +184,27 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 if (creatingJob.getSessions() != null
                         && creatingJob.getSessions().size() > 0) {
                     if (creatingJob.getSessions().get(0).isSpecific()) {
-                        if (creatingJob.getSessions().get(0).getSessionEndOn() != null)
+                        if (creatingJob.getSessions().get(0).getEndOn() != null)
                             time = "on "
-                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
-                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
                                     + " - "
-                                    + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                                    + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getEndOn()));
                         else
                             time = "on "
-                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
-                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()));
                     } else {
-                        if (creatingJob.getSessions().get(0).getSessionEndOn() != null)
+                        if (creatingJob.getSessions().get(0).getEndOn() != null)
                             time = "any time until "
-                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
-                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
+                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
                                     + " - "
-                                    + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionEndOn()));
+                                    + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getEndOn()));
                         else
                             time = "any time until "
-                                    + getDayMonthYear(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()))
-                                    + " " + getTimePeriodString(appointmentDate(creatingJob.getSessions().get(0).getSessionStartOn()));
+                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()));
                     }
                 }
                 lblTime.setText(time);
@@ -243,7 +243,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostJobResponse> call = manager.editJob(creatingJob);
+        Call<JGGPostJobResponse> call = manager.postNewJob(creatingJob);
         call.enqueue(new Callback<JGGPostJobResponse>() {
             @Override
             public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {

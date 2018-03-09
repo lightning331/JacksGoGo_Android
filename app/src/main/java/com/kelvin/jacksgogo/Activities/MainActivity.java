@@ -162,13 +162,17 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
             if (frag instanceof AppMainFragment) {
                 this.addTopActionBarForAppointment(frag);
-            } else if (frag instanceof SearchFragment) {
-                this.addTopActionBarForSearch(frag);
-            } else if (frag instanceof FavouriteFragment) {
-                this.addTopActionBarForFavourite(frag);
             } else {
                 this.removeTopActionBarForAppointment();
+            }
+            if (frag instanceof SearchFragment) {
+                this.addTopActionBarForSearch(frag);
+            } else {
                 this.removeToActionBarForSearch();
+            }
+            if (frag instanceof FavouriteFragment) {
+                this.addTopActionBarForFavourite(frag);
+            } else {
                 this.removeToActionBarForFavourite();
             }
         }

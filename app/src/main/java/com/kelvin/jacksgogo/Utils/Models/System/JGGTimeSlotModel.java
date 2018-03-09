@@ -1,32 +1,30 @@
 package com.kelvin.jacksgogo.Utils.Models.System;
 
-import java.util.Date;
-
 /**
  * Created by PUMA on 1/18/2018.
  */
 
 public class JGGTimeSlotModel {
 
-    private String SessionStartOn;
-    private String SessionEndOn;
+    private String StartOn;
+    private String EndOn;
     private Boolean IsSpecific;
     private Integer Peoples;
 
-    public String getSessionStartOn() {
-        return SessionStartOn;
+    public String getStartOn() {
+        return StartOn;
     }
 
-    public void setSessionStartOn(String sessionStartOn) {
-        SessionStartOn = sessionStartOn;
+    public void setStartOn(String startOn) {
+        StartOn = startOn;
     }
 
-    public String getSessionEndOn() {
-        return SessionEndOn;
+    public String getEndOn() {
+        return EndOn;
     }
 
-    public void setSessionEndOn(String sessionEndOn) {
-        SessionEndOn = sessionEndOn;
+    public void setEndOn(String endOn) {
+        EndOn = endOn;
     }
 
     public Integer getPeoples() {

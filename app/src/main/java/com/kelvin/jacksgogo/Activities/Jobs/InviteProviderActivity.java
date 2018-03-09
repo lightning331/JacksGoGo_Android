@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -75,7 +76,6 @@ public class InviteProviderActivity extends AppCompatActivity {
             setCategory();
 
         getInviteUsers();
-
     }
 
     private void setCategory() {
@@ -91,27 +91,27 @@ public class InviteProviderActivity extends AppCompatActivity {
             if (creatingAppointment.getSessions() != null
                     && creatingAppointment.getSessions().size() > 0) {
                 if (creatingAppointment.getSessions().get(0).isSpecific()) {
-                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
                         time = "on "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
                     else
                         time = "on "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
                 } else {
-                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
+                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
                         time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
                     else
                         time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
                 }
             }
             lblTime.setText(time);
@@ -142,6 +142,7 @@ public class InviteProviderActivity extends AppCompatActivity {
     }
 
     private void getInviteUsers() {
+        if (currentUser == null) return;
         progressDialog = Global.createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID().toString(),
@@ -185,6 +186,9 @@ public class InviteProviderActivity extends AppCompatActivity {
             } else {
                 manager.popBackStack();
             }
+        } else if (view.getId() == R.id.btn_more) {
+            Intent intent = new Intent(this, ServiceProviderActivity.class);
+            startActivity(intent);
         }
     }
 }

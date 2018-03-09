@@ -67,6 +67,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         SEARCH,
         SEARCH_RESULT,
         INVITE,
+        SERVICE_PROVIDER,
         BID,
         ACCEPT_BIDE,
         JOB_REPORT,
@@ -275,7 +276,10 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 }
                 break;
             case INVITE:
-                setOrangeBackButton(R.string.invite_actionbar_title, "");
+                setInviteButton();
+                break;
+            case SERVICE_PROVIDER:
+                setOrangeBackButton(R.string.service_provider_actionbar_title, "");
                 break;
             case SERVICE_LISTING_DETAIL:
                 mTitleTextView.setText("");
@@ -298,6 +302,32 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             default:
                 break;
         }
+    }
+
+    public void setDeleteJobStatus() {
+        mTitleTextView.setText("");
+        mBackButtonTitleTextView.setText(R.string.title_appointment);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+        moreButtonsLayout.setVisibility(GONE);
+        param = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT,
+                3.0f
+        );
+        mBackButton.setLayoutParams(param);
+        moreButtonsLayout.setLayoutParams(param);
+        param1 = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT,
+                4.0f
+        );
+        centerTitleTextLayout.setLayoutParams(param1);
+    }
+
+    private void setInviteButton() {
+        mTitleTextView.setText(R.string.invite_actionbar_title);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+        mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
     }
 
     private void setLikeButton(int back, int like, int more) {

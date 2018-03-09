@@ -131,8 +131,12 @@
         <activity
             android:name=".Activities.Profile.SignUpPhoneActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Jobs.PostedJobActivity" />
-        <activity android:name=".Activities.Jobs.EditJobSummaryActivity"></activity>
+        <activity
+            android:name=".Activities.Jobs.PostedJobActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Jobs.ServiceProviderActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

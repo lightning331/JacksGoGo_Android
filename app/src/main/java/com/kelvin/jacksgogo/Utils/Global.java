@@ -229,6 +229,26 @@ public class Global {
         return "";
     }
 
+    public static String getDayMonthString(Date date) {
+        if (date != null) {
+            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+            String day = dayFormat.format(date);
+            String month = monthFormat.format(date);
+            try {
+                Date varDate=monthFormat.parse(month);
+                monthFormat=new SimpleDateFormat("MMM");
+                month = monthFormat.format(varDate);
+            }catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+
+            return day + " " + month;
+        }
+        return "";
+    }
+
     public static String getDayMonthYear(Date date) {
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
@@ -266,12 +286,12 @@ public class Global {
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
             SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
             SimpleDateFormat secondFormat = new SimpleDateFormat("ss");
-            SimpleDateFormat mSecondFormat = new SimpleDateFormat("SSS");
+            //SimpleDateFormat mSecondFormat = new SimpleDateFormat("SSS");
             String hour = hourFormat.format(date);
             String minute = minuteFormat.format(date);
             String second = secondFormat.format(date);
-            String mSecond = mSecondFormat.format(date);
-            String time = hour + ":" + minute + ":" + second + "." + mSecond;
+            //String mSecond = mSecondFormat.format(date);
+            String time = hour + ":" + minute + ":" + second;// + "." + mSecond;
             return time;
         }
         return "";

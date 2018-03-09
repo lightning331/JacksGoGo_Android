@@ -24,9 +24,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
@@ -39,7 +37,6 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 public class PostedJobActivity extends AppCompatActivity {
@@ -102,24 +99,24 @@ public class PostedJobActivity extends AppCompatActivity {
                     && creatingAppointment.getSessions().size() > 0) {
                 if (creatingAppointment.getSessions().get(0).isSpecific()) {
                     type = "on";
-                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
                     else
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
                 } else {
                     type = "any time until";
-                    if (creatingAppointment.getSessions().get(0).getSessionEndOn() != null)
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
+                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionEndOn()));
+                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
                     else
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getSessionStartOn()));
+                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
                 }
             }
             lblType.setText(type);
