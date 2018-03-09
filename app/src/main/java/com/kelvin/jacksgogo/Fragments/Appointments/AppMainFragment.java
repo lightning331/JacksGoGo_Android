@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -25,7 +26,6 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
 
 import java.util.ArrayList;
@@ -319,19 +319,20 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void onSelectListViewItem(int position, Object object) {
-        if (object instanceof JGGJobModel) {
-            Log.d("Service Model Selected", "==========" + object + "============");
-
-            JGGJobModel appointment = (JGGJobModel) object;
-            selectedCategory = appointment.getCategory();
-            creatingAppointment = appointment;
-            if (appointment.isRequest()) {
-                Intent intent = new Intent(getActivity(), JobStatusSummaryActivity.class);
-                startActivity(intent);
-            }
-        } else if (object instanceof JGGServiceModel) {
+        JGGJobModel appointment = (JGGJobModel) object;
+        selectedCategory = appointment.getCategory();
+        creatingAppointment = appointment;
+        if (appointment.isRequest()) {
             Log.d("Job Model Selected", "==========" + object + "============");
-        } else if (object instanceof JGGEventModel) {
+            Intent intent = new Intent(getActivity(), JobStatusSummaryActivity.class);
+            startActivity(intent);
+        } else {
+            Log.d("Service Model Selected", "==========" + object + "============");
+            Intent intent = new Intent(getActivity(), ServiceDetailActivity.class);
+            intent.putExtra("is_service", false);
+            startActivity(intent);
+        }
+        if (object instanceof JGGEventModel) {
             Log.d("Event Model Selected", "==========" + object + "============");
         }
     }

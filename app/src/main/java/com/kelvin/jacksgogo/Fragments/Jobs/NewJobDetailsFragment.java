@@ -11,22 +11,22 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
-import com.kelvin.jacksgogo.Adapter.Jobs.JobDetailAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.NewJobDetailsAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
 
-public class JobDetailFragment extends Fragment {
+public class NewJobDetailsFragment extends Fragment {
 
     private Context mContext;
     private RecyclerView recyclerView;
 
-    public JobDetailFragment() {
+    public NewJobDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static JobDetailFragment newInstance(String param1, String param2) {
-        JobDetailFragment fragment = new JobDetailFragment();
+    public static NewJobDetailsFragment newInstance(String param1, String param2) {
+        NewJobDetailsFragment fragment = new NewJobDetailsFragment();
         return fragment;
     }
 
@@ -43,7 +43,7 @@ public class JobDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_job_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_job_details, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.detail_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -51,7 +51,7 @@ public class JobDetailFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        JobDetailAdapter mAdapter = new JobDetailAdapter(mContext);
+        NewJobDetailsAdapter mAdapter = new NewJobDetailsAdapter(mContext);
 
         recyclerView.setAdapter(mAdapter);
 

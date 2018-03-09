@@ -74,6 +74,7 @@ public class PostJobMainTabFragment extends Fragment {
             tabName = getArguments().getString("tabName");
             postStatus = getArguments().getString("postStatus");
         }
+        creatingJob = creatingAppointment;
     }
 
     @Override
@@ -90,7 +91,6 @@ public class PostJobMainTabFragment extends Fragment {
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(selectedCategory.getName());
-        creatingJob = creatingAppointment;
 
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.WindowManager;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 /**
  * Created by PUMA on 11/3/2017.
@@ -323,6 +326,70 @@ public class Global {
         if (status)
             return "AM";
         return "PM";
+    }
+
+    public static String convertJobTimeString(JGGJobModel job) {
+        String time = "";
+        if (job.getAppointmentType() == 1) {
+            if (job.getSessions() != null
+                    && job.getSessions().size() > 0) {
+                if (job.getSessions().get(0).isSpecific()) {
+                    if (job.getSessions().get(0).getEndOn() != null)
+                        time = "on "
+                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + " - "
+                                + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                    else
+                        time = "on "
+                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                } else {
+                    if (job.getSessions().get(0).getEndOn() != null)
+                        time = "any time until "
+                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + " - "
+                                + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                    else
+                        time = "any time until "
+                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                }
+            }
+        } else if (job.getAppointmentType() == 0) {
+            String dayString = job.getRepetition();
+            String[] items = dayString.split(",");
+            if (job.getRepetitionType() == Global.JGGRepetitionType.weekly) {
+                for (int i = 0; i < items.length; i ++) {
+                    if (time.equals(""))
+                        time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                    else
+                        time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                }
+            } else if (job.getRepetitionType() == Global.JGGRepetitionType.monthly) {
+                for (int i = 0; i < items.length; i ++) {
+                    if (time.equals(""))
+                        time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                    else
+                        time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                }
+            }
+        }
+        return time;
+    }
+
+    public static String convertJobBudgetString(JGGJobModel jobModel) {
+        String budget = "";
+        if (jobModel.getBudget() == null && jobModel.getBudgetFrom() == null)
+            budget =  "No limit";
+        else if (jobModel.getBudget() != null)
+            budget =  "Fixed $ " + jobModel.getBudget().toString();
+        else if (jobModel.getBudgetFrom() != null && jobModel.getBudgetTo() != null)
+            budget =  ("From $ " + jobModel.getBudgetFrom().toString()
+                    + " "
+                    + "to $ " + jobModel.getBudgetTo().toString());
+        return budget;
     }
 
     public static ProgressDialog createProgressDialog(Context mContext) {

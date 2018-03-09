@@ -21,6 +21,8 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import java.lang.reflect.Field;
@@ -36,6 +38,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
@@ -58,6 +61,8 @@ public class PostedJobActivity extends AppCompatActivity {
     @BindView(R.id.posted_job_user_rating) MaterialRatingBar ratingBar;
 
     private JGGActionbarView actionbarView;
+    private JGGCategoryModel mCategory;
+    private JGGJobModel mJob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,59 +84,61 @@ public class PostedJobActivity extends AppCompatActivity {
             }
         });
 
-        if (selectedCategory != null && creatingAppointment != null)
+        mCategory = selectedCategory;
+        mJob = creatingAppointment;
+        if (mCategory != null && mJob != null)
             setData();
     }
 
     private void setData() {
         // Category
         Picasso.with(this)
-                .load(selectedCategory.getImage())
+                .load(mCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
-        lblTitle.setText(creatingAppointment.getTitle());
+        lblCategory.setText(mCategory.getName());
+        lblTitle.setText(mJob.getTitle());
         // Time
         String time = "";
         String type = "";
-        if (creatingAppointment.getAppointmentType() == 1) {    // One-time
-            if (creatingAppointment.getSessions() != null
-                    && creatingAppointment.getSessions().size() > 0) {
-                if (creatingAppointment.getSessions().get(0).isSpecific()) {
+        if (mJob.getAppointmentType() == 1) {    // One-time
+            if (mJob.getSessions() != null
+                    && mJob.getSessions().size() > 0) {
+                if (mJob.getSessions().get(0).isSpecific()) {
                     type = "on";
-                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                    if (mJob.getSessions().get(0).getEndOn() != null)
+                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
+                                + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
                     else
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
+                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
                 } else {
                     type = "any time until";
-                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
+                    if (mJob.getSessions().get(0).getEndOn() != null)
+                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
+                                + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
                     else
-                        time = getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
+                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
                 }
             }
             lblType.setText(type);
             lblTime.setText(time);
-        } else if (creatingAppointment.getAppointmentType() == 0) {     // Repeating
-            String dayString = creatingAppointment.getRepetition();
+        } else if (mJob.getAppointmentType() == 0) {     // Repeating
+            String dayString = mJob.getRepetition();
             String[] items = dayString.split(",");
-            if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.weekly) {
+            if (mJob.getRepetitionType() == Global.JGGRepetitionType.weekly) {
                 for (int i = 0; i < items.length; i ++) {
                     if (time.equals(""))
                         time = Global.getWeekName(Integer.parseInt(items[i]));
                     else
                         time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
                 }
-            } else if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.monthly) {
+            } else if (mJob.getRepetitionType() == Global.JGGRepetitionType.monthly) {
                 for (int i = 0; i < items.length; i ++) {
                     if (time.equals(""))
                         time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
@@ -143,27 +150,22 @@ public class PostedJobActivity extends AppCompatActivity {
             lblTime.setVisibility(View.GONE);
         }
         // Description
-        lblDescription.setText(creatingAppointment.getDescription());
+        lblDescription.setText(mJob.getDescription());
         // Address
-        lblAddress.setText(creatingAppointment.getAddress().getFullAddress());
+        lblAddress.setText(mJob.getAddress().getFullAddress());
         // Price
-        if (creatingAppointment.getBudget() == null && creatingAppointment.getBudgetFrom() == null) lblBudget.setText("No limit");
-        else if (creatingAppointment.getBudget() != null) lblBudget.setText("Fixed $ " + creatingAppointment.getBudget().toString());
-        else if (creatingAppointment.getBudgetFrom() != null && creatingAppointment.getBudgetTo() != null)
-            lblBudget.setText("From $ " + creatingAppointment.getBudgetFrom().toString()
-                    + " "
-                    + "to $ " + creatingAppointment.getBudgetTo().toString());
+        lblBudget.setText(convertJobBudgetString(mJob));
         // Report
-        lblReportType.setText(Global.reportTypeName(creatingAppointment.getReportType()));
+        lblReportType.setText(Global.reportTypeName(mJob.getReportType()));
         // User
         Picasso.with(this)
-                .load(creatingAppointment.getUserProfile().getUser().getPhotoURL())
+                .load(mJob.getUserProfile().getUser().getPhotoURL())
                 .placeholder(null)
                 .into(imgAvatar);
-        lblUserName.setText(creatingAppointment.getUserProfile().getUser().getFullName());
-        ratingBar.setRating(creatingAppointment.getUserProfile().getUser().getRate().floatValue());
+        lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
+        ratingBar.setRating(mJob.getUserProfile().getUser().getRate().floatValue());
         // Tag View
-        String [] strings = creatingAppointment.getTags().split(",");
+        String [] strings = mJob.getTags().split(",");
         tagList.setTags(Arrays.asList(strings));
     }
 

@@ -25,7 +25,7 @@ public class ServiceDetailTagListCell extends RecyclerView.ViewHolder {
         tagList = itemView.findViewById(R.id.original_post_tag_list);
         Typeface typeface = Typeface.create("muliregular", Typeface.NORMAL);
         tagList.setTagTypeface(typeface);
-        List<String> tags = new ArrayList<String>();
+        /*List<String> tags = new ArrayList<String>();
         tags.add("gardening");
         tags.add("landscaping");
         tags.add("horticulture");
@@ -37,6 +37,6 @@ public class ServiceDetailTagListCell extends RecyclerView.ViewHolder {
         tags.add("landscaping");
         tags.add("horticulture");
         tags.add("nurse2");
-        tagList.setTags(tags);
+        tagList.setTags(tags);*/
     }
 }

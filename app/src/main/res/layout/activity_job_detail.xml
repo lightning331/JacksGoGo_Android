@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity">
-    <LinearLayout
+    tools:context="com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity">
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/app_detail_actionbar"
+                android:id="@+id/job_detail_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -30,82 +28,108 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/job_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/detail_title"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@color/JGGWhite"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="12"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/img_detail"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_gravity="right"
-                        android:src="@mipmap/icon_cat_householdchores"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="88"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/lbl_title"
-                            android:text="Gardening"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/JGGBlack"
-                            android:fontFamily="@font/mulibold"
-                            android:textSize="12dp"/>
-                        <TextView
-                            android:id="@+id/lbl_date"
-                            android:text="21 Jul, 2017 10:00-12:00PM"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:textColor="@color/JGGBlack"
-                            android:fontFamily="@font/muliregular"
-                            android:textSize="12dp"/>
-                        <TextView
-                            android:visibility="gone"
-                            android:id="@+id/lblStatus"
-                            android:text="Cancelled"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/JGGOrange"
-                            android:fontFamily="@font/mulibold"
-                            android:textSize="@dimen/caption_font_size"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/JGGGrey4">
-            </LinearLayout>
-            <FrameLayout
-                android:id="@+id/app_detail_container"
+            android:background="@color/JGGGrey5"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/JGGGrey5"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            </FrameLayout>
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_weight="1">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/job_detail_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+        </FrameLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/job_detail_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:layout_gravity="bottom"
+            app:itemTextColor="@color/JGGWhite"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:itemTextAppearance="@style/NavigationViewOwnStyle">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal"
+                    android:background="@color/JGGCyan10Percent">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/lbl_booked_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/mulibold"
+                            android:text="21k"/>
+                        <TextView
+                            android:id="@+id/lbl_booked_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:maxLines="1"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/muliregular"
+                            android:text="@string/people_viewed_job"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="end|center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lbl_viewing_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginRight="5dp"
+                            android:textColor="@color/JGGBlack"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/mulibold"
+                            android:text="3"
+                            android:gravity="end" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewEnd"
+                            android:gravity="end"
+                            android:textColor="@color/JGGBlack"
+                            android:layout_marginRight="16dp"
+                            android:textSize="@dimen/caption_font_size"
+                            android:fontFamily="@font/muliregular"
+                            android:text="@string/viewing_now"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/btn_job_detail_make_proposal"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="@string/make_proposal"
+                    android:textAlignment="center"
+                    android:background="@color/JGGCyan"
+                    android:textColor="@color/JGGWhite"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/button_font_size"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </android.support.design.widget.BottomNavigationView>
+    </android.support.design.widget.CoordinatorLayout>
+
 </android.support.constraint.ConstraintLayout>

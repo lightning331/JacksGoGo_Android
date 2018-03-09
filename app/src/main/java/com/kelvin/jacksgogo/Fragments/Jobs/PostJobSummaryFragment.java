@@ -37,9 +37,8 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
+import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -170,65 +169,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             // Address
             lblAddress.setText(creatingJob.getAddress().getFullAddress());
             // Budget
-            if (creatingJob.getBudget() == null && creatingJob.getBudgetFrom() == null) lblBudget.setText("No limit");
-            else if (creatingJob.getBudget() != null) lblBudget.setText("Fixed $ " + creatingJob.getBudget().toString());
-            else if (creatingJob.getBudgetFrom() != null && creatingJob.getBudgetTo() != null)
-                lblBudget.setText("From $ " + creatingJob.getBudgetFrom().toString()
-                        + " "
-                        + "to $ " + creatingJob.getBudgetTo().toString());
+            lblBudget.setText(convertJobBudgetString(creatingJob));
             // Report
             lblReport.setText(Global.reportTypeName(creatingJob.getReportType()));
             // Time
-            if (creatingJob.getAppointmentType() == 1) {
-                String time = "";
-                if (creatingJob.getSessions() != null
-                        && creatingJob.getSessions().size() > 0) {
-                    if (creatingJob.getSessions().get(0).isSpecific()) {
-                        if (creatingJob.getSessions().get(0).getEndOn() != null)
-                            time = "on "
-                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
-                                    + " - "
-                                    + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getEndOn()));
-                        else
-                            time = "on "
-                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()));
-                    } else {
-                        if (creatingJob.getSessions().get(0).getEndOn() != null)
-                            time = "any time until "
-                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
-                                    + " - "
-                                    + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getEndOn()));
-                        else
-                            time = "any time until "
-                                    + getDayMonthYear(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getStartOn()));
-                    }
-                }
-                lblTime.setText(time);
-            } else if (creatingJob.getAppointmentType() == 0) {
-                String time = "";
-                String dayString = creatingJob.getRepetition();
-                String[] items = dayString.split(",");
-                if (creatingJob.getRepetitionType() == Global.JGGRepetitionType.weekly) {
-                    for (int i = 0; i < items.length; i ++) {
-                        if (time.equals(""))
-                            time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
-                        else
-                            time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
-                    }
-                } else if (creatingJob.getRepetitionType() == Global.JGGRepetitionType.monthly) {
-                    for (int i = 0; i < items.length; i ++) {
-                        if (time.equals(""))
-                            time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
-                        else
-                            time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
-                    }
-                }
-                lblTime.setText(time);
-            }
+            lblTime.setText(convertJobTimeString(creatingJob));
         } else {
             lblDescribeTitle.setText("No title");
             lblDescribeDesc.setText("");

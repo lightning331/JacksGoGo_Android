@@ -19,7 +19,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/app_original_actionbar"
+                android:id="@+id/service_detail_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -49,7 +49,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:id="@+id/bottom_top_view_layout"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:orientation="horizontal"

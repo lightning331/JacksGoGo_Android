@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryCell;
@@ -66,8 +67,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    intent.putExtra(APPOINTMENT_TYPE, JOBS);
+                    Intent intent = new Intent(mContext, JobDetailActivity.class);
                     mContext.startActivity(intent);
                 }
             });

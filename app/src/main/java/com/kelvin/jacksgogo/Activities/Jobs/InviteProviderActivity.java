@@ -21,6 +21,8 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.squareup.picasso.Picasso;
@@ -36,6 +38,7 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
@@ -52,6 +55,8 @@ public class InviteProviderActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private ArrayList<JGGUserProfileModel> inviteUsers;
+    private JGGJobModel mJob;
+    private JGGCategoryModel mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,9 @@ public class InviteProviderActivity extends AppCompatActivity {
             }
         });
 
-        if (selectedCategory != null && creatingAppointment != null)
+        mCategory = selectedCategory;
+        mJob = creatingAppointment;
+        if (mCategory != null && mJob != null)
             setCategory();
 
         getInviteUsers();
@@ -81,64 +88,12 @@ public class InviteProviderActivity extends AppCompatActivity {
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(selectedCategory.getImage())
+                .load(mCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(mCategory.getName());
         // Time
-        if (creatingAppointment.getAppointmentType() == 1) {    // One-time Job
-            String time = "";
-            if (creatingAppointment.getSessions() != null
-                    && creatingAppointment.getSessions().size() > 0) {
-                if (creatingAppointment.getSessions().get(0).isSpecific()) {
-                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
-                        time = "on "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
-                    else
-                        time = "on "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
-                } else {
-                    if (creatingAppointment.getSessions().get(0).getEndOn() != null)
-                        time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getEndOn()));
-                    else
-                        time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(creatingAppointment.getSessions().get(0).getStartOn()));
-                }
-            }
-            lblTime.setText(time);
-        } else if (creatingAppointment.getAppointmentType() == 0) {     // Repeating Job
-            String time = "";
-            String dayString = creatingAppointment.getRepetition();
-            String[] items = new String[0];
-            if (dayString != null) {
-                items = dayString.split(",");
-            }
-            if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.weekly) {
-                for (int i = 0; i < items.length; i ++) {
-                    if (time.equals(""))
-                        time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
-                    else
-                        time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
-                }
-            } else if (creatingAppointment.getRepetitionType() == Global.JGGRepetitionType.monthly) {
-                for (int i = 0; i < items.length; i ++) {
-                    if (time.equals(""))
-                        time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
-                    else
-                        time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
-                }
-            }
-            lblTime.setText(time);
-        }
+        lblTime.setText(convertJobTimeString(mJob));
     }
 
     private void getInviteUsers() {

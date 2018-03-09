@@ -31,6 +31,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -59,6 +60,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     private ProgressDialog progressDialog;
     private View view;
 
+    private JGGJobModel mJob;
     private ArrayList<JGGProposalModel> proposals;
     private boolean isDeleted;
 
@@ -87,6 +89,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         if (!getUserVisibleHint()) {
             return;
         }
+        mJob = creatingAppointment;
         getProposalsByJob();
     }
 
@@ -103,7 +106,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     private void getProposalsByJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(creatingAppointment.getID(), 0, 0);
+        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 0);
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
@@ -138,7 +141,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         progressDialog = Global.createProgressDialog(mContext);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        String jobID = creatingAppointment.getID();
+        String jobID = mJob.getID();
         Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override
@@ -165,7 +168,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     }
 
     private void setData() {
-        Date postOn = appointmentMonthDate(creatingAppointment.getPostOn());
+        Date postOn = appointmentMonthDate(mJob.getPostOn());
         lblPostedTime.setText(getDayMonthYear(postOn) + " " + getTimePeriodString(postOn));
 
        LinearLayout footerLayout = (LinearLayout)view.findViewById(R.id.job_main_footer_layout);
@@ -302,7 +305,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_posted_job) {
-            JobDetailFragment frag = new JobDetailFragment();
+            NewJobDetailsFragment frag = new NewJobDetailsFragment();
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.app_detail_container, frag, frag.getTag());
             ft.addToBackStack("job_detail_fragment");

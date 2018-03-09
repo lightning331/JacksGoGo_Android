@@ -1,12 +1,13 @@
-package com.kelvin.jacksgogo.Activities.Search;
+package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,9 +18,10 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
+import com.kelvin.jacksgogo.Activities.Search.BuyServiceActivity;
+import com.kelvin.jacksgogo.Adapter.Jobs.JobDetailsAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
-import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
@@ -28,44 +30,35 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class JobDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.service_detail_actionbar) Toolbar mToolbar;
+    @BindView(R.id.job_detail_actionbar) Toolbar mToolbar;
+    @BindView(R.id.job_detail_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.btn_job_detail_make_proposal) TextView btnMakeProposal;
     @BindView(R.id.lbl_booked_count) TextView lblViewedCount;
     @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
-    @BindView(R.id.service_detail_bottom_title) TextView bottomTitle;
     @BindView(R.id.lbl_booked_title) TextView lblViewedCountDesc;
 
     private JGGActionbarView actionbarView;
     private AlertDialog alertDialog;
 
-    private boolean isService = false;
     private boolean reportFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_detail);
+        setContentView(R.layout.activity_job_detail);
         ButterKnife.bind(this);
 
-        Bundle bundle = getIntent().getExtras();
-        isService = bundle.getBoolean("is_service");
-
         // Hide Bottom NavigationView and ToolBar
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
+        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.job_detail_bottom);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
-        bottomTitle.setText("Buy Service");
-        if (!isService) bottomTitle.setText(R.string.request_quotation);
-        bottomTitle.setOnClickListener(new View.OnClickListener() {
+        btnMakeProposal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isService) {
-                    startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
-                } else {
-                    startActivity(new Intent(ServiceDetailActivity.this, RequestQuotationActivity.class));
-                }
+                startActivity(new Intent(JobDetailActivity.this, BuyServiceActivity.class));
             }
         });
 
@@ -73,7 +66,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.SERVICES);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.JOBS);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -81,13 +74,11 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        // Main Fragment
-        ServiceDetailFragment frag = new ServiceDetailFragment();
-        frag.setFlagForServiceStatus(isService);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_original_container, frag)
-                .commit();
+        if (mRecyclerView != null) {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
+        }
+        JobDetailsAdapter adapter = new JobDetailsAdapter(this);
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void actionbarViewItemClick(View view) {
@@ -104,7 +95,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.share_menu_green);
+        popupMenu.inflate(R.menu.share_menu_cyan);
 
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
@@ -124,21 +115,6 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         }
         popupMenu.show();
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            if (!reportFlag) {
-                alertDialog.dismiss();
-                showReportDialog(true);
-            } else {
-                alertDialog.dismiss();
-            }
-            reportFlag = !reportFlag;
-        }
     }
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {
@@ -173,12 +149,12 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
         TextView description = (TextView) alertView.findViewById(R.id.lbl_alert_description);
 
-        title.setText(R.string.alert_report_service_title);
+        title.setText(R.string.alert_report_job_title);
         description.setText(R.string.alert_report_service_desc);
         reportButton.setText(R.string.alert_report_service_ok);
-        reportButton.setBackgroundColor(getResources().getColor(R.color.JGGGreen));
-        cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGGreen10Percent));
-        cancelButton.setTextColor(getResources().getColor(R.color.JGGGreen));
+        reportButton.setBackgroundColor(getResources().getColor(R.color.JGGCyan));
+        cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGCyan10Percent));
+        cancelButton.setTextColor(getResources().getColor(R.color.JGGCyan));
         if (reportFlag) {
             alertDialog.setCanceledOnTouchOutside(false);
             cancelButton.setVisibility(View.GONE);
@@ -197,5 +173,20 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
                 .setShareLink(null)
                 .build();
         shareDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_alert_cancel) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_alert_ok) {
+            if (!reportFlag) {
+                alertDialog.dismiss();
+                showReportDialog(true);
+            } else {
+                alertDialog.dismiss();
+            }
+            reportFlag = !reportFlag;
+        }
     }
 }

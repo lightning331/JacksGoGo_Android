@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="80dp"
     android:gravity="center"
     android:orientation="vertical">
     <LinearLayout
@@ -13,15 +13,28 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/JGGWhite"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center_vertical">
             <TextView
-                android:id="@+id/lbl_reference_no_title"
+                android:id="@+id/lbl_response_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/JGGBlack"
+                android:textSize="@dimen/caption_font_size"
+                android:fontFamily="@font/mulibold"
+                android:text="10 responses"/>
+            <TextView
+                android:id="@+id/lbl_latest_response"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -29,44 +42,33 @@
                 android:textColor="@color/JGGGrey1"
                 android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/muliregular"
-                android:text="Service reference no:"/>
-            <TextView
-                android:id="@+id/lbl_reference_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/JGGGrey1"
-                android:textSize="@dimen/caption_font_size"
-                android:fontFamily="@font/muliregular"
-                android:text="S38290"/>
+                android:text="Lastest resonse: 10 min ago"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="160dp"
             android:layout_height="match_parent"
             android:gravity="end|center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <TextView
-                android:id="@+id/lbl_posted_on"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:gravity="end"
-                android:layout_marginRight="3dp"
-                android:textColor="@color/JGGGrey1"
-                android:textSize="@dimen/caption_font_size"
-                android:fontFamily="@font/muliregular"
-                android:text="Posted on "/>
-            <TextView
-                android:id="@+id/lbl_posted_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
                 android:layout_marginRight="16dp"
                 android:textColor="@color/JGGGrey1"
                 android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/muliregular"
-                android:text="12 Dec, 2017"
+                android:text="Average Quote:"/>
+            <TextView
+                android:id="@+id/lbl_average_quote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/JGGBlack"
+                android:textSize="@dimen/caption_font_size"
+                android:fontFamily="@font/mulibold"
+                android:text="$100.00"
                 android:gravity="end" />
         </LinearLayout>
     </LinearLayout>

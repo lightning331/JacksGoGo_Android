@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Events.EventsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
@@ -82,7 +83,6 @@ public class FavouriteFragment extends Fragment {
                 public void onItemClick() {
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
-                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                     mContext.startActivity(intent);
                 }
             });
@@ -92,9 +92,7 @@ public class FavouriteFragment extends Fragment {
             adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    intent.putExtra("is_service", true);
-                    intent.putExtra(APPOINTMENT_TYPE, JOBS);
+                    Intent intent = new Intent(mContext, JobDetailActivity.class);
                     mContext.startActivity(intent);
                 }
             });

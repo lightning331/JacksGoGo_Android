@@ -17,8 +17,9 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -55,6 +56,8 @@ public class PostedServiceActivity extends AppCompatActivity {
 
     private JGGActionbarView actionbarView;
 
+    private JGGJobModel mJob;
+    private JGGCategoryModel mCategory;
     private boolean isVerified = getRandomBoolean();
     private boolean isPost = false;
 
@@ -85,7 +88,9 @@ public class PostedServiceActivity extends AppCompatActivity {
             }
         });
 
-        if (selectedCategory != null && creatingAppointment != null)
+        mCategory = selectedCategory;
+        mJob = creatingAppointment;
+        if (mCategory != null && mJob != null)
             initView();
     }
 
@@ -96,34 +101,34 @@ public class PostedServiceActivity extends AppCompatActivity {
         }
         // Category
         Picasso.with(this)
-                .load(selectedCategory.getImage())
+                .load(mCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
-        lblTitle.setText(creatingAppointment.getTitle());
+        lblCategory.setText(mCategory.getName());
+        lblTitle.setText(mJob.getTitle());
         // Description
-        lblDescription.setText(creatingAppointment.getDescription());
+        lblDescription.setText(mJob.getDescription());
         // Address
-        lblAddress.setText(creatingAppointment.getAddress().getFullAddress());
+        lblAddress.setText(mJob.getAddress().getFullAddress());
         // Price
-        if (creatingAppointment.getSelectedServiceType() == 1) lblBudget.setText("No limit");
-        else if (creatingAppointment.getSelectedServiceType() == 2) lblBudget.setText("$ " + creatingAppointment.getBudget().toString());
-        else if (creatingAppointment.getSelectedServiceType() == 3)
-            lblBudget.setText("$ " + creatingAppointment.getBudgetFrom().toString()
+        if (mJob.getSelectedServiceType() == 1) lblBudget.setText("No limit");
+        else if (mJob.getSelectedServiceType() == 2) lblBudget.setText("$ " + mJob.getBudget().toString());
+        else if (mJob.getSelectedServiceType() == 3)
+            lblBudget.setText("$ " + mJob.getBudgetFrom().toString()
                     + " "
-                    + "$ " + creatingAppointment.getBudgetTo().toString());
+                    + "$ " + mJob.getBudgetTo().toString());
         // User
         Picasso.with(this)
-                .load(creatingAppointment.getUserProfile().getUser().getPhotoURL())
+                .load(mJob.getUserProfile().getUser().getPhotoURL())
                 .placeholder(null)
                 .into(imgAvatar);
-        lblUserName.setText(creatingAppointment.getUserProfile().getUser().getFullName());
-        ratingBar.setRating(creatingAppointment.getUserProfile().getUser().getRate().floatValue());
+        lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
+        ratingBar.setRating(mJob.getUserProfile().getUser().getRate().floatValue());
         // Tag View
-        String [] strings = creatingAppointment.getTags().split(",");
+        String [] strings = mJob.getTags().split(",");
         tagList.setTags(Arrays.asList(strings));
         // Time Slot
-        if (creatingAppointment.getSessions() == null)
+        if (mJob.getSessions() == null)
             btnViewTimeSlots.setVisibility(View.GONE);
     }
 

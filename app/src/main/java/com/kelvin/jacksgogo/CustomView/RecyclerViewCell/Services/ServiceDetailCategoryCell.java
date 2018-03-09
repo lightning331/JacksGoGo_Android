@@ -13,15 +13,15 @@ import com.kelvin.jacksgogo.R;
 
 public class ServiceDetailCategoryCell extends RecyclerView.ViewHolder {
 
-    ImageView postImage;
-    TextView postImageTitle;
-    TextView title;
+    public ImageView imgCategory;
+    public TextView lblCategory;
+    public TextView title;
 
     public ServiceDetailCategoryCell(View itemView) {
         super(itemView);
 
-        postImage = itemView.findViewById(R.id.img_original_post_title);
-        postImageTitle = itemView.findViewById(R.id.lbl_original_post_image_name);
+        imgCategory = itemView.findViewById(R.id.img_original_post_title);
+        lblCategory = itemView.findViewById(R.id.lbl_original_post_image_name);
         title = itemView.findViewById(R.id.lbl_original_post_title);
     }
 }

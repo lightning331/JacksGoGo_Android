@@ -63,6 +63,7 @@
     <string name="jgg_alert_title">JacksGoGo!!!</string>
     <string name="jgg_error_desc">Some of the data is missed.</string>
     <string name="alert_report_service_title">Report Service</string>
+    <string name="alert_report_job_title">Report Job</string>
     <string name="alert_report_service_desc">Mark this post as inappropriate or offensive.</string>
     <string name="alert_report_service_thanks_title">Thank You!</string>
     <string name="alert_report_service_thanks_desc">Our team will be looking into the matter.</string>
@@ -143,6 +144,12 @@
     <string name="request_quotation">Request A Quotation</string>
     <string name="buy_service">Buy Service</string>
     <string name="go_to_summary">Go To Summary</string>
+
+    <!-- TODO: Make proposal -->
+    <string name="make_proposal">Make A Proposal</string>
+    <string name="people_viewed_job">people have viewed this job recently!</string>
+    <string name="viewing_now">viewing now</string>
+
 
     <!-- TODO: Reject Bid -->
     <string name="title_bid">Bid</string>

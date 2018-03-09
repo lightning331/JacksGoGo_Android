@@ -19,12 +19,17 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptio
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCategoryCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTotalReviewCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 /**
  * Created by PUMA on 11/7/2017.
@@ -34,13 +39,17 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Context mContext;
 
-    boolean isService;
+    private JGGJobModel mJob;
+    private JGGCategoryModel mCategory;
 
-    int ITEM_COUNT = 11;
+    private boolean isService;
+    private int ITEM_COUNT = 11;
 
     public ServiceDetailAdapter(Context context, boolean serviceStatus) {
         this.mContext = context;
         isService = serviceStatus;
+        mCategory = selectedCategory;
+        mJob = creatingAppointment;
     }
 
     @Override
@@ -69,7 +78,11 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 priceViewHolder.description.setText("$50-$100");
 
-                if (isService) priceViewHolder.title.setVisibility(View.VISIBLE);
+                if (isService) {
+                    priceViewHolder.title.setVisibility(View.VISIBLE);
+                    priceViewHolder.title.setText("Package");
+                    priceViewHolder.description.setText("$100");
+                }
 
                 return priceViewHolder;
             case 3:
