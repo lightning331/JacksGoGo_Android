@@ -8,7 +8,6 @@ import android.view.WindowManager;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -165,6 +164,11 @@ public class Global {
     public static final String GOCLUB = "GOCLUB";
     public static final String USERS = "USERS";
     public static final String SIGNUP_FINISHED = "SIGNUP_FINISHED";
+    public static final String EDIT_STATUS = "EDIT_STATUS";
+    public static final String POST = "POST";
+    public static final String EDIT = "EDIT";
+    public static final String DUPLICATE = "DUPLICATE";
+    public static final String NONE = "NONE";
 
     public static String reportTypeName(int reportType) {
         switch (reportType) {
@@ -221,13 +225,11 @@ public class Global {
         }
     }
 
-    public static String getDayMonth(Date date) {
+    public static String getDays(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
             String day = dayFormat.format(date);
-            String month = monthFormat.format(date);
-            return day + " " + month;
+            return day;
         }
         return "";
     }
@@ -300,6 +302,27 @@ public class Global {
         return "";
     }
 
+    public static String getHourString(Date date) {
+        if (date != null) {
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+            String hour = hourFormat.format(date);
+            String time = hour;
+            return time;
+        }
+        return "";
+    }
+
+    public static String getMinuteString(Date date) {
+        if (date != null) {
+            SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
+            String minute = minuteFormat.format(date);
+            //String mSecond = mSecondFormat.format(date);
+            String time = minute;
+            return time;
+        }
+        return "";
+    }
+
     public static String getWeekName(int position) {
         String[] weekNames = {
                 "Sunday",
@@ -359,20 +382,22 @@ public class Global {
             }
         } else if (job.getAppointmentType() == 0) {
             String dayString = job.getRepetition();
-            String[] items = dayString.split(",");
-            if (job.getRepetitionType() == Global.JGGRepetitionType.weekly) {
-                for (int i = 0; i < items.length; i ++) {
-                    if (time.equals(""))
-                        time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
-                    else
-                        time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
-                }
-            } else if (job.getRepetitionType() == Global.JGGRepetitionType.monthly) {
-                for (int i = 0; i < items.length; i ++) {
-                    if (time.equals(""))
-                        time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
-                    else
-                        time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+            if (dayString != null) {
+                String[] items = dayString.split(",");
+                if (job.getRepetitionType() == Global.JGGRepetitionType.weekly) {
+                    for (int i = 0; i < items.length; i ++) {
+                        if (time.equals(""))
+                            time = "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                        else
+                            time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                    }
+                } else if (job.getRepetitionType() == Global.JGGRepetitionType.monthly) {
+                    for (int i = 0; i < items.length; i ++) {
+                        if (time.equals(""))
+                            time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                        else
+                            time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                    }
                 }
             }
         }

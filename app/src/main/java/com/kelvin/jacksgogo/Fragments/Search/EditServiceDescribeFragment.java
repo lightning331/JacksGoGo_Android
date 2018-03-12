@@ -197,7 +197,7 @@ public class EditServiceDescribeFragment extends Fragment implements View.OnClic
         if (view.getId() == R.id.btn_edit_job_describe_take_photo) {
             selectImage();
         } else if (view.getId() == R.id.btn_edit_job_next) {
-            listener.onNextButtonClick(PostServiceTabbarView.TabName.TIME, strTitle, strDescription);
+            listener.onNextButtonClick(PostServiceTabbarView.PostServiceTabName.TIME, strTitle, strDescription);
         }
     }
 
@@ -241,7 +241,7 @@ public class EditServiceDescribeFragment extends Fragment implements View.OnClic
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(PostServiceTabbarView.TabName status, String jobTitle, String jobDesc);
+        void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String jobTitle, String jobDesc);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

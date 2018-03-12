@@ -1,0 +1,156 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kelvin.jacksgogo.Fragments.Jobs.PostProposalBidFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/JGGGrey5"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/post_proposal_bid_client_budget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/JGGBlack"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/JGGWhite"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="52dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="7dp"
+                        android:src="@mipmap/icon_budget"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/lbl_budget_type"
+                            android:text="Package"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/JGGBlack"
+                            android:fontFamily="@font/muliregular"
+                            android:textSize="@dimen/button_font_size"/>
+                        <TextView
+                            android:id="@+id/lbl_quote_price"
+                            android:text="Quote Your Price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/JGGBlack"
+                            android:fontFamily="@font/mulibold"
+                            android:textSize="@dimen/button_font_size"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/lbl_budget"
+                        android:text="Budget $ 200.00 - $ 300.00/month"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/button_font_size"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:orientation="vertical"
+                android:background="@color/JGGWhite">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/line_layout"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:background="@color/JGGGrey4">
+            </LinearLayout>
+
+            <EditText
+                android:hint="Bid Amount    $ 1.00/month"
+                android:id="@+id/txt_bid_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+
+            <TextView
+                android:text="@string/post_proposal_bid_breakdown"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:hint="Explain your bid"
+                android:id="@+id/txt_bid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:id="@+id/btn_post_proposal_next"
+                android:text="Next"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:background="@drawable/grey_background"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGGrey2"/>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

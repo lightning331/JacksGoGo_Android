@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 import butterknife.BindView;
@@ -37,6 +37,8 @@ import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
@@ -85,7 +87,7 @@ public class PostedJobActivity extends AppCompatActivity {
         });
 
         mCategory = selectedCategory;
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
         if (mCategory != null && mJob != null)
             setData();
     }
@@ -160,7 +162,7 @@ public class PostedJobActivity extends AppCompatActivity {
         // User
         Picasso.with(this)
                 .load(mJob.getUserProfile().getUser().getPhotoURL())
-                .placeholder(null)
+                .placeholder(R.mipmap.icon_profile)
                 .into(imgAvatar);
         lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
         ratingBar.setRating(mJob.getUserProfile().getUser().getRate().floatValue());
@@ -229,7 +231,7 @@ public class PostedJobActivity extends AppCompatActivity {
                 openShareDialog();
             } else if (menuItem.getItemId() == R.id.posted_job_menu_edit) {    // Edit Service
                 Intent intent = new Intent(PostedJobActivity.this, PostServiceActivity.class);
-                intent.putExtra("EDIT_STATUS", "Edit");
+                intent.putExtra(EDIT_STATUS, EDIT);
                 intent.putExtra(APPOINTMENT_TYPE, JOBS);
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_job_menu_duplicate) {    // Duplicate Service

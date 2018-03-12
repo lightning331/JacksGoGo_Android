@@ -38,9 +38,9 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
     public TextView mBudgetText;
     public TextView mReportText;
 
-    private TabName tabName;
+    private PostJobTabName postJobTabName;
 
-    public enum TabName {
+    public enum PostJobTabName {
         DESCRIBE,
         TIME,
         ADDRESS,
@@ -49,10 +49,10 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
     }
 
     public PostJobTabbarView(Context context) {
-        super(context);
-        this.mContext = context;
+        super(context);        this.mContext = context;
 
         initView();
+
     }
 
     private void initView() {
@@ -83,12 +83,12 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
         //mAddressButton.setOnClickListener(this);
     }
 
-    public TabName getTabName() {
-        return tabName;
+    public PostJobTabName getPostJobTabName() {
+        return postJobTabName;
     }
 
-    public void setTabName(TabName name, boolean isPost) {
-        this.tabName = name;
+    public void setTabName(PostJobTabName name, boolean isPost) {
+        this.postJobTabName = name;
 
         mDescribeImage.setImageResource(R.mipmap.counter_greytick);
         mDescribeText.setTextColor(getResources().getColor(R.color.JGGGrey1));

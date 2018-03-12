@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_tabbar_view"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/JGGWhite"
+    android:gravity="center">
+    <FrameLayout
+        android:layout_width="330dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="45dp"
+            android:paddingRight="45dp"
+            android:paddingTop="15dp">
+
+            <ImageView
+                android:id="@+id/img_bid_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/line_dotted"
+                android:scaleType="fitXY"/>
+
+            <ImageView
+                android:id="@+id/img_rescheduling_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/line_dotted"
+                android:scaleType="fitXY"/>
+
+            <ImageView
+                android:id="@+id/img_cancellation_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@mipmap/line_dotted"
+                android:scaleType="fitXY"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/btn_describe"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginRight="10dp">
+
+                <ImageView
+                    android:id="@+id/img_describe"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/counter_greytick"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/lbl_describe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/caption_font_size"
+                    android:text="Describe"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_bid"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginRight="10dp">
+
+                <ImageView
+                    android:id="@+id/img_bid"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/counter_greytick"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/lbl_bid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/caption_font_size"
+                    android:text="Bid"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_rescheduling"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginRight="10dp">
+
+                <ImageView
+                    android:id="@+id/img_rescheduling"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/counter_greytick"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/lbl_rescheduling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/caption_font_size"
+                    android:text="Rescheduling"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_cancellation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/img_cancellation"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/counter_greytick"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/lbl_cancellation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/caption_font_size"
+                    android:text="Cancellation"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

@@ -24,11 +24,16 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.ArrayList;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.NONE;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
@@ -56,7 +61,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
-            status = extra.getString("EDIT_STATUS");
+            status = extra.getString(EDIT_STATUS);
             String type = extra.getString(APPOINTMENT_TYPE);
             if (type.equals(SERVICES))
                 appType = JGGAppBaseModel.AppointmentType.SERVICES;
@@ -65,7 +70,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             else if (type.equals(GOCLUB))
                 appType = JGGAppBaseModel.AppointmentType.GOCLUB;
         } else {
-            status = "None";
+            status = NONE;
         }
 
         actionbarView = new JGGActionbarView(this);
@@ -86,15 +91,15 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     private void initFragment() {
 
-        if (status.equals("Post")) {
+        if (status.equals(POST)) {
             // Create New Appointment Model
-            creatingAppointment = new JGGJobModel();
-            creatingAppointment.setUserProfile(currentUser);
-            creatingAppointment.setUserProfileID(currentUser.getID());
+            selectedAppointment = new JGGJobModel();
+            selectedAppointment.setUserProfile(currentUser);
+            selectedAppointment.setUserProfileID(currentUser.getID());
             JGGRegionModel currentRegion = JGGAppManager.getInstance(this).getCurrentRegion();
-            creatingAppointment.setRegion(currentRegion);
-            creatingAppointment.setRegionID(currentRegion.getID());
-            creatingAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
+            selectedAppointment.setRegion(currentRegion);
+            selectedAppointment.setRegionID(currentRegion.getID());
+            selectedAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
             switch (appType) {
                 case SERVICES:
                     actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
@@ -124,14 +129,14 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                     break;
             }
 
-        } else if (status.equals("Edit") || status.equals("Duplicate")) {
+        } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case SERVICES:
                     actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
                     PostServiceSummaryFragment serviceFag = new PostServiceSummaryFragment();
-                    if (status.equals("Edit"))
+                    if (status.equals(EDIT))
                         serviceFag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.EDIT);
-                    else if (status.equals("Duplicate"))
+                    else if (status.equals(DUPLICATE))
                         serviceFag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.DUPLICATE);
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -141,9 +146,9 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                 case JOBS:
                     actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_JOB, JGGAppBaseModel.AppointmentType.UNKNOWN);
                     PostJobSummaryFragment jobFrag = new PostJobSummaryFragment();
-                    if (status.equals("Edit"))
+                    if (status.equals(EDIT))
                         jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.EDIT);
-                    else if (status.equals("Duplicate"))
+                    else if (status.equals(DUPLICATE))
                         jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.DUPLICATE);
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -201,7 +206,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             alertDialog.dismiss();
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-            super.onBackPressed();
+            onBackPressed();
         }
     }
 }

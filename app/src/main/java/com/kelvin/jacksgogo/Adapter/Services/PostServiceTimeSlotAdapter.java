@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
+import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 /**
  * Created by PUMA on 1/30/2018.
@@ -87,10 +87,10 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(JGGTimeSlotModel time) {
-            String startTime = Global.getTimePeriodString(appointmentDate(time.getStartOn()));
+            String startTime = getTimePeriodString(appointmentMonthDate(time.getStartOn()));
             String endTime = "";
             if (time.getEndOn() != null) {
-                endTime = Global.getTimePeriodString(appointmentDate(time.getEndOn()));
+                endTime = getTimePeriodString(appointmentMonthDate(time.getEndOn()));
                 lblTime.setText(startTime + " - " + endTime);
             } else {
                 lblTime.setText(startTime);

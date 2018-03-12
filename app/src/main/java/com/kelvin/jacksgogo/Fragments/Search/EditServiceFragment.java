@@ -47,7 +47,7 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
         // Required empty public constructor
     }
 
-    public static EditServiceFragment newInstance(PostServiceTabbarView.TabName status, boolean b) {
+    public static EditServiceFragment newInstance(PostServiceTabbarView.PostServiceTabName status, boolean b) {
         EditServiceFragment fragment = new EditServiceFragment();
         Bundle args = new Bundle();
         args.putString("tabName", status.toString());
@@ -92,13 +92,13 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
     private void initTabbarView() {
 
         if (status == "DESCRIBE") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.DESCRIBE, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, isRequest);
         } else if (status == "TIME") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
         } else if (status == "ADDRESS") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
         } else if (status == "REPORT") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
         }
         refreshRecyclerView();
     }
@@ -106,13 +106,13 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
     private void onTabbarViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.DESCRIBE, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, isRequest);
         } else if (view.getId() == R.id.btn_time) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
         } else if (view.getId() == R.id.btn_address) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
         } else if (view.getId() == R.id.btn_report) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, isRequest);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
         }
         refreshRecyclerView();
     }
@@ -121,14 +121,14 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
 
         describeContainer.setVisibility(View.GONE);
 
-        if (tabbarView.getTabName() == PostServiceTabbarView.TabName.DESCRIBE) {
+        if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.DESCRIBE) {
             describeContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             EditServiceDescribeFragment frag = EditServiceDescribeFragment.newInstance(isRequest);
             frag.setOnItemClickListener(new EditServiceDescribeFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(PostServiceTabbarView.TabName status, String jobTitle, String jobDesc) {
+                public void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String jobTitle, String jobDesc) {
                     tabbarView.setTabName(status, isRequest);
                     serviceModel.setTitle(jobTitle);
                     serviceModel.setComment(jobDesc);
@@ -137,24 +137,24 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             });
             ft.replace(R.id.edit_job_describe_container, frag, frag.getTag());
             ft.commit();
-        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.TIME) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.TIME) {
             recyclerView.setVisibility(View.VISIBLE);
             EditJobTimeAdapter mTimeAdapter = new EditJobTimeAdapter(mContext, isRequest, serviceModel);
             mTimeAdapter.setOnItemClickListener(new EditJobTimeAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(PostServiceTabbarView.TabName status, Date date) {
+                public void onItemClick(PostServiceTabbarView.PostServiceTabName status, Date date) {
                     tabbarView.setTabName(status, isRequest);
                     serviceModel.setDate(date);
                     refreshRecyclerView();
                 }
             });
             recyclerView.setAdapter(mTimeAdapter);
-        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.ADDRESS) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.ADDRESS) {
             recyclerView.setVisibility(View.VISIBLE);
             EditJobAddressAdapter addressAdapter = new EditJobAddressAdapter(mContext, isRequest, serviceModel);
             addressAdapter.setOnItemClickListener(new EditJobAddressAdapter.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(PostServiceTabbarView.TabName status, String unit, String street, String postcode) {
+                public void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String unit, String street, String postcode) {
                     tabbarView.setTabName(status, isRequest);
                     serviceModel.setUnit(unit);
                     serviceModel.setStreet(street);
@@ -163,7 +163,7 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
                 }
             });
             recyclerView.setAdapter(addressAdapter);
-        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.REPORT) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
             recyclerView.setVisibility(View.VISIBLE);
             EditJobReportAdapter reportAdapter = new EditJobReportAdapter(mContext, isRequest, "SERVICE");
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {

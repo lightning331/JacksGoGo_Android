@@ -36,9 +36,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceSummaryFragment extends Fragment implements View.OnClickListener {
@@ -103,9 +105,9 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
         }
         category = selectedCategory;
-        creatingAppointment.setCategoryID(category.getID());
-        creatingAppointment.setRequest(false);
-        creatingService = creatingAppointment;
+        selectedAppointment.setCategoryID(category.getID());
+        selectedAppointment.setRequest(false);
+        creatingService = selectedAppointment;
         creatingService.setAttachmentURLs(attachmentURLs);
     }
 
@@ -199,7 +201,9 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
         title.setText(R.string.alert_service_posted_title);
         String message = "Service reference no: "
+                + '\n'
                 + postedServiceID
+                + '\n'
                 + '\n'
                 + "Our team will verify your submission and get back to you soon! ";
         desc.setText(message);
@@ -251,7 +255,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                     break;
                 case DUPLICATE:
                     Intent intent = new Intent(mContext, PostServiceActivity.class);
-                    intent.putExtra("EDIT_STATUS", "Post");
+                    intent.putExtra(EDIT_STATUS, POST);
                     intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                     startActivity(intent);
                     break;
@@ -266,25 +270,25 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         } else if (view.getId() == R.id.btn_post_main_describe) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE))
+                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE))
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_price) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.TIME))
+                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.TIME))
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_time_slot) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.ADDRESS))
+                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.ADDRESS))
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_address) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.REPORT))
+                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.REPORT))
                     .addToBackStack("post_service")
                     .commit();
         }

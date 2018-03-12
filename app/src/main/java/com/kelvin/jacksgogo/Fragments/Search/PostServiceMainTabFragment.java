@@ -40,7 +40,7 @@ public class PostServiceMainTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PostServiceMainTabFragment newInstance(PostServiceTabbarView.TabName name) {
+    public static PostServiceMainTabFragment newInstance(PostServiceTabbarView.PostServiceTabName name) {
         PostServiceMainTabFragment fragment = new PostServiceMainTabFragment();
         Bundle args = new Bundle();
         args.putString("tabName", name.toString());
@@ -94,13 +94,13 @@ public class PostServiceMainTabFragment extends Fragment {
     private void initTabbarView() {
 
         if (tabName == "DESCRIBE") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.DESCRIBE, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);
         } else if (tabName == "TIME") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, true);
         } else if (tabName == "ADDRESS") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, true);
         } else if (tabName == "REPORT") {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, true);
         }
         refreshFragment();
     }
@@ -108,13 +108,13 @@ public class PostServiceMainTabFragment extends Fragment {
     private void onTabbarViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.DESCRIBE, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);
         } else if (view.getId() == R.id.btn_time) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, true);
         } else if (view.getId() == R.id.btn_address) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, true);
         } else if (view.getId() == R.id.btn_report) {
-            tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, true);
+            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, true);
         }
         refreshFragment();
     }
@@ -122,37 +122,37 @@ public class PostServiceMainTabFragment extends Fragment {
     private void refreshFragment() {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        if (tabbarView.getTabName() == PostServiceTabbarView.TabName.DESCRIBE) {
+        if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.DESCRIBE) {
             PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostServiceTabbarView.TabName.TIME, true);
+                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, true);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
-        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.TIME) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.TIME) {
             PostServicePriceFragment frag = new PostServicePriceFragment();
             frag.setOnItemClickListener(new PostServicePriceFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostServiceTabbarView.TabName.ADDRESS, true);
+                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, true);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
-        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.ADDRESS) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.ADDRESS) {
             PostServiceTimeSlotFragment frag = new PostServiceTimeSlotFragment();
             frag.setOnItemClickListener(new PostServiceTimeSlotFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostServiceTabbarView.TabName.REPORT, true);
+                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, true);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
-        } else if (tabbarView.getTabName() == PostServiceTabbarView.TabName.REPORT) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
             PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("SERVICE");
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override

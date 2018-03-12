@@ -32,9 +32,11 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
 
@@ -67,7 +69,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
         setSupportActionBar(mToolbar);
 
         mCategory = selectedCategory;
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
         if (mCategory != null && mJob != null)
             setCategory();
         showJobMainFragment();
@@ -192,7 +194,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
 
     private void onEditJob() {
         Intent intent = new Intent(this, PostServiceActivity.class);
-        intent.putExtra("EDIT_STATUS", "Edit");
+        intent.putExtra(EDIT_STATUS, EDIT);
         intent.putExtra(APPOINTMENT_TYPE, JOBS);
         startActivity(intent);
     }

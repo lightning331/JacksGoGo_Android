@@ -98,7 +98,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         this.btnSignUp = view.findViewById(R.id.btn_sign_up);
         this.btnSignUp.setOnClickListener(this);
 
-        txtEmail.setText("cristina@jgg.co");
+        txtEmail.setText("cristina.p@jgg.co");
         txtPassword.setText("abc123Q!@#");
 
     }

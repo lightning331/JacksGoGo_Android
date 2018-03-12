@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
@@ -43,7 +43,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
     public JobDetailsAdapter (Context context) {
         this.mContext = context;
         mCategory = selectedCategory;
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
     }
 
     @Override
@@ -77,13 +77,12 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
 
             if (mJob.getBudget() != null) {
                 jobTimeViewHolder.description.setText("Package Job");
+                jobTimeViewHolder.description.setVisibility(View.VISIBLE);
+                jobTimeViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             }
             jobTimeViewHolder.location.setVisibility(View.INVISIBLE);
-            jobTimeViewHolder.address.setVisibility(View.VISIBLE);
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_time);
-            jobTimeViewHolder.description.setVisibility(View.VISIBLE);
-            jobTimeViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            jobTimeViewHolder.description.setText("Package Job");
+            jobTimeViewHolder.address.setVisibility(View.VISIBLE);
             jobTimeViewHolder.address.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             jobTimeViewHolder.address.setText(convertJobTimeString(mJob));
             return jobTimeViewHolder;
@@ -109,8 +108,20 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             jobTimeViewHolder.lblQuotePrice.setVisibility(View.VISIBLE);
 
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_budget);
-            jobTimeViewHolder.description.setText("Package:");
-            jobTimeViewHolder.address.setText("Budget " + convertJobBudgetString(mJob));
+            String budget = "";
+            if (selectedAppointment.getBudget() == null && selectedAppointment.getBudgetFrom() == null)
+                budget =  "Budget No limit";
+            else if (selectedAppointment.getBudget() != null) {
+                jobTimeViewHolder.description.setText("Fixed");
+                budget = "Budget " + selectedAppointment.getBudget().toString() + "/month";
+            } else if (selectedAppointment.getBudgetFrom() != null && selectedAppointment.getBudgetTo() != null) {
+                jobTimeViewHolder.description.setText("Package");
+                budget = ("Budget $ " + selectedAppointment.getBudgetFrom().toString()
+                        + " "
+                        + "$ " + selectedAppointment.getBudgetTo().toString()
+                        + "/month");
+            }
+            jobTimeViewHolder.address.setText(budget);
             return jobTimeViewHolder;
         } else if (viewType == 6) {    // Job ReportType Cell
             View requestView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);

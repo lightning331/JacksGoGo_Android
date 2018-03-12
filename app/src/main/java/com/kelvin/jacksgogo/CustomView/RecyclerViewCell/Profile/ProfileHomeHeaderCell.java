@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class ProfileHomeHeaderCell extends RecyclerView.ViewHolder {
     public TextView lblUserName;
     public CountryCodePicker picker;
     public LinearLayout btnChangeRegion;
+    public ImageView imgBackground;
 
     public ProfileHomeHeaderCell(View itemView) {
         super(itemView);
@@ -33,5 +35,6 @@ public class ProfileHomeHeaderCell extends RecyclerView.ViewHolder {
         lblUserName = (TextView) itemView.findViewById(R.id.lbl_username);
         picker = (CountryCodePicker) itemView.findViewById(R.id.ccp);
         btnChangeRegion = (LinearLayout) itemView.findViewById(R.id.btn_change_region);
+        imgBackground = (ImageView) itemView.findViewById(R.id.img_background);
     }
 }

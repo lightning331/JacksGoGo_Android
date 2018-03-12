@@ -12,13 +12,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="294dp">
+
             <ImageView
+                android:id="@+id/img_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/carousel05"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:alpha="0.5"/>
+                android:alpha="0.5"
+                android:src="@drawable/nurse" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

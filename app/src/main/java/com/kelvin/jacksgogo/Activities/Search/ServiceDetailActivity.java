@@ -57,7 +57,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
         bottomTitle.setText("Buy Service");
-        if (!isService) bottomTitle.setText(R.string.request_quotation);
+        if (!isService) bottomTitle.setText(R.string.title_request_quotation);
         bottomTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

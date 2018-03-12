@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
@@ -36,8 +37,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class SearchFragment extends Fragment {
@@ -113,7 +116,12 @@ public class SearchFragment extends Fragment {
             jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
-                    onViewHolderItemClick(view);
+                    if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
+                        onViewHolderItemClick(view);
+                    } else if (view.getId() == R.id.btn_background) {
+                        Intent intent = new Intent(mContext, JobDetailActivity.class);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
             recyclerView.setAdapter(jobAdapter);
@@ -181,7 +189,7 @@ public class SearchFragment extends Fragment {
             }
         }
         mIntent.putExtra(APPOINTMENT_TYPE, appType);
-        mIntent.putExtra("EDIT_STATUS", "Post");
+        mIntent.putExtra(EDIT_STATUS, POST);
         view.getContext().startActivity(mIntent);
     }
 

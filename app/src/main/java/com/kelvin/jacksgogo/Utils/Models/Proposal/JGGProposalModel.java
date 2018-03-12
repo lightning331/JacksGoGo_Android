@@ -26,14 +26,15 @@ public class JGGProposalModel extends JGGBaseModel {
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
+    private String BidBreakDown;
     private String CurrencyCode;
-    private boolean RescheduleAllowed;
+    private Boolean RescheduleAllowed;
     private String RescheduleDate;
     private String RescheduleNote;
-    private boolean CancellationAllowed;
+    private Boolean CancellationAllowed;
     private String CancellationDate;
     private String CancellationNote;
-    private boolean IsInvited;
+    private Boolean IsInvited;
     private String SubmitOn;
     private String ExpireOn;
     private int Status = 0;
@@ -115,6 +116,14 @@ public class JGGProposalModel extends JGGBaseModel {
         BudgetTo = budgetTo;
     }
 
+    public String getBidBreakDown() {
+        return BidBreakDown;
+    }
+
+    public void setBidBreakDown(String bidBreakDown) {
+        BidBreakDown = bidBreakDown;
+    }
+
     public Double getBudget() {
         return Budget;
     }
@@ -131,11 +140,11 @@ public class JGGProposalModel extends JGGBaseModel {
         CurrencyCode = currencyCode;
     }
 
-    public boolean isRescheduleAllowed() {
+    public Boolean isRescheduleAllowed() {
         return RescheduleAllowed;
     }
 
-    public void setRescheduleAllowed(boolean rescheduleAllowed) {
+    public void setRescheduleAllowed(Boolean rescheduleAllowed) {
         RescheduleAllowed = rescheduleAllowed;
     }
 
@@ -155,11 +164,11 @@ public class JGGProposalModel extends JGGBaseModel {
         RescheduleNote = rescheduleNote;
     }
 
-    public boolean isCancellationAllowed() {
+    public Boolean isCancellationAllowed() {
         return CancellationAllowed;
     }
 
-    public void setCancellationAllowed(boolean cancellationAllowed) {
+    public void setCancellationAllowed(Boolean cancellationAllowed) {
         CancellationAllowed = cancellationAllowed;
     }
 
@@ -179,11 +188,11 @@ public class JGGProposalModel extends JGGBaseModel {
         CancellationNote = cancellationNote;
     }
 
-    public boolean isInvited() {
+    public Boolean isInvited() {
         return IsInvited;
     }
 
-    public void setInvited(boolean invited) {
+    public void setInvited(Boolean invited) {
         IsInvited = invited;
     }
 

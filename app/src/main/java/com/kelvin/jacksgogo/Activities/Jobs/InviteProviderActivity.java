@@ -35,12 +35,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
-import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
 public class InviteProviderActivity extends AppCompatActivity {
 
@@ -78,7 +76,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         });
 
         mCategory = selectedCategory;
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
         if (mCategory != null && mJob != null)
             setCategory();
 
@@ -100,12 +98,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         if (currentUser == null) return;
         progressDialog = Global.createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID().toString(),
-                currentUser.getResidentialAddress_City().toString(),
-                currentUser.getResidentialAddress_State().toString(),
-                currentUser.getResidentialAddress_PostalCode().toString(),
-                0,
-                0);
+        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID().toString(), null, null, null, 0, 0);
         call.enqueue(new Callback<JGGInviteUsersResponse>() {
             @Override
             public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {

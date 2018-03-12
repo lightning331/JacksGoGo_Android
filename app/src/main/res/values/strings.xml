@@ -141,7 +141,6 @@
     <string name="edit_job_report_pin_titles">PIN Code</string>
     <string name="edit_job_report_pin_desc">Useful for delivery jobs. The recipient should be given the code before hand to confirm.</string>
     <string name="post_new_service">Post New Service</string>
-    <string name="request_quotation">Request A Quotation</string>
     <string name="buy_service">Buy Service</string>
     <string name="go_to_summary">Go To Summary</string>
 
@@ -149,6 +148,17 @@
     <string name="make_proposal">Make A Proposal</string>
     <string name="people_viewed_job">people have viewed this job recently!</string>
     <string name="viewing_now">viewing now</string>
+    <string name="alert_quit_post_proposal_title">Quit Making A Proposal?</string>
+    <string name="post_proposal_explain_title">Explain briefly how you can help with the job.</string>
+    <string name="post_proposal_expressed">You have expressed an interest in the job:</string>
+    <string name="post_proposal_bid_client_budget">Client budget:</string>
+    <string name="post_proposal_bid_breakdown">Bid Breakdown (Optional)</string>
+    <string name="rescheduling_policy">Rescheduling Policy (Optional)</string>
+    <string name="no_reschedule_allowed">No rescheduling allowed.</string>
+    <string name="allowed_reschedule">Allowed, reschedule before...</string>
+    <string name="special_terms">If you have any special terms for rescheduling, state below (Optional):</string>
+    <string name="alert_view_proposal">View Proposal</string>
+    <string name="alert_proposal_posted_title">Proposal Sent!</string>
 
 
     <!-- TODO: Reject Bid -->

@@ -34,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
@@ -321,7 +321,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private void onSelectListViewItem(int position, Object object) {
         JGGJobModel appointment = (JGGJobModel) object;
         selectedCategory = appointment.getCategory();
-        creatingAppointment = appointment;
+        selectedAppointment = appointment;
         if (appointment.isRequest()) {
             Log.d("Job Model Selected", "==========" + object + "============");
             Intent intent = new Intent(getActivity(), JobStatusSummaryActivity.class);

@@ -34,9 +34,9 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
     public TextView mAddressText;
     public TextView mReportText;
 
-    private TabName tabName;
+    private PostServiceTabName postServiceTabName;
 
-    public enum TabName {
+    public enum PostServiceTabName {
         DESCRIBE,
         TIME,
         ADDRESS,
@@ -73,12 +73,12 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
 
     }
 
-    public TabName getTabName() {
-        return tabName;
+    public PostServiceTabName getPostServiceTabName() {
+        return postServiceTabName;
     }
 
-    public void setTabName(TabName name, boolean isPost) {
-        this.tabName = name;
+    public void setTabName(PostServiceTabName name, boolean isPost) {
+        this.postServiceTabName = name;
 
         mDescribeImage.setImageResource(R.mipmap.counter_greytick);
         mDescribeText.setTextColor(getResources().getColor(R.color.JGGGrey1));

@@ -32,9 +32,12 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostedServiceActivity extends AppCompatActivity {
@@ -89,7 +92,7 @@ public class PostedServiceActivity extends AppCompatActivity {
         });
 
         mCategory = selectedCategory;
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
         if (mCategory != null && mJob != null)
             initView();
     }
@@ -111,9 +114,9 @@ public class PostedServiceActivity extends AppCompatActivity {
         // Address
         lblAddress.setText(mJob.getAddress().getFullAddress());
         // Price
-        if (mJob.getSelectedServiceType() == 1) lblBudget.setText("No limit");
-        else if (mJob.getSelectedServiceType() == 2) lblBudget.setText("$ " + mJob.getBudget().toString());
-        else if (mJob.getSelectedServiceType() == 3)
+        if (mJob.getBudgetType() == 1) lblBudget.setText("No limit");
+        else if (mJob.getBudgetType() == 2) lblBudget.setText("$ " + mJob.getBudget().toString());
+        else if (mJob.getBudgetType() == 3)
             lblBudget.setText("$ " + mJob.getBudgetFrom().toString()
                     + " "
                     + "$ " + mJob.getBudgetTo().toString());
@@ -204,12 +207,12 @@ public class PostedServiceActivity extends AppCompatActivity {
                 openShareDialog();
             } else if (menuItem.getItemId() == R.id.posted_service_menu_edit) {    // Edit Service
                 Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
-                intent.putExtra("EDIT_STATUS", "Edit");
+                intent.putExtra(EDIT_STATUS, EDIT);
                 intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_duplicate) {    // Duplicate Service
                 Intent intent = new Intent(PostedServiceActivity.this, PostServiceActivity.class);
-                intent.putExtra("EDIT_STATUS", "Duplicate");
+                intent.putExtra(EDIT_STATUS, DUPLICATE);
                 intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_service_menu_delete) {    // Delete Service

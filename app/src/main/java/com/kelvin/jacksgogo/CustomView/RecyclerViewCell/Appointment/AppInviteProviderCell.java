@@ -13,8 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-
 /**
  * Created by PUMA on 11/13/2017.
  */
@@ -40,9 +38,16 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
     public void setData(JGGUserProfileModel user) {
         Picasso.with(mContext)
                 .load(user.getUser().getPhotoURL())
-                .placeholder(null)
+                .placeholder(R.mipmap.icon_profile)
                 .into(avatarImage);
-        userName.setText(user.getUser().getFullName());
-        ratingBar.setRating(user.getUser().getRate().floatValue());
+        if (user.getUser().getGivenName() == null)
+            userName.setText(user.getUser().getUserName());
+        else
+            userName.setText(user.getUser().getFullName());
+        Double rating = user.getUser().getRate();
+        if (rating == null)
+            ratingBar.setRating(0);
+        else
+            ratingBar.setRating(rating.floatValue());
     }
 }

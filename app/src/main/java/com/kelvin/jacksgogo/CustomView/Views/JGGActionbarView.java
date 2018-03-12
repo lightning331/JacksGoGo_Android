@@ -71,6 +71,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         BID,
         ACCEPT_BIDE,
         JOB_REPORT,
+        POST_PROPOSAL,
         EDIT_JOB
     }
 
@@ -192,6 +193,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
                 mMoreButtonImage.setImageResource(R.mipmap.button_today_green);
+                break;
+            case POST_PROPOSAL:
+                setCyanBackButton("", R.string.make_proposal);
                 break;
             case SERVICE_REVIEWS:
                 setGreenBackButton("", R.string.title_review);

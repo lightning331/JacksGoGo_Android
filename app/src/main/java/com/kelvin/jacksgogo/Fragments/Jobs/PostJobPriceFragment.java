@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 
 public class PostJobPriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -39,7 +39,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     private TextView lblNext;
 
     private JGGJobModel creatingJob;
-    private int selectedPriceType = 0; // 0: None select, 1: No limit, 2: Fixed amount, 3: From amount
+    private int budgetType = 0; // 0: None select, 1: No limit, 2: Fixed amount, 3: From amount
     private boolean nolimit;
     private boolean fixed;
     private boolean from;
@@ -91,8 +91,8 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnFixed.setOnClickListener(this);
         btnFrom.setOnClickListener(this);
 
-        creatingJob = creatingAppointment;
-        selectedPriceType = creatingJob.getSelectedServiceType();
+        creatingJob = selectedAppointment;
+        budgetType = creatingJob.getBudgetType();
         updateData();
     }
 
@@ -108,7 +108,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         minLayout.setVisibility(View.GONE);
         maxLayout.setVisibility(View.GONE);
         lblResponding.setVisibility(View.GONE);
-        switch (selectedPriceType) {
+        switch (budgetType) {
             case 0:
                 btnNext.setVisibility(View.GONE);
                 break;
@@ -178,31 +178,31 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_job_no_limit) {
             if (nolimit)
-                selectedPriceType = 0;
+                budgetType = 0;
             else
-                selectedPriceType = 1;
+                budgetType = 1;
             nolimit = !nolimit;
         } else if (view.getId() == R.id.btn_post_job_fixed_amount) {
             if (fixed)
-                selectedPriceType = 0;
+                budgetType = 0;
             else
-                selectedPriceType = 2;
+                budgetType = 2;
             fixed = !fixed;
         } else if (view.getId() == R.id.btn_post_job_From) {
             if (from)
-                selectedPriceType = 0;
+                budgetType = 0;
             else
-                selectedPriceType = 3;
+                budgetType = 3;
             from = !from;
         } else if (view.getId() == R.id.btn_post_job_budget_next) {
-            if (selectedPriceType == 2)
+            if (budgetType == 2)
                 creatingJob.setBudget(Double.parseDouble(txtFixed.getText().toString()));
-            else if (selectedPriceType == 3) {
+            else if (budgetType == 3) {
                 creatingJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
                 creatingJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
             }
-            creatingJob.setSelectedServiceType(selectedPriceType);
-            creatingAppointment = creatingJob;
+            creatingJob.setBudgetType(budgetType);
+            selectedAppointment = creatingJob;
             listener.onNextButtonClick();
 
             return;
@@ -217,10 +217,10 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (selectedPriceType == 2) {
+        if (budgetType == 2) {
             if (txtFixed.length() > 0) onNextButtonEnable();
             else onNextButtonDisable();
-        } else if (selectedPriceType == 3) {
+        } else if (budgetType == 3) {
             if (txtFromMin.length() > 0 && txtFromMax.length() > 0) onNextButtonEnable();
             else onNextButtonDisable();
         }

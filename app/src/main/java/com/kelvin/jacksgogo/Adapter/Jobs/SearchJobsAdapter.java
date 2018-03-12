@@ -64,11 +64,10 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_list_detail, parent, false);
             JobListDetailCell cell = new JobListDetailCell(view);
-            cell.itemView.setOnClickListener(new View.OnClickListener() {
+            cell.btnBackGround.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, JobDetailActivity.class);
-                    mContext.startActivity(intent);
+                    listener.onItemClick(view);
                 }
             });
 
@@ -94,6 +93,8 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
+            listener.onItemClick(view);
+        } if (view.getId() == R.id.btn_background) {
             listener.onItemClick(view);
         }
     }

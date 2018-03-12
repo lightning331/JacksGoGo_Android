@@ -81,7 +81,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
         timeView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(PostServiceTabbarView.TabName.TIME);
+                onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.TIME);
             }
         });
         timeLayout.addView(timeView);
@@ -93,7 +93,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
         addressView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(PostServiceTabbarView.TabName.ADDRESS);
+                onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.ADDRESS);
             }
         });
         addressLayout.addView(addressView);
@@ -105,7 +105,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
         reportView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(PostServiceTabbarView.TabName.REPORT);
+                onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.REPORT);
             }
         });
         reportLayout.addView(reportView);
@@ -132,7 +132,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void onShowEditJobFragment(PostServiceTabbarView.TabName status) {
+    private void onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName status) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (isRequest) {
@@ -176,7 +176,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_edit_job_tag) {
-            onShowEditJobFragment(PostServiceTabbarView.TabName.DESCRIBE);
+            onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
         }
     }
 

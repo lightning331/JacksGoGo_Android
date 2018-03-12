@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
@@ -107,9 +107,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         }
         category = selectedCategory;
-        creatingAppointment.setCategoryID(category.getID());
-        creatingAppointment.setRequest(true);
-        creatingJob = creatingAppointment;
+        selectedAppointment.setCategoryID(category.getID());
+        selectedAppointment.setRequest(true);
+        creatingJob = selectedAppointment;
         creatingJob.setAttachmentURLs(attachmentURLs);
     }
 
@@ -283,7 +283,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (view.getId() == R.id.btn_post_job) {
             switch (jobStatus) {
                 case POST:
-                    //showAlertDialog();
+                    //showPostJobAlertDialog(false);
                     onPostJob();
                     break;
                 case EDIT:
@@ -291,7 +291,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                     break;
                 case DUPLICATE:
 //                    Intent intent = new Intent(mContext, PostServiceActivity.class);
-//                    intent.putExtra("EDIT_STATUS", "Post");
+//                    intent.putExtra(EDIT_STATUS, POST);
 //                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
 //                    startActivity(intent);
                     break;
@@ -300,29 +300,29 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
             return;
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobStatus.POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobStatus.POST);
             if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobStatus.EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobStatus.EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_time) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.TIME, PostJobStatus.POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, PostJobStatus.POST);
             if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.TIME, PostJobStatus.EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, PostJobStatus.EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_address) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.ADDRESS, PostJobStatus.POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, PostJobStatus.POST);
             if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.ADDRESS, PostJobStatus.EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, PostJobStatus.EDIT);
             }
         }  else if (view.getId() == R.id.btn_post_job_summary_budget) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.BUDGET, PostJobStatus.POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, PostJobStatus.POST);
             if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.BUDGET, PostJobStatus.EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, PostJobStatus.EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_report) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.REPORT, PostJobStatus.POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, PostJobStatus.POST);
             if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.REPORT, PostJobStatus.EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, PostJobStatus.EDIT);
             }
         }
         getActivity().getSupportFragmentManager()

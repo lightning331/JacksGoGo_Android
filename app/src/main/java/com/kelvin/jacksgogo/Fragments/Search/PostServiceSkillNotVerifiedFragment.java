@@ -31,7 +31,11 @@ public class PostServiceSkillNotVerifiedFragment extends Fragment implements Vie
 
     private ArrayList<JGGCategoryModel> mCategories;
 
-    public static PostServiceSkillNotVerifiedFragment newInstance(String param1, String param2) {
+    public PostServiceSkillNotVerifiedFragment() {
+        // Required empty public constructor
+    }
+
+    public static PostServiceSkillNotVerifiedFragment newInstance() {
         PostServiceSkillNotVerifiedFragment fragment = new PostServiceSkillNotVerifiedFragment();
         return fragment;
     }
@@ -103,10 +107,6 @@ public class PostServiceSkillNotVerifiedFragment extends Fragment implements Vie
     }
 
     private OnFragmentInteractionListener mListener;
-
-    public PostServiceSkillNotVerifiedFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onClick(View view) {

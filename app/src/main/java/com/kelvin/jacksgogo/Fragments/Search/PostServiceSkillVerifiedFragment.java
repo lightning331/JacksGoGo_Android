@@ -24,6 +24,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
@@ -79,8 +80,9 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE);
+                PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
                 selectedCategory = mCategories.get(position);
+                selectedAppointment.setCategory(selectedCategory);
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.post_service_container, frag)

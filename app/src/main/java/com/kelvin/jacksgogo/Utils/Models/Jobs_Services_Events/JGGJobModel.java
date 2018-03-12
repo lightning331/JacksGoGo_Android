@@ -24,6 +24,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private boolean IsRequest;
     private Integer AppointmentType;    // 0: Repeating, 1: One-time
     private ArrayList<String> AttachmentURLs;
+    private int BudgetType = 0;     // 0: None select, 1: No limit, 2: Fixed amount, 3: From amount
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
@@ -128,6 +129,14 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
 
     public void setAttachmentURLs(ArrayList<String> attachmentURLs) {
         AttachmentURLs = attachmentURLs;
+    }
+
+    public int getBudgetType() {
+        return BudgetType;
+    }
+
+    public void setBudgetType(int budgetType) {
+        BudgetType = budgetType;
     }
 
     public Double getBudgetFrom() {

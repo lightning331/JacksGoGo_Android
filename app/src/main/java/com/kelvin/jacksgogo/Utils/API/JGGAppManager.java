@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
@@ -39,7 +40,10 @@ public class JGGAppManager {
 
     // Appointment
     public static JGGCategoryModel selectedCategory;
-    public static JGGJobModel creatingAppointment;
+    public static JGGJobModel selectedAppointment;
+
+    // Proposal
+    public static JGGProposalModel selectedProposal;
 
     private JGGAppManager() {
 
@@ -58,24 +62,32 @@ public class JGGAppManager {
         return currentRegion;
     }
 
-    public void setCurrentRegion(JGGRegionModel currentRegion) {
-        this.currentRegion = currentRegion;
+    public void setCurrentRegion(JGGRegionModel region) {
+        this.currentRegion = region;
     }
 
     public static JGGCategoryModel getSelectedCategory() {
         return selectedCategory;
     }
 
-    public static void setSelectedCategory(JGGCategoryModel selectedCategory) {
-        JGGAppManager.selectedCategory = selectedCategory;
+    public static void setSelectedCategory(JGGCategoryModel category) {
+        selectedCategory = category;
     }
 
-    public static JGGJobModel getCreatingAppointment() {
-        return creatingAppointment;
+    public static JGGJobModel getSelectedAppointment() {
+        return selectedAppointment;
     }
 
-    public static void setCreatingAppointment(JGGJobModel creatingAppointment) {
-        JGGAppManager.creatingAppointment = creatingAppointment;
+    public static void setSelectedAppointment(JGGJobModel appointment) {
+        selectedAppointment = appointment;
+    }
+
+    public static JGGProposalModel getSelectedProposal() {
+        return selectedProposal;
+    }
+
+    public static void setSelectedProposal(JGGProposalModel proposal) {
+        selectedProposal = proposal;
     }
 
     public void saveToken(String token, Long expire_in) {

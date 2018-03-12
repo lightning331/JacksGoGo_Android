@@ -12,6 +12,9 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeSignO
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.squareup.picasso.Picasso;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 /**
  * Created by PUMA on 1/27/2018.
@@ -58,6 +61,14 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ProfileHomeHeaderCell) {
             ProfileHomeHeaderCell header = (ProfileHomeHeaderCell) holder;
+            Picasso.with(mContext)
+                    .load(user.getUser().getPhotoURL())
+                    .placeholder(null)
+                    .into(header.avatar);
+            Picasso.with(mContext)
+                    .load(user.getUser().getPhotoURL())
+                    .placeholder(null)
+                    .into(header.imgBackground);
             header.lblUserName.setText(user.getUser().getFullName());
         } else if (holder instanceof ProfileHomeCell) {
             ProfileHomeCell cell = (ProfileHomeCell) holder;

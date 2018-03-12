@@ -36,7 +36,7 @@ import com.yanzhenjie.album.api.widget.Widget;
 import java.io.File;
 import java.util.ArrayList;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -103,7 +103,7 @@ public class PostServiceDescribeFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
-        creatingJob = creatingAppointment;
+        creatingJob = selectedAppointment;
 
         initView(view);
         initRecyclerView(view);
@@ -244,7 +244,7 @@ public class PostServiceDescribeFragment extends Fragment
             creatingJob.setTitle(strTitle);
             creatingJob.setDescription(strDesc);
             creatingJob.setTags(strTags);
-            creatingAppointment = creatingJob;
+            selectedAppointment = creatingJob;
             listener.onNextButtonClick();
         } else if (view.getId() == R.id.btn_post_service_take_photo) {
             selectImage();

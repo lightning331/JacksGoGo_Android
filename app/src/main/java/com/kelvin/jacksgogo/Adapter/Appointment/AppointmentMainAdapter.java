@@ -98,7 +98,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             cellView.lbl_Month.setText(appointmentMonth(appDay));
             Picasso.with(mContext)
                     .load(appointment.getUserProfile().getUser().getPhotoURL())
-                    .placeholder(null)
+                    .placeholder(R.mipmap.icon_profile)
                     .into(cellView.img_Profile);
 
             if (appointment.getStatus() == 1) {

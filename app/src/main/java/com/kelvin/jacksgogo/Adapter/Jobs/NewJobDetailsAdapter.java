@@ -19,7 +19,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
@@ -36,7 +36,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public NewJobDetailsAdapter(Context context) {
         this.mContext = context;
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
     }
 
     @Override

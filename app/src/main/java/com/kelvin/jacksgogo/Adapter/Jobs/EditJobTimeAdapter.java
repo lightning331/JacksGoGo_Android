@@ -122,14 +122,14 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_time_slots_status) {
-            listener.onItemClick(PostServiceTabbarView.TabName.ADDRESS, selectedDate);
+            listener.onItemClick(PostServiceTabbarView.PostServiceTabName.ADDRESS, selectedDate);
         }
     }
 
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(PostServiceTabbarView.TabName status, Date date);
+        void onItemClick(PostServiceTabbarView.PostServiceTabName status, Date date);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

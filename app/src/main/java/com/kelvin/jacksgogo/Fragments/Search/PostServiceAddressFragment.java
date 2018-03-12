@@ -21,7 +21,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -76,7 +76,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_address, container, false);
 
-        creatingJob = creatingAppointment;
+        creatingJob = selectedAppointment;
 
         initView(view);
 
@@ -133,7 +133,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             address.setAddress(txtStreet.getText().toString());
 
             creatingJob.setAddress(address);
-            creatingAppointment = creatingJob;
+            selectedAppointment = creatingJob;
 
             listener.onNextButtonClick();
         }

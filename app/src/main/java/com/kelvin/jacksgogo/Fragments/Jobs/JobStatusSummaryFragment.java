@@ -43,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
@@ -89,7 +89,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         if (!getUserVisibleHint()) {
             return;
         }
-        mJob = creatingAppointment;
+        mJob = selectedAppointment;
         getProposalsByJob();
     }
 

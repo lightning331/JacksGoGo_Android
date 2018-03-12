@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
@@ -29,6 +30,11 @@ import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 
 public class JobDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,7 +64,9 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         btnMakeProposal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(JobDetailActivity.this, BuyServiceActivity.class));
+                Intent intent = new Intent(JobDetailActivity.this, PostProposalActivity.class);
+                intent.putExtra(EDIT_STATUS, POST);
+                startActivity(intent);
             }
         });
 

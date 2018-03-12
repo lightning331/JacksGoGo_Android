@@ -57,7 +57,7 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
         });
 
         // Fragment
-        EditServiceFragment editServiceFragment = EditServiceFragment.newInstance(PostServiceTabbarView.TabName.DESCRIBE, true);
+        EditServiceFragment editServiceFragment = EditServiceFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.request_quotation_container, editServiceFragment, editServiceFragment.getTag());
         ft.commit();

@@ -31,6 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 public class PostJobCategoryFragment extends Fragment {
@@ -88,8 +89,9 @@ public class PostJobCategoryFragment extends Fragment {
                 if (position == 0) {
 
                 } else {
-                    PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.TabName.DESCRIBE, PostJobSummaryFragment.PostJobStatus.POST);
+                    PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobSummaryFragment.PostJobStatus.POST);
                     selectedCategory = categories.get(position - 1);
+                    selectedAppointment.setCategory(selectedCategory);
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, frag)

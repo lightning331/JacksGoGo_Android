@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.getDayMonthString;
 import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
@@ -128,7 +128,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         btnOneTime.setOnClickListener(this);
         btnRepeating.setOnClickListener(this);
 
-        creatingJob = creatingAppointment;
+        creatingJob = selectedAppointment;
         selectedAppType = creatingJob.getAppointmentType();
         selectedRepeatingType = creatingJob.getRepetitionType();
         repetition = creatingJob.getRepetition();
@@ -148,7 +148,6 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                     endTime = getTimePeriodString(appointmentMonthDate(creatingJob.getSessions().get(0).getEndOn()));
                     lblTime.setText(startTime + " - " + endTime);
                 }
-                onNextButtonEnable();
             }
         }
         updateData();
@@ -249,8 +248,8 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
                     try {
-                        Date varDate=dateFormat.parse(year + "-" + month + "-" + day);
-                        dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                        Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
+                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         selectedDay = dateFormat.format(varDate);
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -429,7 +428,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         }
         creatingJob.setRepetitionType(selectedRepeatingType);
         creatingJob.setAppointmentType(selectedAppType);
-        creatingAppointment = creatingJob;
+        selectedAppointment = creatingJob;
     }
 
     private void onYellowButtonColor(TextView button) {

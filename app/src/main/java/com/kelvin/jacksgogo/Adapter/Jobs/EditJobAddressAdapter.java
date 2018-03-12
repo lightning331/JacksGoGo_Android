@@ -155,7 +155,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(PostServiceTabbarView.TabName status, String unit, String street, String postcode);
+        void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String unit, String street, String postcode);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -165,7 +165,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.view_filter_bg) {
-            listener.onNextButtonClick(PostServiceTabbarView.TabName.REPORT, strUnit, strStreet, strPostCode);
+            listener.onNextButtonClick(PostServiceTabbarView.PostServiceTabName.REPORT, strUnit, strStreet, strPostCode);
         }
     }
 

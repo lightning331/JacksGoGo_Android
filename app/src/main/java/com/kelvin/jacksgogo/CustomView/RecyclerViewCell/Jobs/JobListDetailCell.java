@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.R;
+
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -15,6 +17,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class JobListDetailCell extends RecyclerView.ViewHolder {
 
+    public LinearLayout btnBackGround;
     public RelativeLayout likeButtonLayout;
     public ImageView btnLike;
     public ImageView imgCategoryDetail;
@@ -31,5 +34,7 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
 
     public JobListDetailCell(View itemView) {
         super(itemView);
+
+        btnBackGround = itemView.findViewById(R.id.btn_background);
     }
 }

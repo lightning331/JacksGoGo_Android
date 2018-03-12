@@ -1,11 +1,13 @@
 package com.kelvin.jacksgogo.Utils.API;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
@@ -110,4 +112,10 @@ public interface JGGAPIManager {
     Call<JGGProposalResponse> getProposalsByJob(@Query("ID") String jobID,
                                                 @Query("pageIndex") Integer pageIndex,
                                                 @Query("pageSize") Integer pageSize);
+
+    @POST("api/Proposal/PostProposal")
+    Call<JGGPostProposalResponse> postNewProposal(@Body JGGProposalModel proposal);
+
+    @POST("api/Proposal/EditProposal")
+    Call<JGGPostProposalResponse> editProposal(@Body JGGProposalModel proposal);
 }

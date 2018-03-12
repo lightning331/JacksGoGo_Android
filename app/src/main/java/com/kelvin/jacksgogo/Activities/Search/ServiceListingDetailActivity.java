@@ -19,6 +19,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ServiceListingDetailActivity extends AppCompatActivity implements View.OnClickListener {
@@ -86,7 +88,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
     public void onClick(View view) {
         if (view.getId() == R.id.service_listing_detail_navigation) {
             Intent intent = new Intent(this, PostServiceActivity.class);
-            intent.putExtra("EDIT_STATUS", "Post");
+            intent.putExtra(EDIT_STATUS, POST);
             intent.putExtra(APPOINTMENT_TYPE, SERVICES);
             startActivity(intent);
         }

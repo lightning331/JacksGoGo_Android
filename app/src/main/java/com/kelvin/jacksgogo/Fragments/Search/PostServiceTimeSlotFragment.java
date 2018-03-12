@@ -37,8 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.creatingAppointment;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDate;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDateString;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
 
@@ -104,7 +103,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         View view = inflater.inflate(R.layout.fragment_post_service_time_slot, container, false);
 
         postServiceActivity = ((PostServiceActivity)mContext);
-        creatingService = creatingAppointment;
+        creatingService = selectedAppointment;
         if (postServiceActivity.selectedPeopleType == 2) {
             selectedTimeSlots = postServiceActivity.arrayOnePersonTimeSlots;
         } else if (postServiceActivity.selectedPeopleType == 3) {
@@ -140,9 +139,10 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         recyclerView = view.findViewById(R.id.post_service_time_slot_recycler_view);
 
         if (creatingService.getSessions() != null
-                && creatingService.getSessions().size() > 0)
-            calendarView.setSelectedDate(appointmentDate(creatingService.getSessions().get(0).getStartOn()));
-        else
+                && creatingService.getSessions().size() > 0){
+            Date date = appointmentMonthDate(creatingService.getSessions().get(0).getStartOn());
+            calendarView.setSelectedDate(date);
+        } else
             calendarView.setSelectedDate(new Date());
         btnNoTimeSlots.setOnClickListener(this);
         btnOnePerson.setOnClickListener(this);
@@ -248,17 +248,23 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
                     alertDialog.dismiss();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    String month = format.format(calendarView.getSelectedDate().getDate());
-                    Date startOn = appointmentMonthDate(month + "T" + Global.getTimeString(start));
-                    Date endOn = appointmentMonthDate(month + "T" + Global.getTimeString(end));
-                    if (startOn.before(new Date())) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                    String month = "";
+                    try {
+                        Date varDate = dateFormat.parse(appointmentDateString(calendarView.getSelectedDate().getDate()));
+                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        month = dateFormat.format(varDate);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
+                    if (calendarView.getSelectedDate().getDate().before(new Date())) {
                         Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
-                    timeSlotModel.setStartOn(appointmentDateString(startOn));
-                    timeSlotModel.setEndOn(appointmentDateString(endOn));
+                    timeSlotModel.setStartOn(month + "T" + Global.getTimeString(start));
+                    timeSlotModel.setEndOn(month + "T" + Global.getTimeString(end));
                     timeSlotModel.setPeoples(number);
                     if (isEditTimeSlot) {
                         selectedTimeSlots.set(editingTimeSlot, timeSlotModel);
@@ -424,7 +430,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
             postServiceActivity.arrayMultiplePeopleTimeSlots = selectedTimeSlots;
         }
         creatingService.setSessions(selectedTimeSlots);
-        creatingAppointment = creatingService;
+        selectedAppointment = creatingService;
     }
 
     @Override
