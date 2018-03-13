@@ -100,12 +100,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         }
         attachmentURLs = new ArrayList<>();
-        if (jobStatus == PostJobStatus.POST) {
-
-        } else if (jobStatus == PostJobStatus.EDIT
-                || jobStatus == PostJobStatus.DUPLICATE) {
-
-        }
         category = selectedCategory;
         selectedAppointment.setCategoryID(category.getID());
         selectedAppointment.setRequest(true);

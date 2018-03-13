@@ -139,8 +139,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
         } else if (viewType == 8) {    // Taglist Cell
             View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
             ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
-            String [] strings = mJob.getTags().split(",");
-            tagListViewHolder.tagList.setTags(Arrays.asList(strings));
+            tagListViewHolder.setTagList(mJob.getTags());
             return tagListViewHolder;
         } else if (viewType == 9) {    // Proposal status Cell
             View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);

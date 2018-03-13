@@ -146,9 +146,16 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
                 return posterInfoViewHolder;
             case 9:
-                View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
-                ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
-                return tagListViewHolder;
+                if (mJob.getTags().length() > 0) {
+                    View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
+                    ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
+                    tagListViewHolder.setTagList(mJob.getTags());
+                    return tagListViewHolder;
+                } else {
+                    View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
+                    ServiceDetailReferenceNoCell bookedInfoViewHolder = new ServiceDetailReferenceNoCell(bookedInfoView);
+                    return bookedInfoViewHolder;
+                }
             case 10:
                 View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
                 ServiceDetailReferenceNoCell bookedInfoViewHolder = new ServiceDetailReferenceNoCell(bookedInfoView);
@@ -164,6 +171,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
+        if (mJob.getTags().length() == 0)
+            return 10;
         return ITEM_COUNT;
     }
 

@@ -145,6 +145,9 @@
     <string name="go_to_summary">Go To Summary</string>
 
     <!-- TODO: Make proposal -->
+    <string name="proposal_title">Proposal</string>
+    <string name="edit_proposal_title">Edit Proposal</string>
+    <string name="proposal_save">Save</string>
     <string name="make_proposal">Make A Proposal</string>
     <string name="people_viewed_job">people have viewed this job recently!</string>
     <string name="viewing_now">viewing now</string>
@@ -159,6 +162,9 @@
     <string name="special_terms">If you have any special terms for rescheduling, state below (Optional):</string>
     <string name="alert_view_proposal">View Proposal</string>
     <string name="alert_proposal_posted_title">Proposal Sent!</string>
+    <string name="btn_delete_proposal">Delete Proposal And Remove Bid</string>
+    <string name="alert_delete_proposal_title">Delete Proposal And Remove Bide?</string>
+    <string name="alert_delete_proposal_desc">This action cannot be undone.</string>
 
 
     <!-- TODO: Reject Bid -->

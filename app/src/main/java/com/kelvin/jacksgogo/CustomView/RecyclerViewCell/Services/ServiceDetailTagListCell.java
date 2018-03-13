@@ -7,6 +7,7 @@ import android.view.View;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
@@ -23,20 +24,13 @@ public class ServiceDetailTagListCell extends RecyclerView.ViewHolder {
         super(itemView);
 
         tagList = itemView.findViewById(R.id.original_post_tag_list);
+    }
+
+    public void setTagList(String tag) {
+        String [] strings = tag.split(",");
+        tagList.setTags(Arrays.asList(strings));
+
         Typeface typeface = Typeface.create("muliregular", Typeface.NORMAL);
         tagList.setTagTypeface(typeface);
-        /*List<String> tags = new ArrayList<String>();
-        tags.add("gardening");
-        tags.add("landscaping");
-        tags.add("horticulture");
-        tags.add("plants");
-        tags.add("landscaping");
-        tags.add("horticulture");
-        tags.add("nurse2");
-        tags.add("plants");
-        tags.add("landscaping");
-        tags.add("horticulture");
-        tags.add("nurse2");
-        tagList.setTags(tags);*/
     }
 }

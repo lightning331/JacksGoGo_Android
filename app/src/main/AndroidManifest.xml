@@ -138,7 +138,8 @@
             android:name=".Activities.Jobs.ServiceProviderActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activities.Jobs.JobDetailActivity" />
-        <activity android:name=".Activities.Jobs.PostProposalActivity"></activity>
+        <activity android:name=".Activities.Jobs.PostProposalActivity" />
+        <activity android:name=".Activities.Jobs.PostedProposalActivity"></activity>
     </application>
 
 </manifest>

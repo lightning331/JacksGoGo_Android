@@ -69,8 +69,6 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                 appType = JGGAppBaseModel.AppointmentType.JOBS;
             else if (type.equals(GOCLUB))
                 appType = JGGAppBaseModel.AppointmentType.GOCLUB;
-        } else {
-            status = NONE;
         }
 
         actionbarView = new JGGActionbarView(this);

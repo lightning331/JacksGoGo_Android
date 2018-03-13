@@ -32,7 +32,9 @@ public class PostProposalActivity extends AppCompatActivity {
     private JGGActionbarView actionbarView;
     private android.app.AlertDialog alertDialog;
 
+    private PostProposalSummaryFragment proposalSummaryFragment;
     private String status;
+    public boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +79,11 @@ public class PostProposalActivity extends AppCompatActivity {
                             PostProposalSummaryFragment.ProposalStatus.POST))
                     .commit();
         } else if (status.equals(EDIT)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
-            PostServiceSummaryFragment serviceFag = new PostServiceSummaryFragment();
-            serviceFag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.EDIT);
+            proposalSummaryFragment = new PostProposalSummaryFragment();
+            proposalSummaryFragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.EDIT);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_proposal_container, serviceFag)
+                    .replace(R.id.post_proposal_container, proposalSummaryFragment)
                     .commit();
         }
     }
@@ -93,9 +94,27 @@ public class PostProposalActivity extends AppCompatActivity {
             if (manager.getBackStackEntryCount() == 0) {
                 showAlertDialog();
             } else {
+                actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                actionbarView.mMoreButton.setVisibility(View.GONE);
                 manager.popBackStack();
             }
+        } else if (view.getId() == R.id.btn_more) {
+            if (isEdit) {
+                proposalSummaryFragment = new PostProposalSummaryFragment();
+                proposalSummaryFragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.EDIT);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.post_proposal_container, proposalSummaryFragment)
+                        .commit();
+            } else {
+                proposalSummaryFragment.onEditProposal();
+            }
         }
+    }
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+        actionbarView.setEditProposalMenu(edit);
     }
 
     private void showAlertDialog() {

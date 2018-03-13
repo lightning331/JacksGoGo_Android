@@ -148,9 +148,13 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    ((JobStatusSummaryActivity)mContext).deleteJobFinished();
-                    isDeleted = true;
-                    setData();
+                    if (response.body().getSuccess()) {
+                        ((JobStatusSummaryActivity)mContext).deleteJobFinished();
+                        isDeleted = true;
+                        setData();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

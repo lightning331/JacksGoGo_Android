@@ -307,6 +307,21 @@
                     android:orientation="vertical">
                 </LinearLayout>
             </LinearLayout>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/btn_delete_proposal"
+                android:text="@string/btn_delete_proposal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGCyan"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

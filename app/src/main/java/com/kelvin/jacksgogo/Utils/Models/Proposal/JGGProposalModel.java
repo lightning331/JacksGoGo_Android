@@ -19,7 +19,8 @@ public class JGGProposalModel extends JGGBaseModel {
     private JGGJobModel Appointment;
     private JGGCurrencyModel Currency;
     private JGGUserProfileModel UserProfile;
-    private String  AppointmentID;
+    private String ID;
+    private String AppointmentID;
     private String UserProfileID;
     private String Title;
     private String Description;
@@ -66,6 +67,14 @@ public class JGGProposalModel extends JGGBaseModel {
 
     public void setUserProfile(JGGUserProfileModel userProfile) {
         UserProfile = userProfile;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getAppointmentID() {

@@ -118,4 +118,7 @@ public interface JGGAPIManager {
 
     @POST("api/Proposal/EditProposal")
     Call<JGGPostProposalResponse> editProposal(@Body JGGProposalModel proposal);
+
+    @GET("api/Proposal/DeleteProposal")
+    Call<JGGBaseResponse> deleteProposal(@Query("ID") String proposalID);
 }

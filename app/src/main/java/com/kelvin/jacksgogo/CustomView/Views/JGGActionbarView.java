@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
 
+import retrofit2.http.POST;
+
 /**
  * Created by PUMA on 11/3/2017.
  */
@@ -20,16 +22,15 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
 
     private Context mContext;
 
-    private LinearLayout mBackButton;
-    private LinearLayout mMoreButton;
-    private LinearLayout mLikeButton;
-    private LinearLayout moreButtonsLayout;
+    public LinearLayout mBackButton;
+    public LinearLayout mMoreButton;
+    public LinearLayout mLikeButton;
+    public LinearLayout moreButtonsLayout;
     private LinearLayout centerTitleTextLayout;
 
     private LinearLayout.LayoutParams param;
     private LinearLayout.LayoutParams param1;
 
-    private int imgBack;
     private int imgMoreOutLine;
     private int imgLikeOutLine;
     private int imgMore;
@@ -40,6 +41,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     public ImageView mLikeButtonImage;
     public TextView mTitleTextView;
     public TextView mBackButtonTitleTextView;
+    public TextView mMoreButtonText;
 
     public boolean mLikeButtonSelected = false;
     public boolean mMoreButtonSelected = false;
@@ -72,6 +74,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         ACCEPT_BIDE,
         JOB_REPORT,
         POST_PROPOSAL,
+        EDIT_PROPOSAL,
         EDIT_JOB
     }
 
@@ -96,7 +99,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mMoreButtonImage                = (ImageView) mActionbarView.findViewById(R.id.img_more_menu);
         mTitleTextView                  = (TextView) mActionbarView.findViewById(R.id.lbl_detail_info_actionbar_title);
         mBackButtonTitleTextView        = (TextView) mActionbarView.findViewById(R.id.lbl_back_title);
+        mMoreButtonText                 = (TextView) mActionbarView.findViewById(R.id.txt_more);
 
+        mMoreButtonText.setVisibility(GONE);
         mBackButton.setOnClickListener(this);
         mLikeButton.setOnClickListener(this);
         mMoreButton.setOnClickListener(this);
@@ -326,6 +331,19 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 4.0f
         );
         centerTitleTextLayout.setLayoutParams(param1);
+    }
+
+    public void setEditProposalMenu(boolean status) {
+        mMoreButton.setVisibility(View.VISIBLE);
+        mMoreButtonImage.setVisibility(GONE);
+        mMoreButtonText.setVisibility(VISIBLE);
+        if (status) {
+            setCyanBackButton("", R.string.proposal_title);
+            mMoreButtonText.setText(R.string.menu_option_edit);
+        } else {
+            setCyanBackButton("", R.string.edit_proposal_title);
+            mMoreButtonText.setText(R.string.proposal_save);
+        }
     }
 
     private void setInviteButton() {

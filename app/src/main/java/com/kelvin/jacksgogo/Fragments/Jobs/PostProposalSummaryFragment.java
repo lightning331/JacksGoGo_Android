@@ -3,11 +3,11 @@ package com.kelvin.jacksgogo.Fragments.Jobs;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +17,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
-import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
-import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostProposalResponse;
 import com.squareup.picasso.Picasso;
 
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,6 +56,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private LinearLayout btnRescheduling;
     private LinearLayout btnCancellation;
     private TextView btnSubmit;
+    private TextView btnDelete;
 
     private JGGProposalModel mProposal;
     private ProposalStatus proposalStatus;
@@ -93,6 +93,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         if (getArguments() != null) {
 
         }
+        ButterKnife.bind(mActivity);
     }
 
     @Override
@@ -108,6 +109,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     }
 
     private void initView(View view) {
+
         imgCategory = (ImageView) view.findViewById(R.id.img_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
         lblTime = (TextView) view.findViewById(R.id.lbl_date);
@@ -123,12 +125,23 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         btnRescheduling = view.findViewById(R.id.btn_proposal_rescheduling);
         btnCancellation = view.findViewById(R.id.btn_proposal_cancellation);
         btnSubmit = view.findViewById(R.id.btn_post_proposal);
+        btnDelete = view.findViewById(R.id.btn_delete_proposal);
 
         btnDesc.setOnClickListener(this);
         btnBudget.setOnClickListener(this);
         btnRescheduling.setOnClickListener(this);
         btnCancellation.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
+
+        if (proposalStatus == ProposalStatus.POST) {
+            btnDelete.setVisibility(View.GONE);
+            btnSubmit.setVisibility(View.VISIBLE);
+        } else if (proposalStatus == ProposalStatus.EDIT) {
+            mActivity.setEdit(false);
+            btnDelete.setVisibility(View.VISIBLE);
+            btnSubmit.setVisibility(View.GONE);
+        }
     }
 
     private void setData() {
@@ -174,7 +187,8 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedProposalID = response.body().getValue();
-                        showPostProposalAlertDialog(false);
+                        mProposal.setID(postedProposalID);
+                        showPostProposalAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -192,7 +206,8 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         });
     }
 
-    private void onEditProposal() {
+    public void onEditProposal() {
+        showPostProposalAlertDialog();
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostProposalResponse> call = manager.editProposal(mProposal);
@@ -201,8 +216,13 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             public void onResponse(Call<JGGPostProposalResponse> call, Response<JGGPostProposalResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    postedProposalID = response.body().getValue();
-                    showPostProposalAlertDialog(true);
+                    if (response.body().getSuccess()) {
+                        postedProposalID = response.body().getValue();
+                        mProposal.setID(postedProposalID);
+                        showPostProposalAlertDialog();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -217,7 +237,38 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         });
     }
 
-    private void showPostProposalAlertDialog(final boolean isEdit) {
+    private void onDeleteProposal() {
+        progressDialog = Global.createProgressDialog(mContext);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        String proposalID = mProposal.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteProposal(proposalID);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mActivity.finish();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpPhoneActivity", t.getMessage());
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void showPostProposalAlertDialog() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
 
@@ -239,34 +290,62 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                if (isEdit) {
-                    getActivity().onBackPressed();
-                } else {
-                    //getActivity().finish();
-                    Intent intent = new Intent(mContext, PostedJobActivity.class);
-                    mContext.startActivity(intent);
-                }
+
+                mActivity.setEdit(true);
+                mActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                        .commit();
             }
         });
 
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    private void showDeleteAlertDialog() {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText(R.string.alert_delete_proposal_title);
+        desc.setText(R.string.alert_delete_proposal_desc);
+        okButton.setText(R.string.menu_option_delete);
+        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGRed));
+        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan10Percent));
+        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                onDeleteProposal();
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_proposal) {
-            switch (proposalStatus) {
-                case POST:
-                    //showPostProposalAlertDialog(false);
-                    onPostProposal();
-                    break;
-                case EDIT:
-                    onEditProposal();
-                    break;
-                default:
-                    break;
-            }
+            //showPostProposalAlertDialog();
+            onPostProposal();
+            return;
+        } else if (view.getId() == R.id.btn_delete_proposal) {
+            showDeleteAlertDialog();
             return;
         } else if (view.getId() == R.id.btn_proposal_describe) {
             fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE, ProposalStatus.POST);
