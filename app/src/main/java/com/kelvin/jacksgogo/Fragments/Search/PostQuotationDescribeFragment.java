@@ -23,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -33,7 +31,7 @@ import com.yanzhenjie.album.api.widget.Widget;
 
 import java.util.ArrayList;
 
-public class EditServiceDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
+public class PostQuotationDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -51,15 +49,14 @@ public class EditServiceDescribeFragment extends Fragment implements View.OnClic
     private String strTitle;
     private String strDescription;
 
-    private JGGServiceModel serviceObject;
     private boolean isRequest;
 
-    public EditServiceDescribeFragment() {
+    public PostQuotationDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static EditServiceDescribeFragment newInstance(boolean isRequest) {
-        EditServiceDescribeFragment fragment = new EditServiceDescribeFragment();
+    public static PostQuotationDescribeFragment newInstance(boolean isRequest) {
+        PostQuotationDescribeFragment fragment = new PostQuotationDescribeFragment();
         Bundle args = new Bundle();
         args.putBoolean("isRequest", isRequest);
         fragment.setArguments(args);
@@ -78,7 +75,7 @@ public class EditServiceDescribeFragment extends Fragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_service_describe, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_quotation_describe, container, false);
         initView(view);
         initRecyclerView(view);
         return view;
@@ -197,7 +194,7 @@ public class EditServiceDescribeFragment extends Fragment implements View.OnClic
         if (view.getId() == R.id.btn_edit_job_describe_take_photo) {
             selectImage();
         } else if (view.getId() == R.id.btn_edit_job_next) {
-            listener.onNextButtonClick(PostServiceTabbarView.PostServiceTabName.TIME, strTitle, strDescription);
+            listener.onNextButtonClick(strTitle, strDescription);
         }
     }
 
@@ -228,20 +225,10 @@ public class EditServiceDescribeFragment extends Fragment implements View.OnClic
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String jobTitle, String jobDesc);
+        void onNextButtonClick(String jobTitle, String jobDesc);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

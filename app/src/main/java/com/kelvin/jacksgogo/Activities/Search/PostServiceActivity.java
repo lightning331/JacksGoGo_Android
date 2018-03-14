@@ -100,6 +100,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             selectedAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
             switch (appType) {
                 case SERVICES:
+                    selectedAppointment.setRequest(false);
                     actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
                     if (alreadyVerifiedSkills) {
                         getSupportFragmentManager()
@@ -114,6 +115,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                     }
                     break;
                 case JOBS:
+                    selectedAppointment.setRequest(true);
                     actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
                     getSupportFragmentManager()
                             .beginTransaction()

@@ -130,7 +130,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         if (view.getId() == R.id.btn_back) {
             FragmentManager manager = getSupportFragmentManager();
             if (manager.getBackStackEntryCount() == 0) {
-                super.onBackPressed();
+                this.finish();
             } else {
                 manager.popBackStack();
             }

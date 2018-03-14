@@ -1,12 +1,11 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +16,11 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
-import com.kelvin.jacksgogo.Fragments.Search.EditServiceFragment;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Fragments.Search.PostQuotationMainTabFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
-public class RequestQuotationActivity extends AppCompatActivity implements View.OnClickListener {
+public class PostQuotationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
     private BottomNavigationView mbtmView;;
@@ -33,7 +32,7 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_request_quotation);
+        setContentView(R.layout.activity_post_quotation);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = (BottomNavigationView) findViewById(R.id.request_quotation_navigation);
@@ -56,11 +55,11 @@ public class RequestQuotationActivity extends AppCompatActivity implements View.
             }
         });
 
-        // Fragment
-        EditServiceFragment editServiceFragment = EditServiceFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.request_quotation_container, editServiceFragment, editServiceFragment.getTag());
-        ft.commit();
+        // Main Tab Fragment
+        PostQuotationMainTabFragment frag = PostQuotationMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.request_quotation_container, frag, frag.getTag())
+                .commit();
     }
 
     private void actionbarViewItemClick(View view) {

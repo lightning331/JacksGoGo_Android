@@ -90,7 +90,7 @@
             android:name=".Activities.Search.SetUpCreditCardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Search.RequestQuotationActivity"
+            android:name=".Activities.Search.PostQuotationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Search.JacksWalletActivity"

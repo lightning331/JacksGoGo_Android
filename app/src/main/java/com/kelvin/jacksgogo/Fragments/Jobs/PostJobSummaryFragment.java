@@ -102,7 +102,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         attachmentURLs = new ArrayList<>();
         category = selectedCategory;
         selectedAppointment.setCategoryID(category.getID());
-        selectedAppointment.setRequest(true);
         creatingJob = selectedAppointment;
         creatingJob.setAttachmentURLs(attachmentURLs);
     }
@@ -158,8 +157,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             // Describe
             lblDescribeTitle.setText(creatingJob.getTitle());
             lblDescribeDesc.setText(creatingJob.getDescription());
-            String [] strings = creatingJob.getTags().split(",");
-            describeTagView.setTags(Arrays.asList(strings));
+            String tags = creatingJob.getTags();
+            if (tags != null && tags.length() > 0) {
+                String [] strings = tags.split(",");
+                describeTagView.setTags(Arrays.asList(strings));
+            }
             // Address
             lblAddress.setText(creatingJob.getAddress().getFullAddress());
             // Budget
@@ -188,8 +190,12 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    postedJobID = response.body().getValue();
-                    showPostJobAlertDialog(false);
+                    if (response.body().getSuccess()) {
+                        postedJobID = response.body().getValue();
+                        showPostJobAlertDialog(false);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -213,8 +219,12 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    postedJobID = response.body().getValue();
-                    showPostJobAlertDialog(true);
+                    if (response.body().getSuccess()) {
+                        postedJobID = response.body().getValue();
+                        showPostJobAlertDialog(true);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

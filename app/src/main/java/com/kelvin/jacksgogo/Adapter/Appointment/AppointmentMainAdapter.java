@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDay;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonth;
 import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
@@ -133,14 +134,14 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //                cellView.lbl_BadgeNumber.setText(String.valueOf(badgeCount));
 //            }
 
-            if (cellView != null) {
+            //if (appointment.getUserProfileID().equals(currentUser.getID())) {
                 cellView.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         listener.onItemClick(position, itemData);
                     }
                 });
-            }
+            //}
         }
     }
 
@@ -150,21 +151,6 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         for (ArrayList<JGGJobModel> arrayList : this.sections.values())
             total += arrayList.size() + 1;
         return total;
-    }
-
-    public Object getItem(int position) {
-        for (Object section : this.sections.keySet()) {
-            ArrayList<JGGJobModel> arrayList = sections.get(section);
-            int size = arrayList.size() + 1;
-
-            // check if position inside this section
-            if (position == 0) return section;
-            if (position < size) return arrayList.get(position - 1);
-
-            // otherwise jump into next section
-            position -= size;
-        }
-        return null;
     }
 
     @Override
@@ -188,6 +174,21 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             position -= size;
         }
         return -1;
+    }
+
+    public Object getItem(int position) {
+        for (Object section : this.sections.keySet()) {
+            ArrayList<JGGJobModel> arrayList = sections.get(section);
+            int size = arrayList.size() + 1;
+
+            // check if position inside this section
+            if (position == 0) return section;
+            if (position < size) return arrayList.get(position - 1);
+
+            // otherwise jump into next section
+            position -= size;
+        }
+        return null;
     }
 
     private Context getContext() {

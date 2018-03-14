@@ -81,6 +81,7 @@ public class BuyServiceActivity extends AppCompatActivity implements View.OnClic
         @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_alert_ok) {
+            alertDialog.dismiss();
             startActivity(new Intent(this, MainActivity.class));
         }
     }

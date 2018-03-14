@@ -21,7 +21,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private String ID;
     private String CategoryID;
     private JGGCategoryModel Category = new JGGCategoryModel();
-    private boolean IsRequest;
+    private boolean IsRequest;      // true: Job, false: Service
     private Integer AppointmentType;    // 0: Repeating, 1: One-time
     private ArrayList<String> AttachmentURLs;
     private int BudgetType = 0;     // 0: None select, 1: No limit, 2: Fixed amount, 3: Package amount

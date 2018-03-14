@@ -214,6 +214,10 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
             btnRepeating.setVisibility(View.GONE);
             btnSpecific.setOnClickListener(this);
             btnAnyDay.setOnClickListener(this);
+            if (lblTime.getText().toString().length() > 0 && lblDate.getText().toString().length() > 0 )
+                onNextButtonEnable();
+            else
+                onNextButtonDisable();
             if (isSpecific == null) {
                 dateTimeLayout.setVisibility(View.GONE);
                 btnNext.setVisibility(View.GONE);

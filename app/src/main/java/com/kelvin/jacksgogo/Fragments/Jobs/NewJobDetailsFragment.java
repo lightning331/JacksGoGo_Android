@@ -62,7 +62,7 @@ public class NewJobDetailsFragment extends Fragment {
     public void onAttach(Context context) {
         mContext = context;
         super.onAttach(context);
-        ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
+        //((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
     }
 
     @Override

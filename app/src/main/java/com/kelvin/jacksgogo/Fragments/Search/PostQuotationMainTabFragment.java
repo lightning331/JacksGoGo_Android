@@ -18,37 +18,46 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
-import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
-import com.kelvin.jacksgogo.Adapter.Jobs.EditJobAddressAdapter;
-import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
-import com.kelvin.jacksgogo.Adapter.Jobs.EditJobTimeAdapter;
+import com.kelvin.jacksgogo.Activities.Search.PostQuotationActivity;
+import com.kelvin.jacksgogo.Adapter.Jobs.AppointmentReportAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationAddressAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationTimeAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class EditServiceFragment extends Fragment implements View.OnClickListener {
+public class PostQuotationMainTabFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
+    private PostQuotationActivity mActivity;
 
     private FrameLayout describeContainer;
     private RecyclerView recyclerView;
     private PostServiceTabbarView tabbarView;
     private JGGServiceModel serviceModel = new JGGServiceModel();
     private AlertDialog alertDialog;
+    private AppointmentReportAdapter reportAdapter;
 
+    private List<Integer> selectedIds = new ArrayList<>();
+    private boolean isMultiSelect = false;
+    private JGGReportModel data;
+    private int reportType = 0;
     private String status;
     private boolean isRequest; // Request Or Edit
 
-    public EditServiceFragment() {
+    public PostQuotationMainTabFragment() {
         // Required empty public constructor
     }
 
-    public static EditServiceFragment newInstance(PostServiceTabbarView.PostServiceTabName status, boolean b) {
-        EditServiceFragment fragment = new EditServiceFragment();
+    public static PostQuotationMainTabFragment newInstance(PostServiceTabbarView.PostServiceTabName status, boolean b) {
+        PostQuotationMainTabFragment fragment = new PostQuotationMainTabFragment();
         Bundle args = new Bundle();
         args.putString("tabName", status.toString());
         args.putBoolean("isRequest", b);
@@ -65,7 +74,7 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_service, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_quotation_main_tab, container, false);
 
         LinearLayout tabbarLayout = (LinearLayout)view.findViewById(R.id.edit_job_tabbar_view);
         tabbarView = new PostServiceTabbarView(getContext());
@@ -125,11 +134,11 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             describeContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            EditServiceDescribeFragment frag = EditServiceDescribeFragment.newInstance(isRequest);
-            frag.setOnItemClickListener(new EditServiceDescribeFragment.OnItemClickListener() {
+            PostQuotationDescribeFragment frag = PostQuotationDescribeFragment.newInstance(isRequest);
+            frag.setOnItemClickListener(new PostQuotationDescribeFragment.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String jobTitle, String jobDesc) {
-                    tabbarView.setTabName(status, isRequest);
+                public void onNextButtonClick(String jobTitle, String jobDesc) {
+                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
                     serviceModel.setTitle(jobTitle);
                     serviceModel.setComment(jobDesc);
                     refreshRecyclerView();
@@ -139,11 +148,11 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             ft.commit();
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.TIME) {
             recyclerView.setVisibility(View.VISIBLE);
-            EditJobTimeAdapter mTimeAdapter = new EditJobTimeAdapter(mContext, isRequest, serviceModel);
-            mTimeAdapter.setOnItemClickListener(new EditJobTimeAdapter.OnItemClickListener() {
+            PostQuotationTimeAdapter mTimeAdapter = new PostQuotationTimeAdapter(mContext, isRequest, serviceModel);
+            mTimeAdapter.setOnItemClickListener(new PostQuotationTimeAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(PostServiceTabbarView.PostServiceTabName status, Date date) {
-                    tabbarView.setTabName(status, isRequest);
+                public void onItemClick(Date date) {
+                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
                     serviceModel.setDate(date);
                     refreshRecyclerView();
                 }
@@ -151,11 +160,11 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             recyclerView.setAdapter(mTimeAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.ADDRESS) {
             recyclerView.setVisibility(View.VISIBLE);
-            EditJobAddressAdapter addressAdapter = new EditJobAddressAdapter(mContext, isRequest, serviceModel);
-            addressAdapter.setOnItemClickListener(new EditJobAddressAdapter.OnItemClickListener() {
+            PostQuotationAddressAdapter addressAdapter = new PostQuotationAddressAdapter(mContext, isRequest, serviceModel);
+            addressAdapter.setOnItemClickListener(new PostQuotationAddressAdapter.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String unit, String street, String postcode) {
-                    tabbarView.setTabName(status, isRequest);
+                public void onNextButtonClick(String unit, String street, String postcode) {
+                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
                     serviceModel.setUnit(unit);
                     serviceModel.setStreet(street);
                     serviceModel.setPostcode(postcode);
@@ -165,26 +174,24 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
             recyclerView.setAdapter(addressAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
             recyclerView.setVisibility(View.VISIBLE);
-            EditJobReportAdapter reportAdapter = new EditJobReportAdapter(mContext, isRequest, "SERVICE");
+            reportAdapter = new AppointmentReportAdapter(mContext, isRequest, "SERVICE");
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    //serviceModel.setReportType(position);
-                    if (serviceModel.getTitle() == null
-                            || serviceModel.getComment() == null
-                            || serviceModel.getDate() == null
-                            || serviceModel.getUnit() == null
-                            || serviceModel.getStreet() == null
-                            || serviceModel.getPostcode() == null
-                            || serviceModel.getReportType().length == 0) {
-                        showAlertDialog();
-                        return;
-                    }
 
-                    EditServiceSummaryFragment editServiceSummaryFragment = EditServiceSummaryFragment.newInstance(true);
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.request_quotation_container, editServiceSummaryFragment, editServiceSummaryFragment.getTag());
-                    ft.commit();
+                    int itemCount = reportAdapter.getItemCount();
+                    if (position == itemCount - 1) {
+                        onSaveCreatingJob();
+                        mActivity.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.request_quotation_container, PostQuotationSummaryFragment.newInstance(true))
+                                .commit();
+                    } else {
+                        if (!isMultiSelect) {
+                            selectedIds = new ArrayList<>();
+                            isMultiSelect = true;
+                        }
+                        multiSelect(position);
+                    }
                 }
                 @Override
                 public void onItemLongClick(View view, int position) {
@@ -197,36 +204,44 @@ public class EditServiceFragment extends Fragment implements View.OnClickListene
         recyclerView.refreshDrawableState();
     }
 
-    private void showAlertDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+    private void onSaveCreatingJob() {
+        reportType = 0;
+        for (Integer index : selectedIds) {
+            if (index == 1) {
+                reportType += 1;
+            } else if (index == 2) {
+                reportType += 2;
+            } else if (index == 3) {
+                reportType += 4;
+            }
+        }
+        //creatingJob.setReportType(reportType);
+        //selectedAppointment = creatingJob;
+    }
 
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
-        alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+    private void multiSelect(int position) {
 
-        title.setText(R.string.jgg_alert_title);
-        desc.setText(R.string.jgg_error_desc);
-        okButton.setText(R.string.alert_ok);
-        cancelButton.setVisibility(View.GONE);
-        okButton.setOnClickListener(this);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        alertDialog.show();
+        data = reportAdapter.getItem(position - 1);
+
+        if (data != null) {
+            Integer id = data.getId();
+            if (selectedIds.contains(data.getId()))
+                selectedIds.remove(Integer.valueOf(data.getId()));
+            else
+                selectedIds.add(data.getId());
+            reportAdapter.setSelectedIds(selectedIds);
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-
+        mActivity = ((PostQuotationActivity) mContext);
         if (getArguments() != null) {
             status = getArguments().getString("tabName");
             isRequest = getArguments().getBoolean("isRequest");
-            if (isRequest)((RequestQuotationActivity)context).setBottomViewHidden(true);
+            if (isRequest)((PostQuotationActivity)context).setBottomViewHidden(true);
             else ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
         }
         if (context instanceof OnFragmentInteractionListener) {

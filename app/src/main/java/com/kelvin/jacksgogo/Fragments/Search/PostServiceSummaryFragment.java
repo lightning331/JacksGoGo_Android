@@ -106,7 +106,6 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         }
         category = selectedCategory;
         selectedAppointment.setCategoryID(category.getID());
-        selectedAppointment.setRequest(false);
         creatingService = selectedAppointment;
         creatingService.setAttachmentURLs(attachmentURLs);
     }
@@ -156,8 +155,11 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
             // Describe
             lblDescribeTitle.setText(creatingService.getTitle());
             lblDescribeDesc.setText(creatingService.getDescription());
-            String [] strings = creatingService.getTags().split(",");
-            describeTagView.setTags(Arrays.asList(strings));
+            String tags = creatingService.getTags();
+            if (tags != null && tags.length() > 0) {
+                String [] strings = tags.split(",");
+                describeTagView.setTags(Arrays.asList(strings));
+            }
             // Price
             String price = "";
             if (creatingService.getSelectedServiceType() == 1) {
@@ -225,8 +227,12 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
             public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    postedServiceID = response.body().getValue();
-                    showAlertDialog();
+                    if (response.body().getSuccess()) {
+                        postedServiceID = response.body().getValue();
+                        showAlertDialog();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

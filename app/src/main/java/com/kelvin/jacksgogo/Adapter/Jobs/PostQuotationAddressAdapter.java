@@ -9,19 +9,19 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobAddressCell;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 
 /**
  * Created by PUMA on 11/10/2017.
  */
 
-public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, TextWatcher {
+public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, TextWatcher {
 
     Context mContext;
     int ITEM_COUNT = 6;
@@ -38,7 +38,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     EditJobAddressCell streetCell;
     EditJobAddressCell postcodeCell;
 
-    public EditJobAddressAdapter(Context context, boolean b, JGGServiceModel data) {
+    public PostQuotationAddressAdapter(Context context, boolean b, JGGServiceModel data) {
         this.mContext = context;
         this.isRequest = b;
         this.serviceObject = data;
@@ -61,6 +61,10 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case 2:
                 View placeNameView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 placeNameCell = new EditJobAddressCell(placeNameView);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 35);
+                LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 65);
+                placeNameCell.titleLayout.setLayoutParams(params);
+                placeNameCell.txtLayout.setLayoutParams(param1);
                 return placeNameCell;
             case 3:
                 View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
@@ -155,7 +159,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(PostServiceTabbarView.PostServiceTabName status, String unit, String street, String postcode);
+        void onNextButtonClick(String unit, String street, String postcode);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -165,7 +169,7 @@ public class EditJobAddressAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.view_filter_bg) {
-            listener.onNextButtonClick(PostServiceTabbarView.PostServiceTabName.REPORT, strUnit, strStreet, strPostCode);
+            listener.onNextButtonClick(strUnit, strStreet, strPostCode);
         }
     }
 

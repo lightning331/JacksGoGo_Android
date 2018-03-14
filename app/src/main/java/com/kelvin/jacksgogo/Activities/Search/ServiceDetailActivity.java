@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -64,7 +62,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
                 if (isService) {
                     startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
                 } else {
-                    startActivity(new Intent(ServiceDetailActivity.this, RequestQuotationActivity.class));
+                    startActivity(new Intent(ServiceDetailActivity.this, PostQuotationActivity.class));
                 }
             }
         });

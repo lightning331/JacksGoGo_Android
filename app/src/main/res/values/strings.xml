@@ -111,6 +111,7 @@
     <string name="share_dlg_actions">Actions</string>
 
     <!-- TODO: Post Job -->
+    <string name="job_details_title">Job Details</string>
     <string name="post_job_desc_title">Give your job a short title.</string>
     <string name="post_job_desc_description">Describe the job you need done.</string>
     <string name="post_job_desc_tag">Add tags to your job(optional).</string>

@@ -27,10 +27,12 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryQuo
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryReview;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryTipView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryWorkProgressView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -50,8 +52,9 @@ import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointm
 
 public class JobStatusSummaryFragment extends Fragment implements View.OnClickListener {
 
-    private Context mContext;
     private OnFragmentInteractionListener mListener;
+    private Context mContext;
+    private JobStatusSummaryActivity mActivity;
 
     private TextView lblPostedTime;
     private TextView lblPostedJob;
@@ -103,6 +106,13 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         return view;
     }
 
+    private void initView() {
+        lblPostedTime = view.findViewById(R.id.lbl_posted_time);
+        lblPostedJob = view.findViewById(R.id.lbl_next_step_title);
+        btnPostedJob = view.findViewById(R.id.btn_posted_job);
+        btnPostedJob.setOnClickListener(this);
+    }
+
     private void getProposalsByJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
@@ -128,13 +138,6 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void initView() {
-        lblPostedTime = view.findViewById(R.id.lbl_posted_time);
-        lblPostedJob = view.findViewById(R.id.lbl_next_step_title);
-        btnPostedJob = view.findViewById(R.id.btn_posted_job);
-        btnPostedJob.setOnClickListener(this);
     }
 
     public void deleteJob(String reason) {
@@ -276,11 +279,21 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     }
 
     private void onShowReviewFragment() {
-        JobReviewFragment frag = new JobReviewFragment();
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.app_detail_container, frag, frag.getTag());
-        ft.addToBackStack("review_fragment");
-        ft.commit();
+        mActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.app_detail_container, new JobReviewFragment())
+                .addToBackStack("review_fragment")
+                .commit();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_posted_job) {
+            mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.JOB_DETAILS, JGGAppBaseModel.AppointmentType.UNKNOWN);
+            mActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.app_detail_container, new NewJobDetailsFragment())
+                    .addToBackStack("job_detail_fragment")
+                    .commit();
+        }
     }
 
     public void onButtonPressed(Uri uri) {
@@ -293,6 +306,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((JobStatusSummaryActivity) mContext);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -304,17 +318,6 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_posted_job) {
-            NewJobDetailsFragment frag = new NewJobDetailsFragment();
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.app_detail_container, frag, frag.getTag());
-            ft.addToBackStack("job_detail_fragment");
-            ft.commit();
-        }
     }
 
     public interface OnFragmentInteractionListener {

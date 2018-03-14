@@ -22,7 +22,7 @@ import java.util.List;
  * Created by PUMA on 11/10/2017.
  */
 
-public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AppointmentReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private int ITEM_COUNT = 4;
@@ -34,7 +34,7 @@ public class EditJobReportAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<JGGReportModel> list = new ArrayList<>();
     private List<Integer> selectedIds = new ArrayList<>();
 
-    public EditJobReportAdapter(Context context, boolean b, String appType) {
+    public AppointmentReportAdapter(Context context, boolean b, String appType) {
         this.mContext = context;
         this.isRequest = b;
         appointmentType = appType;

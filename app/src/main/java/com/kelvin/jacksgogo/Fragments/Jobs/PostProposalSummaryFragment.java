@@ -207,7 +207,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     }
 
     public void onEditProposal() {
-        showPostProposalAlertDialog();
+        //showPostProposalAlertDialog();
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostProposalResponse> call = manager.editProposal(mProposal);

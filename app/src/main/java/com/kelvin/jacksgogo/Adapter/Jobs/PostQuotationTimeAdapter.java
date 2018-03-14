@@ -10,11 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.CalendarCell;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -26,7 +25,7 @@ import java.util.Date;
  * Created by PUMA on 11/10/2017.
  */
 
-public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class PostQuotationTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     Context mContext;
 
@@ -41,7 +40,7 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     int ITEM_COUNT = 7;
 
-    public EditJobTimeAdapter(Context context, boolean isRequest, JGGServiceModel data) {
+    public PostQuotationTimeAdapter(Context context, boolean isRequest, JGGServiceModel data) {
         this.mContext = context;
         this.isRequest = isRequest;
         this.serviceObject = data;
@@ -122,14 +121,14 @@ public class EditJobTimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_time_slots_status) {
-            listener.onItemClick(PostServiceTabbarView.PostServiceTabName.ADDRESS, selectedDate);
+            listener.onItemClick(selectedDate);
         }
     }
 
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(PostServiceTabbarView.PostServiceTabName status, Date date);
+        void onItemClick(Date date);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

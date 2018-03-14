@@ -9,10 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
-
-import retrofit2.http.POST;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 /**
  * Created by PUMA on 11/3/2017.
@@ -74,7 +72,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         ACCEPT_BIDE,
         JOB_REPORT,
         POST_PROPOSAL,
-        EDIT_PROPOSAL,
+        JOB_DETAILS,
         EDIT_JOB
     }
 
@@ -122,22 +120,17 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
                 break;
             case APPOINTMENT:
+                moreButtonsLayout.setVisibility(VISIBLE);
+                mMoreButton.setClickable(true);
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText(R.string.title_appointment);
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mMoreButtonImage.setImageResource(R.mipmap.button_more_orange);
-                param = new LinearLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.MATCH_PARENT,
-                        3.0f
-                );
+
+                param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3);
+                param1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
                 mBackButton.setLayoutParams(param);
                 moreButtonsLayout.setLayoutParams(param);
-                param1 = new LinearLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.MATCH_PARENT,
-                        4.0f
-                );
                 centerTitleTextLayout.setLayoutParams(param1);
                 break;
             case EDIT_MAIN:
@@ -171,6 +164,20 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgMore = R.mipmap.button_more_active_purple;
                     setLikeButton(R.mipmap.button_backarrow_purple, imgLikeOutLine, imgMoreOutLine);
                 }
+                break;
+            case JOB_DETAILS:
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+                mTitleTextView.setText(R.string.job_details_title);
+
+                moreButtonsLayout.setVisibility(INVISIBLE);
+                moreButtonsLayout.setClickable(false);
+                param = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 25);
+                param1 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 50);
+                mBackButton.setLayoutParams(param);
+                moreButtonsLayout.setLayoutParams(param);
+                centerTitleTextLayout.setLayoutParams(param1);
+
                 break;
             case SERVICE_LISTING:
                 setOrangeBackButton(R.string.title_service_listing, "Profile");
@@ -227,8 +234,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 setOrangeBackButton(R.string.accept_bid_title, "");
                 break;
             case JOB_REPORT:
+                moreButtonsLayout.setVisibility(INVISIBLE);
+                moreButtonsLayout.setClickable(false);
                 setOrangeBackButton(R.string.job_report_title, "");
-                //mBackButtonImage.setBackgroundColor();
                 break;
             case EDIT_JOB:
                 setOrangeBackButton(R.string.title_empty, "Back");
@@ -243,18 +251,10 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     setMoreButtonClicked(false);
                 } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
                     mBackButtonTitleTextView.setText(R.string.title_appointment);
-                    param = new LinearLayout.LayoutParams(
-                            LayoutParams.MATCH_PARENT,
-                            LayoutParams.MATCH_PARENT,
-                            3.0f
-                    );
+                    param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3);
+                    param1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
                     mBackButton.setLayoutParams(param);
                     moreButtonsLayout.setLayoutParams(param);
-                    param1 = new LinearLayout.LayoutParams(
-                            LayoutParams.MATCH_PARENT,
-                            LayoutParams.MATCH_PARENT,
-                            4.0f
-                    );
                     centerTitleTextLayout.setLayoutParams(param1);
 
                     imgMoreOutLine = R.mipmap.button_more_cyan;
@@ -294,16 +294,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 mBackButtonTitleTextView.setText(R.string.title_service_listing);
-                param = new LinearLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.MATCH_PARENT,
-                        3.0f
-                );
-                param1 = new LinearLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.MATCH_PARENT,
-                        4.0f
-                );
+                param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3);
+                param1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
                 moreButtonsLayout.setLayoutParams(param);
                 mBackButton.setLayoutParams(param);
                 centerTitleTextLayout.setLayoutParams(param1);
@@ -318,18 +310,10 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mBackButtonTitleTextView.setText(R.string.title_appointment);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
         moreButtonsLayout.setVisibility(GONE);
-        param = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT,
-                3.0f
-        );
+        param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3);
+        param1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
         mBackButton.setLayoutParams(param);
         moreButtonsLayout.setLayoutParams(param);
-        param1 = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT,
-                4.0f
-        );
         centerTitleTextLayout.setLayoutParams(param1);
     }
 

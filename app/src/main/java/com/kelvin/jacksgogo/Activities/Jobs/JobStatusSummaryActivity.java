@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobStatusSummaryFragment;
-import com.kelvin.jacksgogo.Fragments.Search.EditServiceSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -49,7 +49,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     @BindView(R.id.lblStatus) TextView lblCancel;
     private EditText reason;
 
-    private JGGActionbarView actionbarView;
+    public JGGActionbarView actionbarView;
     private JobStatusSummaryFragment frag;
     private ProgressDialog progressDialog;
 
@@ -74,7 +74,6 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
             setCategory();
         showJobMainFragment();
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -113,14 +112,14 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                 default:
                     break;
             }
-        } else {
+        } else if (view.getId() == R.id.btn_back) {
             /* ---------    Back button pressed     --------- */
             FragmentManager manager = getSupportFragmentManager();
             int backStackCount = manager.getBackStackEntryCount();
             switch (actionbarView.getEditStatus()) {
                 case NONE:
                     if (backStackCount == 0) {
-                        super.onBackPressed();
+                        onBackPressed();
                     } else {
                         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
                         manager.popBackStack();
@@ -130,8 +129,12 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                     actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
                     manager.popBackStack();
                     break;
+                case JOB_DETAILS:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                    manager.popBackStack();
+                    break;
                 case APPOINTMENT:
-                    super.finish();
+                    finish();
                     break;
                 case EDIT_MAIN:
                     showJobMainFragment();
@@ -171,7 +174,6 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
 
     private void showJobMainFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
-
         frag = new JobStatusSummaryFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -184,7 +186,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, EditServiceSummaryFragment.newInstance(false), EditServiceSummaryFragment.newInstance(false).getTag())
+                .replace(R.id.app_detail_container, PostQuotationSummaryFragment.newInstance(false), PostQuotationSummaryFragment.newInstance(false).getTag())
                 .commit();
     }
 

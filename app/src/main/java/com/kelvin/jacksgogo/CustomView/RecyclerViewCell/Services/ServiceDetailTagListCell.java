@@ -27,8 +27,10 @@ public class ServiceDetailTagListCell extends RecyclerView.ViewHolder {
     }
 
     public void setTagList(String tag) {
-        String [] strings = tag.split(",");
-        tagList.setTags(Arrays.asList(strings));
+        if (tag != null && tag.length() > 0) {
+            String [] strings = tag.split(",");
+            tagList.setTags(Arrays.asList(strings));
+        }
 
         Typeface typeface = Typeface.create("muliregular", Typeface.NORMAL);
         tagList.setTagTypeface(typeface);

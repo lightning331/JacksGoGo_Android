@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Fragments.Search.EditServiceDescribeFragment">
+    tools:context="com.kelvin.jacksgogo.Fragments.Search.PostQuotationDescribeFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,6 +27,7 @@
                 android:id="@+id/txt_edit_job_describe_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"

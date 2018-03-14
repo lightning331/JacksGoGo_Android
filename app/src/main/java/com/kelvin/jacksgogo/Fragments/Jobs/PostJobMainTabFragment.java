@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Adapter.Jobs.EditJobReportAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.AppointmentReportAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
@@ -51,7 +51,7 @@ public class PostJobMainTabFragment extends Fragment {
     private String postStatus;
 
     private JGGJobModel creatingJob;
-    private EditJobReportAdapter reportAdapter;
+    private AppointmentReportAdapter reportAdapter;
     private List<Integer> selectedIds = new ArrayList<>();
     private boolean isMultiSelect = false;
     private JGGReportModel data;
@@ -199,7 +199,7 @@ public class PostJobMainTabFragment extends Fragment {
             creatingJob = selectedAppointment;
             selectedIds = Global.selectedID(creatingJob.getReportType());
 
-            reportAdapter = new EditJobReportAdapter(mContext, true, "JOBS");
+            reportAdapter = new AppointmentReportAdapter(mContext, true, "JOBS");
             reportAdapter.setSelectedIds(selectedIds);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override

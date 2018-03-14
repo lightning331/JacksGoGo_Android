@@ -167,8 +167,11 @@ public class PostedJobActivity extends AppCompatActivity {
         lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
         ratingBar.setRating(mJob.getUserProfile().getUser().getRate().floatValue());
         // Tag View
-        String [] strings = mJob.getTags().split(",");
-        tagList.setTags(Arrays.asList(strings));
+        String tags = mJob.getTags();
+        if (tags != null && tags.length() > 0) {
+            String [] strings = tags.split(",");
+            tagList.setTags(Arrays.asList(strings));
+        }
     }
 
     private void actionbarViewItemClick(View view) {

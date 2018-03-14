@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Activities.Search.RequestQuotationActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
@@ -23,7 +23,7 @@ import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
-public class EditServiceSummaryFragment extends Fragment implements EditServiceFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class PostQuotationSummaryFragment extends Fragment implements PostQuotationMainTabFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     private Context mContext;
     private RecyclerView recyclerView;
@@ -32,17 +32,17 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
 
-    private EditServiceFragment editServiceFragment;
+    private PostQuotationMainTabFragment postQuotationMainTabFragment;
     private boolean isRequest; // Request Or Edit
 
     private OnFragmentInteractionListener mListener;
 
-    public EditServiceSummaryFragment() {
+    public PostQuotationSummaryFragment() {
         // Required empty public constructor
     }
 
-    public static EditServiceSummaryFragment newInstance(boolean b) {
-        EditServiceSummaryFragment fragment = new EditServiceSummaryFragment();
+    public static PostQuotationSummaryFragment newInstance(boolean b) {
+        PostQuotationSummaryFragment fragment = new PostQuotationSummaryFragment();
         Bundle args = new Bundle();
         args.putBoolean("isRequest", b);
         fragment.setArguments(args);
@@ -60,7 +60,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_edit_service_summary, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_quotation_summary, container, false);
 
         initView(view);
         initRecyclerView(view);
@@ -136,13 +136,13 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (isRequest) {
-            editServiceFragment = EditServiceFragment.newInstance(status, true);
-            ft.replace(R.id.request_quotation_container, editServiceFragment, editServiceFragment.getTag());
+            postQuotationMainTabFragment = PostQuotationMainTabFragment.newInstance(status, true);
+            ft.replace(R.id.request_quotation_container, postQuotationMainTabFragment, postQuotationMainTabFragment.getTag());
         } else {
-            editServiceFragment = EditServiceFragment.newInstance(status, false);
-            ft.replace(R.id.app_detail_container, editServiceFragment, editServiceFragment.getTag());
+            postQuotationMainTabFragment = PostQuotationMainTabFragment.newInstance(status, false);
+            ft.replace(R.id.app_detail_container, postQuotationMainTabFragment, postQuotationMainTabFragment.getTag());
         }
-        editServiceFragment.setmListener(EditServiceSummaryFragment.this);
+        postQuotationMainTabFragment.setmListener(PostQuotationSummaryFragment.this);
         ft.addToBackStack("edit_job");
         ft.commit();
     }
@@ -157,7 +157,7 @@ public class EditServiceSummaryFragment extends Fragment implements EditServiceF
         if (getArguments() != null) {
             isRequest = getArguments().getBoolean("isRequest");
             if (isRequest) {
-                ((RequestQuotationActivity)context).setBottomViewHidden(false);
+                ((PostQuotationActivity)context).setBottomViewHidden(false);
             }
         }
     }

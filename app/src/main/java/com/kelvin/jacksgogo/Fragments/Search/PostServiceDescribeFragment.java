@@ -68,8 +68,8 @@ public class PostServiceDescribeFragment extends Fragment
     private String strDesc;
     private String strTags;
 
-    private JGGAppBaseModel.AppointmentType appType;
-    private JGGJobModel creatingJob;
+    private String appType;
+    private JGGJobModel creatingApp;
 
     public PostServiceDescribeFragment() {
         // Required empty public constructor
@@ -87,13 +87,7 @@ public class PostServiceDescribeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String type = getArguments().getString(APPOINTMENT_TYPE);
-            if (type.equals(SERVICES))
-                appType = JGGAppBaseModel.AppointmentType.SERVICES;
-            else if (type.equals(JOBS))
-                appType = JGGAppBaseModel.AppointmentType.JOBS;
-            else if (type.equals(GOCLUB))
-                appType = JGGAppBaseModel.AppointmentType.GOCLUB;
+            appType = getArguments().getString(APPOINTMENT_TYPE);
         }
     }
 
@@ -103,14 +97,10 @@ public class PostServiceDescribeFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
-        creatingJob = selectedAppointment;
+        creatingApp = selectedAppointment;
 
         initView(view);
         initRecyclerView(view);
-
-        txtServiceTitle.setText("Gardening");
-        txtServiceDesc.setText("Need help with moving the lawn and weeding the garden.");
-        txtServiceTag.setText("lawn, weeding");
 
         return view;
     }
@@ -132,17 +122,18 @@ public class PostServiceDescribeFragment extends Fragment
         txtTakePhoto = view.findViewById(R.id.lbl_take_photo);
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
-        if (appType == JGGAppBaseModel.AppointmentType.JOBS) {
+        if (appType.equals(JOBS)) {
             lblTitle.setText(R.string.post_job_desc_title);
             lblDescription.setText(R.string.post_job_desc_description);
             lblTags.setText(R.string.post_job_desc_tag);
             btnTakePhoto.setBackgroundResource(R.drawable.cyan_border_background);
             imgTakePhoto.setImageResource(R.mipmap.icon_photo_cyan);
             txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGCyan));
-            txtServiceTitle.setText(creatingJob.getTitle());
-            txtServiceDesc.setText(creatingJob.getDescription());
-            txtServiceTag.setText(creatingJob.getTags());
         }
+        // Set Job Describe Data
+        txtServiceTitle.setText(creatingApp.getTitle());
+        txtServiceDesc.setText(creatingApp.getDescription());
+        txtServiceTag.setText(creatingApp.getTags());
     }
 
     private void initRecyclerView(View view) {
@@ -212,6 +203,52 @@ public class PostServiceDescribeFragment extends Fragment
                 .start();
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_post_service_next) {
+            setAppointmentData();
+        } else if (view.getId() == R.id.btn_post_service_take_photo) {
+            selectImage();
+        }
+    }
+
+    private void setAppointmentData() {
+        strTitle = txtServiceTitle.getText().toString();
+        strDesc = txtServiceDesc.getText().toString();
+        strTags = txtServiceTag.getText().toString();
+        creatingApp.setTitle(strTitle);
+        creatingApp.setDescription(strDesc);
+        creatingApp.setTags(strTags);
+        selectedAppointment = creatingApp;
+        listener.onNextButtonClick();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (txtServiceTitle.length() > 0
+                && txtServiceDesc.length() > 0) {
+
+            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+            btnNext.setBackgroundResource(R.drawable.green_background);
+            if (appType.equals(JOBS)) btnNext.setBackgroundResource(R.drawable.cyan_background);
+            btnNext.setOnClickListener(this);
+        } else {
+            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
+            btnNext.setBackgroundResource(R.drawable.grey_background);
+            btnNext.setClickable(false);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -233,49 +270,6 @@ public class PostServiceDescribeFragment extends Fragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_service_next) {
-            strTitle = txtServiceTitle.getText().toString();
-            strDesc = txtServiceDesc.getText().toString();
-            strTags = txtServiceTag.getText().toString();
-            creatingJob.setTitle(strTitle);
-            creatingJob.setDescription(strDesc);
-            creatingJob.setTags(strTags);
-            selectedAppointment = creatingJob;
-            listener.onNextButtonClick();
-        } else if (view.getId() == R.id.btn_post_service_take_photo) {
-            selectImage();
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (txtServiceTitle.length() > 0
-                && txtServiceDesc.length() > 0
-                && txtServiceTag.length() > 0) {
-
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            btnNext.setBackgroundResource(R.drawable.green_background);
-            if (appType == JGGAppBaseModel.AppointmentType.JOBS) btnNext.setBackgroundResource(R.drawable.cyan_background);
-            btnNext.setOnClickListener(this);
-        } else {
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            btnNext.setBackgroundResource(R.drawable.grey_background);
-            btnNext.setClickable(false);
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 
     private OnItemClickListener listener;
