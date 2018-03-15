@@ -31,7 +31,6 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -46,9 +45,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
 public class JobStatusSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -114,7 +114,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     }
 
     private void getProposalsByJob() {
-        progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 0);
         call.enqueue(new Callback<JGGProposalResponse>() {
@@ -122,10 +122,14 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    proposals = response.body().getValue();
-                    //JGGProposalModel proposalModel = new JGGProposalModel();
-                    //proposals.add(proposalModel);
-                    setData();
+                    if (response.body().getSuccess()) {
+                        proposals = response.body().getValue();
+                        //JGGProposalModel proposalModel = new JGGProposalModel();
+                        //proposals.add(proposalModel);
+                        setData();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -141,7 +145,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     }
 
     public void deleteJob(String reason) {
-        progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = createProgressDialog(mContext);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         String jobID = mJob.getID();

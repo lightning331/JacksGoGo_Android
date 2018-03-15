@@ -108,7 +108,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                             @Override
                             public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
                                 if (response.isSuccessful()) {
-
+                                    
                                     String access_token = response.body().getAccess_token();
                                     Long expire_in = response.body().getExpires_in();
 

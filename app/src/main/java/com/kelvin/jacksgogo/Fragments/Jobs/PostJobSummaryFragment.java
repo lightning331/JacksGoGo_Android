@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -24,11 +25,12 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import co.lujun.androidtagview.TagContainerLayout;
 import retrofit2.Call;
@@ -37,13 +39,15 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private PostServiceActivity mActivity;
 
     private ImageView imgCategory;
     private TextView lblCategory;
@@ -103,6 +107,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         category = selectedCategory;
         selectedAppointment.setCategoryID(category.getID());
         creatingJob = selectedAppointment;
+        String postTime = appointmentNewDate(new Date());
+        creatingJob.setPostOn(postTime);
         creatingJob.setAttachmentURLs(attachmentURLs);
     }
 
@@ -184,14 +190,15 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostJobResponse> call = manager.postNewJob(creatingJob);
-        call.enqueue(new Callback<JGGPostJobResponse>() {
+        Call<JGGPostAppResponse> call = manager.postNewJob(creatingJob);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
+                        creatingJob.setID(postedJobID);
                         showPostJobAlertDialog(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -203,7 +210,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
 
             @Override
-            public void onFailure(Call<JGGPostJobResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
@@ -213,14 +220,15 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private void onEditJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostJobResponse> call = manager.editJob(creatingJob);
-        call.enqueue(new Callback<JGGPostJobResponse>() {
+        Call<JGGPostAppResponse> call = manager.editJob(creatingJob);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
+                        creatingJob.setID(postedJobID);
                         showPostJobAlertDialog(true);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -232,7 +240,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
 
             @Override
-            public void onFailure(Call<JGGPostJobResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
@@ -269,7 +277,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             public void onClick(View view) {
                 alertDialog.dismiss();
                 if (isEdit) {
-                    getActivity().onBackPressed();
+                    mActivity.onBackPressed();
                 } else {
                     //getActivity().finish();
                     Intent intent = new Intent(mContext, PostedJobActivity.class);
@@ -278,7 +286,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
         });
 
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
@@ -287,11 +295,12 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (view.getId() == R.id.btn_post_job) {
             switch (jobStatus) {
                 case POST:
-                    //showPostJobAlertDialog(false);
                     onPostJob();
+                    //showPostJobAlertDialog(false);
                     break;
                 case EDIT:
                     onEditJob();
+                    //showPostJobAlertDialog(true);
                     break;
                 case DUPLICATE:
 //                    Intent intent = new Intent(mContext, PostServiceActivity.class);
@@ -346,6 +355,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((PostServiceActivity) mContext);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

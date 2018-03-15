@@ -20,10 +20,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDay;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonth;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDay;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonth;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 
 /**
  * Created by PUMA on 10/31/2017.

@@ -13,14 +13,11 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryC
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
-
-import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 /**
  * Created by PUMA on 11/14/2017.

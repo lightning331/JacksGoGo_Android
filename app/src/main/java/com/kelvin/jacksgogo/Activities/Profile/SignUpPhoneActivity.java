@@ -3,7 +3,6 @@ package com.kelvin.jacksgogo.Activities.Profile;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -19,12 +18,13 @@ import com.hbb20.CountryCodePicker;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class SignUpPhoneActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -61,7 +61,7 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void sendSMS() {
-        progressDialog = Global.createProgressDialog(this);
+        progressDialog = createProgressDialog(this);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(strPhoneNumber);
@@ -70,7 +70,10 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    onShowSMSVerify();
+                    if (response.body().getSuccess())
+                        onShowSMSVerify();
+                    else
+                        Toast.makeText(SignUpPhoneActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(SignUpPhoneActivity.this, response.message(), Toast.LENGTH_SHORT).show();

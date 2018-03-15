@@ -21,7 +21,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 public class PostProposalMainTabFragment extends Fragment {
 

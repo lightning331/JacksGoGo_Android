@@ -1,24 +1,18 @@
 package com.kelvin.jacksgogo.CustomView.Views;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Models.RepeatingDayModel;
 
 import java.util.ArrayList;
@@ -36,14 +30,14 @@ public class RepeatingDayDialog extends android.app.AlertDialog.Builder implemen
     private TextView btnCancel;
     private TextView btnDone;
 
-    private Global.JGGRepetitionType repeatingType;
+    private JGGRepetitionType repeatingType;
     private boolean isMultiSelect = false;
     private List<Integer> selectedIds = new ArrayList<>();
     private RepeatingJobWeeklyAdapter weeklyAdapter;
     private RepeatingJobMonthlyAdapter monthlyAdapter;
     private RepeatingDayModel data;
 
-    public RepeatingDayDialog(Context context, Global.JGGRepetitionType type) {
+    public RepeatingDayDialog(Context context, JGGRepetitionType type) {
         super(context);
         mContext = context;
         repeatingType = type;
@@ -62,11 +56,11 @@ public class RepeatingDayDialog extends android.app.AlertDialog.Builder implemen
         recyclerView = (RecyclerView) view.findViewById(R.id.post_job_time_day_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
 
-        if (repeatingType == Global.JGGRepetitionType.weekly) {
+        if (repeatingType == JGGRepetitionType.weekly) {
             weeklyAdapter = new RepeatingJobWeeklyAdapter(mContext, getList());
             weeklyAdapter.setSelectedIds(selectedIds);
             recyclerView.setAdapter(weeklyAdapter);
-        } else if (repeatingType == Global.JGGRepetitionType.monthly) {
+        } else if (repeatingType == JGGRepetitionType.monthly) {
             monthlyAdapter = new RepeatingJobMonthlyAdapter(mContext, getList());
             monthlyAdapter.setSelectedIds(selectedIds);
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
@@ -93,21 +87,21 @@ public class RepeatingDayDialog extends android.app.AlertDialog.Builder implemen
 
     private void multiSelect(int position) {
 
-        if (repeatingType == Global.JGGRepetitionType.weekly) {
+        if (repeatingType == JGGRepetitionType.weekly) {
             data = weeklyAdapter.getItem(position);
-        } else if (repeatingType == Global.JGGRepetitionType.monthly) {
+        } else if (repeatingType == JGGRepetitionType.monthly) {
             data = monthlyAdapter.getItem(position);
         }
 
         if (data != null){
 
-            if (repeatingType == Global.JGGRepetitionType.weekly) {
+            if (repeatingType == JGGRepetitionType.weekly) {
                 if (selectedIds.contains(data.getId()))
                     selectedIds.remove(Integer.valueOf(data.getId()));
                 else
                     selectedIds.add(data.getId());
                 weeklyAdapter.setSelectedIds(selectedIds);
-            } else if (repeatingType == Global.JGGRepetitionType.monthly) {
+            } else if (repeatingType == JGGRepetitionType.monthly) {
                 if (selectedIds.contains(data.getId()))
                     selectedIds.remove(Integer.valueOf(data.getId()));
                 else
@@ -119,7 +113,7 @@ public class RepeatingDayDialog extends android.app.AlertDialog.Builder implemen
 
     private List<RepeatingDayModel> getList() {
         List<RepeatingDayModel> list = new ArrayList<>();
-        if (repeatingType == Global.JGGRepetitionType.monthly) {
+        if (repeatingType == JGGRepetitionType.monthly) {
             list.add(new RepeatingDayModel(1,"1"));
             list.add(new RepeatingDayModel(2,"2"));
             list.add(new RepeatingDayModel(3,"3"));
@@ -151,7 +145,7 @@ public class RepeatingDayDialog extends android.app.AlertDialog.Builder implemen
             list.add(new RepeatingDayModel(29,"29"));
             list.add(new RepeatingDayModel(30,"30"));
             list.add(new RepeatingDayModel(31,"31"));
-        } else if (repeatingType == Global.JGGRepetitionType.weekly) {
+        } else if (repeatingType == JGGRepetitionType.weekly) {
             list.add(new RepeatingDayModel(1,"Sunday"));
             list.add(new RepeatingDayModel(2,"Monday"));
             list.add(new RepeatingDayModel(3,"Tuesday"));

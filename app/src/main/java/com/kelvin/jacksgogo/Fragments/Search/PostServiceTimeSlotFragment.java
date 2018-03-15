@@ -26,7 +26,7 @@ import com.kelvin.jacksgogo.Adapter.Services.PostServiceTimeSlotAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
@@ -38,8 +38,9 @@ import java.util.Date;
 
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentDateString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDateString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
 
 
 public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher {
@@ -180,18 +181,18 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
             btnNoTimeSlots.setVisibility(View.GONE);
             btnMultiPeople.setVisibility(View.GONE);
             lblTimeAvailable.setVisibility(View.GONE);
-            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none) {
+            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none) {
                 btnNoTimeSlots.setVisibility(View.VISIBLE);
                 btnOnePerson.setVisibility(View.VISIBLE);
                 btnMultiPeople.setVisibility(View.VISIBLE);
                 onGreenButtonColor(btnOnePerson);
-            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
                 lblCreateService.setVisibility(View.VISIBLE);
                 lblTimeAvailable.setVisibility(View.GONE);
                 lblSetTimeNow.setVisibility(View.VISIBLE);
                 btnNow.setVisibility(View.VISIBLE);
                 btnLater.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.now) {
+            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.now) {
                 btnOnePerson.setVisibility(View.GONE);
                 btnNow.setVisibility(View.GONE);
                 btnLater.setVisibility(View.GONE);
@@ -199,7 +200,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                 calendarViewLayout.setVisibility(View.VISIBLE);
                 addTimeLayout.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done) {
+            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done) {
                 btnViewTime.setVisibility(View.VISIBLE);
                 btnNext.setVisibility(View.VISIBLE);
             }
@@ -208,18 +209,18 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
             btnNoTimeSlots.setVisibility(View.GONE);
             btnOnePerson.setVisibility(View.GONE);
             lblTimeAvailable.setVisibility(View.GONE);
-            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none) {
+            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none) {
                 btnNoTimeSlots.setVisibility(View.VISIBLE);
                 btnOnePerson.setVisibility(View.VISIBLE);
                 btnMultiPeople.setVisibility(View.VISIBLE);
                 onGreenButtonColor(btnMultiPeople);
-            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
                 lblCreateService.setVisibility(View.VISIBLE);
                 lblTimeAvailable.setVisibility(View.GONE);
                 lblSetTimeNow.setVisibility(View.VISIBLE);
                 btnNow.setVisibility(View.VISIBLE);
                 btnLater.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.now) {
+            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.now) {
                 btnMultiPeople.setVisibility(View.GONE);
                 btnNow.setVisibility(View.GONE);
                 btnLater.setVisibility(View.GONE);
@@ -228,7 +229,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                 lblAddTimeButtonTitle.setText("Add Time Slots & No. Of Pax");
                 addTimeLayout.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done) {
+            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done) {
                 btnViewTime.setVisibility(View.VISIBLE);
                 btnNext.setVisibility(View.VISIBLE);
             }
@@ -263,8 +264,8 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                         return;
                     }
                     JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
-                    timeSlotModel.setStartOn(month + "T" + Global.getTimeString(start));
-                    timeSlotModel.setEndOn(month + "T" + Global.getTimeString(end));
+                    timeSlotModel.setStartOn(month + "T" + getTimeString(start));
+                    timeSlotModel.setEndOn(month + "T" + getTimeString(end));
                     timeSlotModel.setPeoples(number);
                     if (isEditTimeSlot) {
                         selectedTimeSlots.set(editingTimeSlot, timeSlotModel);
@@ -362,28 +363,28 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         }
         else if (view.getId() == R.id.btn_post_service_one_person) {
             postServiceActivity.selectedPeopleType = 2;
-            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none)
-                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
-            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none)
+                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
+            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
                 postServiceActivity.selectedPeopleType = 0;
-                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+                creatingService.setTimeSlotType(TimeSlotSelectionStatus.none);
             }
-            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done)
-                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
+            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done)
+                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
         }
         else if (view.getId() == R.id.btn_post_service_multi_people) {
             postServiceActivity.selectedPeopleType = 3;
-            if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.none)
-                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
-            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.progress) {
+            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none)
+                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
+            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
                 postServiceActivity.selectedPeopleType = 0;
-                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+                creatingService.setTimeSlotType(TimeSlotSelectionStatus.none);
             }
-            else if (creatingService.getTimeSlotType() == Global.TimeSlotSelectionStatus.done)
-                creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.progress);
+            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done)
+                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
         }
         else if (view.getId() == R.id.btn_post_one_person_now) {
-            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.now);
+            creatingService.setTimeSlotType(TimeSlotSelectionStatus.now);
         } else if (view.getId() == R.id.btn_post_one_person_later) {
             postServiceActivity.selectedPeopleType = 1;
             onSaveCreatingService();
@@ -393,10 +394,10 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         } else if (view.getId() == R.id.btn_post_timeslot_add) {
             onAddTimeClick();
         } else if (view.getId() == R.id.btn_post_timeslot_done) {
-            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.done);
+            creatingService.setTimeSlotType(TimeSlotSelectionStatus.done);
             onSaveCreatingService();
         } else if (view.getId() == R.id.btn_post_timeslot_view_time) {
-            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.now);
+            creatingService.setTimeSlotType(TimeSlotSelectionStatus.now);
             updateRecyclerView();
         } else if (view.getId() == R.id.btn_time_slots_edit) {
             onAddTimeClick();
@@ -417,7 +418,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
 
     private void onSaveCreatingService() {
         if (postServiceActivity.selectedPeopleType == 1) {  // No time slots
-            creatingService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+            creatingService.setTimeSlotType(TimeSlotSelectionStatus.none);
             selectedTimeSlots.clear();
             listener.onNextButtonClick();
         }

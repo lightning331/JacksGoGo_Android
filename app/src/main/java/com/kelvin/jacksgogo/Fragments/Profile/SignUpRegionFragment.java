@@ -20,7 +20,6 @@ import com.kelvin.jacksgogo.Adapter.Profile.RegionAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class SignUpRegionFragment extends Fragment implements View.OnClickListener {
 
@@ -89,7 +90,7 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
     }
 
     private void getRegionData() {
-        progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = createProgressDialog(mContext);
 
         JGGAPIManager regionManager = JGGURLManager.getClient().create(JGGAPIManager.class);
         Call<JGGRegionResponse> regionCall = regionManager.getRegions();
@@ -98,9 +99,13 @@ public class SignUpRegionFragment extends Fragment implements View.OnClickListen
             public void onResponse(Call<JGGRegionResponse> call, Response<JGGRegionResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    regions = response.body().getValue();
-                    mAdapter.setData(regions);
-                    mAdapter.notifyDataSetChanged();
+                    if (response.body().getSuccess()) {
+                        regions = response.body().getValue();
+                        mAdapter.setData(regions);
+                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

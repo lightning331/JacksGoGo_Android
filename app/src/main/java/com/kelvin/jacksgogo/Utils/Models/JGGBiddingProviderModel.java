@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Utils.Models;
 
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
 import com.kelvin.jacksgogo.Utils.Models.Base.JGGBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 
@@ -12,7 +13,7 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
 
     private JGGUserBaseModel user;
     private Float price = 0.0f;
-    private Global.BiddingStatus status;
+    private BiddingStatus status;
     private int messageCount;
 
     public JGGBiddingProviderModel() {
@@ -22,7 +23,7 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
     }
 
     public void init() {
-        status = Global.BiddingStatus.PENDING;
+        status = BiddingStatus.PENDING;
     }
 
     public JGGUserBaseModel getUser() {
@@ -41,11 +42,11 @@ public class JGGBiddingProviderModel extends JGGBaseModel {
         this.price = price;
     }
 
-    public Global.BiddingStatus getStatus() {
+    public BiddingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Global.BiddingStatus status) {
+    public void setStatus(BiddingStatus status) {
         this.status = status;
     }
 

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
@@ -32,17 +33,24 @@ public class JGGAppManager {
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
 
-    // User
+    /*
+     *  User
+     */
     public static JGGUserProfileModel currentUser;
     public static ArrayList<JGGCategoryModel> categories;
     public static ArrayList<JGGRegionModel> regions;
     public static JGGRegionModel currentRegion;
 
-    // Appointment
+    /*
+     *  Appointment
+     */
     public static JGGCategoryModel selectedCategory;
     public static JGGJobModel selectedAppointment;
+    public static JGGQuotationModel selectedQuotation;
 
-    // Proposal
+    /*
+     *  Proposal
+     */
     public static JGGProposalModel selectedProposal;
 
     private JGGAppManager() {

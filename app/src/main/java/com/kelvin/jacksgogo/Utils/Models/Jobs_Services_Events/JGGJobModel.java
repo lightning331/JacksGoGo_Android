@@ -5,7 +5,6 @@ import android.media.Image;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGJobTimeModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
@@ -20,23 +19,23 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
 
     private String ID;
     private String CategoryID;
-    private JGGCategoryModel Category = new JGGCategoryModel();
-    private boolean IsRequest;      // true: Job, false: Service
-    private Integer AppointmentType;    // 0: Repeating, 1: One-time
-    private ArrayList<String> AttachmentURLs;
-    private int BudgetType = 0;     // 0: None select, 1: No limit, 2: Fixed amount, 3: Package amount
+    private String ExpiredOn;   // Originally date type
+    private String Repetition;
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
-    private String ExpiredOn;   // Originally date type
-    private int ReportType = 0;
+    private boolean IsRequest;      // true: Job, false: Service
     private boolean IsRescheduled;
-    private String Repetition;
     private boolean IsQuickJob;
-    private int ViewCount = 0;
-    private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
-    private JGGProposalModel Proposal = new JGGProposalModel();
+    private Integer AppointmentType;    // 0: Repeating, 1: One-time
     private Integer RepetitionType;
+    private int BudgetType = 0;     // 0: None select, 1: No limit, 2: Fixed amount, 3: Package amount
+    private int ReportType = 0;
+    private int ViewCount = 0;
+    private JGGCategoryModel Category = new JGGCategoryModel();
+    private JGGProposalModel Proposal = new JGGProposalModel();
+    private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
+    private ArrayList<String> AttachmentURLs;
 
     // Dump Data
     private ArrayList<Image> attachmentImages;

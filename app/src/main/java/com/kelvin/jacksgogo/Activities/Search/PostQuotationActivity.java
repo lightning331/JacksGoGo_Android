@@ -19,6 +19,11 @@ import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationMainTabFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
 
 public class PostQuotationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,6 +59,14 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
                 actionbarViewItemClick(view);
             }
         });
+
+        // Create a new Quotation Model for Request
+        selectedQuotation = new JGGQuotationModel();
+        selectedQuotation.setProviderProfileID(selectedAppointment.getUserProfileID());
+        selectedQuotation.setCategoryID(selectedAppointment.getCategoryID());
+        selectedQuotation.setUserProfileID(currentUser.getID());
+        selectedQuotation.setRegionID(selectedAppointment.getRegionID());
+        selectedQuotation.setCurrencyCode(selectedAppointment.getCurrencyCode());
 
         // Main Tab Fragment
         PostQuotationMainTabFragment frag = PostQuotationMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);

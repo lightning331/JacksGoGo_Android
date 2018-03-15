@@ -34,8 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 
@@ -115,15 +115,19 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private void loadPendingAppointments() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        retrofit2.Call<JGGGetJobResponse> call = apiManager.getPendingAppointments();
+        Call<JGGGetJobResponse> call = apiManager.getPendingAppointments();
         call.enqueue(new Callback<JGGGetJobResponse>() {
             @Override
             public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    resetData();
-                    arrayAllPendingAppointments = response.body().getValue();
-                    filterJobs(response.body().getValue());
+                    if (response.body().getSuccess()) {
+                        resetData();
+                        arrayAllPendingAppointments = response.body().getValue();
+                        filterJobs(response.body().getValue());
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -173,11 +177,15 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    resetData();
-                    arrayConfirmedAppointments = response.body().getValue();
+                    if (response.body().getSuccess()) {
+                        resetData();
+                        arrayConfirmedAppointments = response.body().getValue();
 
-                    setDataToAdapter("Confirmed",
-                            arrayConfirmedAppointments, false);
+                        setDataToAdapter("Confirmed",
+                                arrayConfirmedAppointments, false);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -202,11 +210,15 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    resetData();
-                    arrayHistoryAppointments = response.body().getValue();
+                    if (response.body().getSuccess()) {
+                        resetData();
+                        arrayHistoryAppointments = response.body().getValue();
 
-                    setDataToAdapter("History",
-                            arrayHistoryAppointments, false);
+                        setDataToAdapter("History",
+                                arrayHistoryAppointments, false);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

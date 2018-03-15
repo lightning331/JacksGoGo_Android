@@ -19,30 +19,34 @@ import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
-
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
-import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayName;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getWeekName;
 
 public class PostedJobActivity extends AppCompatActivity {
 
@@ -110,22 +114,22 @@ public class PostedJobActivity extends AppCompatActivity {
                     type = "on";
                     if (mJob.getSessions().get(0).getEndOn() != null)
                         time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                                + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
                     else
                         time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
                 } else {
                     type = "any time until";
                     if (mJob.getSessions().get(0).getEndOn() != null)
                         time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
                                 + " - "
-                                + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                                + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
                     else
                         time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + Global.getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
                 }
             }
             lblType.setText(type);
@@ -133,19 +137,19 @@ public class PostedJobActivity extends AppCompatActivity {
         } else if (mJob.getAppointmentType() == 0) {     // Repeating
             String dayString = mJob.getRepetition();
             String[] items = dayString.split(",");
-            if (mJob.getRepetitionType() == Global.JGGRepetitionType.weekly) {
+            if (mJob.getRepetitionType() == JGGRepetitionType.weekly) {
                 for (int i = 0; i < items.length; i ++) {
                     if (time.equals(""))
-                        time = Global.getWeekName(Integer.parseInt(items[i]));
+                        time = getWeekName(Integer.parseInt(items[i]));
                     else
-                        time = time + ", " + "Every " + Global.getWeekName(Integer.parseInt(items[i]));
+                        time = time + ", " + "Every " + getWeekName(Integer.parseInt(items[i]));
                 }
-            } else if (mJob.getRepetitionType() == Global.JGGRepetitionType.monthly) {
+            } else if (mJob.getRepetitionType() == JGGRepetitionType.monthly) {
                 for (int i = 0; i < items.length; i ++) {
                     if (time.equals(""))
-                        time = "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                        time = "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
                     else
-                        time = time + ", " + "Every " + Global.getDayName(Integer.parseInt(items[i])) + " of the month";
+                        time = time + ", " + "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
                 }
             }
             lblType.setText(time);
@@ -158,7 +162,7 @@ public class PostedJobActivity extends AppCompatActivity {
         // Price
         lblBudget.setText(convertJobBudgetString(mJob));
         // Report
-        lblReportType.setText(Global.reportTypeName(mJob.getReportType()));
+        lblReportType.setText(reportTypeName(mJob.getReportType()));
         // User
         Picasso.with(this)
                 .load(mJob.getUserProfile().getUser().getPhotoURL())

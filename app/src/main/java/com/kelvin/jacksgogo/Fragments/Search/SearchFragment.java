@@ -145,19 +145,23 @@ public class SearchFragment extends Fragment {
                 public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        JGGAppManager.getInstance(mContext).categories = response.body().getValue();
-                        categories = JGGAppManager.getInstance(mContext).categories;
+                        if (response.body().getSuccess()) {
+                            JGGAppManager.getInstance(mContext).categories = response.body().getValue();
+                            categories = JGGAppManager.getInstance(mContext).categories;
 
-                        if (appType.equals(SERVICES)) {
-                            serviceAdapter.notifyDataChanged(categories);
-                            serviceAdapter.notifyDataSetChanged();
-                            recyclerView.setAdapter(serviceAdapter);
-                        } else if (appType.equals(JOBS)) {
-                            jobAdapter.notifyDataChanged(categories);
-                            jobAdapter.notifyDataSetChanged();
-                            recyclerView.setAdapter(jobAdapter);
-                        } else if (appType.equals(GOCLUB)) {
+                            if (appType.equals(SERVICES)) {
+                                serviceAdapter.notifyDataChanged(categories);
+                                serviceAdapter.notifyDataSetChanged();
+                                recyclerView.setAdapter(serviceAdapter);
+                            } else if (appType.equals(JOBS)) {
+                                jobAdapter.notifyDataChanged(categories);
+                                jobAdapter.notifyDataSetChanged();
+                                recyclerView.setAdapter(jobAdapter);
+                            } else if (appType.equals(GOCLUB)) {
 
+                            }
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         int statusCode  = response.code();

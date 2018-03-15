@@ -18,7 +18,6 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -38,7 +37,9 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 public class ServiceProviderActivity extends AppCompatActivity {
 
@@ -95,7 +96,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     }
 
     private void getProposalsByJob() {
-        progressDialog = Global.createProgressDialog(this);
+        progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 0);
         call.enqueue(new Callback<JGGProposalResponse>() {
@@ -103,8 +104,12 @@ public class ServiceProviderActivity extends AppCompatActivity {
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    proposals = response.body().getValue();
-                    updateRecyclerView();
+                    if (response.body().getSuccess()) {
+                        proposals = response.body().getValue();
+                        updateRecyclerView();
+                    } else {
+                        Toast.makeText(ServiceProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(ServiceProviderActivity.this, response.message(), Toast.LENGTH_SHORT).show();
@@ -160,7 +165,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         user1.setAvatarUrl(R.drawable.nurse);
         user1.setRate(4.5);
         p1.setUser(user1);
-        p1.setStatus(Global.BiddingStatus.NEWPROPOSAL);
+        p1.setStatus(BiddingStatus.NEWPROPOSAL);
         p1.setPrice(100.00f);
         p1.setMessageCount(0);
         quotationArray.add(p1);
@@ -171,7 +176,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         user2.setAvatarUrl(R.drawable.nurse1);
         user2.setRate(5.0);
         p2.setUser(user2);
-        p2.setStatus(Global.BiddingStatus.PENDING);
+        p2.setStatus(BiddingStatus.PENDING);
         p2.setPrice(105.00f);
         p2.setMessageCount(3);
         quotationArray.add(p2);
@@ -182,7 +187,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         user3.setAvatarUrl(R.drawable.carousel01);
         user3.setRate(4.0);
         p3.setUser(user3);
-        p3.setStatus(Global.BiddingStatus.PENDING);
+        p3.setStatus(BiddingStatus.PENDING);
         p3.setPrice(110.00f);
         p3.setMessageCount(0);
         quotationArray.add(p3);
@@ -193,7 +198,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         user4.setAvatarUrl(R.drawable.carousel02);
         user4.setRate(5.0);
         p4.setUser(user4);
-        p4.setStatus(Global.BiddingStatus.NOTRESPONDED);
+        p4.setStatus(BiddingStatus.NOTRESPONDED);
         p4.setMessageCount(0);
         quotationArray.add(p4);
 
@@ -203,7 +208,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         user5.setAvatarUrl(R.drawable.carousel03);
         user5.setRate(3.5);
         p5.setUser(user5);
-        p5.setStatus(Global.BiddingStatus.DECLINED);
+        p5.setStatus(BiddingStatus.DECLINED);
         p5.setMessageCount(0);
         quotationArray.add(p5);
 
@@ -213,7 +218,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         user6.setAvatarUrl(R.drawable.nurse1);
         user6.setRate(2.75);
         p6.setUser(user6);
-        p6.setStatus(Global.BiddingStatus.REJECTED);
+        p6.setStatus(BiddingStatus.REJECTED);
         p6.setPrice(90.00f);
         p6.setMessageCount(0);
         quotationArray.add(p6);

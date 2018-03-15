@@ -5,10 +5,6 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by PUMA on 1/18/2018.
  */
@@ -135,79 +131,5 @@ public class JGGAppointmentBaseModel {
 
     public void setDAddress(JGGAddressModel DAddress) {
         this.DAddress = DAddress;
-    }
-
-//    public AppointmentType getType() {
-//        return type;
-//    }
-//
-//    public void setType(AppointmentType type) {
-//        this.type = type;
-//    }
-
-    public static String appointmentDay(Date date) {
-        if (date != null) {
-            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            String day = dayFormat.format(date);
-            return day;
-        }
-        return "";
-    }
-
-    public static String appointmentMonth(Date date) {
-        if (date != null) {
-            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
-            String month = monthFormat.format(date);
-            return month;
-        }
-        return "";
-    }
-
-    public static Date appointmentDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
-        try {
-
-            if (dateString != null) {
-                Date date = formatter.parse(dateString);
-                return date;
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Date appointmentMonthDate(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        try {
-
-            if (dateString != null) {
-                Date date = formatter.parse(dateString);
-                return date;
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static String appointmentDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
-        if (date != null) {
-            String dateString = dateFormat.format(date);
-            return dateString;
-        }
-        return "";
-    }
-
-    public static String appointmentMonthDateString(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        if (date != null) {
-            String dateString = dateFormat.format(date);
-            return dateString;
-        }
-        return "";
     }
 }

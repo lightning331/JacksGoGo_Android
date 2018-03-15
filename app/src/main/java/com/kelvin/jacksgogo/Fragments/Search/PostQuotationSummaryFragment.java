@@ -19,9 +19,14 @@ import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 public class PostQuotationSummaryFragment extends Fragment implements PostQuotationMainTabFragment.OnFragmentInteractionListener, View.OnClickListener {
 
@@ -29,9 +34,9 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
     private RecyclerView recyclerView;
     private LinearLayout btnDescribe;
 
+    private JGGQuotationModel mQuotation;
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
-
     private PostQuotationMainTabFragment postQuotationMainTabFragment;
     private boolean isRequest; // Request Or Edit
 
@@ -61,6 +66,10 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_post_quotation_summary, container, false);
+
+        mQuotation = selectedQuotation;
+        String postTime = appointmentNewDate(new Date());
+        mQuotation.setPostOn(postTime);
 
         initView(view);
         initRecyclerView(view);

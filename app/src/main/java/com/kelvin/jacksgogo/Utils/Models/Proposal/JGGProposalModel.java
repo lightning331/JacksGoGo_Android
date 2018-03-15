@@ -1,72 +1,40 @@
 package com.kelvin.jacksgogo.Utils.Models.Proposal;
 
-import com.kelvin.jacksgogo.Utils.Models.Base.JGGBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDateString;
+import static com.kelvin.jacksgogo.Utils.Global.MINUTES_IN_AN_HOUR;
+import static com.kelvin.jacksgogo.Utils.Global.SECONDS_IN_A_MINUTE;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDateString;
 
 /**
  * Created by PUMA on 1/26/2018.
  */
 
-public class JGGProposalModel extends JGGBaseModel {
+public class JGGProposalModel extends JGGAppointmentBaseModel {
 
-    private JGGJobModel Appointment;
-    private JGGCurrencyModel Currency;
-    private JGGUserProfileModel UserProfile;
     private String ID;
     private String AppointmentID;
-    private String UserProfileID;
-    private String Title;
-    private String Description;
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
     private String BidBreakDown;
-    private String CurrencyCode;
     private Boolean RescheduleAllowed;
-    private String RescheduleDate;
+    private Integer RescheduleDate;
     private String RescheduleNote;
     private Boolean CancellationAllowed;
-    private String CancellationDate;
+    private Integer CancellationDate;
     private String CancellationNote;
     private Boolean IsInvited;
     private String SubmitOn;
     private String ExpireOn;
-    private int Status = 0;
     private boolean IsViewed;
 
     public JGGProposalModel() {
         super();
-    }
-
-    public JGGJobModel getAppointment() {
-        return Appointment;
-    }
-
-    public void setAppointment(JGGJobModel appointment) {
-        Appointment = appointment;
-    }
-
-    public JGGCurrencyModel getCurrency() {
-        return Currency;
-    }
-
-    public void setCurrency(JGGCurrencyModel currency) {
-        Currency = currency;
-    }
-
-    public JGGUserProfileModel getUserProfile() {
-        return UserProfile;
-    }
-
-    public void setUserProfile(JGGUserProfileModel userProfile) {
-        UserProfile = userProfile;
     }
 
     public String getID() {
@@ -83,30 +51,6 @@ public class JGGProposalModel extends JGGBaseModel {
 
     public void setAppointmentID(String appointmentID) {
         AppointmentID = appointmentID;
-    }
-
-    public String getUserProfileID() {
-        return UserProfileID;
-    }
-
-    public void setUserProfileID(String userProfileID) {
-        UserProfileID = userProfileID;
-    }
-
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String title) {
-        Title = title;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
     }
 
     public Double getBudgetFrom() {
@@ -141,14 +85,6 @@ public class JGGProposalModel extends JGGBaseModel {
         Budget = budget;
     }
 
-    public String getCurrencyCode() {
-        return CurrencyCode;
-    }
-
-    public void setCurrencyCode(String currencyCode) {
-        CurrencyCode = currencyCode;
-    }
-
     public Boolean isRescheduleAllowed() {
         return RescheduleAllowed;
     }
@@ -157,12 +93,12 @@ public class JGGProposalModel extends JGGBaseModel {
         RescheduleAllowed = rescheduleAllowed;
     }
 
-    public Date getRescheduleDate() {
-        return appointmentMonthDate(RescheduleDate);
+    public Integer getRescheduleDate() {
+        return RescheduleDate;
     }
 
-    public void setRescheduleDate(Date rescheduleDate) {
-        RescheduleDate = appointmentMonthDateString(rescheduleDate);
+    public void setRescheduleDate(Integer rescheduleDate) {
+        RescheduleDate = rescheduleDate;
     }
 
     public String getRescheduleNote() {
@@ -181,12 +117,12 @@ public class JGGProposalModel extends JGGBaseModel {
         CancellationAllowed = cancellationAllowed;
     }
 
-    public Date getCancellationDate() {
-        return appointmentMonthDate(CancellationDate);
+    public Integer getCancellationDate() {
+        return CancellationDate;
     }
 
-    public void setCancellationDate(Date cancellationDate) {
-        CancellationDate = appointmentMonthDateString(cancellationDate);
+    public void setCancellationDate(Integer cancellationDate) {
+        CancellationDate = cancellationDate;
     }
 
     public String getCancellationNote() {
@@ -221,14 +157,6 @@ public class JGGProposalModel extends JGGBaseModel {
         ExpireOn = appointmentMonthDateString(expireOn);
     }
 
-    public int getStatus() {
-        return Status;
-    }
-
-    public void setStatus(int status) {
-        Status = status;
-    }
-
     public boolean isViewed() {
         return IsViewed;
     }
@@ -236,4 +164,37 @@ public class JGGProposalModel extends JGGBaseModel {
     public void setViewed(boolean viewed) {
         IsViewed = viewed;
     }
+
+    public static Integer getSeconds(String days, String hours, String min) {
+        int secondsDay = Integer.parseInt(days) * 24 * MINUTES_IN_AN_HOUR * SECONDS_IN_A_MINUTE;
+        int secondsHour = Integer.parseInt(hours) * MINUTES_IN_AN_HOUR * SECONDS_IN_A_MINUTE;
+        int secondsMinute = Integer.parseInt(min) * SECONDS_IN_A_MINUTE;
+        int totalSeconds = secondsDay + secondsHour + secondsMinute;
+        return Integer.valueOf(totalSeconds);
+    }
+
+    public static String getDays(Integer seconds) {
+        int day = (int) TimeUnit.SECONDS.toDays(seconds);
+        return String.valueOf(day);
+    }
+
+    public static String getDaysString(long seconds) {
+        int day = (int) TimeUnit.SECONDS.toDays(seconds);
+        if (day == 1)
+            return "At least " + day + " day before.";
+        else
+            return "At least " + day + " days before.";
+    }
+
+    public static String getHours(Integer seconds) {
+        int day = (int) TimeUnit.SECONDS.toDays(seconds);
+        long hours = TimeUnit.SECONDS.toHours(seconds) - (day *24);
+        return String.valueOf(hours);
+    }
+
+    public static String getMinutes(Integer seconds) {
+        long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+        return String.valueOf(minute);
+    }
+
 }

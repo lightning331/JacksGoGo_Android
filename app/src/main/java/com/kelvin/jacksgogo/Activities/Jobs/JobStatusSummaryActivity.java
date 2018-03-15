@@ -38,7 +38,7 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 public class JobStatusSummaryActivity extends AppCompatActivity implements TextWatcher {
 

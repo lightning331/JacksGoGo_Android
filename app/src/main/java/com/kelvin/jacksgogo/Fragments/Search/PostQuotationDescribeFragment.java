@@ -37,9 +37,6 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView recyclerView;
-    private JGGImageGalleryAdapter mAdapter;
-    private ArrayList<AlbumFile> mAlbumFiles;
-
     private EditText txtServiceTitle;
     private EditText txtServiceDesc;
     private LinearLayout btnTakePhoto;
@@ -49,6 +46,8 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
     private String strTitle;
     private String strDescription;
 
+    private JGGImageGalleryAdapter mAdapter;
+    private ArrayList<AlbumFile> mAlbumFiles;
     private boolean isRequest;
 
     public PostQuotationDescribeFragment() {

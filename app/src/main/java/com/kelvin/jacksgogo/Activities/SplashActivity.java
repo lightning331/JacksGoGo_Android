@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Profile.SignUpSMSVerifyActivity;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -53,8 +54,12 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JGGRegionResponse> call, Response<JGGRegionResponse> response) {
                 if (response.isSuccessful()) {
-                    JGGAppManager.getInstance(SplashActivity.this).regions = response.body().getValue();
-                    autoAuthorize();
+                    if (response.body().getSuccess()) {
+                        JGGAppManager.getInstance(SplashActivity.this).regions = response.body().getValue();
+                        autoAuthorize();
+                    } else {
+                        Toast.makeText(SplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(SplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();

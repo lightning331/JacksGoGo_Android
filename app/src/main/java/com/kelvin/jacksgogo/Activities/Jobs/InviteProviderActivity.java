@@ -19,7 +19,6 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
@@ -35,10 +34,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 public class InviteProviderActivity extends AppCompatActivity {
 
@@ -96,7 +96,7 @@ public class InviteProviderActivity extends AppCompatActivity {
 
     private void getInviteUsers() {
         if (currentUser == null) return;
-        progressDialog = Global.createProgressDialog(this);
+        progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID().toString(), null, null, null, 0, 0);
         call.enqueue(new Callback<JGGInviteUsersResponse>() {
@@ -104,14 +104,19 @@ public class InviteProviderActivity extends AppCompatActivity {
             public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    inviteUsers = response.body().getValue();
+                    if (response.body().getSuccess()) {
+                        inviteUsers = response.body().getValue();
 
-                    if (recyclerView != null) {
-                        recyclerView.setLayoutManager(new LinearLayoutManager(InviteProviderActivity.this, LinearLayout.VERTICAL, false));
+                        if (recyclerView != null) {
+                            recyclerView.setLayoutManager(new LinearLayoutManager(InviteProviderActivity.this, LinearLayout.VERTICAL, false));
+                        }
+
+                        adapter = new InviteProviderAdapter(InviteProviderActivity.this, inviteUsers);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(InviteProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
-                    adapter = new InviteProviderAdapter(InviteProviderActivity.this, inviteUsers);
-                    recyclerView.setAdapter(adapter);
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(InviteProviderActivity.this, response.message(), Toast.LENGTH_SHORT).show();

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Adapter.Profile.ProfileHomeAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
@@ -104,11 +103,15 @@ public class ProfileHomeFragment extends Fragment {
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    JGGAppManager.clearAll();
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, SignInFragment.newInstance())
-                            .commit();
+                    if (response.body().getSuccess()) {
+                        JGGAppManager.clearAll();
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, SignInFragment.newInstance())
+                                .commit();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

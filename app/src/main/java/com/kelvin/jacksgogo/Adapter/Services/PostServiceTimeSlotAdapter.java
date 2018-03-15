@@ -13,8 +13,8 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
 /**
  * Created by PUMA on 1/30/2018.

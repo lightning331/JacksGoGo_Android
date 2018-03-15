@@ -80,11 +80,6 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
         initView(view);
 
-        txtPlaceName.setText("My home");
-        txtUnit.setText("2");
-        txtStreet.setText("Jurong West Avenue 5");
-        txtPostCode.setText("638657");
-
         return view;
     }
 
@@ -105,6 +100,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         txtStreet.addTextChangedListener(this);
         txtPostCode.addTextChangedListener(this);
 
+        txtPlaceName.setText("");
+        txtUnit.setText("2");
+        txtStreet.setText("Jurong West Avenue 5");
+        txtPostCode.setText("638657");
+
         if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
 
             lblTitle.setText(R.string.post_job_address_title);
@@ -112,11 +112,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             checkboxLayout.setVisibility(View.GONE);
             lblNext.setText("Next");
 
-            txtPlaceName.setText(creatingJob.getAddress().getFloor());
-            txtUnit.setText(creatingJob.getAddress().getUnit());
-            txtStreet.setText(creatingJob.getAddress().getAddress());
-            txtPostCode.setText(creatingJob.getAddress().getPostalCode());
         }
+        txtPlaceName.setText(creatingJob.getAddress().getFloor());
+        txtUnit.setText(creatingJob.getAddress().getUnit());
+        txtStreet.setText(creatingJob.getAddress().getAddress());
+        txtPostCode.setText(creatingJob.getAddress().getPostalCode());
     }
 
     @Override

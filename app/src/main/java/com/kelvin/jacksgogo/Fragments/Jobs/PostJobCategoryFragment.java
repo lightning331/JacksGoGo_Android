@@ -116,10 +116,14 @@ public class PostJobCategoryFragment extends Fragment {
                 public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        JGGAppManager.getInstance(mContext).categories = response.body().getValue();
-                        categories = JGGAppManager.getInstance(mContext).categories;
-                        adapter.refreshData(categories);
-                        adapter.notifyDataSetChanged();
+                        if (response.body().getSuccess()) {
+                            JGGAppManager.getInstance(mContext).categories = response.body().getValue();
+                            categories = JGGAppManager.getInstance(mContext).categories;
+                            adapter.refreshData(categories);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         int statusCode  = response.code();
                         Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();

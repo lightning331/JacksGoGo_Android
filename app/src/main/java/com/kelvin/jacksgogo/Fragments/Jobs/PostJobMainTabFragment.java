@@ -21,7 +21,6 @@ import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.squareup.picasso.Picasso;
@@ -34,6 +33,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.selectedCategoryID;
 
 public class PostJobMainTabFragment extends Fragment {
 
@@ -197,7 +197,7 @@ public class PostJobMainTabFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
 
             creatingJob = selectedAppointment;
-            selectedIds = Global.selectedID(creatingJob.getReportType());
+            selectedIds = selectedCategoryID(creatingJob.getReportType());
 
             reportAdapter = new AppointmentReportAdapter(mContext, true, "JOBS");
             reportAdapter.setSelectedIds(selectedIds);

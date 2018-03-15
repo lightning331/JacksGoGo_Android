@@ -39,12 +39,15 @@ import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 
 public class PostedServiceActivity extends AppCompatActivity {
 
     @BindView(R.id.posted_service_actionbar) Toolbar mToolbar;
     @BindView(R.id.posted_service_status_layout) LinearLayout verifyStatusLayout;
     @BindView(R.id.posted_service_chat_layout) LinearLayout chatLayout;
+    @BindView(R.id.posted_time) TextView lblPostedTime;
     @BindView(R.id.posted_service_tag_list) TagContainerLayout tagList;
     @BindView(R.id.btn_posted_service_view_time_slots) LinearLayout btnViewTimeSlots;
     @BindView(R.id.img_posted_service_category) ImageView imgCategory;
@@ -59,14 +62,10 @@ public class PostedServiceActivity extends AppCompatActivity {
 
     private JGGActionbarView actionbarView;
 
-    private JGGJobModel mJob;
+    private JGGJobModel mService;
     private JGGCategoryModel mCategory;
-    private boolean isVerified = getRandomBoolean();
+    private boolean isVerified;
     private boolean isPost = false;
-
-    public static boolean getRandomBoolean() {
-        return Math.random() < 0.5;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +91,8 @@ public class PostedServiceActivity extends AppCompatActivity {
         });
 
         mCategory = selectedCategory;
-        mJob = selectedAppointment;
-        if (mCategory != null && mJob != null)
+        mService = selectedAppointment;
+        if (mCategory != null && mService != null)
             initView();
     }
 
@@ -102,36 +101,42 @@ public class PostedServiceActivity extends AppCompatActivity {
             verifyStatusLayout.setVisibility(View.GONE);
             chatLayout.setVisibility(View.GONE);
         }
+        // Posted Time
+        String time = getDayMonthYear(appointmentMonthDate(mService.getPostOn()));
+        lblPostedTime.setText("Submitted on " + time + ". Pending verification.");
         // Category
         Picasso.with(this)
                 .load(mCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(mCategory.getName());
-        lblTitle.setText(mJob.getTitle());
+        lblTitle.setText(mService.getTitle());
         // Description
-        lblDescription.setText(mJob.getDescription());
+        lblDescription.setText(mService.getDescription());
         // Address
-        lblAddress.setText(mJob.getAddress().getFullAddress());
+        lblAddress.setText(mService.getAddress().getFullAddress());
         // Price
-        if (mJob.getBudgetType() == 1) lblBudget.setText("No limit");
-        else if (mJob.getBudgetType() == 2) lblBudget.setText("$ " + mJob.getBudget().toString());
-        else if (mJob.getBudgetType() == 3)
-            lblBudget.setText("$ " + mJob.getBudgetFrom().toString()
+        if (mService.getBudgetType() == 1) lblBudget.setText("No limit");
+        else if (mService.getBudgetType() == 2) lblBudget.setText("$ " + mService.getBudget().toString());
+        else if (mService.getBudgetType() == 3)
+            lblBudget.setText("$ " + mService.getBudgetFrom().toString()
                     + " "
-                    + "$ " + mJob.getBudgetTo().toString());
+                    + "$ " + mService.getBudgetTo().toString());
         // User
         Picasso.with(this)
-                .load(mJob.getUserProfile().getUser().getPhotoURL())
+                .load(mService.getUserProfile().getUser().getPhotoURL())
                 .placeholder(null)
                 .into(imgAvatar);
-        lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
-        ratingBar.setRating(mJob.getUserProfile().getUser().getRate().floatValue());
+        lblUserName.setText(mService.getUserProfile().getUser().getFullName());
+        ratingBar.setRating(mService.getUserProfile().getUser().getRate().floatValue());
         // Tag View
-        String [] strings = mJob.getTags().split(",");
-        tagList.setTags(Arrays.asList(strings));
+        String tags = mService.getTags();
+        if (tags != null && tags.length() > 0) {
+            String [] strings = tags.split(",");
+            tagList.setTags(Arrays.asList(strings));
+        }
         // Time Slot
-        if (mJob.getSessions() == null)
+        if (mService.getSessions() == null)
             btnViewTimeSlots.setVisibility(View.GONE);
     }
 

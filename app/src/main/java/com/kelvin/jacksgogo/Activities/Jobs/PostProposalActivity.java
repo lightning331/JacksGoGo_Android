@@ -13,7 +13,6 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalSummaryFragment;
-import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -107,7 +106,7 @@ public class PostProposalActivity extends AppCompatActivity {
                         .replace(R.id.post_proposal_container, proposalSummaryFragment)
                         .commit();
             } else {
-                proposalSummaryFragment.onEditProposal();
+                proposalSummaryFragment.showPostProposalAlertDialog();
             }
         }
     }

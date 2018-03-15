@@ -31,9 +31,10 @@ import java.util.Date;
 import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.Global.getDayMonthString;
-import static com.kelvin.jacksgogo.Utils.Global.getTimePeriodString;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
 
 public class PostJobTimeFragment extends Fragment implements View.OnClickListener {
 
@@ -419,10 +420,10 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         JGGTimeSlotModel timeModel = new JGGTimeSlotModel();
         if (selectedAppType == 1) {     // One-time
             timeModel.setSpecific(isSpecific);
-            String startTime = selectedDay + "T" + Global.getTimeString(startOn);
+            String startTime = selectedDay + "T" + getTimeString(startOn);
             timeModel.setStartOn(startTime);
             if (endOn != null) {
-                String endTime = selectedDay + "T" + Global.getTimeString(endOn);
+                String endTime = selectedDay + "T" + getTimeString(endOn);
                 timeModel.setEndOn(endTime);
             }
             selectedTimeSlots.add(timeModel);

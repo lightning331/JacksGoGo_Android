@@ -100,13 +100,13 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
 
     private void initTabbarView() {
 
-        if (status == "DESCRIBE") {
+        if (status.equals("DESCRIBE")) {
             tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, isRequest);
-        } else if (status == "TIME") {
+        } else if (status.equals("TIME")) {
             tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
-        } else if (status == "ADDRESS") {
+        } else if (status.equals("ADDRESS")) {
             tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
-        } else if (status == "REPORT") {
+        } else if (status.equals("REPORT")) {
             tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
         }
         refreshRecyclerView();

@@ -16,13 +16,13 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailInviteButt
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobBudgetString;
-import static com.kelvin.jacksgogo.Utils.Global.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 
 
 /**
@@ -134,7 +134,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 JobDetailDescriptionCell requestViewHolder = (JobDetailDescriptionCell)holder;
                 requestViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
                 requestViewHolder.setTitle("Requests:", true);
-                requestViewHolder.setDescription(Global.reportTypeName(mJob.getReportType()));
+                requestViewHolder.setDescription(reportTypeName(mJob.getReportType()));
                 break;
             case 5:
                 JobDetailReferenceNoCell jobDetailReferenceNoCell = (JobDetailReferenceNoCell)holder;

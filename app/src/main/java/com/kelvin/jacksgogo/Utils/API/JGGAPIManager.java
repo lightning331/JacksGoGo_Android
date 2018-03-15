@@ -2,12 +2,12 @@ package com.kelvin.jacksgogo.Utils.API;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGPostProposalResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
@@ -69,24 +69,39 @@ public interface JGGAPIManager {
     Call<JGGCategoryResponse> getCategory();
 
     /*
-     *  Appointment
+     *  Appointment Job
      */
     @POST("api/Appointment/PostJob")
-    Call<JGGPostJobResponse> postNewJob(@Body JGGJobModel creatingJob);
+    Call<JGGPostAppResponse> postNewJob(@Body JGGJobModel creatingJob);
 
     @POST("api/Appointment/EditJob")
-    Call<JGGPostJobResponse> editJob(@Body JGGJobModel editingJob);
+    Call<JGGPostAppResponse> editJob(@Body JGGJobModel editingJob);
 
     @GET("api/Appointment/DeleteJob")
     Call<JGGBaseResponse> deleteJob(@Query("ID") String jobID,
                                     @Query("Reason") String reason);
 
+    /*
+     *  Appointment Service
+     */
     @POST("api/Appointment/PostService")
-    Call<JGGPostJobResponse> postNewService(@Body JGGJobModel creatingService);
+    Call<JGGPostAppResponse> postNewService(@Body JGGJobModel creatingService);
+
+    @POST("api/Appointment/EditJob")
+    Call<JGGPostAppResponse> editService(@Body JGGJobModel editingService);
 
     @GET("api/Appointment/DeleteService")
     Call<JGGBaseResponse> deleteService(@Query("ID") String serviceID);
 
+    /*
+     *  Appointment Quotation
+     */
+    @POST("api/Appointment/PostService")
+    Call<JGGPostAppResponse> postQuotation(@Body JGGQuotationModel quotation);
+
+    /*
+     *  Appointment
+     */
     @GET("api/Appointment/GetPendingAppointments")
     Call<JGGGetJobResponse> getPendingAppointments();
 
@@ -114,10 +129,10 @@ public interface JGGAPIManager {
                                                 @Query("pageSize") Integer pageSize);
 
     @POST("api/Proposal/PostProposal")
-    Call<JGGPostProposalResponse> postNewProposal(@Body JGGProposalModel proposal);
+    Call<JGGPostAppResponse> postNewProposal(@Body JGGProposalModel proposal);
 
     @POST("api/Proposal/EditProposal")
-    Call<JGGPostProposalResponse> editProposal(@Body JGGProposalModel proposal);
+    Call<JGGPostAppResponse> editProposal(@Body JGGProposalModel proposal);
 
     @GET("api/Proposal/DeleteProposal")
     Call<JGGBaseResponse> deleteProposal(@Query("ID") String proposalID);

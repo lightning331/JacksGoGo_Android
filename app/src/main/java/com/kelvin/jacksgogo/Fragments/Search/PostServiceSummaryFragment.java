@@ -25,11 +25,12 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGPostJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import co.lujun.androidtagview.TagContainerLayout;
 import retrofit2.Call;
@@ -42,6 +43,7 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 public class PostServiceSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -107,6 +109,8 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         category = selectedCategory;
         selectedAppointment.setCategoryID(category.getID());
         creatingService = selectedAppointment;
+        String postTime = appointmentNewDate(new Date());
+        creatingService.setPostOn(postTime);
         creatingService.setAttachmentURLs(attachmentURLs);
     }
 
@@ -189,46 +193,18 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         }
     }
 
-    private void showAlertDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
-        alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_service_posted_title);
-        String message = "Service reference no: "
-                + '\n'
-                + postedServiceID
-                + '\n'
-                + '\n'
-                + "Our team will verify your submission and get back to you soon! ";
-        desc.setText(message);
-        okButton.setText(R.string.alert_view_service_button);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        cancelButton.setVisibility(View.GONE);
-
-        okButton.setOnClickListener(this);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-    }
-
     private void onPostService() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostJobResponse> call = manager.postNewService(creatingService);
-        call.enqueue(new Callback<JGGPostJobResponse>() {
+        Call<JGGPostAppResponse> call = manager.postNewService(creatingService);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGPostJobResponse> call, Response<JGGPostJobResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedServiceID = response.body().getValue();
+                        creatingService.setID(postedServiceID);
                         showAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -240,7 +216,37 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
             }
 
             @Override
-            public void onFailure(Call<JGGPostJobResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void onEditService() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = manager.editService(creatingService);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        postedServiceID = response.body().getValue();
+                        creatingService.setID(postedServiceID);
+                        showAlertDialog();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
@@ -253,11 +259,12 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (view.getId() == R.id.btn_post_service) {
             switch (editStatus) {
                 case NONE:
-                    //showAlertDialog();
                     onPostService();
+                    //showAlertDialog();
                     break;
                 case EDIT:
-                    showAlertDialog();
+                    onEditService();
+//                    /showAlertDialog();
                     break;
                 case DUPLICATE:
                     Intent intent = new Intent(mContext, PostServiceActivity.class);
@@ -298,6 +305,35 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                     .addToBackStack("post_service")
                     .commit();
         }
+    }
+
+    private void showAlertDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText(R.string.alert_service_posted_title);
+        String message = "Service reference no: "
+                + '\n'
+                + postedServiceID
+                + '\n'
+                + '\n'
+                + "Our team will verify your submission and get back to you soon! ";
+        desc.setText(message);
+        okButton.setText(R.string.alert_view_service_button);
+        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+        cancelButton.setVisibility(View.GONE);
+
+        okButton.setOnClickListener(this);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     public void onButtonPressed(Uri uri) {

@@ -98,7 +98,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         this.btnSignUp = view.findViewById(R.id.btn_sign_up);
         this.btnSignUp.setOnClickListener(this);
 
-        txtEmail.setText("cristina.p@jgg.co");
+        txtEmail.setText("alicia.leong@jgg.co");
         txtPassword.setText("abc123Q!@#");
 
     }
@@ -143,14 +143,18 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
 
-                                JGGUserProfileModel user = response.body().getValue();
-                                JGGAppManager.getInstance(mContext).currentUser = user;
+                                if (response.body().getSuccess()) {
+                                    JGGUserProfileModel user = response.body().getValue();
+                                    JGGAppManager.getInstance(mContext).currentUser = user;
 
-                                if (user.getUser().getPhoneNumberConfirmed()) {
-                                    JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
-                                    loggedIn();
+                                    if (user.getUser().getPhoneNumberConfirmed()) {
+                                        JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
+                                        loggedIn();
+                                    } else {
+                                        onShowPhoneVerifyDialog();
+                                    }
                                 } else {
-                                    onShowPhoneVerifyDialog();
+                                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
 
                             } else {

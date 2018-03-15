@@ -18,14 +18,13 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
-import java.util.Date;
-
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
-import static com.kelvin.jacksgogo.Utils.Global.getDays;
-import static com.kelvin.jacksgogo.Utils.Global.getHourString;
-import static com.kelvin.jacksgogo.Utils.Global.getMinuteString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDays;
+import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getHours;
+import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getMinutes;
+import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getSeconds;
 
 public class PostProposalRescheduleFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -102,9 +101,10 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
             lblJobTime.setText(convertJobTimeString(mJob));
         }
         mProposal = selectedProposal;
-        if (mProposal.getRescheduleDate() != null)
-            setAllowedLayoutData();
+
         if (isRescheduling) {
+            if (mProposal.getRescheduleDate() != null)
+                onShowAllowedLayout();
             if (mProposal.isRescheduleAllowed() == null) {
                 allowed = false;
                 noAllowed = false;
@@ -121,6 +121,8 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
             btnAllowed.setText("Allowed, cancel before...");
             lblTerms.setText("If you have any special terms for cancellation, state below (Optional)");
             btnNext.setText("Go To Summary");
+            if (mProposal.getCancellationDate() != null)
+                onShowAllowedLayout();
             if (mProposal.isCancellationAllowed() == null) {
                 allowed = false;
                 noAllowed = false;
@@ -144,28 +146,32 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
         btnNoAllowed.setVisibility(View.VISIBLE);
         allowedLayout.setVisibility(View.GONE);
         if (noAllowed) {
-            onYellowButtonColor(btnNoAllowed);
             btnAllowed.setVisibility(View.GONE);
             btnNext.setVisibility(View.VISIBLE);
+            onYellowButtonColor(btnNoAllowed);
             onNextButtonEnable();
         } else if (allowed) {
             btnNoAllowed.setVisibility(View.GONE);
-            onYellowButtonColor(btnAllowed);
             allowedLayout.setVisibility(View.VISIBLE);
+            onYellowButtonColor(btnAllowed);
             btnNext.setVisibility(View.VISIBLE);
+            if (txtDay.getText().toString().length() > 0
+                    && txtHour.getText().length() > 0
+                    && txtMinute.getText().length() >0)
+                onNextButtonEnable();
         }
     }
 
-    private void setAllowedLayoutData() {
+    private void onShowAllowedLayout() {
         if (isRescheduling) {
             txtDay.setText(getDays(mProposal.getRescheduleDate()));
-            txtHour.setText(getHourString(mProposal.getRescheduleDate()));
-            txtMinute.setText(getMinuteString(mProposal.getRescheduleDate()));
+            txtHour.setText(getHours(mProposal.getRescheduleDate()));
+            txtMinute.setText(getMinutes(mProposal.getRescheduleDate()));
             txtTerms.setText(mProposal.getRescheduleNote());
         } else {
             txtDay.setText(getDays(mProposal.getCancellationDate()));
-            txtHour.setText(getHourString(mProposal.getCancellationDate()));
-            txtMinute.setText(getMinuteString(mProposal.getCancellationDate()));
+            txtHour.setText(getHours(mProposal.getCancellationDate()));
+            txtMinute.setText(getMinutes(mProposal.getCancellationDate()));
             txtTerms.setText(mProposal.getCancellationNote());
         }
     }
@@ -174,17 +180,23 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
         if (isRescheduling) {
             if (noAllowed) {
                 mProposal.setRescheduleAllowed(false);
+                mProposal.setRescheduleDate(0);
             } else {
                 mProposal.setRescheduleAllowed(true);
                 // Allowed Rescheduling Date
+                mProposal.setRescheduleDate(getSeconds(txtDay.getText().toString(), txtHour.getText().toString(), txtMinute.getText().toString()));
             }
+            mProposal.setRescheduleNote(txtTerms.getText().toString());
         } else {
             if (noAllowed) {
                 mProposal.setCancellationAllowed(false);
+                mProposal.setCancellationDate(0);
             } else {
                 mProposal.setCancellationAllowed(true);
                 // Allowed Cancellation Date
+                mProposal.setCancellationDate(getSeconds(txtDay.getText().toString(), txtHour.getText().toString(), txtMinute.getText().toString()));
             }
+            mProposal.setCancellationNote(txtTerms.getText().toString());
         }
         mProposal.setCancellationNote(txtTerms.getText().toString());
         selectedProposal = mProposal;

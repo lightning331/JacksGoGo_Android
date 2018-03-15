@@ -10,9 +10,12 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
-
+import static com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayName;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getWeekName;
 
 /**
  * Created by PUMA on 1/20/2018.
@@ -52,10 +55,10 @@ public class PostJobRepeatingDayAdapter extends RecyclerView.Adapter {
         }
         else {
             Integer day = selectedRepeatingDays.get(position);
-            if (mType == Global.JGGRepetitionType.weekly) {
-                cell.btnDay.setText("Every " + Global.getWeekName(day.intValue()));
-            } else if (mType == Global.JGGRepetitionType.monthly) {
-                cell.btnDay.setText("Every " + Global.getDayName(day.intValue()) + " of the month.");
+            if (mType == JGGRepetitionType.weekly) {
+                cell.btnDay.setText("Every " + getWeekName(day.intValue()));
+            } else if (mType == JGGRepetitionType.monthly) {
+                cell.btnDay.setText("Every " + getDayName(day.intValue()) + " of the month.");
             }
             cell.btnClose.setVisibility(View.VISIBLE);
             cell.btnClose.setOnClickListener(new View.OnClickListener() {

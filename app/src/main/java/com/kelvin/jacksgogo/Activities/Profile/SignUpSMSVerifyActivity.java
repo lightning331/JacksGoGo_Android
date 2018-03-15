@@ -20,7 +20,6 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
@@ -30,6 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -78,7 +78,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     }
 
     private void reSendOTP() {
-        progressDialog = Global.createProgressDialog(this);
+        progressDialog = createProgressDialog(this);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(strPhoneNumber);
@@ -87,7 +87,11 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
 
+                    } else {
+                        Toast.makeText(SignUpSMSVerifyActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(SignUpSMSVerifyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
@@ -104,7 +108,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     }
 
     private void submit() {
-        progressDialog = Global.createProgressDialog(this);
+        progressDialog = createProgressDialog(this);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGUserProfileResponse> signUpCall = signInManager.verifyPhoneNumber(strPhoneNumber, strOTP);
@@ -113,7 +117,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
             public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    if (response.body().getValue() != null) {
+                    if (response.body().getSuccess()) {
                         JGGUserProfileModel user = response.body().getValue();
                         JGGAppManager.getInstance(SignUpSMSVerifyActivity.this).currentUser = user;
                         onShowMainActivity();

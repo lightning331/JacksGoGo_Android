@@ -24,8 +24,10 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGPostProposalResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
+
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -35,7 +37,10 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
-import static com.kelvin.jacksgogo.Utils.Global.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
 public class PostProposalSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -63,10 +68,8 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
     private String postedProposalID;
-
     private PostProposalMainTabFragment fragment;
     private PostProposalActivity mActivity;
-
     public enum ProposalStatus {
         POST,
         EDIT
@@ -102,6 +105,8 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_proposal_summary, container, false);
         mProposal = selectedProposal;
+        String postTime = appointmentNewDate(new Date());
+        mProposal.setPostOn(postTime);
 
         initView(view);
         setData();
@@ -163,9 +168,13 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             // Supplies
             lblSupplies.setText("Our own supplies - $ ");
             // Rescheduling
-            //lblRescheduling.setText();
+            lblRescheduling.setText(getDaysString(Long.valueOf(mProposal.getRescheduleDate())));
+            if (!mProposal.isRescheduleAllowed())
+                lblRescheduling.setText("No rescheduling allowed.");
             // Cancellation
-            //lblCancellation.setText();
+            lblCancellation.setText(getDaysString(Long.valueOf(mProposal.getCancellationDate())));
+            if (!mProposal.isCancellationAllowed())
+                lblCancellation.setText("No cancellation allowed.");
         } else {
             lblDesc.setText("");
             lblBudgetType.setText("No set");
@@ -177,12 +186,12 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     }
 
     private void onPostProposal() {
-        progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostProposalResponse> call = manager.postNewProposal(mProposal);
-        call.enqueue(new Callback<JGGPostProposalResponse>() {
+        Call<JGGPostAppResponse> call = manager.postNewProposal(mProposal);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGPostProposalResponse> call, Response<JGGPostProposalResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
@@ -199,7 +208,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             }
 
             @Override
-            public void onFailure(Call<JGGPostProposalResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
@@ -208,12 +217,12 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
 
     public void onEditProposal() {
         //showPostProposalAlertDialog();
-        progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostProposalResponse> call = manager.editProposal(mProposal);
-        call.enqueue(new Callback<JGGPostProposalResponse>() {
+        Call<JGGPostAppResponse> call = manager.editProposal(mProposal);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGPostProposalResponse> call, Response<JGGPostProposalResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
@@ -230,7 +239,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             }
 
             @Override
-            public void onFailure(Call<JGGPostProposalResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
@@ -238,7 +247,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     }
 
     private void onDeleteProposal() {
-        progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = createProgressDialog(mContext);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         String proposalID = mProposal.getID();
@@ -268,7 +277,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         });
     }
 
-    private void showPostProposalAlertDialog() {
+    public void showPostProposalAlertDialog() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
         LayoutInflater inflater = this.getLayoutInflater();
 
