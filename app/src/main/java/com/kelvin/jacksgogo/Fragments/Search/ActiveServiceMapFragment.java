@@ -47,6 +47,8 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceInfoWind
 import com.kelvin.jacksgogo.R;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ActiveServiceMapFragment extends Fragment
@@ -131,19 +133,19 @@ public class ActiveServiceMapFragment extends Fragment
         imgListView = view.findViewById(R.id.img_list_view);
 
         switch (appType) {
-            case "SERVICES":
+            case SERVICES:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
                 imgListView.setImageResource(R.mipmap.button_listview_green);
                 imgFilter.setImageResource(R.mipmap.button_filter_green);
                 imgUserLocation.setImageResource(R.mipmap.button_location_green);
                 break;
-            case "JOBS":
+            case JOBS:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
                 imgListView.setImageResource(R.mipmap.button_listview_cyan);
                 imgFilter.setImageResource(R.mipmap.button_filter_cyan);
                 imgUserLocation.setImageResource(R.mipmap.button_location_cyan);
                 break;
-            case "GOCLUB":
+            case GOCLUB:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
                 imgListView.setImageResource(R.mipmap.button_listview_purple);
                 imgFilter.setImageResource(R.mipmap.button_filter_purple);
@@ -193,13 +195,12 @@ public class ActiveServiceMapFragment extends Fragment
     }
 
     private void backToMainFragment() {
-        ActiveServiceMainFragment frag = new ActiveServiceMainFragment();
-
         FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.active_service_container, frag, frag.getTag());
-        ft.remove(this);
-        ft.commit();
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.active_service_container, new ActiveServiceMainFragment())
+                .remove(this)
+                .commit();
         if (mContext instanceof ActiveServiceActivity) {
             ((ActiveServiceActivity) mContext).setBottomViewHidden(false);
         }

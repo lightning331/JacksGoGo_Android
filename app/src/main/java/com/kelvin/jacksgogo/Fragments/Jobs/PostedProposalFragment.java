@@ -66,6 +66,7 @@ public class PostedProposalFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posted_proposal, container, false);
+
         return view;
     }
 

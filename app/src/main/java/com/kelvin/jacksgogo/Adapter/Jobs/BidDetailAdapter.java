@@ -28,7 +28,7 @@ public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
             View biderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
-            UserNameRatingCell biderCell = new UserNameRatingCell(biderView);
+            UserNameRatingCell biderCell = new UserNameRatingCell(mContext, biderView);
             biderCell.ratingBar.setRating((float)4.8);
             return biderCell;
         } else if (viewType == 1) {

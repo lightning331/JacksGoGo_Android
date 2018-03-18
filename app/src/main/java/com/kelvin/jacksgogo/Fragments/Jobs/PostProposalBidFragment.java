@@ -75,20 +75,22 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
         txtBidDesc.addTextChangedListener(this);
         btnNext = view.findViewById(R.id.btn_post_proposal_next);
 
+        mJob = selectedAppointment;
         if (mJob != null) {
-            mJob = selectedAppointment;
             String budget = "";
             if (mJob.getBudget() == null && mJob.getBudgetFrom() == null)
-                budget =  "Budget No limit";
-            else if (mJob.getBudget() != null) {
-                lblBudgetType.setText("Fixed");
-                budget = "Budget " + mJob.getBudget().toString() + "/month";
-            } else if (mJob.getBudgetFrom() != null && mJob.getBudgetTo() != null) {
-                lblBudgetType.setText("Package");
-                budget = ("Budget $ " + mJob.getBudgetFrom().toString()
-                        + " "
-                        + "$ " + mJob.getBudgetTo().toString()
-                        + "/month");
+                budget =  "Budget: No limit";
+            else {
+                if (mJob.getBudget() != null) {
+                    lblBudgetType.setText("Fixed");
+                    budget = "Budget: " + mJob.getBudget().toString() + "/month";
+                } else if (mJob.getBudgetFrom() != null && mJob.getBudgetTo() != null) {
+                    lblBudgetType.setText("Package");
+                    budget = ("Budget: $ " + mJob.getBudgetFrom().toString()
+                            + " "
+                            + "$ " + mJob.getBudgetTo().toString()
+                            + "/month");
+                }
             }
             lblBudget.setText(budget);
         }

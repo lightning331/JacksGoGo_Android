@@ -14,11 +14,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.none;
 
 public class PostServicePriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -44,9 +49,9 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private JGGJobModel creatingService;
-    private Integer selectedServiceType = 0; // 0: None select, 1: One-time, 2: Package
-    private int priceType = 0;               // 1: Fixed amount, 2: From amount
+    private JGGJobModel mService;
+    private Integer serviceType;
+    private JGGBudgetType budgetType;
     private boolean isOneTimeService;
     private boolean isPackageService;
     private boolean isFixedAmount;
@@ -78,9 +83,6 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_post_service_price, container, false);
 
         initView(view);
-        creatingService = selectedAppointment;
-        selectedServiceType = creatingService.getSelectedServiceType();
-        priceType = creatingService.getSelectedPriceType();
         updateData();
 
         return view;
@@ -114,6 +116,10 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         btnFixedAmount.setOnClickListener(this);
         btnFrom.setOnClickListener(this);
         btnPackage.setOnClickListener(this);
+
+        mService = selectedAppointment;
+        serviceType = mService.getAppointmentType();
+        budgetType = mService.getBudgetType();
     }
 
     private void updateData() {
@@ -132,65 +138,154 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         txtPackageNum.setVisibility(View.GONE);
         lblPackageAmount.setVisibility(View.GONE);
         packageAmountLayout.setVisibility(View.GONE);
-        switch (selectedServiceType) {
-            case 1:
-                onYellowButtonColor(btnOneTime);
-                onGreenButtonColor(btnFixedAmount);
-                onGreenButtonColor(btnFrom);
-                btnPackage.setVisibility(View.GONE);
-                btnFixedAmount.setVisibility(View.VISIBLE);
-                btnFrom.setVisibility(View.VISIBLE);
-                lblPriceRange.setVisibility(View.VISIBLE);
-                switch (priceType) {
-                    case 1:
-                        onNextButtonDisable();
-                        onYellowButtonColor(btnFixedAmount);
-                        btnFrom.setVisibility(View.GONE);
-                        fixedAmountLayout.setVisibility(View.VISIBLE);
-                        if (creatingService.getBudget() != null) {
-                            isOneTimeService = true;
-                            isFixedAmount = true;
-                            txtFixedAmount.setText(creatingService.getBudget().toString());
-                            onNextButtonEnable();
-                        }
-                        break;
-                    case 2:
-                        onNextButtonDisable();
-                        onYellowButtonColor(btnFrom);
-                        btnFixedAmount.setVisibility(View.GONE);
-                        fromMinLayout.setVisibility(View.VISIBLE);
-                        fromMaxLayout.setVisibility(View.VISIBLE);
-                        if (creatingService.getBudgetFrom() != null
-                                && creatingService.getBudgetTo() != null) {
-                            isOneTimeService = true;
-                            isFromAmount = true;
-                            txtFromMin.setText(creatingService.getBudgetFrom().toString());
-                            txtFromMax.setText(creatingService.getBudgetTo().toString());
-                            onNextButtonEnable();
-                        }
-                        break;
-                    default:
-                        break;
+        if (serviceType == null) {
+            return;
+        } else if (serviceType == 1) {     // One-time Service Budget
+            onYellowButtonColor(btnOneTime);
+            onGreenButtonColor(btnFixedAmount);
+            onGreenButtonColor(btnFrom);
+            btnPackage.setVisibility(View.GONE);
+            btnFixedAmount.setVisibility(View.VISIBLE);
+            btnFrom.setVisibility(View.VISIBLE);
+            lblPriceRange.setVisibility(View.VISIBLE);
+            switch (budgetType) {
+                case fixed:     // Fixed Amount
+                    onNextButtonDisable();
+                    onYellowButtonColor(btnFixedAmount);
+                    btnFrom.setVisibility(View.GONE);
+                    fixedAmountLayout.setVisibility(View.VISIBLE);
+                    if (mService.getBudget() != null) {
+                        isOneTimeService = true;
+                        isFixedAmount = true;
+                        txtFixedAmount.setText(String.valueOf(mService.getBudget()));
+                        onNextButtonEnable();
+                    }
+                    break;
+                case from:     // From To Amount
+                    onNextButtonDisable();
+                    onYellowButtonColor(btnFrom);
+                    btnFixedAmount.setVisibility(View.GONE);
+                    fromMinLayout.setVisibility(View.VISIBLE);
+                    fromMaxLayout.setVisibility(View.VISIBLE);
+                    if (mService.getBudgetFrom() != null
+                            && mService.getBudgetTo() != null) {
+                        isOneTimeService = true;
+                        isFromAmount = true;
+                        txtFromMin.setText(String.valueOf(mService.getBudgetFrom()));
+                        txtFromMax.setText(String.valueOf(mService.getBudgetTo()));
+                        onNextButtonEnable();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } else if (serviceType >= 2) {       // Package Service Budget
+            onNextButtonDisable();
+            onYellowButtonColor(btnPackage);
+            btnOneTime.setVisibility(View.GONE);
+            lblPackageNum.setVisibility(View.VISIBLE);
+            txtPackageNum.setVisibility(View.VISIBLE);
+            lblPackageAmount.setVisibility(View.VISIBLE);
+            packageAmountLayout.setVisibility(View.VISIBLE);
+            if (mService.getBudget() != null) {
+                isPackageService = true;
+                txtPackageNum.setText(String.valueOf(mService.getAppointmentType()));
+                txtPackageAmount.setText(String.valueOf(mService.getBudget()));
+                onNextButtonEnable();
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_post_service_one_time) {
+            if (isOneTimeService)
+                serviceType = null;
+            else
+                serviceType = 1;
+            isOneTimeService = !isOneTimeService;
+        } else if (view.getId() == R.id.btn_post_service_package) {
+            if (isPackageService)
+                serviceType = null;
+            else {
+                serviceType = 2;
+            }
+            isPackageService = !isPackageService;
+        }
+
+        else if (view.getId() == R.id.btn_post_service_fixed_amount) {
+            if (isFixedAmount)
+                budgetType = none;
+            else {
+                budgetType = fixed;
+            }
+            isFixedAmount = !isFixedAmount;
+        } else if (view.getId() == R.id.btn_post_service_From) {
+            if (isFromAmount)
+                budgetType = none;
+            else {
+                budgetType = from;
+            }
+            isFromAmount = !isFromAmount;
+        } else if (view.getId() == R.id.btn_post_service_price_next) {
+            onSaveCreatingService();
+            return;
+        }
+        updateData();
+    }
+
+    private void onSaveCreatingService() {
+        selectedAppointment.setBudgetFrom(null);
+        selectedAppointment.setBudgetTo(null);
+        selectedAppointment.setBudget(null);
+        if (serviceType == 1) {     // One-time Service Budget
+            if (budgetType == fixed) {
+                mService.setBudget(Double.parseDouble(txtFixedAmount.getText().toString()));
+            } else if (budgetType == from) {
+                mService.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
+                mService.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
+            }
+        } else if (serviceType >= 2){       // Package Service Budget
+            mService.setAppointmentType(Integer.parseInt(txtPackageNum.getText().toString()));
+            mService.setBudget(Double.parseDouble(txtPackageAmount.getText().toString()));
+        }
+        mService.setBudgetType(budgetType);
+        mService.setAppointmentType(serviceType);
+        selectedAppointment = mService;
+        listener.onNextButtonClick();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (serviceType == 1) {
+            if (budgetType == fixed) {
+                if (txtFixedAmount.length() > 0) onNextButtonEnable();
+                else onNextButtonDisable();
+            } else if (budgetType == from){
+                if (txtFromMax.length() > 0 && txtFromMin.length() > 0) onNextButtonEnable();
+                else onNextButtonDisable();
+            }
+        } else if (serviceType >= 2) {
+            String packageNum = txtPackageNum.getText().toString();
+            if (packageNum.length() > 0
+                    && Integer.valueOf(packageNum) >= 2
+                    && txtPackageAmount.length() > 0) {
+                onNextButtonEnable();
+            } else {
+                if (packageNum.equals("")) {
+                    txtPackageNum.setBackgroundResource(R.drawable.grey_border_background);
+                } else if (Integer.valueOf(packageNum) < 2) {
+                    Toast.makeText(mContext, "The number of service should be greater than 2!", Toast.LENGTH_LONG).show();
+                    txtPackageNum.setBackgroundResource(R.drawable.red_border_background);
+                    serviceType = 2;
                 }
-                break;
-            case 2:
                 onNextButtonDisable();
-                onYellowButtonColor(btnPackage);
-                btnOneTime.setVisibility(View.GONE);
-                lblPackageNum.setVisibility(View.VISIBLE);
-                txtPackageNum.setVisibility(View.VISIBLE);
-                lblPackageAmount.setVisibility(View.VISIBLE);
-                packageAmountLayout.setVisibility(View.VISIBLE);
-                if (creatingService.getAppointmentType() != null
-                        && creatingService.getBudget() != null) {
-                    isPackageService = true;
-                    txtPackageNum.setText(creatingService.getAppointmentType().toString());
-                    txtPackageAmount.setText(creatingService.getBudget().toString());
-                    onNextButtonEnable();
-                }
-                break;
-            default:
-                break;
+            }
         }
     }
 
@@ -216,79 +311,6 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
         btnNext.setBackgroundResource(R.drawable.grey_background);
         btnNext.setClickable(false);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_service_one_time) {
-            if (isOneTimeService)
-                selectedServiceType = 0;
-            else
-                selectedServiceType = 1;
-            isOneTimeService = !isOneTimeService;
-        } else if (view.getId() == R.id.btn_post_service_fixed_amount) {
-            if (isFixedAmount)
-                priceType = 0;
-            else
-               priceType = 1;
-            isFixedAmount = !isFixedAmount;
-        } else if (view.getId() == R.id.btn_post_service_From) {
-            if (isFromAmount)
-                priceType = 0;
-            else
-                priceType = 2;
-            isFromAmount = !isFromAmount;
-        } else if (view.getId() == R.id.btn_post_service_package) {
-            if (isPackageService)
-                selectedServiceType = 0;
-            else
-                selectedServiceType = 2;
-            isPackageService = !isPackageService;
-        } else if (view.getId() == R.id.btn_post_service_price_next) {
-            selectedAppointment.setBudgetFrom(null);
-            selectedAppointment.setBudgetTo(null);
-            selectedAppointment.setBudget(null);
-            if (selectedServiceType == 1) {
-                creatingService.setAppointmentType(1);
-                if (priceType == 1) {
-                    creatingService.setBudget(Double.parseDouble(txtFixedAmount.getText().toString()));
-                } else if (priceType == 2) {
-                    creatingService.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
-                    creatingService.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
-                }
-                creatingService.setSelectedPriceType(priceType);
-            } else if (selectedServiceType == 2){
-                creatingService.setAppointmentType(Integer.parseInt(txtPackageNum.getText().toString()));
-                creatingService.setBudget(Double.parseDouble(txtPackageAmount.getText().toString()));
-            }
-            creatingService.setSelectedServiceType(selectedServiceType);
-            selectedAppointment = creatingService;
-            listener.onNextButtonClick();
-
-            return;
-        }
-        updateData();
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (selectedServiceType == 1) {
-            if (priceType == 1) {
-                if (txtFixedAmount.length() > 0) onNextButtonEnable();
-                else onNextButtonDisable();
-            } else {
-                if (txtFromMax.length() > 0 && txtFromMin.length() > 0) onNextButtonEnable();
-                else onNextButtonDisable();
-            }
-        } else if (selectedServiceType == 2) {
-            if (txtPackageNum.length() > 0 && txtPackageAmount.length() > 0) onNextButtonEnable();
-            else onNextButtonDisable();
-        }
     }
 
     @Override

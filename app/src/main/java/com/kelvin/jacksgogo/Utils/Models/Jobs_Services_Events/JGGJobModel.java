@@ -2,7 +2,9 @@ package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
 import android.media.Image;
 
-import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
+import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
+import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
@@ -24,12 +26,12 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
-    private boolean IsRequest;      // true: Job, false: Service
+    private boolean IsRequest;
     private boolean IsRescheduled;
     private boolean IsQuickJob;
-    private Integer AppointmentType;    // 0: Repeating, 1: One-time
+    private Integer AppointmentType;
     private Integer RepetitionType;
-    private int BudgetType = 0;     // 0: None select, 1: No limit, 2: Fixed amount, 3: Package amount
+    private Integer BudgetType;
     private int ReportType = 0;
     private int ViewCount = 0;
     private JGGCategoryModel Category = new JGGCategoryModel();
@@ -39,10 +41,7 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
 
     // Dump Data
     private ArrayList<Image> attachmentImages;
-    private int selectedServiceType = 0;
-    private int selectedPriceType = 0;
     private Integer timeSlotType;
-    private List<Integer> selectedRepeatingDays = new ArrayList<>();
 
     private ArrayList<JGGBiddingProviderModel> biddingProviders;
     private ArrayList<JGGProviderUserModel> invitedProviders;
@@ -58,36 +57,12 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         this.ID = ID;
     }
 
-    public Global.TimeSlotSelectionStatus getTimeSlotType() {
-        return Global.TimeSlotSelectionStatus.valueOf(timeSlotType);
+    public TimeSlotSelectionStatus getTimeSlotType() {
+        return TimeSlotSelectionStatus.valueOf(timeSlotType);
     }
 
-    public void setTimeSlotType(Global.TimeSlotSelectionStatus timeSlotType) {
+    public void setTimeSlotType(TimeSlotSelectionStatus timeSlotType) {
         this.timeSlotType = timeSlotType.getValue();
-    }
-
-    public int getSelectedServiceType() {
-        return selectedServiceType;
-    }
-
-    public void setSelectedServiceType(int selectedServiceType) {
-        this.selectedServiceType = selectedServiceType;
-    }
-
-    public int getSelectedPriceType() {
-        return selectedPriceType;
-    }
-
-    public void setSelectedPriceType(int selectedPriceType) {
-        this.selectedPriceType = selectedPriceType;
-    }
-
-    public List<Integer> getSelectedRepeatingDays() {
-        return selectedRepeatingDays;
-    }
-
-    public void setSelectedRepeatingDays(List<Integer> selectedRepeatingDays) {
-        this.selectedRepeatingDays = selectedRepeatingDays;
     }
 
     public ArrayList<Image> getAttachmentImages() {
@@ -130,12 +105,12 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         AttachmentURLs = attachmentURLs;
     }
 
-    public int getBudgetType() {
-        return BudgetType;
+    public JGGBudgetType getBudgetType() {
+        return JGGBudgetType.valueOf(BudgetType);
     }
 
-    public void setBudgetType(int budgetType) {
-        BudgetType = budgetType;
+    public void setBudgetType(JGGBudgetType budgetType) {
+        BudgetType = budgetType.getValue();
     }
 
     public Double getBudgetFrom() {
@@ -230,15 +205,15 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         return AppointmentType;
     }
 
-    public void setAppointmentType(Integer jobType) {
-        AppointmentType = jobType;
+    public void setAppointmentType(Integer appType) {
+        AppointmentType = appType;
     }
 
-    public Global.JGGRepetitionType getRepetitionType() {
-        return Global.JGGRepetitionType.valueOf(RepetitionType);
+    public JGGRepetitionType getRepetitionType() {
+        return JGGRepetitionType.valueOf(RepetitionType);
     }
 
-    public void setRepetitionType(Global.JGGRepetitionType repetitionType) {
+    public void setRepetitionType(JGGRepetitionType repetitionType) {
         RepetitionType = repetitionType.getValue();
     }
 

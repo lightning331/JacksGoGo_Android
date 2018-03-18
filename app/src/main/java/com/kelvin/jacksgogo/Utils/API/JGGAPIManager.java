@@ -5,7 +5,8 @@ import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -87,7 +88,7 @@ public interface JGGAPIManager {
     @POST("api/Appointment/PostService")
     Call<JGGPostAppResponse> postNewService(@Body JGGJobModel creatingService);
 
-    @POST("api/Appointment/EditJob")
+    @POST("api/Appointment/EditService")
     Call<JGGPostAppResponse> editService(@Body JGGJobModel editingService);
 
     @GET("api/Appointment/DeleteService")
@@ -103,13 +104,16 @@ public interface JGGAPIManager {
      *  Appointment
      */
     @GET("api/Appointment/GetPendingAppointments")
-    Call<JGGGetJobResponse> getPendingAppointments();
+    Call<JGGGetAppsResponse> getPendingAppointments();
 
     @GET("api/Appointment/GetConfirmedAppointments")
-    Call<JGGGetJobResponse> getConfirmedAppointments(@Query("ID") String userProfileID);
+    Call<JGGGetAppsResponse> getConfirmedAppointments(@Query("ID") String userProfileID);
 
     @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGGetJobResponse> getAppointmentHistory(@Query("ID") String userProfileID);
+    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("ID") String userProfileID);
+
+    @GET("api/Appointment/GetJobByID")
+    Call<JGGGetAppResponse> getJobByID(@Query("ID") String jobID);
 
     /*
      *  Proposal

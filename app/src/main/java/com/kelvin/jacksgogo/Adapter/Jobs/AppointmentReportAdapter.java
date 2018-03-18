@@ -14,6 +14,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOpt
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,16 +75,15 @@ public class AppointmentReportAdapter extends RecyclerView.Adapter<RecyclerView.
             viewHolder.description.setText(this.list.get(position - 1).getDescription());
             int id = list.get(position - 1).getId();
 
-            if (selectedIds.contains(id)){
+            if (selectedIds.contains(id)) {
                 //if item is selected then,set foreground color of FrameLayout.
                 viewHolder.btnBackground.setBackgroundResource(R.drawable.yellow_background);
                 viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
-            }
-            else {
+            } else {
                 //else remove selected item color.
                 viewHolder.btnBackground.setBackgroundResource(R.drawable.green_border_background);
                 viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-                if (appointmentType.equals("JOBS")) {
+                if (appointmentType.equals(JOBS)) {
                     viewHolder.btnBackground.setBackgroundResource(R.drawable.cyan_border_background);
                     viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
                 }
@@ -93,7 +93,7 @@ public class AppointmentReportAdapter extends RecyclerView.Adapter<RecyclerView.
             nextButtonCell.title.setText(R.string.go_to_summary);
             nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-            if (appointmentType.equals("JOBS")) nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
+            if (appointmentType.equals(JOBS)) nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
             nextButtonCell.btnOriginal.setBorderWidth((float) 0);
         }
     }
@@ -103,8 +103,9 @@ public class AppointmentReportAdapter extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
-    public JGGReportModel getItem(int position){
-        return list.get(position);
+    public JGGReportModel getItem(int position) {
+        JGGReportModel report = list.get(position);
+        return report;
     }
 
     @Override

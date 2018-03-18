@@ -16,15 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
 
@@ -39,10 +36,8 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.POST;
-import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 public class PostServiceSummaryFragment extends Fragment implements View.OnClickListener {
@@ -66,11 +61,10 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private AlertDialog alertDialog;
 
     private PostEditStatus editStatus;
-    private JGGCategoryModel category;
-    private JGGJobModel creatingService;
-    private ProgressDialog progressDialog;
-    private ArrayList<String> attachmentURLs;
     private String postedServiceID;
+    private ArrayList<String> attachmentURLs;
+
+    private ProgressDialog progressDialog;
 
     public enum PostEditStatus {
         NONE,
@@ -106,12 +100,9 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 || editStatus == PostEditStatus.DUPLICATE) {
 
         }
-        category = selectedCategory;
-        selectedAppointment.setCategoryID(category.getID());
-        creatingService = selectedAppointment;
         String postTime = appointmentNewDate(new Date());
-        creatingService.setPostOn(postTime);
-        creatingService.setAttachmentURLs(attachmentURLs);
+        selectedAppointment.setPostOn(postTime);
+        selectedAppointment.setAttachmentURLs(attachmentURLs);
     }
 
     @Override
@@ -149,40 +140,43 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     }
 
     private void setDatas() {
-        if (creatingService != null) {
+        if (selectedAppointment != null) {
             // Category
             Picasso.with(mContext)
-                    .load(category.getImage())
+                    .load(selectedCategory.getImage())
                     .placeholder(null)
                     .into(imgCategory);
-            lblCategory.setText(category.getName());
+            lblCategory.setText(selectedCategory.getName());
             // Describe
-            lblDescribeTitle.setText(creatingService.getTitle());
-            lblDescribeDesc.setText(creatingService.getDescription());
-            String tags = creatingService.getTags();
+            lblDescribeTitle.setText(selectedAppointment.getTitle());
+            lblDescribeDesc.setText(selectedAppointment.getDescription());
+            // Tag
+            String tags = selectedAppointment.getTags();
             if (tags != null && tags.length() > 0) {
                 String [] strings = tags.split(",");
                 describeTagView.setTags(Arrays.asList(strings));
             }
             // Price
             String price = "";
-            if (creatingService.getSelectedServiceType() == 1) {
-                if (creatingService.getSelectedPriceType() == 1)
-                    price = "Fixed $ " + creatingService.getBudget().toString();
-                else if (creatingService.getSelectedPriceType() == 2)
-                    price = "From $ " + creatingService.getBudgetFrom().toString()
+            if (selectedAppointment.getAppointmentType() == 1) {
+                if (selectedAppointment.getBudgetType() == fixed)
+                    price = "Fixed $ " + selectedAppointment.getBudget().toString();
+                else if (selectedAppointment.getBudgetType() == from)
+                    price = "From $ " + selectedAppointment.getBudgetFrom().toString()
                             + " "
-                            + "to $ " + creatingService.getBudgetTo().toString();
+                            + "to $ " + selectedAppointment.getBudgetTo().toString();
                 else
                     price = "No set";
-            } else {
-                price = String.valueOf(creatingService.getAppointmentType()) + " Services, ";
-                if (creatingService.getBudget() != null)
-                    price = price + "$ " + String.valueOf(creatingService.getBudget()) + " per service";
+            } else if (selectedAppointment.getAppointmentType() >= 2) {
+                price = String.valueOf(selectedAppointment.getAppointmentType()) + " Services, ";
+                if (selectedAppointment.getBudget() != null)
+                    price = price + "$ " + String.valueOf(selectedAppointment.getBudget()) + " per service";
+                else
+                    price = "$ " + String.valueOf(selectedAppointment.getBudget());
             }
             lblPrice.setText(price);
             // Address
-            lblAddress.setText(creatingService.getAddress().getFullAddress());
+            lblAddress.setText(selectedAppointment.getAddress().getFullAddress());
         } else {
             lblDescribeTitle.setText("No title");
             lblDescribeDesc.setText("");
@@ -196,7 +190,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private void onPostService() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.postNewService(creatingService);
+        Call<JGGPostAppResponse> call = manager.postNewService(selectedAppointment);
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -204,7 +198,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedServiceID = response.body().getValue();
-                        creatingService.setID(postedServiceID);
+                        selectedAppointment.setID(postedServiceID);
                         showAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -226,7 +220,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private void onEditService() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.editService(creatingService);
+        Call<JGGPostAppResponse> call = manager.editService(selectedAppointment);
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -234,7 +228,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedServiceID = response.body().getValue();
-                        creatingService.setID(postedServiceID);
+                        selectedAppointment.setID(postedServiceID);
                         showAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -267,10 +261,13 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 //                    /showAlertDialog();
                     break;
                 case DUPLICATE:
-                    Intent intent = new Intent(mContext, PostServiceActivity.class);
+                    onPostService();
+                    //showAlertDialog();
+
+                    /*Intent intent = new Intent(mContext, PostServiceActivity.class);
                     intent.putExtra(EDIT_STATUS, POST);
                     intent.putExtra(APPOINTMENT_TYPE, SERVICES);
-                    startActivity(intent);
+                    startActivity(intent);*/
                     break;
                 default:
                     break;

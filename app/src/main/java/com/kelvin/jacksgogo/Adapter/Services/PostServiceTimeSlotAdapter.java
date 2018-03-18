@@ -95,7 +95,7 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
             } else {
                 lblTime.setText(startTime);
             }
-            if (time.getPeoples() != null) {
+            if (time.getPeoples() > 1) {
                 lblPax.setVisibility(View.VISIBLE);
                 lblPax.setText("" + time.getPeoples() + " pax");
             }

@@ -106,7 +106,7 @@ public class FavouriteFragment extends Fragment {
             });
             recyclerView.setAdapter(adapter);
         } else if (textView == USERS) {
-            UserListingAdapter adapter = new UserListingAdapter();
+            UserListingAdapter adapter = new UserListingAdapter(mContext);
             recyclerView.setAdapter(adapter);
         }
     }

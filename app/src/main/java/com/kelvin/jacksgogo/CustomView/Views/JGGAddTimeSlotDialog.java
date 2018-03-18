@@ -74,7 +74,7 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private Integer endMinute = 0;
     private boolean endAM = true;
     private boolean endTimeEnable;
-    private Integer paxNo = 1;
+    private Integer paxNo = 2;
     private boolean isPax;
 
     public JGGAddTimeSlotDialog(Context context, JGGAppBaseModel.AppointmentType type) {
@@ -291,13 +291,13 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private void onPaxNoChange(View view) {
         if (view.getId() == R.id.btn_add_time_pax_right) {
             paxNo = paxNo + 1;
-            if (paxNo > 1) {
+            if (paxNo > 2) {
                 btnPaxLeft.setAlpha((float) 1.0);
                 btnPaxLeft.setClickable(true);
             }
         } else if (view.getId() == R.id.btn_add_time_pax_left) {
             paxNo = paxNo - 1;
-            if (paxNo == 1) {
+            if (paxNo == 2) {
                 btnPaxLeft.setAlpha((float) 0.3);
                 btnPaxLeft.setClickable(false);
             }

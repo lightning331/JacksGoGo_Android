@@ -1,11 +1,13 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,16 +15,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
+import com.kelvin.jacksgogo.Fragments.Jobs.JobStatusSummaryFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -33,13 +40,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
@@ -67,6 +79,7 @@ public class PostedJobActivity extends AppCompatActivity {
     @BindView(R.id.posted_job_user_rating) MaterialRatingBar ratingBar;
 
     private JGGActionbarView actionbarView;
+    private ProgressDialog progressDialog;
     private JGGCategoryModel mCategory;
     private JGGJobModel mJob;
 
@@ -136,20 +149,23 @@ public class PostedJobActivity extends AppCompatActivity {
             lblTime.setText(time);
         } else if (mJob.getAppointmentType() == 0) {     // Repeating
             String dayString = mJob.getRepetition();
-            String[] items = dayString.split(",");
-            if (mJob.getRepetitionType() == JGGRepetitionType.weekly) {
-                for (int i = 0; i < items.length; i ++) {
-                    if (time.equals(""))
-                        time = getWeekName(Integer.parseInt(items[i]));
-                    else
-                        time = time + ", " + "Every " + getWeekName(Integer.parseInt(items[i]));
-                }
-            } else if (mJob.getRepetitionType() == JGGRepetitionType.monthly) {
-                for (int i = 0; i < items.length; i ++) {
-                    if (time.equals(""))
-                        time = "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
-                    else
-                        time = time + ", " + "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
+            if (dayString != null && dayString.length() > 0) {
+                String [] items;
+                items = dayString.split(",");
+                if (mJob.getRepetitionType() == JGGRepetitionType.weekly) {
+                    for (int i = 0; i < items.length; i ++) {
+                        if (time.equals(""))
+                            time = "Every " + getWeekName(Integer.parseInt(items[i]));
+                        else
+                            time = time + ", " + "Every " + getWeekName(Integer.parseInt(items[i]));
+                    }
+                } else if (mJob.getRepetitionType() == JGGRepetitionType.monthly) {
+                    for (int i = 0; i < items.length; i ++) {
+                        if (time.equals(""))
+                            time = "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
+                        else
+                            time = time + ", " + "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
+                    }
                 }
             }
             lblType.setText(time);
@@ -189,7 +205,6 @@ public class PostedJobActivity extends AppCompatActivity {
 
     private void onBackClick() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("is_post", true);
         startActivity(intent);
     }
 
@@ -243,7 +258,7 @@ public class PostedJobActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_job_menu_duplicate) {    // Duplicate Service
                 Intent intent = new Intent(PostedJobActivity.this, PostServiceActivity.class);
-                intent.putExtra("EDIT_STATUS", "Duplicate");
+                intent.putExtra(EDIT_STATUS, DUPLICATE);
                 intent.putExtra(APPOINTMENT_TYPE, JOBS);
                 startActivity(intent);
             } else if (menuItem.getItemId() == R.id.posted_job_menu_delete) {    // Delete Service
@@ -281,9 +296,40 @@ public class PostedJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                onBackClick();
+                deleteJob("");
+
             }
         });
         alertDialog.show();
+    }
+
+    public void deleteJob(String reason) {
+        progressDialog = createProgressDialog(this);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        String jobID = mJob.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        onBackClick();
+                    } else {
+                        Toast.makeText(PostedJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(PostedJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Toast.makeText(PostedJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 }

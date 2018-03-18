@@ -301,7 +301,7 @@
                 android:src="@mipmap/button_previous_green"/>
             <EditText
                 android:editable="false"
-                android:text="1"
+                android:text="2"
                 android:id="@+id/txt_add_time_pax"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"

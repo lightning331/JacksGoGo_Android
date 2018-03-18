@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -13,13 +14,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +38,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
@@ -61,6 +71,7 @@ public class PostedServiceActivity extends AppCompatActivity {
     @BindView(R.id.posted_service_user_rating) MaterialRatingBar ratingBar;
 
     private JGGActionbarView actionbarView;
+    private ProgressDialog progressDialog;
 
     private JGGJobModel mService;
     private JGGCategoryModel mCategory;
@@ -116,12 +127,26 @@ public class PostedServiceActivity extends AppCompatActivity {
         // Address
         lblAddress.setText(mService.getAddress().getFullAddress());
         // Price
-        if (mService.getBudgetType() == 1) lblBudget.setText("No limit");
-        else if (mService.getBudgetType() == 2) lblBudget.setText("$ " + mService.getBudget().toString());
-        else if (mService.getBudgetType() == 3)
-            lblBudget.setText("$ " + mService.getBudgetFrom().toString()
-                    + " "
-                    + "$ " + mService.getBudgetTo().toString());
+        String price = "";
+        if (mService.getAppointmentType() == 1) {
+            if (mService.getBudgetFrom() == null && mService.getBudgetFrom() == null)
+                price = "No limit";
+            else {
+                if (mService.getBudget() != null)
+                    price = "Fixed $ " + mService.getBudget().toString();
+                else if (mService.getBudgetFrom() != null)
+                    price = "From $ " + mService.getBudgetFrom().toString()
+                            + " "
+                            + "to $ " + mService.getBudgetTo().toString();
+            }
+        } else if (mService.getAppointmentType() >= 2) {
+            price = String.valueOf(mService.getAppointmentType()) + " Services, ";
+            if (mService.getBudget() != null)
+                price = price + "$ " + String.valueOf(mService.getBudget()) + " per service";
+            else
+                price = "$ " + String.valueOf(mService.getBudget());
+        }
+        lblBudget.setText(price);
         // User
         Picasso.with(this)
                 .load(mService.getUserProfile().getUser().getPhotoURL())
@@ -253,9 +278,38 @@ public class PostedServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                onBackClick();
+                onDeleteService();
             }
         });
         alertDialog.show();
+    }
+
+    private void onDeleteService() {
+        progressDialog = Global.createProgressDialog(this);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = manager.deleteService(selectedAppointment.getID());
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        Intent intent = new Intent(PostedServiceActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(PostedServiceActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(PostedServiceActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Toast.makeText(PostedServiceActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 }

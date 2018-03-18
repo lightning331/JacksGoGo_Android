@@ -168,12 +168,14 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             // Supplies
             lblSupplies.setText("Our own supplies - $ ");
             // Rescheduling
-            lblRescheduling.setText(getDaysString(Long.valueOf(mProposal.getRescheduleDate())));
-            if (!mProposal.isRescheduleAllowed())
+            if (mProposal.isRescheduleAllowed())
+                lblRescheduling.setText(getDaysString(Long.valueOf(mProposal.getRescheduleDate())));
+            else
                 lblRescheduling.setText("No rescheduling allowed.");
             // Cancellation
-            lblCancellation.setText(getDaysString(Long.valueOf(mProposal.getCancellationDate())));
-            if (!mProposal.isCancellationAllowed())
+            if (mProposal.isCancellationAllowed())
+                lblCancellation.setText(getDaysString(Long.valueOf(mProposal.getCancellationDate())));
+            else
                 lblCancellation.setText("No cancellation allowed.");
         } else {
             lblDesc.setText("");

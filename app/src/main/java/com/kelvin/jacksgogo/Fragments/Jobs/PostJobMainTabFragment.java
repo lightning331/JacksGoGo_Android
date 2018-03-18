@@ -32,6 +32,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.selectedCategoryID;
 
@@ -199,7 +200,7 @@ public class PostJobMainTabFragment extends Fragment {
             creatingJob = selectedAppointment;
             selectedIds = selectedCategoryID(creatingJob.getReportType());
 
-            reportAdapter = new AppointmentReportAdapter(mContext, true, "JOBS");
+            reportAdapter = new AppointmentReportAdapter(mContext, true, JOBS);
             reportAdapter.setSelectedIds(selectedIds);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override

@@ -223,8 +223,9 @@ public class JGGTimeManager {
             }
         } else if (job.getAppointmentType() == 0) {
             String dayString = job.getRepetition();
-            if (dayString != null) {
-                String[] items = dayString.split(",");
+            if (dayString != null && dayString.length() > 0) {
+                String [] items;
+                items = dayString.split(",");
                 if (job.getRepetitionType() == JGGRepetitionType.weekly) {
                     for (int i = 0; i < items.length; i ++) {
                         if (time.equals(""))

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Adapter.Users;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,16 @@ import com.kelvin.jacksgogo.R;
 
 public class UserListingAdapter extends RecyclerView.Adapter {
 
+    private Context mContext;
+
+    public UserListingAdapter(Context context) {
+        this.mContext = context;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View biderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
-        UserNameRatingCell userCell = new UserNameRatingCell(biderView);
+        UserNameRatingCell userCell = new UserNameRatingCell(mContext, biderView);
         userCell.likeButtonLayout.setVisibility(View.VISIBLE);
         userCell.ratingBar.setRating((float)4.8);
         return userCell;

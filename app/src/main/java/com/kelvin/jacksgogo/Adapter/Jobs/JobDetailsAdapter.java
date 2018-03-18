@@ -72,11 +72,9 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
             JobDetailLocationCell jobTimeViewHolder = new JobDetailLocationCell(addressView);
 
-            if (mJob.getBudget() != null) {
-                jobTimeViewHolder.description.setText("Package Job");
-                jobTimeViewHolder.description.setVisibility(View.VISIBLE);
-                jobTimeViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            }
+            jobTimeViewHolder.description.setText("Package Job");
+            jobTimeViewHolder.description.setVisibility(View.VISIBLE);
+            jobTimeViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             jobTimeViewHolder.location.setVisibility(View.INVISIBLE);
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_time);
             jobTimeViewHolder.address.setVisibility(View.VISIBLE);
@@ -106,16 +104,16 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
 
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_budget);
             String budget = "";
-            if (selectedAppointment.getBudget() == null && selectedAppointment.getBudgetFrom() == null)
+            if (mJob.getBudget() == null && mJob.getBudgetFrom() == null)
                 budget =  "Budget No limit";
-            else if (selectedAppointment.getBudget() != null) {
+            else if (mJob.getBudget() != null) {
                 jobTimeViewHolder.description.setText("Fixed");
-                budget = "Budget " + selectedAppointment.getBudget().toString() + "/month";
-            } else if (selectedAppointment.getBudgetFrom() != null && selectedAppointment.getBudgetTo() != null) {
+                budget = "Budget " + mJob.getBudget().toString() + "/month";
+            } else if (mJob.getBudgetFrom() != null && mJob.getBudgetTo() != null) {
                 jobTimeViewHolder.description.setText("Package");
-                budget = ("Budget $ " + selectedAppointment.getBudgetFrom().toString()
+                budget = ("Budget $ " + mJob.getBudgetFrom().toString()
                         + " "
-                        + "$ " + selectedAppointment.getBudgetTo().toString()
+                        + "$ " + mJob.getBudgetTo().toString()
                         + "/month");
             }
             jobTimeViewHolder.address.setText(budget);
@@ -124,7 +122,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             View requestView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
             JobDetailDescriptionCell requestViewHolder = new JobDetailDescriptionCell(requestView);
             requestViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
-            requestViewHolder.setTitle("Requests:", true);
+            requestViewHolder.setTitle("Reports:", true);
             requestViewHolder.setDescription(Global.reportTypeName(mJob.getReportType()));
             return requestViewHolder;
         } else if (viewType == 7) {    // Job Poster Cell

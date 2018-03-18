@@ -194,7 +194,7 @@ public class SearchFragment extends Fragment {
         }
         mIntent.putExtra(APPOINTMENT_TYPE, appType);
         mIntent.putExtra(EDIT_STATUS, POST);
-        view.getContext().startActivity(mIntent);
+        mContext.startActivity(mIntent);
     }
 
     private void showAlertDialog() {

@@ -26,6 +26,8 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+
 public class ServiceDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.service_detail_actionbar) Toolbar mToolbar;
@@ -37,7 +39,6 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     private JGGActionbarView actionbarView;
     private AlertDialog alertDialog;
 
-    private boolean isService = false;
     private boolean reportFlag = false;
 
     @Override
@@ -47,22 +48,29 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
 
         Bundle bundle = getIntent().getExtras();
-        isService = bundle.getBoolean("is_service");
 
         // Hide Bottom NavigationView and ToolBar
         BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
-        bottomTitle.setText("Buy Service");
-        if (!isService) bottomTitle.setText(R.string.title_request_quotation);
+
+        /*
+         *  Service BudgetType
+         *  If Fixed Budget, Can buy Service
+         *  If Package Budget, Can Request to Service
+         */
+        if (selectedAppointment.getBudgetFrom() == null)
+            bottomTitle.setText("Buy Service");
+        else
+            bottomTitle.setText(R.string.title_request_quotation);
         bottomTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isService) {
-                    startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
-                } else {
+                if (selectedAppointment.getBudget() == null) {
                     startActivity(new Intent(ServiceDetailActivity.this, PostQuotationActivity.class));
+                } else {
+                    startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
                 }
             }
         });
@@ -81,7 +89,6 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
         // Main Fragment
         ServiceDetailFragment frag = new ServiceDetailFragment();
-        frag.setFlagForServiceStatus(isService);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.app_original_container, frag)

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostQuotationActivity;
@@ -32,6 +30,8 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostQuotationMainTabFragment extends Fragment implements View.OnClickListener {
 
@@ -174,7 +174,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             recyclerView.setAdapter(addressAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
             recyclerView.setVisibility(View.VISIBLE);
-            reportAdapter = new AppointmentReportAdapter(mContext, isRequest, "SERVICE");
+            reportAdapter = new AppointmentReportAdapter(mContext, isRequest, SERVICES);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {

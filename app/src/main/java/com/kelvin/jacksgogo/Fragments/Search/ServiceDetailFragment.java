@@ -20,8 +20,6 @@ public class ServiceDetailFragment extends Fragment {
     private Context mContext;
     private RecyclerView recyclerView;
 
-    boolean serviceStatus;
-
     private OnFragmentInteractionListener mListener;
 
     public ServiceDetailFragment() {
@@ -53,7 +51,7 @@ public class ServiceDetailFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        ServiceDetailAdapter mAdapter = new ServiceDetailAdapter(mContext, serviceStatus);
+        ServiceDetailAdapter mAdapter = new ServiceDetailAdapter(mContext);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -80,9 +78,5 @@ public class ServiceDetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public void setFlagForServiceStatus(boolean isService) {
-        serviceStatus = isService;
     }
 }

@@ -106,7 +106,8 @@ public class PostProposalActivity extends AppCompatActivity {
                         .replace(R.id.post_proposal_container, proposalSummaryFragment)
                         .commit();
             } else {
-                proposalSummaryFragment.showPostProposalAlertDialog();
+                proposalSummaryFragment.onEditProposal();
+                //proposalSummaryFragment.showPostProposalAlertDialog();
             }
         }
     }

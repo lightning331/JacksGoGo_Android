@@ -45,8 +45,9 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
 
 public class PostServiceTimeSlotFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
-    private Context mContext;
     private OnFragmentInteractionListener mListener;
+    private Context mContext;
+    private PostServiceActivity mActivity;
 
     private TextView lblTimeAvailable;
     private TextView btnNoTimeSlots;
@@ -68,11 +69,12 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     private TextView btnMultiPeople;
     private RelativeLayout btnNext;
     private RecyclerView recyclerView;
-
     private AlertDialog alertDialog;
-    private PostServiceActivity postServiceActivity;
-    private JGGJobModel creatingService;
-    private ArrayList<JGGTimeSlotModel> selectedTimeSlots = new ArrayList<>();
+
+    private JGGJobModel mService;
+    private JGGTimeSlotModel mTimeSlot;
+    private Integer peopleType;
+    private ArrayList<JGGTimeSlotModel> mTimeSlots = new ArrayList<>();
     private Integer editingTimeSlot;
 
     private boolean isTitleEdit;
@@ -103,14 +105,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_time_slot, container, false);
 
-        postServiceActivity = ((PostServiceActivity)mContext);
-        creatingService = selectedAppointment;
-        if (postServiceActivity.selectedPeopleType == 2) {
-            selectedTimeSlots = postServiceActivity.arrayOnePersonTimeSlots;
-        } else if (postServiceActivity.selectedPeopleType == 3) {
-            selectedTimeSlots = postServiceActivity.arrayMultiplePeopleTimeSlots;
-        }
-
         initView(view);
         updateView();
 
@@ -139,12 +133,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         btnNext =  view.findViewById(R.id.btn_time_slot_next);
         recyclerView = view.findViewById(R.id.post_service_time_slot_recycler_view);
 
-        if (creatingService.getSessions() != null
-                && creatingService.getSessions().size() > 0){
-            Date date = appointmentMonthDate(creatingService.getSessions().get(0).getStartOn());
-            calendarView.setSelectedDate(date);
-        } else
-            calendarView.setSelectedDate(new Date());
         btnNoTimeSlots.setOnClickListener(this);
         btnOnePerson.setOnClickListener(this);
         btnMultiPeople.setOnClickListener(this);
@@ -156,6 +144,19 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         btnDone.setOnClickListener(this);
         btnViewTime.setOnClickListener(this);
         btnNext.setOnClickListener(this);
+
+        mService = selectedAppointment;
+        if (mService.getSessions() != null
+                && mService.getSessions().size() > 0) {
+            mTimeSlots = mService.getSessions();
+            mTimeSlot = mService.getSessions().get(0);
+            peopleType = mTimeSlot.getPeoples();
+
+            Date date = appointmentMonthDate(mTimeSlot.getStartOn());
+            calendarView.setSelectedDate(date);
+            updateRecyclerView();
+        } else
+            calendarView.setSelectedDate(new Date());
     }
 
     private void updateView() {
@@ -176,23 +177,25 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         btnDone.setVisibility(View.GONE);
         btnViewTime.setVisibility(View.GONE);
         btnNext.setVisibility(View.GONE);
-        if (postServiceActivity.selectedPeopleType == 2){                       // One Person
+        if (peopleType == null)
+            return;
+        else if (peopleType == 1){                       // One person at a time
             onYellowButtonColor(btnOnePerson);
             btnNoTimeSlots.setVisibility(View.GONE);
             btnMultiPeople.setVisibility(View.GONE);
             lblTimeAvailable.setVisibility(View.GONE);
-            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none) {
+            if (mService.getTimeSlotType() == TimeSlotSelectionStatus.none) {
                 btnNoTimeSlots.setVisibility(View.VISIBLE);
                 btnOnePerson.setVisibility(View.VISIBLE);
                 btnMultiPeople.setVisibility(View.VISIBLE);
                 onGreenButtonColor(btnOnePerson);
-            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
+            } else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
                 lblCreateService.setVisibility(View.VISIBLE);
                 lblTimeAvailable.setVisibility(View.GONE);
                 lblSetTimeNow.setVisibility(View.VISIBLE);
                 btnNow.setVisibility(View.VISIBLE);
                 btnLater.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.now) {
+            } else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.now) {
                 btnOnePerson.setVisibility(View.GONE);
                 btnNow.setVisibility(View.GONE);
                 btnLater.setVisibility(View.GONE);
@@ -200,27 +203,27 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                 calendarViewLayout.setVisibility(View.VISIBLE);
                 addTimeLayout.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done) {
+            } else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.done) {
                 btnViewTime.setVisibility(View.VISIBLE);
                 btnNext.setVisibility(View.VISIBLE);
             }
-        } else if (postServiceActivity.selectedPeopleType == 3) {               // Multi Person
+        } else if (peopleType > 1) {               // Multi people at a time
             onYellowButtonColor(btnMultiPeople);
             btnNoTimeSlots.setVisibility(View.GONE);
             btnOnePerson.setVisibility(View.GONE);
             lblTimeAvailable.setVisibility(View.GONE);
-            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none) {
+            if (mService.getTimeSlotType() == TimeSlotSelectionStatus.none) {
                 btnNoTimeSlots.setVisibility(View.VISIBLE);
                 btnOnePerson.setVisibility(View.VISIBLE);
                 btnMultiPeople.setVisibility(View.VISIBLE);
                 onGreenButtonColor(btnMultiPeople);
-            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
+            } else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
                 lblCreateService.setVisibility(View.VISIBLE);
                 lblTimeAvailable.setVisibility(View.GONE);
                 lblSetTimeNow.setVisibility(View.VISIBLE);
                 btnNow.setVisibility(View.VISIBLE);
                 btnLater.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.now) {
+            } else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.now) {
                 btnMultiPeople.setVisibility(View.GONE);
                 btnNow.setVisibility(View.GONE);
                 btnLater.setVisibility(View.GONE);
@@ -229,7 +232,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                 lblAddTimeButtonTitle.setText("Add Time Slots & No. Of Pax");
                 addTimeLayout.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
-            } else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done) {
+            } else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.done) {
                 btnViewTime.setVisibility(View.VISIBLE);
                 btnNext.setVisibility(View.VISIBLE);
             }
@@ -238,9 +241,9 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
 
     private void onAddTimeClick() {
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
-        if (postServiceActivity.selectedPeopleType == 2) // One person
+        if (peopleType == 1) // One person
             builder.onShowPaxLayout(false);
-        else if (postServiceActivity.selectedPeopleType == 3) // Multi person
+        else if (peopleType > 1) // Multi person
             builder.onShowPaxLayout(true);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
             @Override
@@ -266,13 +269,17 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                     JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
                     timeSlotModel.setStartOn(month + "T" + getTimeString(start));
                     timeSlotModel.setEndOn(month + "T" + getTimeString(end));
-                    timeSlotModel.setPeoples(number);
+                    if (peopleType == 1)        // One person
+                        timeSlotModel.setPeoples(1);
+                    else if (peopleType > 1)    // Multi person
+                        timeSlotModel.setPeoples(number);
                     if (isEditTimeSlot) {
-                        selectedTimeSlots.set(editingTimeSlot, timeSlotModel);
+                        mTimeSlots.set(editingTimeSlot, timeSlotModel);
+                        isEditTimeSlot = false;
                     } else {
-                        if (selectedTimeSlots == null)
-                            selectedTimeSlots = new ArrayList<>();
-                        selectedTimeSlots.add(timeSlotModel);
+                        if (mTimeSlots == null)
+                            mTimeSlots = new ArrayList<>();
+                        mTimeSlots.add(timeSlotModel);
                     }
                     updateRecyclerView();
                 }
@@ -290,15 +297,15 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
-        final PostServiceTimeSlotAdapter adapter = new PostServiceTimeSlotAdapter(mContext, selectedTimeSlots);
+        final PostServiceTimeSlotAdapter adapter = new PostServiceTimeSlotAdapter(mContext, mTimeSlots);
         adapter.setOnItemClickListener(new PostServiceTimeSlotAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(boolean isDelete, int position) {
                 editingTimeSlot = position;
                 if (isDelete) {
                     isEditTimeSlot = false;
-                    selectedTimeSlots.remove(position);
-                    if (selectedTimeSlots.size() == 0)
+                    mTimeSlots.remove(position);
+                    if (mTimeSlots.size() == 0)
                         btnDuplicate.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
@@ -345,48 +352,41 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         }
     }
 
-    private void onYellowButtonColor(TextView button) {
-        button.setBackgroundResource(R.drawable.yellow_background);
-        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
-    }
-
-    private void onGreenButtonColor(TextView button) {
-        button.setBackgroundResource(R.drawable.green_border_background);
-        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-    }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_service_no_time) {
-            postServiceActivity.selectedPeopleType = 1;
+            peopleType = 0;
             onSaveCreatingService();
         }
         else if (view.getId() == R.id.btn_post_service_one_person) {
-            postServiceActivity.selectedPeopleType = 2;
-            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none)
-                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
-            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
-                postServiceActivity.selectedPeopleType = 0;
-                creatingService.setTimeSlotType(TimeSlotSelectionStatus.none);
+            peopleType = 1;
+            mTimeSlots.clear();
+            if (mService.getTimeSlotType() == TimeSlotSelectionStatus.none)
+                mService.setTimeSlotType(TimeSlotSelectionStatus.progress);
+            else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
+                peopleType = 0;
+                mService.setTimeSlotType(TimeSlotSelectionStatus.none);
             }
-            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done)
-                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
+            else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.done)
+                mService.setTimeSlotType(TimeSlotSelectionStatus.progress);
         }
         else if (view.getId() == R.id.btn_post_service_multi_people) {
-            postServiceActivity.selectedPeopleType = 3;
-            if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.none)
-                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
-            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
-                postServiceActivity.selectedPeopleType = 0;
-                creatingService.setTimeSlotType(TimeSlotSelectionStatus.none);
+            peopleType = 2;
+            mTimeSlots.clear();
+            recyclerView.setVisibility(View.GONE);
+            if (mService.getTimeSlotType() == TimeSlotSelectionStatus.none)
+                mService.setTimeSlotType(TimeSlotSelectionStatus.progress);
+            else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.progress) {
+                peopleType = 0;
+                mService.setTimeSlotType(TimeSlotSelectionStatus.none);
             }
-            else if (creatingService.getTimeSlotType() == TimeSlotSelectionStatus.done)
-                creatingService.setTimeSlotType(TimeSlotSelectionStatus.progress);
+            else if (mService.getTimeSlotType() == TimeSlotSelectionStatus.done)
+                mService.setTimeSlotType(TimeSlotSelectionStatus.progress);
         }
         else if (view.getId() == R.id.btn_post_one_person_now) {
-            creatingService.setTimeSlotType(TimeSlotSelectionStatus.now);
+            mService.setTimeSlotType(TimeSlotSelectionStatus.now);
         } else if (view.getId() == R.id.btn_post_one_person_later) {
-            postServiceActivity.selectedPeopleType = 1;
+            peopleType = 0;
             onSaveCreatingService();
         }
         else if (view.getId() == R.id.btn_post_timeslot_title) {
@@ -394,10 +394,10 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
         } else if (view.getId() == R.id.btn_post_timeslot_add) {
             onAddTimeClick();
         } else if (view.getId() == R.id.btn_post_timeslot_done) {
-            creatingService.setTimeSlotType(TimeSlotSelectionStatus.done);
+            mService.setTimeSlotType(TimeSlotSelectionStatus.done);
             onSaveCreatingService();
         } else if (view.getId() == R.id.btn_post_timeslot_view_time) {
-            creatingService.setTimeSlotType(TimeSlotSelectionStatus.now);
+            mService.setTimeSlotType(TimeSlotSelectionStatus.now);
             updateRecyclerView();
         } else if (view.getId() == R.id.btn_time_slots_edit) {
             onAddTimeClick();
@@ -417,21 +417,23 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     }
 
     private void onSaveCreatingService() {
-        if (postServiceActivity.selectedPeopleType == 1) {  // No time slots
-            creatingService.setTimeSlotType(TimeSlotSelectionStatus.none);
-            selectedTimeSlots.clear();
+        if (peopleType == 0) {  // No time slots
+            mService.setTimeSlotType(TimeSlotSelectionStatus.none);
+            mTimeSlots.clear();
             listener.onNextButtonClick();
         }
-        if (postServiceActivity.selectedPeopleType == 2) {  // One person
-            postServiceActivity.selectedPeopleType = 2;
-            postServiceActivity.arrayOnePersonTimeSlots = selectedTimeSlots;
-        }
-        if (postServiceActivity.selectedPeopleType == 3) {  // Multiple person
-            postServiceActivity.selectedPeopleType = 3;
-            postServiceActivity.arrayMultiplePeopleTimeSlots = selectedTimeSlots;
-        }
-        creatingService.setSessions(selectedTimeSlots);
-        selectedAppointment = creatingService;
+        mService.setSessions(mTimeSlots);
+        selectedAppointment = mService;
+    }
+
+    private void onYellowButtonColor(TextView button) {
+        button.setBackgroundResource(R.drawable.yellow_background);
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
+    }
+
+    private void onGreenButtonColor(TextView button) {
+        button.setBackgroundResource(R.drawable.green_border_background);
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
     }
 
     @Override
@@ -459,6 +461,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((PostServiceActivity) mContext);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

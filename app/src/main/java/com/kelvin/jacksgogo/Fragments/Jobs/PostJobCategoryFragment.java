@@ -92,6 +92,7 @@ public class PostJobCategoryFragment extends Fragment {
                     PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobSummaryFragment.PostJobStatus.POST);
                     selectedCategory = categories.get(position - 1);
                     selectedAppointment.setCategory(selectedCategory);
+                    selectedAppointment.setCategoryID(selectedCategory.getID());
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, frag)

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
@@ -26,7 +28,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
 
@@ -48,6 +50,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private SearchView searchView;
     private Object searchTag;
     private ProgressDialog progressDialog;
+    private android.app.AlertDialog alertDialog;
 
     ArrayList<JGGJobModel> arrayAllPendingAppointments = new ArrayList<>();
     ArrayList<JGGJobModel> arrayLoadedQuickAppointments = new ArrayList<>();
@@ -60,6 +63,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private static AppointmentMainAdapter pendingListAdapter;
     private static AppointmentMainAdapter confirmedListAdapter;
     private static AppointmentMainAdapter historyListAdapter;
+    private String userID;
 
     public AppMainFragment() {
         // Required empty public constructor
@@ -115,10 +119,10 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private void loadPendingAppointments() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        Call<JGGGetJobResponse> call = apiManager.getPendingAppointments();
-        call.enqueue(new Callback<JGGGetJobResponse>() {
+        Call<JGGGetAppsResponse> call = apiManager.getPendingAppointments();
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
-            public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
@@ -135,7 +139,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             }
 
             @Override
-            public void onFailure(Call<JGGGetJobResponse> call, Throwable t) {
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
@@ -169,68 +173,84 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void loadConfirmedAppointments() {
-        progressDialog = Global.createProgressDialog(mContext);
-        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        retrofit2.Call<JGGGetJobResponse> call = apiManager.getConfirmedAppointments(currentUser.getID());
-        call.enqueue(new Callback<JGGGetJobResponse>() {
-            @Override
-            public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        resetData();
-                        arrayConfirmedAppointments = response.body().getValue();
+        if (isLoggedIn(false)) {
+            progressDialog = Global.createProgressDialog(mContext);
+            JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getConfirmedAppointments(currentUser.getID());
+            call.enqueue(new Callback<JGGGetAppsResponse>() {
+                @Override
+                public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body().getSuccess()) {
+                            resetData();
+                            arrayConfirmedAppointments = response.body().getValue();
 
-                        setDataToAdapter("Confirmed",
-                                arrayConfirmedAppointments, false);
+                            setDataToAdapter("Confirmed", arrayConfirmedAppointments, false);
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        int statusCode = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<JGGGetJobResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void loadAppointmentsHistory() {
-        progressDialog = Global.createProgressDialog(mContext);
-        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        String userID = currentUser.getID();
-        retrofit2.Call<JGGGetJobResponse> call = apiManager.getAppointmentHistory(userID);
-        call.enqueue(new Callback<JGGGetJobResponse>() {
-            @Override
-            public void onResponse(Call<JGGGetJobResponse> call, Response<JGGGetJobResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        resetData();
-                        arrayHistoryAppointments = response.body().getValue();
+        if (isLoggedIn(true)) {
+            progressDialog = Global.createProgressDialog(mContext);
+            JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getAppointmentHistory(userID);
+            call.enqueue(new Callback<JGGGetAppsResponse>() {
+                @Override
+                public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body().getSuccess()) {
+                            resetData();
+                            arrayHistoryAppointments = response.body().getValue();
 
-                        setDataToAdapter("History",
-                                arrayHistoryAppointments, false);
+                            setDataToAdapter("History", arrayHistoryAppointments, false);
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        int statusCode = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<JGGGetJobResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private boolean isLoggedIn(boolean isHistory) {
+        if (currentUser == null) {
+            if (isHistory)
+                setDataToAdapter("History", arrayHistoryAppointments, false);
+            else
+                setDataToAdapter("Confirmed", arrayConfirmedAppointments, false);
+
+            showAlertDialog();
+            return false;
+        } else {
+            userID = currentUser.getID();
+            return true;
+        }
     }
 
     public void refreshFragment(Object textView) {
@@ -347,6 +367,46 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (object instanceof JGGEventModel) {
             Log.d("Event Model Selected", "==========" + object + "============");
         }
+    }
+
+    private void showAlertDialog() {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText("Information");
+        desc.setText(R.string.alert_post_failed_desc);
+        okButton.setText(R.string.alert_ok);
+        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
+        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
+        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+//                ((MainActivity)mContext).bSmsVeryfyKey = true;
+//                ((MainActivity)mContext).initView();
+//                getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, new SignInFragment())
+//                        .commit();
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     @Override

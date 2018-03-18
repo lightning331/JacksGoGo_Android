@@ -83,6 +83,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
                 PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
                 selectedCategory = mCategories.get(position);
                 selectedAppointment.setCategory(selectedCategory);
+                selectedAppointment.setCategoryID(selectedCategory.getID());
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.post_service_container, frag)

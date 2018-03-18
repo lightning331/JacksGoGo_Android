@@ -16,9 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.nolimit;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.none;
 
 public class PostJobPriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -38,11 +43,11 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private JGGJobModel creatingJob;
-    private int budgetType = 0; // 0: None select, 1: No limit, 2: Fixed amount, 3: From amount
-    private boolean nolimit;
-    private boolean fixed;
-    private boolean from;
+    private JGGJobModel mJob;
+    private JGGBudgetType budgetType;
+    private boolean isNolimit;
+    private boolean isFixed;
+    private boolean isFrom;
 
     public PostJobPriceFragment() {
         // Required empty public constructor
@@ -91,8 +96,9 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnFixed.setOnClickListener(this);
         btnFrom.setOnClickListener(this);
 
-        creatingJob = selectedAppointment;
-        budgetType = creatingJob.getBudgetType();
+        mJob = selectedAppointment;
+        budgetType = mJob.getBudgetType();
+        if (budgetType == nolimit) isNolimit = true;
         updateData();
     }
 
@@ -109,46 +115,102 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         maxLayout.setVisibility(View.GONE);
         lblResponding.setVisibility(View.GONE);
         switch (budgetType) {
-            case 0:
+            case none:
                 btnNext.setVisibility(View.GONE);
                 break;
-            case 1:
+            case nolimit:
                 onYellowButtonColor(btnNoLimit);
                 btnFixed.setVisibility(View.GONE);
                 btnFrom.setVisibility(View.GONE);
                 lblResponding.setVisibility(View.VISIBLE);
                 onNextButtonEnable();
                 break;
-            case 2:
+            case fixed:
                 onYellowButtonColor(btnFixed);
                 btnNoLimit.setVisibility(View.GONE);
                 btnFrom.setVisibility(View.GONE);
                 fixedLayout.setVisibility(View.VISIBLE);
-                if (creatingJob.getBudget() != null) {
-                    txtFixed.setText(creatingJob.getBudget().toString());
-                    fixed = true;
+                if (mJob.getBudget() != null) {
+                    txtFixed.setText(mJob.getBudget().toString());
+                    isFixed = true;
                     onNextButtonEnable();
-                }
+                } else
+                    onNextButtonDisable();
                 txtFixed.addTextChangedListener(this);
                 break;
-            case 3:
+            case from:
                 onYellowButtonColor(btnFrom);
                 btnNoLimit.setVisibility(View.GONE);
                 btnFixed.setVisibility(View.GONE);
                 minLayout.setVisibility(View.VISIBLE);
                 maxLayout.setVisibility(View.VISIBLE);
-                if (creatingJob.getBudgetFrom() != null
-                        && creatingJob.getBudgetTo() != null) {
-                    txtFromMin.setText(creatingJob.getBudgetFrom().toString());
-                    txtFromMax.setText(creatingJob.getBudgetTo().toString());
-                    from = true;
+                if (mJob.getBudgetFrom() != null
+                        && mJob.getBudgetTo() != null) {
+                    txtFromMin.setText(mJob.getBudgetFrom().toString());
+                    txtFromMax.setText(mJob.getBudgetTo().toString());
+                    isFrom = true;
                     onNextButtonEnable();
-                }
+                } else
+                    onNextButtonDisable();
                 txtFromMin.addTextChangedListener(this);
                 txtFromMax.addTextChangedListener(this);
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_post_job_no_limit) {
+            if (isNolimit)
+                budgetType = none;
+            else
+                budgetType = nolimit;
+            isNolimit = !isNolimit;
+        } else if (view.getId() == R.id.btn_post_job_fixed_amount) {
+            if (isFixed)
+                budgetType = none;
+            else
+                budgetType = fixed;
+            isFixed = !isFixed;
+        } else if (view.getId() == R.id.btn_post_job_From) {
+            if (isFrom)
+                budgetType = none;
+            else
+                budgetType = from;
+            isFrom = !isFrom;
+        } else if (view.getId() == R.id.btn_post_job_budget_next) {
+            if (budgetType == fixed)
+                mJob.setBudget(Double.parseDouble(txtFixed.getText().toString()));
+            else if (budgetType == from) {
+                mJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
+                mJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
+            } else if (budgetType == nolimit) {
+                mJob.setBudget(null);   mJob.setBudgetFrom(null);   mJob.setBudgetTo(null);
+            }
+            mJob.setBudgetType(budgetType);
+            selectedAppointment = mJob;
+            listener.onNextButtonClick();
+
+            return;
+        }
+        updateData();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (budgetType == fixed) {
+            if (txtFixed.length() > 0) onNextButtonEnable();
+            else onNextButtonDisable();
+        } else if (budgetType == from) {
+            if (txtFromMin.length() > 0 && txtFromMax.length() > 0) onNextButtonEnable();
+            else onNextButtonDisable();
         }
     }
 
@@ -172,58 +234,6 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
         btnNext.setBackgroundResource(R.drawable.grey_background);
         btnNext.setClickable(false);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_job_no_limit) {
-            if (nolimit)
-                budgetType = 0;
-            else
-                budgetType = 1;
-            nolimit = !nolimit;
-        } else if (view.getId() == R.id.btn_post_job_fixed_amount) {
-            if (fixed)
-                budgetType = 0;
-            else
-                budgetType = 2;
-            fixed = !fixed;
-        } else if (view.getId() == R.id.btn_post_job_From) {
-            if (from)
-                budgetType = 0;
-            else
-                budgetType = 3;
-            from = !from;
-        } else if (view.getId() == R.id.btn_post_job_budget_next) {
-            if (budgetType == 2)
-                creatingJob.setBudget(Double.parseDouble(txtFixed.getText().toString()));
-            else if (budgetType == 3) {
-                creatingJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
-                creatingJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
-            }
-            creatingJob.setBudgetType(budgetType);
-            selectedAppointment = creatingJob;
-            listener.onNextButtonClick();
-
-            return;
-        }
-        updateData();
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (budgetType == 2) {
-            if (txtFixed.length() > 0) onNextButtonEnable();
-            else onNextButtonDisable();
-        } else if (budgetType == 3) {
-            if (txtFromMin.length() > 0 && txtFromMax.length() > 0) onNextButtonEnable();
-            else onNextButtonDisable();
-        }
     }
 
     @Override

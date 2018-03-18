@@ -60,26 +60,55 @@ public class Global {
         }
     }
 
-    public static enum JGGJobType {
+    public static enum JGGBudgetType {
         none(null),
-        repeating(0),
-        oneTime(1);
+        nolimit(1),
+        fixed(2),
+        from(3);
 
         private Integer value;
         private static Map map = new HashMap<>();
 
-        JGGJobType(final Integer value) {
+        JGGBudgetType(final Integer value) {
             this.value = value;
         }
 
         static {
-            for (JGGJobType jobType : JGGJobType.values()) {
+            for (JGGBudgetType jobType : JGGBudgetType.values()) {
                 map.put(jobType.value, jobType);
             }
         }
 
-        public static JGGJobType valueOf(Integer jobType) {
-            return (JGGJobType) map.get(jobType);
+        public static JGGBudgetType valueOf(Integer jobType) {
+            return (JGGBudgetType) map.get(jobType);
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+    }
+
+    public static enum JGGAppointmentType {
+        none(null),     // Not Selected
+        repeating(0),   // Repeating JOB
+        onetime(1);     // One-time JOB, One person at a time(in Service TimeSlot)
+                        // If AppointmentType greater than 1(onetime), It's Multiple people at a time(in Service TimeSlot)
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        JGGAppointmentType(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (JGGAppointmentType jobTimeSlotType : JGGAppointmentType.values()) {
+                map.put(jobTimeSlotType.value, jobTimeSlotType);
+            }
+        }
+
+        public static JGGAppointmentType valueOf(Integer jobTimeSlotType) {
+            return (JGGAppointmentType) map.get(jobTimeSlotType);
         }
 
         public Integer getValue() {

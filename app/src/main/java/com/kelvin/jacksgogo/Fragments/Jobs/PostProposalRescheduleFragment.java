@@ -103,14 +103,13 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
         mProposal = selectedProposal;
 
         if (isRescheduling) {
-            if (mProposal.getRescheduleDate() != null)
-                onShowAllowedLayout();
             if (mProposal.isRescheduleAllowed() == null) {
                 allowed = false;
                 noAllowed = false;
             } else if (mProposal.isRescheduleAllowed()) {
                 allowed = true;
                 noAllowed = false;
+                onShowAllowedLayout();
             } else {
                 noAllowed = true;
                 allowed = false;
@@ -121,14 +120,13 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
             btnAllowed.setText("Allowed, cancel before...");
             lblTerms.setText("If you have any special terms for cancellation, state below (Optional)");
             btnNext.setText("Go To Summary");
-            if (mProposal.getCancellationDate() != null)
-                onShowAllowedLayout();
             if (mProposal.isCancellationAllowed() == null) {
                 allowed = false;
                 noAllowed = false;
             } else if (mProposal.isCancellationAllowed()) {
                 allowed = true;
                 noAllowed = false;
+                onShowAllowedLayout();
             } else {
                 noAllowed = true;
                 allowed = false;

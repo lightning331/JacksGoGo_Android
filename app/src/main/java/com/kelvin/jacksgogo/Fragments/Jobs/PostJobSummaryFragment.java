@@ -25,6 +25,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +40,7 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
@@ -103,13 +105,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (getArguments() != null) {
 
         }
-        attachmentURLs = new ArrayList<>();
-        category = selectedCategory;
-        selectedAppointment.setCategoryID(category.getID());
-        creatingJob = selectedAppointment;
-        String postTime = appointmentNewDate(new Date());
-        creatingJob.setPostOn(postTime);
-        creatingJob.setAttachmentURLs(attachmentURLs);
     }
 
     @Override
@@ -142,7 +137,17 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         btnPostJob = view.findViewById(R.id.btn_post_job);
         lblPostJob = view.findViewById(R.id.lbl_post_job);
 
-        if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Save Changes");
+//        if (jobStatus == PostJobStatus.DUPLICATE || jobStatus == PostJobStatus.EDIT) {
+//            if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Save Changes");
+//            getJobByID();
+//        } else {
+            attachmentURLs = new ArrayList<>();
+            category = selectedCategory;
+            String postTime = appointmentNewDate(new Date());
+            selectedAppointment.setPostOn(postTime);
+            selectedAppointment.setAttachmentURLs(attachmentURLs);
+            creatingJob = selectedAppointment;
+//        }
         btnDescribe.setOnClickListener(this);
         btnTime.setOnClickListener(this);
         btnAddress.setOnClickListener(this);
@@ -173,7 +178,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             // Budget
             lblBudget.setText(convertJobBudgetString(creatingJob));
             // Report
-            lblReport.setText(Global.reportTypeName(creatingJob.getReportType()));
+            lblReport.setText(reportTypeName(creatingJob.getReportType()));
             // Time
             lblTime.setText(convertJobTimeString(creatingJob));
         } else {
@@ -187,6 +192,34 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
     }
 
+    private void getJobByID() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+        Call<JGGGetAppResponse> call = apiManager.getJobByID(selectedAppointment.getID());
+        call.enqueue(new Callback<JGGGetAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppResponse> call, Response<JGGGetAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
@@ -198,7 +231,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
-                        creatingJob.setID(postedJobID);
+                        selectedAppointment.setID(postedJobID);
                         showPostJobAlertDialog(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -228,7 +261,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
-                        creatingJob.setID(postedJobID);
+                        selectedAppointment.setID(postedJobID);
                         showPostJobAlertDialog(true);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();

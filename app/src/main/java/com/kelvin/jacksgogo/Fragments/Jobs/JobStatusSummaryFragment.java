@@ -170,12 +170,10 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
 
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Log.d("SignUpPhoneActivity", t.getMessage());
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });
-
     }
 
     private void setData() {
