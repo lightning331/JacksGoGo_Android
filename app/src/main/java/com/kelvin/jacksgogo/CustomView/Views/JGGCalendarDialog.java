@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -29,27 +29,27 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
     public TextView btnCalendarCancel;
     public TextView btnCalendarOk;
 
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
     private int okButtonColor;
     private int cancelButtonColor;
     private Drawable leftArrow;
     private Drawable rightArrow;
 
-    public JGGCalendarDialog(Context context, JGGAppBaseModel.AppointmentType type) {
+    public JGGCalendarDialog(Context context, AppointmentType type) {
         super(context);
         mContext = context;
         mType = type;
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES) {
             okButtonColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
             cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGGreen10Percent);
             leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_green);
             rightArrow = mContext.getResources().getDrawable(R.mipmap.button_next_green);
-        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+        } else if (mType == AppointmentType.JOBS) {
             okButtonColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
             cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGCyan10Percent);
             leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_cyan);
             rightArrow = mContext.getResources().getDrawable(R.mipmap.button_next_cyan);
-        } else if (mType == JGGAppBaseModel.AppointmentType.GOCLUB) {
+        } else if (mType == AppointmentType.GOCLUB) {
             okButtonColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
             cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGPurple10Percent);
             leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_purple);

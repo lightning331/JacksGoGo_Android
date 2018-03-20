@@ -15,24 +15,20 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Activities.Search.BuyServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobDetailsAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 
@@ -74,7 +70,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, JGGAppBaseModel.AppointmentType.JOBS);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, AppointmentType.JOBS);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

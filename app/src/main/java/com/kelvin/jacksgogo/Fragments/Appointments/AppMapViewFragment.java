@@ -23,7 +23,7 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     private OnFragmentInteractionListener mListener;
 
-    private AppMapViewActivity myContext;
+    private AppMapViewActivity mActivity;
 
     public AppMapViewFragment() {
         // Required empty public constructor
@@ -63,7 +63,7 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onAttach(Context context) {
-        myContext=(AppMapViewActivity) context;
+        mActivity = (AppMapViewActivity) context;
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

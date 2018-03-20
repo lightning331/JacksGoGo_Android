@@ -9,7 +9,7 @@ import android.view.View;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
@@ -35,11 +35,11 @@ public class SearchResultActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         if (appType.equals(SERVICES)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.SERVICES);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, AppointmentType.SERVICES);
         } else if (appType.equals(JOBS)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.JOBS);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, AppointmentType.JOBS);
         } else if (appType.equals(GOCLUB)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, JGGAppBaseModel.AppointmentType.GOCLUB);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH_RESULT, AppointmentType.GOCLUB);
         }
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override

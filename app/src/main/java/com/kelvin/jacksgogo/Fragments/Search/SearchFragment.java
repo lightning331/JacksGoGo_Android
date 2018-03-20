@@ -54,7 +54,7 @@ public class SearchFragment extends Fragment {
     private SearchServicesAdapter serviceAdapter;
     private ProgressDialog progressDialog;
 
-    private String appType = "SERVICES";
+    private String appType = SERVICES;
     private Intent mIntent;
     private int mPercentColor;
     private int mColor;
@@ -89,7 +89,7 @@ public class SearchFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        refreshFragment("SERVICES");
+        refreshFragment(SERVICES);
 
         return view;
     }

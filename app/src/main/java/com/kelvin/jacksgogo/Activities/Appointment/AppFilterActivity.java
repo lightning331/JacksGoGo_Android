@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class AppFilterActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    ImageButton closeButton;
-    ArrayList arrayFilterTypes;
+    private RecyclerView recyclerView;
+    private ImageButton closeButton;
+    private ArrayList arrayFilterTypes;
 
     private static AppointmentFilterAdapter filterRecyclerViewAdapter;
     private Context context;

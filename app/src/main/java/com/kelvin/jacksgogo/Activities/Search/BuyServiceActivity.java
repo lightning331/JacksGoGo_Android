@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.R;
 
 public class BuyServiceActivity extends AppCompatActivity implements View.OnClickListener {
@@ -33,7 +33,7 @@ public class BuyServiceActivity extends AppCompatActivity implements View.OnClic
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE_BUY, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.SERVICE_BUY, AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

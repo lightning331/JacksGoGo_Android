@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeade
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, JGGAppBaseModel.AppointmentType.SERVICES, mContext);
+            SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext);
             return categoryListView;
         } else if (viewType == CATEGORY_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
@@ -51,7 +51,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, JGGAppBaseModel.AppointmentType.SERVICES, mCategories);
+            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, AppointmentType.SERVICES, mCategories);
             return categoryListView;
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);

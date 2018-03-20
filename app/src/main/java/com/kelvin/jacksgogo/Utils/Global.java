@@ -35,6 +35,25 @@ public class Global {
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;
 
+    public enum AppointmentStatus {
+        NONE,
+        PENDING,
+        WORKINPROGRESS,
+        REJECTED,
+        CANCELLED,
+        WITHDRAWN,
+        COMPLETED,
+        WAITINGFORREVIEW
+    }
+
+    public enum AppointmentType {
+        JOBS,
+        SERVICES,
+        EVENT,
+        GOCLUB,
+        USERS,
+        UNKNOWN
+    }
 
     public static enum BiddingStatus {
 

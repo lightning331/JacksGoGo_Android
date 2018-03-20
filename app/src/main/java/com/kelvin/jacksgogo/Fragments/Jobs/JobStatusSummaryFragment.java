@@ -23,7 +23,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -282,7 +282,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_posted_job) {
-            mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.JOB_DETAILS, JGGAppBaseModel.AppointmentType.UNKNOWN);
+            mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.JOB_DETAILS, AppointmentType.UNKNOWN);
             mActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.app_detail_container, new NewJobDetailsFragment())
                     .addToBackStack("job_detail_fragment")

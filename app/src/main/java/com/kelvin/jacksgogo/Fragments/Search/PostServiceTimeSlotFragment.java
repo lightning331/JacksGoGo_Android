@@ -26,8 +26,8 @@ import com.kelvin.jacksgogo.Adapter.Services.PostServiceTimeSlotAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -239,7 +239,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     }
 
     private void onAddTimeClick() {
-        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.SERVICES);
         if (peopleType == 1) // One person
             builder.onShowPaxLayout(false);
         else if (peopleType > 1) // Multi person
@@ -311,7 +311,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     }
 
     private void onShowDuplicateTimeCalendarView() {
-        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, JGGAppBaseModel.AppointmentType.SERVICES);
+        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, AppointmentType.SERVICES);
         builder.calendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
             @Override

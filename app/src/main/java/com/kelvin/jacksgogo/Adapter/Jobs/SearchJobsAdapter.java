@@ -12,7 +12,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryC
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, JGGAppBaseModel.AppointmentType.JOBS, mContext);
+            SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, AppointmentType.JOBS, mContext);
             categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == 1) {
@@ -46,7 +46,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return sectionView;
         } else if (viewType == 2) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, JGGAppBaseModel.AppointmentType.JOBS, mCategories);
+            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, AppointmentType.JOBS, mCategories);
             //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == 3) {

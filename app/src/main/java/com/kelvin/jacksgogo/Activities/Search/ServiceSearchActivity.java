@@ -10,12 +10,12 @@ import android.view.View;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ServiceSearchMainFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 public class ServiceSearchActivity extends AppCompatActivity {
 
@@ -37,11 +37,11 @@ public class ServiceSearchActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         if (appType.equals(SERVICES)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH, JGGAppBaseModel.AppointmentType.SERVICES);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH, AppointmentType.SERVICES);
         } else if (appType.equals(JOBS)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH, JGGAppBaseModel.AppointmentType.JOBS);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH, AppointmentType.JOBS);
         } else if (appType.equals(GOCLUB)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH, JGGAppBaseModel.AppointmentType.GOCLUB);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.SEARCH, AppointmentType.GOCLUB);
         }
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override

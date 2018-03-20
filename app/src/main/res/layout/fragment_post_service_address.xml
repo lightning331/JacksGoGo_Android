@@ -36,11 +36,25 @@
                 android:layout_marginRight="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:text="Select Location From Map"
+                android:id="@+id/btn_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textAlignment="center"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGGreen"
+                android:background="@drawable/green_border_background"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/grey_border_background">
@@ -197,10 +211,46 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    tools:ignore="Suspicious0dp"
+                    android:gravity="center">
+                    <TextView
+                        android:hint="Coordinates"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7">
+                    <TextView
+                        android:id="@+id/lbl_coordinate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/JGGBlack"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/show_full_address_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center_vertical">
@@ -226,6 +276,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="left|center_vertical"
                 android:background="@drawable/grey_background">
                 <LinearLayout

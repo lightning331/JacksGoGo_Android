@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
@@ -22,13 +22,13 @@ import java.util.ArrayList;
 public class SearchCategoryCell extends RecyclerView.ViewHolder {
 
     private Context mContext;
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
 
     private RecyclerView recyclerView;
     private CategoryCellAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
-    public SearchCategoryCell(View itemView, Context context, JGGAppBaseModel.AppointmentType type, ArrayList<JGGCategoryModel> data) {
+    public SearchCategoryCell(View itemView, Context context, AppointmentType type, ArrayList<JGGCategoryModel> data) {
         super(itemView);
         mContext = context;
         mType = type;
@@ -38,11 +38,11 @@ public class SearchCategoryCell extends RecyclerView.ViewHolder {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES) {
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+        } else if (mType == AppointmentType.JOBS) {
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        } else if (mType == JGGAppBaseModel.AppointmentType.GOCLUB) {
+        } else if (mType == AppointmentType.GOCLUB) {
 
         }
 
@@ -50,13 +50,13 @@ public class SearchCategoryCell extends RecyclerView.ViewHolder {
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (mType == AppointmentType.SERVICES) {
                     if (mCategories != null) {
                         String name = mCategories.get(position).getName();
                         Toast.makeText(mContext, name,
                                 Toast.LENGTH_LONG).show();
                     }
-                } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (mType == AppointmentType.JOBS) {
                     if (mCategories != null) {
                         String name = "";
                         if (position == 0)

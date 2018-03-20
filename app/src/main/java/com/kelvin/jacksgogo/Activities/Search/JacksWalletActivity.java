@@ -1,13 +1,13 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 public class JacksWalletActivity extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class JacksWalletActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.JACKS_WALLET, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.JACKS_WALLET, AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

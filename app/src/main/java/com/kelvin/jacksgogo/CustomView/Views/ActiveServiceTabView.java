@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 /**
  * Created by PUMA on 11/13/2017.
  */
@@ -55,19 +59,19 @@ public class ActiveServiceTabView extends RelativeLayout implements View.OnClick
         lblRating = (TextView) tabView.findViewById(R.id.lbl_active_service_rating);
 
         switch (appType) {
-            case "SERVICES":
+            case SERVICES:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
                 lblDistance.setTextColor(mColor);
                 imgMapView.setImageResource(R.mipmap.button_mapview_green);
                 imgFilter.setImageResource(R.mipmap.button_filter_green);
                 break;
-            case "JOBS":
+            case JOBS:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
                 lblDistance.setTextColor(mColor);
                 imgMapView.setImageResource(R.mipmap.button_mapview_cyan);
                 imgFilter.setImageResource(R.mipmap.button_filter_cyan);
                 break;
-            case "GOCLUB":
+            case GOCLUB:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
                 lblDistance.setTextColor(mColor);
                 imgMapView.setImageResource(R.mipmap.button_mapview_purple);

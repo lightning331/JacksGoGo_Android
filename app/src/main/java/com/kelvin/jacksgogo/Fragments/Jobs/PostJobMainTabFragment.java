@@ -153,7 +153,7 @@ public class PostJobMainTabFragment extends Fragment {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         if (tabbarView.getPostJobTabName() == PostJobTabbarView.PostJobTabName.DESCRIBE) {
-            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("JOBS");
+            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance(JOBS);
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
@@ -173,7 +173,7 @@ public class PostJobMainTabFragment extends Fragment {
             });
             ft.replace(R.id.post_job_detail_container, frag, frag.getTag());
         } else if (tabbarView.getPostJobTabName() == PostJobTabbarView.PostJobTabName.ADDRESS) {
-            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("JOBS");
+            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance(JOBS);
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {

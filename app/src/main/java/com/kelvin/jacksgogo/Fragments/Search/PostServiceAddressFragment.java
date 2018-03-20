@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
@@ -41,9 +43,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     private ImageView btnCheckBox;
     private RelativeLayout btnNext;
     private TextView lblNext;
+    private TextView btnLocation;
+    private TextView lblCoordinate;
 
     private boolean isChecked = false;
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
     private JGGAppointmentModel creatingJob;
 
     public PostServiceAddressFragment() {
@@ -64,9 +68,9 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         if (getArguments() != null) {
             String type = getArguments().getString(APPOINTMENT_TYPE);
             if (type.equals(SERVICES))
-                mType = JGGAppBaseModel.AppointmentType.SERVICES;
+                mType = AppointmentType.SERVICES;
             else if (type.equals(JOBS))
-                mType = JGGAppBaseModel.AppointmentType.JOBS;
+                mType = AppointmentType.JOBS;
         }
     }
 
@@ -94,8 +98,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         btnCheckBox = view.findViewById(R.id.btn_post_address_checkbox);
         btnNext = view.findViewById(R.id.btn_post_address_next);
         lblNext = view.findViewById(R.id.lbl_post_address_next);
+        btnLocation = view.findViewById(R.id.btn_location);
+        lblCoordinate = view.findViewById(R.id.lbl_coordinate);
 
         btnCheckBox.setOnClickListener(this);
+        btnLocation.setOnClickListener(this);
         txtUnit.addTextChangedListener(this);
         txtStreet.addTextChangedListener(this);
         txtPostCode.addTextChangedListener(this);
@@ -105,13 +112,15 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         txtStreet.setText("Jurong West Avenue 5");
         txtPostCode.setText("638657");
 
-        if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+        if (mType == AppointmentType.JOBS) {
 
             lblTitle.setText(R.string.post_job_address_title);
             lblDesc.setVisibility(View.VISIBLE);
             checkboxLayout.setVisibility(View.GONE);
             lblNext.setText("Next");
 
+            btnLocation.setBackgroundResource(R.drawable.cyan_border_background);
+            btnLocation.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
         }
         txtPlaceName.setText(creatingJob.getAddress().getFloor());
         txtUnit.setText(creatingJob.getAddress().getUnit());
@@ -132,6 +141,8 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
                 btnCheckBox.setImageResource(R.mipmap.checkbox_on_green);
             } else
                 btnCheckBox.setImageResource(R.mipmap.checkbox_off);
+        } else if (view.getId() == R.id.btn_location) {
+            mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
         } else if (view.getId() == R.id.btn_post_address_next) {
             JGGAddressModel address = new JGGAddressModel();
             address.setFloor(txtPlaceName.getText().toString());
@@ -160,7 +171,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             btnNext.setOnClickListener(this);
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(R.drawable.green_background);
-            if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+            if (mType == AppointmentType.JOBS) {
                 btnNext.setBackgroundResource(R.drawable.cyan_background);
             }
         } else {

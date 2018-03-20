@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalSummaryFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
@@ -52,7 +52,7 @@ public class PostProposalActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, AppointmentType.UNKNOWN);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -93,7 +93,7 @@ public class PostProposalActivity extends AppCompatActivity {
             if (manager.getBackStackEntryCount() == 0) {
                 showAlertDialog();
             } else {
-                actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, AppointmentType.UNKNOWN);
                 actionbarView.mMoreButton.setVisibility(View.GONE);
                 manager.popBackStack();
             }

@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 
@@ -40,7 +40,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
     private boolean alreadyVerifiedSkills = true;
     private String status;
-    private JGGAppBaseModel.AppointmentType appType;
+    private AppointmentType appType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,11 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             status = extra.getString(EDIT_STATUS);
             String type = extra.getString(APPOINTMENT_TYPE);
             if (type.equals(SERVICES))
-                appType = JGGAppBaseModel.AppointmentType.SERVICES;
+                appType = AppointmentType.SERVICES;
             else if (type.equals(JOBS))
-                appType = JGGAppBaseModel.AppointmentType.JOBS;
+                appType = AppointmentType.JOBS;
             else if (type.equals(GOCLUB))
-                appType = JGGAppBaseModel.AppointmentType.GOCLUB;
+                appType = AppointmentType.GOCLUB;
         }
 
         actionbarView = new JGGActionbarView(this);
@@ -64,7 +64,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.SERVICES);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -90,7 +90,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             switch (appType) {
                 case SERVICES:
                     selectedAppointment.setRequest(false);
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.SERVICES);
                     if (alreadyVerifiedSkills) {
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -105,14 +105,14 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                     break;
                 case JOBS:
                     selectedAppointment.setRequest(true);
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.JOBS);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.JOBS);
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, new PostJobCategoryFragment())
                             .commit();
                     break;
                 case GOCLUB:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.GOCLUB);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.GOCLUB);
                     break;
                 default:
                     break;
@@ -121,7 +121,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case SERVICES:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.SERVICES);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.SERVICES);
                     PostServiceSummaryFragment serviceFag = new PostServiceSummaryFragment();
                     if (status.equals(EDIT))
                         serviceFag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.EDIT);
@@ -133,7 +133,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                             .commit();
                     break;
                 case JOBS:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_JOB, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_JOB, AppointmentType.UNKNOWN);
                     PostJobSummaryFragment jobFrag = new PostJobSummaryFragment();
                     if (status.equals(EDIT))
                         jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.EDIT);
@@ -145,7 +145,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                             .commit();
                     break;
                 case GOCLUB:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, JGGAppBaseModel.AppointmentType.GOCLUB);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.GOCLUB);
                     break;
                 default:
                     break;
@@ -157,7 +157,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.btn_back) {
             FragmentManager manager = getSupportFragmentManager();
             if (manager.getBackStackEntryCount() == 0) {
-                if (appType == JGGAppBaseModel.AppointmentType.JOBS) showAlertDialog();
+                if (appType == AppointmentType.JOBS) showAlertDialog();
                 else super.onBackPressed();
             } else {
                 manager.popBackStack();

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +26,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDate;
 public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implements View.OnClickListener {
 
     private Context mContext;
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
 
     private ImageView btnStartTimeUp;
     private ImageView btnStartTimeDown;
@@ -77,7 +77,7 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private Integer paxNo = 2;
     private boolean isPax;
 
-    public JGGAddTimeSlotDialog(Context context, JGGAppBaseModel.AppointmentType type) {
+    public JGGAddTimeSlotDialog(Context context, AppointmentType type) {
         super(context);
         mContext = context;
         mType = type;

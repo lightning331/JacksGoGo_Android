@@ -25,9 +25,7 @@ import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
@@ -366,9 +364,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             Intent intent = new Intent(getActivity(), ServiceDetailActivity.class);
             intent.putExtra("is_service", false);
             startActivity(intent);
-        }
-        if (object instanceof JGGEventModel) {
-            Log.d("Event Model Selected", "==========" + object + "============");
         }
     }
 

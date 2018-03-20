@@ -8,8 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -31,9 +34,9 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
     public TextView lblPostNew;
 
     private Context mContext;
-    private JGGAppBaseModel.AppointmentType type;
+    private AppointmentType type;
 
-    public SearchHomeHeaderView(View itemView, JGGAppBaseModel.AppointmentType t, Context context) {
+    public SearchHomeHeaderView(View itemView, AppointmentType t, Context context) {
         super(itemView);
         mContext = context;
         type = t;
@@ -58,16 +61,16 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
 
         viewMyServiceButton.setVisibility(View.GONE);
 
-        if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+        if (type == AppointmentType.SERVICES) {
             viewMyServiceButton.setVisibility(View.VISIBLE);
             imgAllService.setImageResource(R.mipmap.button_viewall_round_green);
             imgPostNew.setImageResource(R.mipmap.button_addnew_round_green);
-            setViewColor(ContextCompat.getColor(mContext, R.color.JGGGreen), "Services");
-        } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+            setViewColor(ContextCompat.getColor(mContext, R.color.JGGGreen), SERVICES);
+        } else if (type == AppointmentType.JOBS) {
             imgAllService.setImageResource(R.mipmap.button_viewall_cyan);
             imgPostNew.setImageResource(R.mipmap.button_addnew_round_cyan);
-            setViewColor(ContextCompat.getColor(mContext, R.color.JGGCyan), "Jobs");
-        } else if (type == JGGAppBaseModel.AppointmentType.EVENT) {
+            setViewColor(ContextCompat.getColor(mContext, R.color.JGGCyan), JOBS);
+        } else if (type == AppointmentType.EVENT) {
 
         }
     }

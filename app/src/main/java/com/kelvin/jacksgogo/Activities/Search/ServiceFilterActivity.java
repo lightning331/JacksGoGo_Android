@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
     private CategoryCellAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +44,11 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
         String appType = getIntent().getStringExtra(APPOINTMENT_TYPE);
         if (appType.equals(SERVICES)) {
-            mType = JGGAppBaseModel.AppointmentType.SERVICES;
+            mType = AppointmentType.SERVICES;
         } else if (appType.equals(JOBS)) {
-            mType = JGGAppBaseModel.AppointmentType.JOBS;
+            mType = AppointmentType.JOBS;
         } else if (appType.equals(GOCLUB)) {
-            mType = JGGAppBaseModel.AppointmentType.GOCLUB;
+            mType = AppointmentType.GOCLUB;
         }
 
         initView();
@@ -63,15 +63,15 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
 
         closeButton.setOnClickListener(this);
 
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_green);
             btnCurrentLocation.setBackgroundResource(R.drawable.green_background);
 
-        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+        } else if (mType == AppointmentType.JOBS) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_cyan);
             btnCurrentLocation.setBackgroundResource(R.drawable.cyan_background);
 
-        } else if (mType == JGGAppBaseModel.AppointmentType.GOCLUB) {
+        } else if (mType == AppointmentType.GOCLUB) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_purple);
             btnCurrentLocation.setBackgroundResource(R.drawable.purple_background);
 
@@ -87,13 +87,13 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (mType == AppointmentType.SERVICES) {
                     if (mCategories != null) {
                         String name = mCategories.get(position).getName();
                         Toast.makeText(ServiceFilterActivity.this, name,
                                 Toast.LENGTH_LONG).show();
                     }
-                } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (mType == AppointmentType.JOBS) {
                     if (mCategories != null) {
                         String name = "";
                         if (position == 0)

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +23,9 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context mContext;
     private ArrayList<JGGCategoryModel> mCategories;
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
 
-    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data, JGGAppBaseModel.AppointmentType type) {
+    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data, AppointmentType type) {
         mContext = context;
         mCategories = data;
         mType = type;
@@ -41,13 +41,13 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         CategoryViewHolder categoryView = (CategoryViewHolder) holder;
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES) {
             if (mCategories != null) {
                 String categoryName = mCategories.get(position).getName();
                 String url = mCategories.get(position).getImage();
                 categoryView.setData(url, categoryName);
             }
-        } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+        } else if (mType == AppointmentType.JOBS) {
             if (position == 0) {
                 categoryView.lblCategory.setText("Quick Jobs");
                 categoryView.imgCategory.setImageResource(R.mipmap.icon_cat_quickjob);
@@ -69,11 +69,11 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES) {
             if (mCategories != null)
                 return mCategories.size();
         }
-        else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+        else if (mType == AppointmentType.JOBS) {
             if (mCategories != null)
                 return mCategories.size() + 1;
         }

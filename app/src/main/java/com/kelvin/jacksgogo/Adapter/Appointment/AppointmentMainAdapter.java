@@ -116,7 +116,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
                 cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             }
-//            else if (appointment instanceof JGGEventModel) {
+//            else if (appointment instanceof ) {
 //                cellView.lbl_Day.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
 //                cellView.lbl_Month.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGPurple));
 //            }

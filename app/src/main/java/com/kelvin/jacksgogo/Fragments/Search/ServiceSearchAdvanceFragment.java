@@ -25,13 +25,16 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.CustomView.Views.SelectAreaDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class ServiceSearchAdvanceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -51,7 +54,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     private CategoryCellAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
     private AlertDialog alertDialog;
     private int imgBorderBackground;
     private int imgBackground;
@@ -75,20 +78,20 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         if (getArguments() != null) {
             String appType = getArguments().getString(APPOINTMENT_TYPE);
             switch (appType) {
-                case "SERVICES":
-                    mType = JGGAppBaseModel.AppointmentType.SERVICES;
+                case SERVICES:
+                    mType = AppointmentType.SERVICES;
                     imgBorderBackground = R.drawable.green_border_background;
                     imgBackground = R.drawable.green_background;
                     imgArea = R.mipmap.button_showless_green;
                     break;
-                case "JOBS":
-                    mType = JGGAppBaseModel.AppointmentType.JOBS;
+                case JOBS:
+                    mType = AppointmentType.JOBS;
                     imgBorderBackground = R.drawable.cyan_border_background;
                     imgBackground = R.drawable.cyan_background;
                     imgArea = R.mipmap.button_showless_cyan;
                     break;
-                case "GOCLUB":
-                    mType = JGGAppBaseModel.AppointmentType.GOCLUB;
+                case GOCLUB:
+                    mType = AppointmentType.GOCLUB;
                     imgBorderBackground = R.drawable.purple_border_background;
                     imgBackground = R.drawable.purple_background;
                     imgArea = R.mipmap.button_showless_purple;
@@ -138,13 +141,13 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (mType == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (mType == AppointmentType.SERVICES) {
                     if (mCategories != null) {
                         String name = mCategories.get(position).getName();
                         Toast.makeText(mContext, name,
                                 Toast.LENGTH_LONG).show();
                     }
-                } else if (mType == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (mType == AppointmentType.JOBS) {
                     if (mCategories != null) {
                         String name = "";
                         if (position == 0)

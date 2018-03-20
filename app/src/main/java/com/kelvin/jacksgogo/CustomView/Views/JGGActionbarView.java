@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 /**
  * Created by PUMA on 11/3/2017.
@@ -110,7 +110,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
     }
 
     @SuppressLint("ResourceAsColor")
-    public void setStatus(EditStatus status, JGGAppBaseModel.AppointmentType type) {
+    public void setStatus(EditStatus status, AppointmentType type) {
         this.editStatus = status;
         switch (status) {
             case NONE:
@@ -145,19 +145,19 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             case DETAILS:
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText("");
-                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (type == AppointmentType.SERVICES) {
                     imgLikeOutLine = R.mipmap.button_favourite_outline_green;
                     imgMoreOutLine = R.mipmap.button_more_green;
                     imgLike = R.mipmap.button_favourite_green;
                     imgMore = R.mipmap.button_more_active_green;
                     setLikeButton(R.mipmap.button_backarrow_green, imgLikeOutLine, imgMoreOutLine);
-                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (type == AppointmentType.JOBS) {
                     imgLikeOutLine = R.mipmap.button_favourite_outline_cyan;
                     imgMoreOutLine = R.mipmap.button_more_cyan;
                     imgLike = R.mipmap.button_favourite_cyan;
                     imgMore = R.mipmap.button_more_active_cyan;
                     setLikeButton(R.mipmap.button_backarrow_cyan, imgLikeOutLine, imgMoreOutLine);
-                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB) {
                     imgLikeOutLine = R.mipmap.button_favourite_outline_purple;
                     imgMoreOutLine = R.mipmap.button_more_purple;
                     imgLike = R.mipmap.button_favourite_purple;
@@ -183,20 +183,20 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 setOrangeBackButton(R.string.title_service_listing, "Profile");
                 break;
             case ACTIVE_AROUND:
-                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (type == AppointmentType.SERVICES) {
                     setGreenBackButton("", R.string.title_active_service_around);
-                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_active_job_around);
-                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB) {
                     setPurpleBackButton(R.string.title_search, R.string.title_active_goclub_around);
                 }
                 break;
             case POST:
-                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (type == AppointmentType.SERVICES) {
                     setGreenBackButton("", R.string.title_post_service);
-                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_post_job);
-                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB) {
                     setPurpleBackButton(R.string.title_post_goclub, R.string.title_empty);
                 }
                 break;
@@ -245,11 +245,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
-                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (type == AppointmentType.SERVICES) {
                     imgMoreOutLine = R.mipmap.button_more_green;
                     imgMore = R.mipmap.button_more_active_green;
                     setMoreButtonClicked(false);
-                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (type == AppointmentType.JOBS) {
                     mBackButtonTitleTextView.setText(R.string.title_appointment);
                     param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3);
                     param1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
@@ -260,27 +260,27 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgMoreOutLine = R.mipmap.button_more_cyan;
                     imgMore = R.mipmap.button_more_active_cyan;
                     setMoreButtonClicked(false);
-                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB) {
                     imgMoreOutLine = R.mipmap.button_more_purple;
                     imgMore = R.mipmap.button_more_active_purple;
                     setMoreButtonClicked(false);
                 }
                 break;
             case SEARCH:
-                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (type == AppointmentType.SERVICES) {
                     setGreenBackButton("", R.string.title_search);
-                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_search);
-                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB) {
                     setPurpleBackButton(R.string.title_search, R.string.title_empty);
                 }
                 break;
             case SEARCH_RESULT:
-                if (type == JGGAppBaseModel.AppointmentType.SERVICES) {
+                if (type == AppointmentType.SERVICES) {
                     setGreenBackButton("", R.string.search_result);
-                } else if (type == JGGAppBaseModel.AppointmentType.JOBS) {
+                } else if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.search_result);
-                } else if (type == JGGAppBaseModel.AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB) {
                     setPurpleBackButton(R.string.search_result, R.string.title_empty);
                 }
                 break;

@@ -20,7 +20,7 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.yanzhenjie.album.AlbumFile;
 
 import java.util.List;
@@ -167,7 +167,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
             alertDialog.dismiss();
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-            mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+            mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
             mActivity.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.app_detail_container, new JobStatusSummaryFragment())

@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
@@ -63,15 +63,15 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
         setSupportActionBar(mToolbar);
 
         if (appType.equals(SERVICES)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, JGGAppBaseModel.AppointmentType.SERVICES);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.SERVICES);
             btnPost.setText(R.string.title_post_service);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
         } else if (appType.equals(JOBS)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, JGGAppBaseModel.AppointmentType.JOBS);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.JOBS);
             btnPost.setText(R.string.title_post_job);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan));
         } else if (appType.equals(GOCLUB)) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, JGGAppBaseModel.AppointmentType.GOCLUB);
+            actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.GOCLUB);
             btnPost.setText(R.string.title_post_goclub);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGPurple));
         }

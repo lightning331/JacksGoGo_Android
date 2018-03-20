@@ -13,10 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceMainTabFragment extends Fragment {
 
@@ -123,7 +125,7 @@ public class PostServiceMainTabFragment extends Fragment {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.DESCRIBE) {
-            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance("SERVICE");
+            PostServiceDescribeFragment frag = PostServiceDescribeFragment.newInstance(SERVICES);
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
@@ -153,7 +155,7 @@ public class PostServiceMainTabFragment extends Fragment {
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
-            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance("SERVICE");
+            PostServiceAddressFragment frag = PostServiceAddressFragment.newInstance(SERVICES);
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {

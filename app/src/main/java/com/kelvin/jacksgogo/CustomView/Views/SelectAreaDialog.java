@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 /**
  * Created by PUMA on 1/20/2018.
@@ -24,7 +24,7 @@ public class SelectAreaDialog extends android.app.AlertDialog.Builder implements
     private ImageView btnNewton;
     private ImageView btnToa;
 
-    private JGGAppBaseModel.AppointmentType mType;
+    private AppointmentType mType;
     private int checkButtonImage;
     private int closeButtonImage;
     private boolean cbdSelected = true;
@@ -34,7 +34,7 @@ public class SelectAreaDialog extends android.app.AlertDialog.Builder implements
     private boolean newtonSelected = true;
     private boolean toaSelected = true;
 
-    public SelectAreaDialog(Context context, JGGAppBaseModel.AppointmentType type) {
+    public SelectAreaDialog(Context context, AppointmentType type) {
         super(context);
         mContext = context;
         mType = type;

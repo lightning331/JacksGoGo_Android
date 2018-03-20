@@ -22,9 +22,9 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobStatusSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
@@ -121,16 +121,16 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                     if (backStackCount == 0) {
                         onBackPressed();
                     } else {
-                        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                         manager.popBackStack();
                     }
                     break;
                 case JOB_REPORT:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                     manager.popBackStack();
                     break;
                 case JOB_DETAILS:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                     manager.popBackStack();
                     break;
                 case APPOINTMENT:
@@ -173,7 +173,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     }
 
     private void showJobMainFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
         frag = new JobStatusSummaryFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -182,7 +182,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     }
 
     private void backToEditJobMainFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, AppointmentType.UNKNOWN);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -191,7 +191,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     }
 
     public void setStatus(JGGActionbarView.EditStatus status) {
-        actionbarView.setStatus(status, JGGAppBaseModel.AppointmentType.UNKNOWN);
+        actionbarView.setStatus(status, AppointmentType.UNKNOWN);
     }
 
     private void onEditJob() {
@@ -218,7 +218,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, JGGAppBaseModel.AppointmentType.UNKNOWN);
+                actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                 alertDialog.dismiss();
             }
         });

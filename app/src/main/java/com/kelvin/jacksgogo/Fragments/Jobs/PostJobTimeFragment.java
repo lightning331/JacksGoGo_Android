@@ -21,7 +21,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.CustomView.Views.RepeatingDayDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
@@ -247,7 +247,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     }
 
     private void onShowCalendarDialog() {
-        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, JGGAppBaseModel.AppointmentType.JOBS);
+        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, AppointmentType.JOBS);
         builder.lblCalendarTitle.setText("Pick the date:");
         builder.btnCalendarOk.setText("Done");
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
@@ -278,7 +278,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     }
 
     private void onShowAddTimeClickDialog() {
-        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, JGGAppBaseModel.AppointmentType.JOBS);
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.JOBS);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
             @Override
             public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
