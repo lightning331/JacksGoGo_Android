@@ -16,7 +16,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailInviteButt
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
@@ -32,7 +32,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
 
     public NewJobDetailsAdapter(Context context) {
         this.mContext = context;

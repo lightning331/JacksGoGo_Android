@@ -23,7 +23,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTi
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTotalReviewCell;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
@@ -44,7 +44,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Context mContext;
 
-    private JGGJobModel mService;
+    private JGGAppointmentModel mService;
     private JGGCategoryModel mCategory;
 
     /*
@@ -120,14 +120,19 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 4:     // Address Cell
                 View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
                 JobDetailLocationCell addressViewHolder = new JobDetailLocationCell(addressView);
-                addressViewHolder.description.setText(mService.getAddress().getAddress() + ", 0.4 km away");
+                String street;
+                if (mService.getAddress().getStreet() == null)
+                    street = mService.getAddress().getAddress();
+                else
+                    street = mService.getAddress().getStreet();
+                addressViewHolder.description.setText(street + ", 0.4 km away");
                 addressViewHolder.location.setVisibility(View.GONE);
 
                 if (isFixedBudget) {
                     addressViewHolder.description.setText("Eunos Swim Club");
                     addressViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                     addressViewHolder.address.setVisibility(View.VISIBLE);
-                    addressViewHolder.address.setText(mService.getAddress().getAddress());
+                    addressViewHolder.address.setText(street);
                     addressViewHolder.location.setVisibility(View.VISIBLE);
                     addressViewHolder.location.setOnClickListener(this);
                 }

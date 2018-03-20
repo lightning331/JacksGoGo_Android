@@ -107,7 +107,6 @@
                 </LinearLayout>
             </LinearLayout>
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/btn_edit_job_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

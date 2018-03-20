@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
@@ -32,7 +32,7 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
     private EditText txtBidDesc;
     private TextView btnNext;
 
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private JGGProposalModel mProposal;
 
     public PostProposalBidFragment() {

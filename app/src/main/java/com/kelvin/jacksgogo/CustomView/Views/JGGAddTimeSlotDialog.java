@@ -317,8 +317,8 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         Date currentDate = new Date();
         Date startDate = null;
         Date endDate = null;
-        String startDateString = "";
-        String endDateString = "";
+        String startDateString;
+        String endDateString;
         if (startHour != null && startMinute != null) {
             if (!startAM && startHour < 12) {
                 String tmpHour = Integer.toString(startHour + 12);
@@ -410,10 +410,7 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onDoneButtonClick(View view,
-                               Date startDate,
-                               Date endDate,
-                               Integer number);
+        void onDoneButtonClick(View view, Date startDate, Date endDate, Integer number);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

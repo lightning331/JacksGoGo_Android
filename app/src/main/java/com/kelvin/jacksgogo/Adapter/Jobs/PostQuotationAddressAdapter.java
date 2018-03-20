@@ -9,13 +9,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobAddressCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 /**
  * Created by PUMA on 11/10/2017.
@@ -23,14 +25,13 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
 
 public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, TextWatcher {
 
-    Context mContext;
-    int ITEM_COUNT = 6;
+    private Context mContext;
+    private int ITEM_COUNT = 7;
 
-    JGGServiceModel serviceObject;
-    String strUnit;
-    String strStreet;
-    String strPostCode;
-    boolean isRequest;
+    private JGGQuotationModel mQuotation;
+    private String strUnit;
+    private String strStreet;
+    private String strPostCode;
 
     AppFilterOptionCell nextButtonCell;
     EditJobAddressCell placeNameCell;
@@ -38,10 +39,9 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
     EditJobAddressCell streetCell;
     EditJobAddressCell postcodeCell;
 
-    public PostQuotationAddressAdapter(Context context, boolean b, JGGServiceModel data) {
+    public PostQuotationAddressAdapter(Context context, JGGQuotationModel data) {
         this.mContext = context;
-        this.isRequest = b;
-        this.serviceObject = data;
+        this.mQuotation = data;
     }
 
     @Override
@@ -65,22 +65,60 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
                 LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 65);
                 placeNameCell.titleLayout.setLayoutParams(params);
                 placeNameCell.txtLayout.setLayoutParams(param1);
+
+                placeNameCell.hint.setHint(R.string.address_place_name_title);
+                placeNameCell.title.setHint("(optional)");
+                placeNameCell.title.addTextChangedListener(this);
                 return placeNameCell;
             case 3:
                 View unitTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 unitCell = new EditJobAddressCell(unitTextView);
+                unitCell.hint.setHint(R.string.address_unit_title);
+                if (mQuotation.getAddress().getUnit() == null) {
+                    unitCell.title.setHint("e.g.2");
+                } else {
+                    unitCell.title.setText(mQuotation.getAddress().getUnit());
+                    strUnit = mQuotation.getAddress().getUnit();
+                }
+                unitCell.title.addTextChangedListener(this);
                 return unitCell;
             case 4:
                 View streetTextView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 streetCell = new EditJobAddressCell(streetTextView);
+                streetCell.hint.setHint(R.string.address_street_title);
+                if (mQuotation.getAddress().getStreet() == null) {
+                    if (mQuotation.getAddress().getAddress() == null) {
+                        streetCell.title.setHint("e.g. Jurong West Avenue 5");
+                    } else
+                        strStreet = mQuotation.getAddress().getAddress();
+                } else
+                    strStreet = mQuotation.getAddress().getStreet();
+                streetCell.title.setText(strStreet);
+                streetCell.title.addTextChangedListener(this);
                 return streetCell;
             case 5:
                 View takePhotoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_edit_job_address, parent, false);
                 postcodeCell = new EditJobAddressCell(takePhotoView);
+                postcodeCell.hint.setHint(R.string.address_postcode_title);
+                if (mQuotation.getAddress().getPostalCode() == null) {
+                    postcodeCell.title.setHint("e.g. 34534");
+                } else {
+                    postcodeCell.title.setText(mQuotation.getAddress().getPostalCode());
+                    strPostCode = mQuotation.getAddress().getPostalCode();
+                }
+                postcodeCell.title.addTextChangedListener(this);
+                postcodeCell.title.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 return postcodeCell;
             case 6:
                 View originalView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
                 nextButtonCell = new AppFilterOptionCell(originalView);
+                nextButtonCell.title.setText("Next");
+                if (mQuotation.getAddress().getUnit() == null
+                        && mQuotation.getAddress().getStreet() == null
+                        && mQuotation.getAddress().getPostalCode() == null)
+                    onNextButtonDisable();
+                else
+                    onNextButtonEnable();
                 return nextButtonCell;
         }
         return null;
@@ -88,66 +126,11 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == 2) {
-            placeNameCell = (EditJobAddressCell)holder;
-            placeNameCell.hint.setHint(R.string.address_place_name_title);
-            if (!isRequest) {
-                placeNameCell.title.setText("Jurong");
-            } else {
-                placeNameCell.title.setHint("(optional)");
-                placeNameCell.title.addTextChangedListener(this);
-            }
-        } else if (position == 3) {
-            unitCell = (EditJobAddressCell)holder;
-            unitCell.hint.setHint(R.string.address_unit_title);
-            if (!isRequest) {
-                unitCell.title.setText("2");
-            } else {
-                if (serviceObject.getUnit() == null) {
-                    unitCell.title.setHint("e.g.2");
-                } else {
-                    unitCell.title.setText(serviceObject.getUnit());
-                }
-                unitCell.title.addTextChangedListener(this);
-            }
-        } else if (position == 4) {
-            streetCell = (EditJobAddressCell)holder;
-            streetCell.hint.setHint(R.string.address_street_title);
-            if (!isRequest) {
-                streetCell.title.setText("Jurong West Avenune 5");
-            } else {
-                if (serviceObject.getStreet() == null) {
-                    streetCell.title.setHint("e.g.Jurong West Avenue 5");
-                } else {
-                    streetCell.title.setText(serviceObject.getStreet());
-                }
-                streetCell.title.addTextChangedListener(this);
-            }
-        } else if (position == 5) {
-            postcodeCell = (EditJobAddressCell)holder;
-            postcodeCell.hint.setHint(R.string.address_postcode_title);
-            if (!isRequest) {
-                postcodeCell.title.setText("34534");
-            } else {
-                if (serviceObject.getPostcode() == null) {
-                    postcodeCell.title.setHint("e.g.34534");
-                } else {
-                    postcodeCell.title.setText(serviceObject.getPostcode());
-                }
-                postcodeCell.title.addTextChangedListener(this);
-            }
-        } else if (position == 6) {
-            nextButtonCell = (AppFilterOptionCell)holder;
-            nextButtonCell.title.setText("Next");
-            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGrey4));
-            nextButtonCell.btnOriginal.setBorderWidth((float)0);
-        }
+
     }
 
     @Override
     public int getItemCount() {
-        if (isRequest) return ITEM_COUNT = 7;
         return ITEM_COUNT;
     }
 
@@ -159,7 +142,7 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onNextButtonClick(String unit, String street, String postcode);
+        void onNextButtonClick(JGGAddressModel address);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -169,7 +152,13 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.view_filter_bg) {
-            listener.onNextButtonClick(strUnit, strStreet, strPostCode);
+            JGGAddressModel address = new JGGAddressModel();
+            address.setPlaceName(placeNameCell.title.getText().toString());
+            address.setUnit(strUnit);
+            address.setStreet(strStreet);
+            address.setPostalCode(strPostCode);
+
+            listener.onNextButtonClick(address);
         }
     }
 
@@ -186,20 +175,27 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
             strUnit = unitCell.title.getText().toString();
             strStreet = streetCell.title.getText().toString();
             strPostCode = postcodeCell.title.getText().toString();
-
-            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-            nextButtonCell.btnOriginal.setBorderWidth((float)0);
-            nextButtonCell.btnOriginal.setOnClickListener(this);
+            onNextButtonEnable();
         } else {
-            nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGrey4));
-            nextButtonCell.btnOriginal.setBorderWidth((float) 0);
+            onNextButtonDisable();
         }
     }
 
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    private void onNextButtonEnable() {
+        nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+        nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+        nextButtonCell.btnOriginal.setBorderWidth((float)0);
+        nextButtonCell.btnOriginal.setOnClickListener(this);
+    }
+
+    private void onNextButtonDisable() {
+        nextButtonCell.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
+        nextButtonCell.btnOriginal.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGrey4));
+        nextButtonCell.btnOriginal.setBorderWidth((float) 0);
     }
 }

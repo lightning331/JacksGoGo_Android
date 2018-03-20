@@ -28,18 +28,17 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDateString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
 
 
@@ -71,7 +70,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
     private RecyclerView recyclerView;
     private AlertDialog alertDialog;
 
-    private JGGJobModel mService;
+    private JGGAppointmentModel mService;
     private JGGTimeSlotModel mTimeSlot;
     private Integer peopleType;
     private ArrayList<JGGTimeSlotModel> mTimeSlots = new ArrayList<>();
@@ -252,16 +251,9 @@ public class PostServiceTimeSlotFragment extends Fragment implements View.OnClic
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
                     alertDialog.dismiss();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-                    String month = "";
-                    try {
-                        Date varDate = dateFormat.parse(appointmentDateString(calendarView.getSelectedDate().getDate()));
-                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        month = dateFormat.format(varDate);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
+
+                    String month = convertCalendarDate(calendarView.getSelectedDate().getDate());
+
                     if (calendarView.getSelectedDate().getDate().before(new Date())) {
                         Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
                         return;

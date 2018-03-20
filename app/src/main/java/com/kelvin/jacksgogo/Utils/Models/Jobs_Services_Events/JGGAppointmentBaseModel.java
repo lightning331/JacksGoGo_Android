@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
+import com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -21,7 +22,7 @@ public class JGGAppointmentBaseModel {
     private String UserProfileID;
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private String PostOn;  // Originally date type
-    private int Status = 0;
+    private int Status;
     private JGGAddressModel Address = new JGGAddressModel();
     private JGGAddressModel DAddress = new JGGAddressModel();
 
@@ -109,12 +110,12 @@ public class JGGAppointmentBaseModel {
         PostOn = postOn;
     }
 
-    public int getStatus() {
-        return Status;
+    public BiddingStatus getStatus() {
+        return BiddingStatus.valueOf(Status);
     }
 
-    public void setStatus(int status) {
-        Status = status;
+    public void setStatus(BiddingStatus status) {
+        Status = status.getValue();
     }
 
     public JGGAddressModel getAddress() {

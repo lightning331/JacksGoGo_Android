@@ -21,7 +21,7 @@ import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.squareup.picasso.Picasso;
 
@@ -51,11 +51,10 @@ public class PostJobMainTabFragment extends Fragment {
     private String tabName;
     private String postStatus;
 
-    private JGGJobModel creatingJob;
+    private JGGAppointmentModel creatingJob;
     private AppointmentReportAdapter reportAdapter;
     private List<Integer> selectedIds = new ArrayList<>();
     private boolean isMultiSelect = false;
-    private JGGReportModel data;
     private int reportType = 0;
 
     public PostJobMainTabFragment() {
@@ -239,20 +238,19 @@ public class PostJobMainTabFragment extends Fragment {
 
     private void multiSelect(int position) {
 
-        data = reportAdapter.getItem(position - 1);
+        JGGReportModel report = reportAdapter.getItem(position - 1);
 
-        if (data != null) {
-            Integer id = data.getId();
-            if (selectedIds.contains(data.getId()))
-                selectedIds.remove(Integer.valueOf(data.getId()));
+        if (report != null) {
+            Integer id = report.getId();
+            if (selectedIds.contains(id))
+                selectedIds.remove(Integer.valueOf(id));
             else
-                selectedIds.add(data.getId());
+                selectedIds.add(id);
             reportAdapter.setSelectedIds(selectedIds);
         }
     }
 
     private void onSaveCreatingJob() {
-        reportType = 0;
         for (Integer index : selectedIds) {
             if (index == 1) {
                 reportType += 1;

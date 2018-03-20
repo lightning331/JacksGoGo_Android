@@ -42,7 +42,7 @@
                 android:textColor="@color/JGGGrey1"
                 android:textSize="@dimen/caption_font_size"
                 android:fontFamily="@font/muliregular"
-                android:text="Lastest resonse: 10 min ago"/>
+                android:text="Latest response: 10 min ago"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="160dp"

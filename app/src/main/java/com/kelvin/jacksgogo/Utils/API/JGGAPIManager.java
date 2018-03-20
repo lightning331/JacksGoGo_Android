@@ -1,6 +1,6 @@
 package com.kelvin.jacksgogo.Utils.API;
 
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -11,6 +11,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
@@ -73,10 +74,10 @@ public interface JGGAPIManager {
      *  Appointment Job
      */
     @POST("api/Appointment/PostJob")
-    Call<JGGPostAppResponse> postNewJob(@Body JGGJobModel creatingJob);
+    Call<JGGPostAppResponse> postNewJob(@Body JGGAppointmentModel creatingJob);
 
     @POST("api/Appointment/EditJob")
-    Call<JGGPostAppResponse> editJob(@Body JGGJobModel editingJob);
+    Call<JGGPostAppResponse> editJob(@Body JGGAppointmentModel editingJob);
 
     @GET("api/Appointment/DeleteJob")
     Call<JGGBaseResponse> deleteJob(@Query("ID") String jobID,
@@ -86,10 +87,10 @@ public interface JGGAPIManager {
      *  Appointment Service
      */
     @POST("api/Appointment/PostService")
-    Call<JGGPostAppResponse> postNewService(@Body JGGJobModel creatingService);
+    Call<JGGPostAppResponse> postNewService(@Body JGGAppointmentModel creatingService);
 
     @POST("api/Appointment/EditService")
-    Call<JGGPostAppResponse> editService(@Body JGGJobModel editingService);
+    Call<JGGPostAppResponse> editService(@Body JGGAppointmentModel editingService);
 
     @GET("api/Appointment/DeleteService")
     Call<JGGBaseResponse> deleteService(@Query("ID") String serviceID);
@@ -97,20 +98,26 @@ public interface JGGAPIManager {
     /*
      *  Appointment Quotation
      */
-    @POST("api/Appointment/PostService")
-    Call<JGGPostAppResponse> postQuotation(@Body JGGQuotationModel quotation);
+    @POST("api/Appointment/SendQuotation")
+    Call<JGGPostAppResponse> sendQuotation(@Body JGGQuotationModel quotation);
 
     /*
      *  Appointment
      */
     @GET("api/Appointment/GetPendingAppointments")
-    Call<JGGGetAppsResponse> getPendingAppointments();
+    Call<JGGGetAppsResponse> getPendingAppointments(@Query("UserID") String userProfileID,
+                                                    @Query("pageIndex") Integer pageIndex,
+                                                    @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetConfirmedAppointments")
-    Call<JGGGetAppsResponse> getConfirmedAppointments(@Query("ID") String userProfileID);
+    Call<JGGGetAppsResponse> getConfirmedAppointments(@Query("UserID") String userProfileID,
+                                                      @Query("pageIndex") Integer pageIndex,
+                                                      @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("ID") String userProfileID);
+    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("UserID") String userProfileID,
+                                                   @Query("pageIndex") Integer pageIndex,
+                                                   @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetJobByID")
     Call<JGGGetAppResponse> getJobByID(@Query("ID") String jobID);
@@ -118,6 +125,11 @@ public interface JGGAPIManager {
     /*
      *  Proposal
      */
+    @FormUrlEncoded
+    @POST("api/Proposal/SendInvite")
+    Call<JGGSendInviteResponse> sendInvite(@Field("AppointmentID") String appointmentID,
+                                           @Field("UserProfileID") String userProfileID);
+
     @FormUrlEncoded
     @POST("api/Proposal/GetUsersForInvite")
     Call<JGGInviteUsersResponse> getUsersForInvite(@Field("CategoryID") String categoryID,

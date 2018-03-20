@@ -19,11 +19,12 @@ import java.util.ArrayList;
 public class InviteProviderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<JGGUserProfileModel> inviteUsers;
+    private ArrayList<JGGUserProfileModel> users;
+    private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
 
     public InviteProviderAdapter(Context context, ArrayList<JGGUserProfileModel> users) {
         this.mContext = context;
-        this.inviteUsers = users;
+        this.users = users;
     }
 
     @Override
@@ -35,12 +36,37 @@ public class InviteProviderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         AppInviteProviderCell cell = (AppInviteProviderCell) holder;
-        JGGUserProfileModel user = inviteUsers.get(position);
-        cell.setData(user);
+        final JGGUserProfileModel user = users.get(position);
+        cell.setUser(user);
+        cell.disableInviteButton(false);
+        cell.btnInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(user);
+                invitedUsers.add(user);
+                notifyDataSetChanged();
+            }
+        });
+
+        for (JGGUserProfileModel u: invitedUsers) {
+            if (user.getID() == u.getID()) {
+                cell.disableInviteButton(true);
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return inviteUsers.size();
+        return users.size();
+    }
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(JGGUserProfileModel user);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

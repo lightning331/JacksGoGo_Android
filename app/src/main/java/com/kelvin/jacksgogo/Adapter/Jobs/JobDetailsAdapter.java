@@ -16,13 +16,13 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
@@ -34,7 +34,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private JGGCategoryModel mCategory;
 
     public JobDetailsAdapter (Context context) {
@@ -90,7 +90,12 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
         } else if (viewType == 4) {    // Job Address Cell
             View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
             JobDetailLocationCell addressViewHolder = new JobDetailLocationCell(addressView);
-            addressViewHolder.description.setText(mJob.getAddress().getAddress() + ", 0.4 km away");
+            String street;
+            if (mJob.getAddress().getStreet() == null)
+                street = mJob.getAddress().getAddress();
+            else
+                street = mJob.getAddress().getStreet();
+            addressViewHolder.description.setText(street + ", 0.4 km away");
             addressViewHolder.location.setVisibility(View.INVISIBLE);
             return addressViewHolder;
         } else if (viewType == 5) {    // Job Budget Cell
@@ -123,13 +128,13 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             JobDetailDescriptionCell requestViewHolder = new JobDetailDescriptionCell(requestView);
             requestViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
             requestViewHolder.setTitle("Reports:", true);
-            requestViewHolder.setDescription(Global.reportTypeName(mJob.getReportType()));
+            requestViewHolder.setDescription(reportTypeName(mJob.getReportType()));
             return requestViewHolder;
         } else if (viewType == 7) {    // Job Poster Cell
             View posterView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_invite_provider, parent, false);
             AppInviteProviderCell posterViewHolder = new AppInviteProviderCell(mContext, posterView);
             posterViewHolder.btnInvite.setVisibility(View.GONE);
-            posterViewHolder.setData(mJob.getUserProfile());
+            posterViewHolder.setUser(mJob.getUserProfile());
             return posterViewHolder;
         } else if (viewType == 8) {    // Taglist Cell
             View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);

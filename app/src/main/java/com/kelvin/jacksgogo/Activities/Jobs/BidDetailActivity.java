@@ -22,9 +22,8 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Adapter.Jobs.BidDetailAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 
 public class BidDetailActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener, OnDismissListener {
 
@@ -36,7 +35,6 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
     private TextView btnAcceptBid;
 
     private AlertDialog alertDialog;
-    private JGGBiddingProviderModel provider;
 
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;
@@ -63,8 +61,8 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         btnRejectBid.setOnClickListener(this);
         btnAcceptBid = (TextView) findViewById(R.id.btn_bid_detail_accept);
         btnAcceptBid.setOnClickListener(this);
-        String status = getIntent().getStringExtra("bid_status");
-        if (status.equals("Rejected")) {
+        int status = getIntent().getIntExtra("bid_status", 0);
+        if (status == 4) {      // Rejected
         btnAcceptBid.setOnClickListener(this);
             btnRejectBid.setVisibility(View.GONE);
         }

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
@@ -49,7 +49,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private JGGJobModel mService;
+    private JGGAppointmentModel mService;
     private Integer serviceType;
     private JGGBudgetType budgetType;
     private boolean isOneTimeService;

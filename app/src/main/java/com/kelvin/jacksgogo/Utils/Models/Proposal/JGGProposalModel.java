@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Utils.Models.Proposal;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDateStri
 
 public class JGGProposalModel extends JGGAppointmentBaseModel {
 
+    private JGGAppointmentModel Appointment;
     private String ID;
     private String AppointmentID;
     private Double BudgetFrom;
@@ -33,8 +35,26 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
     private String ExpireOn;
     private boolean IsViewed;
 
+    private int MessageCount;
+
+    public int getMessageCount() {
+        return MessageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        MessageCount = messageCount;
+    }
+
     public JGGProposalModel() {
         super();
+    }
+
+    public JGGAppointmentModel getAppointment() {
+        return Appointment;
+    }
+
+    public void setAppointment(JGGAppointmentModel appointment) {
+        Appointment = appointment;
     }
 
     public String getID() {

@@ -37,26 +37,34 @@ public class Global {
 
 
     public static enum BiddingStatus {
-        PENDING("Pending"),
-        NEWPROPOSAL("NewProposal"),
-        ACCEPTED("Accepted"),
-        REJECTED("Rejected"),
-        DECLINED("Declined"),
-        NOTRESPONDED("NotResponed");
 
-        private String value;
+        none(0),
+        pending(1),
+        newproposal(2),
+        accepted(3),
+        rejected(4),
+        declined(5),
+        notresponded(6);
 
-        BiddingStatus(final String value) {
+        private int value;
+        private static Map map = new HashMap<>();
+
+        BiddingStatus(final int value) {
             this.value = value;
         }
 
-        public String getValue() {
-            return value;
+        static {
+            for (BiddingStatus status : BiddingStatus.values()) {
+                map.put(status.value, status);
+            }
         }
 
-        @Override
-        public String toString() {
-            return this.getValue();
+        public static BiddingStatus valueOf(int status) {
+            return (BiddingStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 
@@ -195,6 +203,27 @@ public class Global {
 
         public Integer getValue() {
             return value;
+        }
+    }
+
+    public static String getBiddingStatus(BiddingStatus status) {
+        switch (status) {
+            case none:
+                return "";
+            case pending:
+                return "Pending";
+            case newproposal:
+                return "New Proposal";
+            case accepted:
+                return "Accepted";
+            case rejected:
+                return "Rejected";
+            case declined:
+                return "Declined";
+            case notresponded:
+                return "Not Responded";
+            default:
+                return "";
         }
     }
 

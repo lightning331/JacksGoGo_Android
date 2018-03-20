@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -45,7 +45,7 @@ public class JGGAppManager {
      *  Appointment
      */
     public static JGGCategoryModel selectedCategory;
-    public static JGGJobModel selectedAppointment;
+    public static JGGAppointmentModel selectedAppointment;
     public static JGGQuotationModel selectedQuotation;
 
     /*
@@ -82,11 +82,11 @@ public class JGGAppManager {
         selectedCategory = category;
     }
 
-    public static JGGJobModel getSelectedAppointment() {
+    public static JGGAppointmentModel getSelectedAppointment() {
         return selectedAppointment;
     }
 
-    public static void setSelectedAppointment(JGGJobModel appointment) {
+    public static void setSelectedAppointment(JGGAppointmentModel appointment) {
         selectedAppointment = appointment;
     }
 

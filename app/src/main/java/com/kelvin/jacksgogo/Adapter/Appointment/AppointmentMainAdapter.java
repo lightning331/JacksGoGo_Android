@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 
 public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<JGGJobModel> dataSet;
-    public final Map<String, ArrayList<JGGJobModel>> sections = new LinkedHashMap<>();
+    private ArrayList<JGGAppointmentModel> dataSet;
+    public final Map<String, ArrayList<JGGAppointmentModel>> sections = new LinkedHashMap<>();
     public final ArrayAdapter<String> headers;
     public final static int TYPE_SECTION_HEADER = 0;
     public final static int TYPE_SERVICE = 1;
@@ -55,7 +55,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         headers = new ArrayAdapter<String>(context, R.layout.view_section_title); // this is the header desing page.
     }
 
-    public void addSection(String section, ArrayList<JGGJobModel> arrayList) {
+    public void addSection(String section, ArrayList<JGGAppointmentModel> arrayList) {
         this.headers.add(section);
         this.sections.put(section, arrayList);
     }
@@ -85,10 +85,10 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             SectionTitleView sectionView = (SectionTitleView) holder;
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle((String) itemData);
-        } else if (itemData instanceof JGGJobModel) {
+        } else if (itemData instanceof JGGAppointmentModel) {
             // RecyclerView Cell
             ApptHistoryListCell cellView = (ApptHistoryListCell) holder;
-            JGGJobModel appointment = (JGGJobModel) itemData;
+            JGGAppointmentModel appointment = (JGGAppointmentModel) itemData;
 
             cellView.lbl_Title.setText(appointment.getTitle());
             cellView.lbl_Comment.setText(appointment.getDescription());
@@ -101,9 +101,9 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     .placeholder(R.mipmap.icon_profile)
                     .into(cellView.img_Profile);
 
-            if (appointment.getStatus() == 1) {
+            if (appointment.getStatus().getValue() == 1) {
                 cellView.lbl_Status.setText("Cancelled");
-            } else if (appointment.getStatus() == 2) {
+            } else if (appointment.getStatus().getValue() == 2) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
                 cellView.lbl_Status.setVisibility(View.GONE);
@@ -147,7 +147,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemCount() {
         int total = 0;
-        for (ArrayList<JGGJobModel> arrayList : this.sections.values())
+        for (ArrayList<JGGAppointmentModel> arrayList : this.sections.values())
             total += arrayList.size() + 1;
         return total;
     }
@@ -155,14 +155,14 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
         for (Object section : this.sections.keySet()) {
-            ArrayList<JGGJobModel> arrayList = sections.get(section);
+            ArrayList<JGGAppointmentModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
             if (position == 0)
                 return TYPE_SECTION_HEADER;
             if (position < size) {
-                JGGJobModel jobModel = arrayList.get(position - 1);
+                JGGAppointmentModel jobModel = arrayList.get(position - 1);
                 if (jobModel.isRequest())
                     return TYPE_JOB;
                 else
@@ -177,7 +177,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public Object getItem(int position) {
         for (Object section : this.sections.keySet()) {
-            ArrayList<JGGJobModel> arrayList = sections.get(section);
+            ArrayList<JGGAppointmentModel> arrayList = sections.get(section);
             int size = arrayList.size() + 1;
 
             // check if position inside this section
@@ -195,7 +195,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     // Search Filter
-    public void setFilter(ArrayList<JGGJobModel> filteredArray) {
+    public void setFilter(ArrayList<JGGAppointmentModel> filteredArray) {
         dataSet = new ArrayList<>();
         dataSet.addAll(filteredArray);
         notifyDataSetChanged();

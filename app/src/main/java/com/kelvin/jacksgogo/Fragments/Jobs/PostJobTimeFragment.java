@@ -22,7 +22,7 @@ import com.kelvin.jacksgogo.CustomView.Views.RepeatingDayDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.text.SimpleDateFormat;
@@ -60,7 +60,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     private TextView lblNext;
 
     private AlertDialog alertDialog;
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private Integer jobType;
     private JGGRepetitionType repetitionType;
     private Boolean isSpecific;

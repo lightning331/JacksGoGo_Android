@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppBiddingProviderCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ServiceProviderCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
 import java.util.ArrayList;
 
@@ -16,29 +16,29 @@ import java.util.ArrayList;
  * Created by PUMA on 12/12/2017.
  */
 
-public class QuotationAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class ServiceProviderAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context mContext;
-    private ArrayList<JGGBiddingProviderModel> providerArray = new ArrayList<>();
-    private JGGBiddingProviderModel provider;
+    private ArrayList<JGGProposalModel> providers;
+    private JGGProposalModel provider;
 
-    public QuotationAdapter(Context context, ArrayList<JGGBiddingProviderModel> data) {
+    public ServiceProviderAdapter(Context context, ArrayList<JGGProposalModel> data) {
         this.mContext = context;
-        this.providerArray = data;
+        this.providers = data;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_bidding_provider, parent, false);
-        return new AppBiddingProviderCell(mContext, view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_provider, parent, false);
+        return new ServiceProviderCell(mContext, view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        provider = providerArray.get(position);
+        provider = providers.get(position);
 
-        AppBiddingProviderCell cell = (AppBiddingProviderCell) holder;
+        ServiceProviderCell cell = (ServiceProviderCell) holder;
         cell.setData(provider);
         cell.imgProposal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +52,7 @@ public class QuotationAdapter extends RecyclerView.Adapter implements View.OnCli
 
     @Override
     public int getItemCount() {
-        return providerArray.size();
+        return providers.size();
     }
 
     @Override

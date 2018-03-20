@@ -24,7 +24,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
@@ -71,7 +71,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private AlertDialog alertDialog;
     private PostJobStatus jobStatus;
     private JGGCategoryModel category;
-    private JGGJobModel creatingJob;
+    private JGGAppointmentModel creatingJob;
     private ProgressDialog progressDialog;
     private ArrayList<String> attachmentURLs;
     private String postedJobID;
@@ -192,34 +192,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void getJobByID() {
-        progressDialog = Global.createProgressDialog(mContext);
-        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        Call<JGGGetAppResponse> call = apiManager.getJobByID(selectedAppointment.getID());
-        call.enqueue(new Callback<JGGGetAppResponse>() {
-            @Override
-            public void onResponse(Call<JGGGetAppResponse> call, Response<JGGGetAppResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-
-                    } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGGetAppResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
@@ -276,6 +248,34 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void getJobByID() {
+        progressDialog = Global.createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
+        Call<JGGGetAppResponse> call = apiManager.getJobByID(selectedAppointment.getID());
+        call.enqueue(new Callback<JGGGetAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppResponse> call, Response<JGGGetAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }

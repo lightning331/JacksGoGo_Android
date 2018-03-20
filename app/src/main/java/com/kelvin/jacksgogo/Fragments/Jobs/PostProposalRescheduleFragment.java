@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
@@ -44,7 +44,7 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
     private EditText txtTerms;
     private TextView btnNext;
 
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private JGGProposalModel mProposal;
     private boolean allowed;
     private boolean noAllowed;

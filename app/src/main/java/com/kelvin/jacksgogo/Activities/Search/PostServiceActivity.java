@@ -18,12 +18,11 @@ import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -80,13 +79,14 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
 
         if (status.equals(POST)) {
             // Create New Appointment Model
-            selectedAppointment = new JGGJobModel();
+            selectedAppointment = new JGGAppointmentModel();
             selectedAppointment.setUserProfile(currentUser);
             selectedAppointment.setUserProfileID(currentUser.getID());
             JGGRegionModel currentRegion = JGGAppManager.getInstance(this).getCurrentRegion();
             selectedAppointment.setRegion(currentRegion);
             selectedAppointment.setRegionID(currentRegion.getID());
             selectedAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
+
             switch (appType) {
                 case SERVICES:
                     selectedAppointment.setRequest(false);

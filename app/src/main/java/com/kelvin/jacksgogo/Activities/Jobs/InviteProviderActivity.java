@@ -21,9 +21,10 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,9 +53,12 @@ public class InviteProviderActivity extends AppCompatActivity {
     private InviteProviderAdapter adapter;
     private ProgressDialog progressDialog;
 
-    private ArrayList<JGGUserProfileModel> inviteUsers;
-    private JGGJobModel mJob;
+    private ArrayList<JGGUserProfileModel> users = new ArrayList<>();
+    private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
+    private JGGUserProfileModel user;
     private JGGCategoryModel mCategory;
+    private JGGAppointmentModel mJob;
+    private String proposalID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,22 @@ public class InviteProviderActivity extends AppCompatActivity {
         getInviteUsers();
     }
 
+    private void updateRecyclerView() {
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(InviteProviderActivity.this, LinearLayout.VERTICAL, false));
+        }
+
+        adapter = new InviteProviderAdapter(InviteProviderActivity.this, users);
+        adapter.setOnItemClickListener(new InviteProviderAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(JGGUserProfileModel u) {
+                user = u;
+                sendInvite();
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
     private void setCategory() {
         // Category
         Picasso.with(this)
@@ -98,21 +118,16 @@ public class InviteProviderActivity extends AppCompatActivity {
         if (currentUser == null) return;
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID().toString(), null, null, null, 0, 0);
+        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID(), null, null, null, 0, 40);
         call.enqueue(new Callback<JGGInviteUsersResponse>() {
             @Override
             public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        inviteUsers = response.body().getValue();
+                        users = response.body().getValue();
 
-                        if (recyclerView != null) {
-                            recyclerView.setLayoutManager(new LinearLayoutManager(InviteProviderActivity.this, LinearLayout.VERTICAL, false));
-                        }
-
-                        adapter = new InviteProviderAdapter(InviteProviderActivity.this, inviteUsers);
-                        recyclerView.setAdapter(adapter);
+                        updateRecyclerView();
                     } else {
                         Toast.makeText(InviteProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -125,6 +140,36 @@ public class InviteProviderActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JGGInviteUsersResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(InviteProviderActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendInvite() {
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGSendInviteResponse> call = apiManager.sendInvite(mJob.getID(), user.getID());
+        call.enqueue(new Callback<JGGSendInviteResponse>() {
+            @Override
+            public void onResponse(Call<JGGSendInviteResponse> call, Response<JGGSendInviteResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        invitedUsers.add(user);
+                        proposalID = response.body().getValue();
+                    } else {
+                        Toast.makeText(InviteProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(InviteProviderActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGSendInviteResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(InviteProviderActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }

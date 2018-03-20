@@ -26,8 +26,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGEventModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
@@ -39,6 +39,7 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -52,13 +53,13 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private ProgressDialog progressDialog;
     private android.app.AlertDialog alertDialog;
 
-    ArrayList<JGGJobModel> arrayAllPendingAppointments = new ArrayList<>();
-    ArrayList<JGGJobModel> arrayLoadedQuickAppointments = new ArrayList<>();
-    ArrayList<JGGJobModel> arrayLoadedServicePackages = new ArrayList<>();
-    ArrayList<JGGJobModel> arrayLoadedPendingAppointments = new ArrayList<>();
-    ArrayList<JGGJobModel> arrayConfirmedAppointments = new ArrayList<>();
-    ArrayList<JGGJobModel> arrayHistoryAppointments = new ArrayList<>();
-    ArrayList<JGGJobModel> filteredArrayList = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> arrayAllPendingAppointments = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> arrayLoadedQuickAppointments = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> arrayLoadedServicePackages = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> arrayLoadedPendingAppointments = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> arrayConfirmedAppointments = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> arrayHistoryAppointments = new ArrayList<>();
+    ArrayList<JGGAppointmentModel> filteredArrayList = new ArrayList<>();
 
     private static AppointmentMainAdapter pendingListAdapter;
     private static AppointmentMainAdapter confirmedListAdapter;
@@ -117,37 +118,39 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void loadPendingAppointments() {
-        progressDialog = Global.createProgressDialog(mContext);
-        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        Call<JGGGetAppsResponse> call = apiManager.getPendingAppointments();
-        call.enqueue(new Callback<JGGGetAppsResponse>() {
-            @Override
-            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        resetData();
-                        arrayAllPendingAppointments = response.body().getValue();
-                        filterJobs(response.body().getValue());
+        if (isLoggedIn("")) {
+            progressDialog = createProgressDialog(mContext);
+            JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            Call<JGGGetAppsResponse> call = apiManager.getPendingAppointments(userID, 0, 40);
+            call.enqueue(new Callback<JGGGetAppsResponse>() {
+                @Override
+                public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body().getSuccess()) {
+                            resetData();
+                            arrayAllPendingAppointments = response.body().getValue();
+                            filterJobs(response.body().getValue());
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        int statusCode = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
-    private void filterJobs(ArrayList<JGGJobModel> jobs) {
-        for (JGGJobModel job : jobs) {
+    private void filterJobs(ArrayList<JGGAppointmentModel> jobs) {
+        for (JGGAppointmentModel job : jobs) {
             if (job.isQuickJob()) {
                 arrayLoadedQuickAppointments.add(job);
             } else if (job.isRequest() == false && job.getAppointmentType() > 1) {
@@ -173,10 +176,10 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void loadConfirmedAppointments() {
-        if (isLoggedIn(false)) {
-            progressDialog = Global.createProgressDialog(mContext);
-            JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getConfirmedAppointments(currentUser.getID());
+        if (isLoggedIn("Confirmed")) {
+            progressDialog = createProgressDialog(mContext);
+            JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getConfirmedAppointments(userID, 0, 40);
             call.enqueue(new Callback<JGGGetAppsResponse>() {
                 @Override
                 public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -206,10 +209,10 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void loadAppointmentsHistory() {
-        if (isLoggedIn(true)) {
-            progressDialog = Global.createProgressDialog(mContext);
-            JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getAppointmentHistory(userID);
+        if (isLoggedIn("History")) {
+            progressDialog = createProgressDialog(mContext);
+            JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getAppointmentHistory(userID, 0, 40);
             call.enqueue(new Callback<JGGGetAppsResponse>() {
                 @Override
                 public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -238,11 +241,11 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         }
     }
 
-    private boolean isLoggedIn(boolean isHistory) {
+    private boolean isLoggedIn(String type) {
         if (currentUser == null) {
-            if (isHistory)
+            if (type.equals("History"))
                 setDataToAdapter("History", arrayHistoryAppointments, false);
-            else
+            else if (type.equals("Confirmed"))
                 setDataToAdapter("Confirmed", arrayConfirmedAppointments, false);
 
             showAlertDialog();
@@ -273,7 +276,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     public void setDataToAdapter(String sectionTitle,
-                                 ArrayList<JGGJobModel> arrayList, Boolean isFilter) {
+                                 ArrayList<JGGAppointmentModel> arrayList, Boolean isFilter) {
         AppointmentMainAdapter adapter = new AppointmentMainAdapter(getContext());
 
         if (arrayList.size() > 0) {
@@ -338,10 +341,10 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         return true;
     }
 
-    private ArrayList<JGGJobModel> filter(ArrayList<JGGJobModel> models, String query) {
+    private ArrayList<JGGAppointmentModel> filter(ArrayList<JGGAppointmentModel> models, String query) {
         query = query.toLowerCase();
-        final ArrayList<JGGJobModel> filteredModelList = new ArrayList<>();
-        for (JGGJobModel model : models) {
+        final ArrayList<JGGAppointmentModel> filteredModelList = new ArrayList<>();
+        for (JGGAppointmentModel model : models) {
             final String text = model.getTitle().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
@@ -351,7 +354,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void onSelectListViewItem(int position, Object object) {
-        JGGJobModel appointment = (JGGJobModel) object;
+        JGGAppointmentModel appointment = (JGGAppointmentModel) object;
         selectedCategory = appointment.getCategory();
         selectedAppointment = appointment;
         if (appointment.isRequest()) {

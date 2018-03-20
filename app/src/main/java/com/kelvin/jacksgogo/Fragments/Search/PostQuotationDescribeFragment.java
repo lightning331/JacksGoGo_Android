@@ -24,12 +24,15 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
 
 public class PostQuotationDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -43,21 +46,19 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
     private RelativeLayout btnNext;
     private TextView lblNext;
 
-    private String strTitle;
-    private String strDescription;
-
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
-    private boolean isRequest;
+    private JGGQuotationModel mQuotation;
+    private String strTitle;
+    private String strDescription;
 
     public PostQuotationDescribeFragment() {
         // Required empty public constructor
     }
 
-    public static PostQuotationDescribeFragment newInstance(boolean isRequest) {
+    public static PostQuotationDescribeFragment newInstance() {
         PostQuotationDescribeFragment fragment = new PostQuotationDescribeFragment();
         Bundle args = new Bundle();
-        args.putBoolean("isRequest", isRequest);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,18 +92,15 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
         btnNext = view.findViewById(R.id.btn_edit_job_next);
         lblNext = view.findViewById(R.id.lbl_edit_job_next);
 
-        if (!isRequest) {
-            txtServiceTitle.setText("Gerdening");
-            txtServiceDesc.setText("Need help with moving the lawn and weeding the garden.");
+        mQuotation = selectedQuotation;
+        if (mQuotation.getTitle() == null) {
+            txtServiceTitle.setHint("e.g.Gardening");
+            txtServiceDesc.setHint("e.g.My air-cond unit isn't cold.");
+            onNextButtonDisable();
         } else {
-            //if (serviceObject.getTitle() == null) {
-                txtServiceTitle.setHint("e.g.Gardening");
-                txtServiceDesc.setHint("e.g.My air-cond unit isn't cold.");
-                btnNext.setVisibility(View.VISIBLE);
-            //} else {
-                //txtServiceTitle.setText(serviceObject.getTitle());
-                //txtServiceDesc.setText(serviceObject.getComment());
-            //}
+            txtServiceTitle.setText(mQuotation.getTitle());
+            txtServiceDesc.setText(mQuotation.getDescription());
+            onNextButtonEnable();
         }
     }
 
@@ -164,30 +162,6 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
                 .start();
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        isRequest = getArguments().getBoolean("isRequest");
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_edit_job_describe_take_photo) {
@@ -206,22 +180,29 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtServiceTitle.length() > 0
                 && txtServiceDesc.length() > 0) {
-
             strTitle = txtServiceTitle.getText().toString();
             strDescription = txtServiceDesc.getText().toString();
-
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            btnNext.setBackgroundResource(R.drawable.green_background);
-            btnNext.setOnClickListener(this);
+            onNextButtonEnable();
         } else {
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            btnNext.setBackgroundResource(R.drawable.grey_background);
+            onNextButtonDisable();
         }
     }
 
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    private void onNextButtonEnable() {
+        lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+        btnNext.setBackgroundResource(R.drawable.green_background);
+        btnNext.setOnClickListener(this);
+    }
+
+    private void onNextButtonDisable() {
+        lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
+        btnNext.setBackgroundResource(R.drawable.grey_background);
+        btnNext.setClickable(false);
     }
 
     private OnItemClickListener listener;
@@ -232,6 +213,29 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public interface OnFragmentInteractionListener {

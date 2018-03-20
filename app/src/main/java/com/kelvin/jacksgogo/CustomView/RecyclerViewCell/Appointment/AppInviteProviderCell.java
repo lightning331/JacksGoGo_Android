@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -25,17 +26,20 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
     public TextView userName;
     public MaterialRatingBar ratingBar;
     public LinearLayout btnInvite;
+    public TextView lblInvite;
 
     public AppInviteProviderCell(Context context, View itemView) {
         super(itemView);
+        mContext = context;
 
         avatarImage = itemView.findViewById(R.id.img_invite_provider_avatar);
         userName = itemView.findViewById(R.id.lbl_invite_provider_username);
         ratingBar = itemView.findViewById(R.id.invite_provider_ratingBar);
         btnInvite = itemView.findViewById(R.id.btn_invite);
+        lblInvite = itemView.findViewById(R.id.lbl_invite);
     }
 
-    public void setData(JGGUserProfileModel user) {
+    public void setUser(JGGUserProfileModel user) {
         Picasso.with(mContext)
                 .load(user.getUser().getPhotoURL())
                 .placeholder(R.mipmap.icon_profile)
@@ -49,5 +53,14 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
             ratingBar.setRating(0);
         else
             ratingBar.setRating(rating.floatValue());
+    }
+
+    public void disableInviteButton(boolean disable) {
+        btnInvite.setClickable(!disable);
+        if (disable) {
+            lblInvite.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
+        } else {
+            lblInvite.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
+        }
     }
 }

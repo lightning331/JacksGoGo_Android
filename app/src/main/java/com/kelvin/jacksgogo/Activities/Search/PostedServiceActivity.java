@@ -25,7 +25,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -73,7 +73,7 @@ public class PostedServiceActivity extends AppCompatActivity {
     private JGGActionbarView actionbarView;
     private ProgressDialog progressDialog;
 
-    private JGGJobModel mService;
+    private JGGAppointmentModel mService;
     private JGGCategoryModel mCategory;
     private boolean isVerified;
     private boolean isPost = false;

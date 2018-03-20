@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
@@ -44,7 +44,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
     private boolean isChecked = false;
     private JGGAppBaseModel.AppointmentType mType;
-    private JGGJobModel creatingJob;
+    private JGGAppointmentModel creatingJob;
 
     public PostServiceAddressFragment() {
         // Required empty public constructor
@@ -115,7 +115,12 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         }
         txtPlaceName.setText(creatingJob.getAddress().getFloor());
         txtUnit.setText(creatingJob.getAddress().getUnit());
-        txtStreet.setText(creatingJob.getAddress().getAddress());
+        String street;
+        if (creatingJob.getAddress().getStreet() == null)
+            street = creatingJob.getAddress().getAddress();
+        else
+            street = creatingJob.getAddress().getStreet();
+        txtStreet.setText(street);
         txtPostCode.setText(creatingJob.getAddress().getPostalCode());
     }
 
@@ -123,14 +128,17 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_address_checkbox) {
             isChecked = !isChecked;
-            if (isChecked) btnCheckBox.setImageResource(R.mipmap.checkbox_on_green);
-            else btnCheckBox.setImageResource(R.mipmap.checkbox_off);
+            if (isChecked) {
+                btnCheckBox.setImageResource(R.mipmap.checkbox_on_green);
+            } else
+                btnCheckBox.setImageResource(R.mipmap.checkbox_off);
         } else if (view.getId() == R.id.btn_post_address_next) {
             JGGAddressModel address = new JGGAddressModel();
             address.setFloor(txtPlaceName.getText().toString());
             address.setUnit(txtUnit.getText().toString());
+            address.setStreet(txtStreet.getText().toString());
             address.setPostalCode(txtPostCode.getText().toString());
-            address.setAddress(txtStreet.getText().toString());
+            address.setShowFullAddress(isChecked);
 
             creatingJob.setAddress(address);
             selectedAppointment = creatingJob;

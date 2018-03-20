@@ -13,17 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.Jobs.QuotationAdapter;
+import com.kelvin.jacksgogo.Adapter.Jobs.ServiceProviderAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
+import com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +36,6 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
@@ -53,9 +51,8 @@ public class ServiceProviderActivity extends AppCompatActivity {
     private JGGActionbarView actionbarView;
     private ProgressDialog progressDialog;
 
-    private ArrayList<JGGBiddingProviderModel> quotationArray = new ArrayList<>();
     private ArrayList<JGGProposalModel> proposals;
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private JGGCategoryModel mCategory;
 
     @Override
@@ -98,7 +95,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     private void getProposalsByJob() {
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 0);
+        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 40);
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
@@ -128,8 +125,8 @@ public class ServiceProviderActivity extends AppCompatActivity {
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
-        QuotationAdapter adapter = new QuotationAdapter(this, addDummyData());
-        adapter.setOnItemClickListener(new QuotationAdapter.OnItemClickListener() {
+        ServiceProviderAdapter adapter = new ServiceProviderAdapter(this, proposals);
+        adapter.setOnItemClickListener(new ServiceProviderAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 onShowBidDetailClick(position);
@@ -139,8 +136,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     }
 
     private void onShowBidDetailClick(int position) {
-        String status = quotationArray.get(position).getStatus().toString();
-
+        BiddingStatus status = proposals.get(position).getStatus();
         Intent intent = new Intent(this, BidDetailActivity.class);
         intent.putExtra("bid_status", status);
         startActivity(intent);
@@ -155,105 +151,5 @@ public class ServiceProviderActivity extends AppCompatActivity {
         lblCategory.setText(selectedCategory.getName());
         // Time
         lblTime.setText(convertJobTimeString(mJob));
-    }
-
-    private ArrayList<JGGBiddingProviderModel> addDummyData() {
-
-        JGGBiddingProviderModel p1 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user1 = new JGGUserBaseModel();
-        user1.setSurname("CYYong");
-        user1.setAvatarUrl(R.drawable.nurse);
-        user1.setRate(4.5);
-        p1.setUser(user1);
-        p1.setStatus(BiddingStatus.NEWPROPOSAL);
-        p1.setPrice(100.00f);
-        p1.setMessageCount(0);
-        quotationArray.add(p1);
-
-        JGGBiddingProviderModel p2 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user2 = new JGGUserBaseModel();
-        user2.setSurname("Christina.P");
-        user2.setAvatarUrl(R.drawable.nurse1);
-        user2.setRate(5.0);
-        p2.setUser(user2);
-        p2.setStatus(BiddingStatus.PENDING);
-        p2.setPrice(105.00f);
-        p2.setMessageCount(3);
-        quotationArray.add(p2);
-
-        JGGBiddingProviderModel p3 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user3 = new JGGUserBaseModel();
-        user3.setSurname("RenYW");
-        user3.setAvatarUrl(R.drawable.carousel01);
-        user3.setRate(4.0);
-        p3.setUser(user3);
-        p3.setStatus(BiddingStatus.PENDING);
-        p3.setPrice(110.00f);
-        p3.setMessageCount(0);
-        quotationArray.add(p3);
-
-        JGGBiddingProviderModel p4 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user4 = new JGGUserBaseModel();
-        user4.setSurname("RositaV");
-        user4.setAvatarUrl(R.drawable.carousel02);
-        user4.setRate(5.0);
-        p4.setUser(user4);
-        p4.setStatus(BiddingStatus.NOTRESPONDED);
-        p4.setMessageCount(0);
-        quotationArray.add(p4);
-
-        JGGBiddingProviderModel p5 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user5 = new JGGUserBaseModel();
-        user5.setSurname("Alicaia.Leong");
-        user5.setAvatarUrl(R.drawable.carousel03);
-        user5.setRate(3.5);
-        p5.setUser(user5);
-        p5.setStatus(BiddingStatus.DECLINED);
-        p5.setMessageCount(0);
-        quotationArray.add(p5);
-
-        JGGBiddingProviderModel p6 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user6 = new JGGUserBaseModel();
-        user6.setSurname("Arimu.H");
-        user6.setAvatarUrl(R.drawable.nurse1);
-        user6.setRate(2.75);
-        p6.setUser(user6);
-        p6.setStatus(BiddingStatus.REJECTED);
-        p6.setPrice(90.00f);
-        p6.setMessageCount(0);
-        quotationArray.add(p6);
-
-        /*JGGBiddingProviderModel p7 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user7 = new JGGUserBaseModel();
-        user7.setSurname("RositaV");
-        user7.setAvatarUrl(R.drawable.carousel02);
-        user7.setRate(5.0);
-        p7.setUser(user7);
-        p7.setStatus(Global.BiddingStatus.NOTRESPONDED);
-        p7.setMessageCount(0);
-        quotationArray.add(p7);
-
-        JGGBiddingProviderModel p8 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user8 = new JGGUserBaseModel();
-        user8.setSurname("Alicaia.Leong");
-        user8.setAvatarUrl(R.drawable.carousel03);
-        user8.setRate(3.5);
-        p8.setUser(user8);
-        p8.setStatus(Global.BiddingStatus.DECLINED);
-        p8.setMessageCount(0);
-        quotationArray.add(p8);
-
-        JGGBiddingProviderModel p9 = new JGGBiddingProviderModel();
-        JGGUserBaseModel user9 = new JGGUserBaseModel();
-        user9.setSurname("Arimu.H");
-        user9.setAvatarUrl(R.drawable.nurse1);
-        user9.setRate(2.75);
-        p9.setUser(user9);
-        p9.setStatus(Global.BiddingStatus.REJECTED);
-        p9.setPrice(90.00f);
-        p9.setMessageCount(0);
-        quotationArray.add(p9);*/
-
-        return quotationArray;
     }
 }

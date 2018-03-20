@@ -2,23 +2,22 @@ package com.kelvin.jacksgogo.Utils.Responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 /**
  * Created by PUMA on 3/19/2018.
  */
 
-public class JGGGetAppResponse extends JGGBaseResponse {
+public class JGGSendInviteResponse extends JGGBaseResponse {
 
     @SerializedName("Value")
     @Expose
-    private JGGAppointmentModel Value;
+    private String Value;
 
-    public JGGAppointmentModel getValue() {
+    public String getValue() {
         return Value;
     }
 
-    public void setValue(JGGAppointmentModel value) {
+    public void setValue(String value) {
         Value = value;
     }
 }

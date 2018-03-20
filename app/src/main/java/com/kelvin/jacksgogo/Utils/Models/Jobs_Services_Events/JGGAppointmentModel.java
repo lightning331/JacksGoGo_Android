@@ -5,19 +5,17 @@ import android.media.Image;
 import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
-import com.kelvin.jacksgogo.Utils.Models.JGGBiddingProviderModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by PUMA on 10/28/2017.
  */
 
-public class JGGJobModel extends JGGAppointmentBaseModel {
+public class JGGAppointmentModel extends JGGAppointmentBaseModel {
 
     private String ID;
     private String CategoryID;
@@ -43,18 +41,16 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     private ArrayList<Image> attachmentImages;
     private Integer timeSlotType;
 
-    private ArrayList<JGGBiddingProviderModel> biddingProviders;
-    private ArrayList<JGGProviderUserModel> invitedProviders;
-    public JGGJobModel() {
+    public JGGAppointmentModel() {
         super();
     }
 
-    public String getID() {
-        return ID;
+    public ArrayList<Image> getAttachmentImages() {
+        return attachmentImages;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setAttachmentImages(ArrayList<Image> attachmentImages) {
+        this.attachmentImages = attachmentImages;
     }
 
     public TimeSlotSelectionStatus getTimeSlotType() {
@@ -65,12 +61,12 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
         this.timeSlotType = timeSlotType.getValue();
     }
 
-    public ArrayList<Image> getAttachmentImages() {
-        return attachmentImages;
+    public String getID() {
+        return ID;
     }
 
-    public void setAttachmentImages(ArrayList<Image> attachmentImages) {
-        this.attachmentImages = attachmentImages;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getCategoryID() {
@@ -216,21 +212,4 @@ public class JGGJobModel extends JGGAppointmentBaseModel {
     public void setRepetitionType(JGGRepetitionType repetitionType) {
         RepetitionType = repetitionType.getValue();
     }
-
-    public ArrayList<JGGBiddingProviderModel> getBiddingProviders() {
-        return biddingProviders;
-    }
-
-    public void setBiddingProviders(ArrayList<JGGBiddingProviderModel> biddingProviders) {
-        this.biddingProviders = biddingProviders;
-    }
-
-    public ArrayList<JGGProviderUserModel> getInvitedProviders() {
-        return invitedProviders;
-    }
-
-    public void setInvitedProviders(ArrayList<JGGProviderUserModel> invitedProviders) {
-        this.invitedProviders = invitedProviders;
-    }
 }
-

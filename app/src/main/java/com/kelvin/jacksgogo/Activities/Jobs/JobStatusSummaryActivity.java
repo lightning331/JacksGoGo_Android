@@ -24,7 +24,7 @@ import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
@@ -53,7 +53,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     private JobStatusSummaryFragment frag;
     private ProgressDialog progressDialog;
 
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private JGGCategoryModel mCategory;
 
     @Override
@@ -107,7 +107,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                     showJobMainFragment();
                     break;
                 case EDIT_DETAIL:
-                    backToEditJobMainFragment();
+                    //backToEditJobMainFragment();
                     break;
                 default:
                     break;
@@ -140,7 +140,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                     showJobMainFragment();
                     break;
                 case EDIT_DETAIL:
-                    backToEditJobMainFragment();
+                    //backToEditJobMainFragment();
                     break;
                 default:
                     break;
@@ -186,7 +186,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, PostQuotationSummaryFragment.newInstance(false), PostQuotationSummaryFragment.newInstance(false).getTag())
+                .replace(R.id.app_detail_container, PostQuotationSummaryFragment.newInstance(false))
                 .commit();
     }
 

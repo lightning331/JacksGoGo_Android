@@ -2,7 +2,7 @@ package com.kelvin.jacksgogo.Utils.Responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import java.util.ArrayList;
 
@@ -14,13 +14,13 @@ public class JGGGetAppsResponse extends JGGBaseResponse {
 
     @SerializedName("Value")
     @Expose
-    private ArrayList<JGGJobModel> Value;
+    private ArrayList<JGGAppointmentModel> Value;
 
-    public ArrayList<JGGJobModel> getValue() {
+    public ArrayList<JGGAppointmentModel> getValue() {
         return Value;
     }
 
-    public void setValue(ArrayList<JGGJobModel> value) {
+    public void setValue(ArrayList<JGGAppointmentModel> value) {
         Value = value;
     }
 }

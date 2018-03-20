@@ -15,23 +15,24 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.AppointmentReportAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationTimeAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGServiceModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.Global.selectedCategoryID;
 
 public class PostQuotationMainTabFragment extends Fragment implements View.OnClickListener {
 
@@ -41,16 +42,16 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     private FrameLayout describeContainer;
     private RecyclerView recyclerView;
     private PostServiceTabbarView tabbarView;
-    private JGGServiceModel serviceModel = new JGGServiceModel();
-    private AlertDialog alertDialog;
-    private AppointmentReportAdapter reportAdapter;
 
+    private AppointmentReportAdapter reportAdapter;
+    private AlertDialog alertDialog;
+
+    private JGGQuotationModel mQuotation;
     private List<Integer> selectedIds = new ArrayList<>();
-    private boolean isMultiSelect = false;
-    private JGGReportModel data;
-    private int reportType = 0;
+    private boolean isRequest;      // true: Request, false: Edit
+    private boolean isMultiSelect;
     private String status;
-    private boolean isRequest; // Request Or Edit
+    private int reportType = 0;
 
     public PostQuotationMainTabFragment() {
         // Required empty public constructor
@@ -68,6 +69,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mQuotation = selectedQuotation;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         describeContainer = (FrameLayout) view.findViewById(R.id.edit_job_describe_container);
         recyclerView = (RecyclerView) view.findViewById(R.id.descibe_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         view.setLayoutParams(lp);
 
         initTabbarView();
@@ -134,13 +136,14 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             describeContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            PostQuotationDescribeFragment frag = PostQuotationDescribeFragment.newInstance(isRequest);
+            PostQuotationDescribeFragment frag = PostQuotationDescribeFragment.newInstance();
             frag.setOnItemClickListener(new PostQuotationDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick(String jobTitle, String jobDesc) {
                     tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
-                    serviceModel.setTitle(jobTitle);
-                    serviceModel.setComment(jobDesc);
+                    // Save Quotation Describe Data
+                    mQuotation.setTitle(jobTitle);
+                    mQuotation.setDescription(jobDesc);
                     refreshRecyclerView();
                 }
             });
@@ -148,43 +151,44 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             ft.commit();
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.TIME) {
             recyclerView.setVisibility(View.VISIBLE);
-            PostQuotationTimeAdapter mTimeAdapter = new PostQuotationTimeAdapter(mContext, isRequest, serviceModel);
+            PostQuotationTimeAdapter mTimeAdapter = new PostQuotationTimeAdapter(mContext, mQuotation);
             mTimeAdapter.setOnItemClickListener(new PostQuotationTimeAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Date date) {
+                public void onItemClick(ArrayList<JGGTimeSlotModel> sessions) {
                     tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
-                    serviceModel.setDate(date);
+                    // Save Quotation TimeSlot Data
+                    mQuotation.setSessions(sessions);
                     refreshRecyclerView();
                 }
             });
             recyclerView.setAdapter(mTimeAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.ADDRESS) {
             recyclerView.setVisibility(View.VISIBLE);
-            PostQuotationAddressAdapter addressAdapter = new PostQuotationAddressAdapter(mContext, isRequest, serviceModel);
+            PostQuotationAddressAdapter addressAdapter = new PostQuotationAddressAdapter(mContext, mQuotation);
             addressAdapter.setOnItemClickListener(new PostQuotationAddressAdapter.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(String unit, String street, String postcode) {
+                public void onNextButtonClick(JGGAddressModel address) {
                     tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
-                    serviceModel.setUnit(unit);
-                    serviceModel.setStreet(street);
-                    serviceModel.setPostcode(postcode);
+                    // Save Quotation Address Data
+                    mQuotation.setAddress(address);
                     refreshRecyclerView();
                 }
             });
             recyclerView.setAdapter(addressAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
+
+            selectedIds = selectedCategoryID(mQuotation.getReportType());
+
             recyclerView.setVisibility(View.VISIBLE);
             reportAdapter = new AppointmentReportAdapter(mContext, isRequest, SERVICES);
+            reportAdapter.setSelectedIds(selectedIds);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(mContext, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
 
                     int itemCount = reportAdapter.getItemCount();
                     if (position == itemCount - 1) {
-                        onSaveCreatingJob();
-                        mActivity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.request_quotation_container, PostQuotationSummaryFragment.newInstance(true))
-                                .commit();
+                        onSaveCreatingQuotation();
                     } else {
                         if (!isMultiSelect) {
                             selectedIds = new ArrayList<>();
@@ -204,8 +208,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         recyclerView.refreshDrawableState();
     }
 
-    private void onSaveCreatingJob() {
-        reportType = 0;
+    private void onSaveCreatingQuotation() {
         for (Integer index : selectedIds) {
             if (index == 1) {
                 reportType += 1;
@@ -215,20 +218,26 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
                 reportType += 4;
             }
         }
-        //creatingJob.setReportType(reportType);
-        //selectedAppointment = creatingJob;
+        // Save Quotation Report Data
+        mQuotation.setReportType(reportType);
+        selectedQuotation = mQuotation;
+
+        mActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.request_quotation_container, PostQuotationSummaryFragment.newInstance(true))
+                .addToBackStack("post_quotation")
+                .commit();
     }
 
     private void multiSelect(int position) {
 
-        data = reportAdapter.getItem(position - 1);
+        JGGReportModel report = reportAdapter.getItem(position - 1);
 
-        if (data != null) {
-            Integer id = data.getId();
-            if (selectedIds.contains(data.getId()))
-                selectedIds.remove(Integer.valueOf(data.getId()));
+        if (report != null) {
+            Integer id = report.getId();
+            if (selectedIds.contains(id))
+                selectedIds.remove(Integer.valueOf(id));
             else
-                selectedIds.add(data.getId());
+                selectedIds.add(id);
             reportAdapter.setSelectedIds(selectedIds);
         }
     }
@@ -241,8 +250,6 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         if (getArguments() != null) {
             status = getArguments().getString("tabName");
             isRequest = getArguments().getBoolean("isRequest");
-            if (isRequest)((PostQuotationActivity)context).setBottomViewHidden(true);
-            else ((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.EDIT_DETAIL);
         }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

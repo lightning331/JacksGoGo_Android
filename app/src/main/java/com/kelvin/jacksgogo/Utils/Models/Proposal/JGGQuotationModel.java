@@ -11,16 +11,17 @@ import java.util.ArrayList;
 
 public class JGGQuotationModel extends JGGAppointmentBaseModel {
 
+    private String ID;
     private String ProviderProfileID;
     private String CategoryID;
     private String Repetition;
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
-    private Integer AppointmentType;    // 0: Repeating, 1: One-time
+    private Integer AppointmentType;
     private Integer RepetitionType;
-    private int BudgetType = 0;
-    private int ReportType = 0;;
+    private int BudgetType;
+    private int ReportType;
     private boolean IsQuckJob;
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
     private ArrayList<String> AttachmentURLs;
@@ -31,6 +32,14 @@ public class JGGQuotationModel extends JGGAppointmentBaseModel {
 
     public void setProviderProfileID(String providerProfileID) {
         ProviderProfileID = providerProfileID;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getCategoryID() {

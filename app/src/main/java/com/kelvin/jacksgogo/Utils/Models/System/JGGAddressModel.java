@@ -12,21 +12,31 @@ public class JGGAddressModel {
     private String City;
     private String State;
     private String PostalCode;
+    private String Street;
+    private String PlaceName;
+    private String CountryCode;
     private double Lat;
     private double Lon;
-    private String CountryCode;
-    private boolean IsDrop;
+    private boolean IsShowFullAddress;
 
     private String fullAddress;
 
     public String getFullAddress() {
         fullAddress = "";
-        if (getFloor() != null) fullAddress = fullAddress + getFloor() + " ";
-        if (getUnit() != null) fullAddress = fullAddress + getUnit() + " ";
-        if (getAddress() != null) fullAddress = fullAddress + getAddress() + ", ";
-        if (getCity() != null) fullAddress = fullAddress + getCity() + ", ";
-        if (getState() != null) fullAddress = fullAddress + getState() + ", ";
-        if (getPostalCode() != null) fullAddress = fullAddress + getPostalCode();
+        if (getFloor() != null)
+            fullAddress = fullAddress + getFloor() + " ";
+        if (getUnit() != null)
+            fullAddress = fullAddress + getUnit() + " ";
+        if (getStreet() == null)
+            fullAddress = fullAddress + getAddress() + ", ";
+        else
+            fullAddress = fullAddress + getStreet() + ", ";
+        if (getCity() != null)
+            fullAddress = fullAddress + getCity() + ", ";
+        if (getState() != null)
+            fullAddress = fullAddress + getState() + ", ";
+        if (getPostalCode() != null)
+            fullAddress = fullAddress + getPostalCode();
         return fullAddress;
     }
 
@@ -78,6 +88,22 @@ public class JGGAddressModel {
         PostalCode = postalCode;
     }
 
+    public String getStreet() {
+        return Street;
+    }
+
+    public void setStreet(String street) {
+        Street = street;
+    }
+
+    public String getPlaceName() {
+        return PlaceName;
+    }
+
+    public void setPlaceName(String placeName) {
+        PlaceName = placeName;
+    }
+
     public double getLat() {
         return Lat;
     }
@@ -102,11 +128,11 @@ public class JGGAddressModel {
         CountryCode = countryCode;
     }
 
-    public boolean isDrop() {
-        return IsDrop;
+    public boolean isShowFullAddress() {
+        return IsShowFullAddress;
     }
 
-    public void setDrop(boolean drop) {
-        IsDrop = drop;
+    public void setShowFullAddress(boolean showFullAddress) {
+        IsShowFullAddress = showFullAddress;
     }
 }

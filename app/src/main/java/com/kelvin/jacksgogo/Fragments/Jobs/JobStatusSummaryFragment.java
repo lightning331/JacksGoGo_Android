@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +18,13 @@ import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.ServiceProviderActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryFooterView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryPaymentView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryQuotationView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryReview;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryTipView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryWorkProgressView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppBaseModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -63,7 +55,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     private ProgressDialog progressDialog;
     private View view;
 
-    private JGGJobModel mJob;
+    private JGGAppointmentModel mJob;
     private ArrayList<JGGProposalModel> proposals;
     private boolean isDeleted;
 
@@ -116,7 +108,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     private void getProposalsByJob() {
         progressDialog = createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 0);
+        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 40);
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
@@ -180,7 +172,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
         Date postOn = appointmentMonthDate(mJob.getPostOn());
         lblPostedTime.setText(getDayMonthYear(postOn) + " " + getTimePeriodString(postOn));
 
-       LinearLayout footerLayout = (LinearLayout)view.findViewById(R.id.job_main_footer_layout);
+        /*LinearLayout footerLayout = (LinearLayout)view.findViewById(R.id.job_main_footer_layout);
         JobStatusSummaryFooterView footerView = new JobStatusSummaryFooterView(mContext);
         footerView.setOnItemClickListener(new JobStatusSummaryFooterView.OnItemClickListener() {
             @Override
@@ -240,7 +232,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
 
         LinearLayout confirmedLayout = (LinearLayout)view.findViewById(R.id.job_main_confirmed_layout);
         JobStatusSummaryConfirmedView confirmedView = new JobStatusSummaryConfirmedView(mContext);
-        confirmedLayout.addView(confirmedView);
+        confirmedLayout.addView(confirmedView);*/
 
         LinearLayout quotationLayout = (LinearLayout)view.findViewById(R.id.job_main_quotation_layout);
         JobStatusSummaryQuotationView quotationView = new JobStatusSummaryQuotationView(mContext);
@@ -260,7 +252,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
             quotationView.btnViewQuotation.setText(R.string.invite_service_provider);
             lblPostedJob.setText(R.string.job_request_posted);
         } else if (proposals.size() > 0) {
-            quotationView.lblTitle.setText("You have received 1 new quotation!");
+            quotationView.lblTitle.setText("You have received " + proposals.size() + " new quotation!");
             quotationView.btnViewQuotation.setText(R.string.view_quotation);
             lblPostedJob.setText(R.string.outgoing_job);
         }

@@ -3,107 +3,114 @@
     android:background="@color/JGGGrey5"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/edit_job_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ScrollView
-                android:id="@+id/edit_job_recycler_view"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/btn_edit_job_tag"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:background="@color/JGGWhite">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
-                    <LinearLayout
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@mipmap/counter_greenactive"/>
+                    <TextView
+                        android:id="@+id/lbl_edit_job_tag_title"
+                        android:text="Describe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/JGGGreen"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/caption_font_size"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="75">
+                    <TextView
+                        android:id="@+id/lbl_quotation_desc_title"
+                        android:text="Gardening"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal"
-                        android:background="@color/JGGWhite">
-                        <LinearLayout
-                            android:id="@+id/btn_edit_job_tag"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="25"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@mipmap/counter_greenactive"/>
-                            <TextView
-                                android:id="@+id/lbl_edit_job_tag_title"
-                                android:text="Describe"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="center"
-                                android:textColor="@color/JGGGreen"
-                                android:fontFamily="@font/muliregular"
-                                android:textSize="@dimen/caption_font_size"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="16dp"
-                            android:orientation="vertical"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="75">
-                            <TextView
-                                android:id="@+id/lbl_edit_job_description_title"
-                                android:text="Gardening"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:textColor="@color/JGGBlack"
-                                android:fontFamily="@font/mulibold"
-                                android:textSize="@dimen/button_font_size" />
-                            <TextView
-                                android:id="@+id/lbl_edit_job_description"
-                                android:text="Need help with moving the lawn and weeding the garden. Garden is 50sf."
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:textColor="@color/JGGBlack"
-                                android:fontFamily="@font/muliregular"
-                                android:textSize="@dimen/list_text_font_size"/>
-                            <android.support.v7.widget.RecyclerView
-                                android:visibility="gone"
-                                android:id="@+id/edit_job_main_recycler_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginBottom="10dp"/>
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/mulibold"
+                        android:textSize="@dimen/button_font_size" />
+                    <TextView
+                        android:id="@+id/lbl_quotation_desc"
+                        android:text="Need help with moving the lawn and weeding the garden. Garden is 50sf."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_text_font_size"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:visibility="gone"
+                        android:id="@+id/edit_job_main_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"/>
 
-                        </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/job_type_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/job_address_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/job_report_type_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
                 </LinearLayout>
-            </ScrollView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/job_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/job_address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/job_report_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+            </LinearLayout>
+            <TextView
+                android:id="@+id/btn_post_quotation"
+                android:text="Request A Quotation"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="@dimen/button_font_size"
+                android:fontFamily="@font/mulibold"
+                android:textColor="@color/JGGWhite"
+                android:background="@color/JGGGreen"/>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

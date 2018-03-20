@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Utils;
 
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +14,10 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
  */
 
 public class JGGTimeManager {
+
+    public static String TIMESLOT_MORNING = "10:00 AM";
+    public static String TIMESLOT_AFTERNOON = "01:00 PM";
+    public static String TIMESLOT_EVEN = "04:00 PM";
 
     public static String appointmentDay(Date date) {
         if (date != null) {
@@ -94,6 +99,20 @@ public class JGGTimeManager {
             e.printStackTrace();
         }
         return newTime;
+    }
+
+    public static String convertCalendarDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+        String month = "";
+        try {
+            Date varDate = dateFormat.parse(appointmentDateString(date));
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            month = dateFormat.format(varDate);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        return month;
     }
 
     public static String getDayMonthString(Date date) {
@@ -186,13 +205,40 @@ public class JGGTimeManager {
         return dayNames[position];
     }
 
-    public static String getPeriod(boolean status) {
-        if (status)
-            return "AM";
-        return "PM";
+    public static JGGTimeSlotModel getTimeSlot(int position, Date date) {
+        JGGTimeSlotModel timeSlot = new JGGTimeSlotModel();
+        String month = convertCalendarDate(date);
+        switch (position) {
+            case 1:
+                timeSlot.setStartOn(month + "T" + "10:00:00");
+                timeSlot.setEndOn(month + "T" + "12:00:00");
+                return timeSlot;
+            case 2:
+                timeSlot.setStartOn(month + "T" + "13:00:00");
+                timeSlot.setEndOn(month + "T" + "15:00:00");
+                return timeSlot;
+            case 3:
+                timeSlot.setStartOn(month + "T" + "16:00:00");
+                timeSlot.setEndOn(month + "T" + "18:00:00");
+                return timeSlot;
+            default:
+                return timeSlot;
+        }
     }
 
-    public static String convertJobTimeString(JGGJobModel job) {
+    public static int getTimeSlotPosition(JGGTimeSlotModel time) {
+        String period = getTimePeriodString(appointmentMonthDate(time.getStartOn()));
+        if (period.equals(TIMESLOT_MORNING))
+            return 1;
+        else if (period.equals((TIMESLOT_AFTERNOON)))
+            return 2;
+        else if (period.equals((TIMESLOT_EVEN)))
+            return 3;
+
+        return 0;
+    }
+
+    public static String convertJobTimeString(JGGAppointmentModel job) {
         String time = "";
         if (job.getAppointmentType() == 1) {
             if (job.getSessions() != null
@@ -246,7 +292,7 @@ public class JGGTimeManager {
         return time;
     }
 
-    public static String convertJobBudgetString(JGGJobModel jobModel) {
+    public static String convertJobBudgetString(JGGAppointmentModel jobModel) {
         String budget = "";
         if (jobModel.getBudget() == null && jobModel.getBudgetFrom() == null)
             budget =  "No limit";
