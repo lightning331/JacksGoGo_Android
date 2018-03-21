@@ -115,7 +115,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             } else if (mJob.getBudgetFrom() != null && mJob.getBudgetTo() != null) {
                 jobTimeViewHolder.lblDescription.setText("Package");
                 budget = ("Budget $ " + mJob.getBudgetFrom().toString()
-                        + " "
+                        + " - "
                         + "$ " + mJob.getBudgetTo().toString()
                         + "/month");
             }

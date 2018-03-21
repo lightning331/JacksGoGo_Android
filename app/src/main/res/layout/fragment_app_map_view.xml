@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/JGGGrey5"
-    tools:context="com.kelvin.jacksgogo.Fragments.Appointments.AppMapViewFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -90,12 +88,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/appointment_map_view"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.kelvin.jacksgogo.Fragments.Appointments.AppMapViewFragment" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

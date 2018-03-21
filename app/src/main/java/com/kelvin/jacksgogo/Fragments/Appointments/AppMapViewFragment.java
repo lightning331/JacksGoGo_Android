@@ -29,7 +29,6 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-
     public static AppMapViewFragment newInstance(String param1, String param2) {
         AppMapViewFragment fragment = new AppMapViewFragment();
 

@@ -144,7 +144,7 @@ public class SearchFragment extends Fragment {
         call.enqueue(new Callback<JGGCategoryResponse>() {
             @Override
             public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         JGGAppManager.getInstance(mContext).categories = response.body().getValue();

@@ -158,6 +158,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
                     tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
                     // Save Quotation TimeSlot Data
                     mQuotation.setSessions(sessions);
+                    mQuotation.setAppointmentType(1);
                     refreshRecyclerView();
                 }
             });

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     // Image Crop Permission
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -44,7 +45,10 @@
 
         <!-- The API key for Google Maps-based APIs. -->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
@@ -143,6 +147,7 @@
         <activity
             android:name=".Activities.Jobs.PostProposalActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Appointment.AppMapViewActivity"></activity>
     </application>
 
 </manifest>

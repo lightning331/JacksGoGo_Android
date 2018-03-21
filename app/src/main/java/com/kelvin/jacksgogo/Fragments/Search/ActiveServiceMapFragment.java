@@ -51,8 +51,8 @@ import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
-public class ActiveServiceMapFragment extends Fragment
-        implements View.OnClickListener,
+public class ActiveServiceMapFragment extends Fragment implements
+        View.OnClickListener,
         OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -157,28 +157,6 @@ public class ActiveServiceMapFragment extends Fragment
         btnMapFilter.setOnClickListener(this);
         btnUserLocation.setOnClickListener(this);
         btnListView.setOnClickListener(this);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        if (context instanceof ActiveServiceActivity) {
-            ((ActiveServiceActivity) context).setBottomViewHidden(true);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -421,6 +399,27 @@ public class ActiveServiceMapFragment extends Fragment
     @Override
     public void onInfoWindowClick(Marker marker) {
         mContext.startActivity(new Intent(mContext, ServiceDetailActivity.class));
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (context instanceof ActiveServiceActivity) {
+            ((ActiveServiceActivity) context).setBottomViewHidden(true);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public interface OnFragmentInteractionListener {

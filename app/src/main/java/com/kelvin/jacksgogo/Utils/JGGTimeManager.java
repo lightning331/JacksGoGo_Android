@@ -316,7 +316,7 @@ public class JGGTimeManager {
                 budget = "$ " + app.getBudget().toString();
             } else if (app.getBudgetFrom() != null && app.getBudgetTo() != null) {
                 budget = ("$ " + app.getBudgetFrom().toString()
-                        + " - "
+                        + "-"
                         + "$ " + app.getBudgetTo().toString());
             }
         }
