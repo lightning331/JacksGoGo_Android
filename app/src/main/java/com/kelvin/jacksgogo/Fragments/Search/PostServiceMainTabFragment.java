@@ -17,7 +17,11 @@ import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceMainTabFragment extends Fragment {
@@ -35,8 +39,12 @@ public class PostServiceMainTabFragment extends Fragment {
     private ImageView imgCategory;
     private TextView lblCategory;
 
-    private AlertDialog alertDialog;
+    private PostServiceSummaryFragment.PostEditStatus editStatus;
     private String tabName;
+
+    public void setEditStatus(PostServiceSummaryFragment.PostEditStatus editStatus) {
+        this.editStatus = editStatus;
+    }
 
     public PostServiceMainTabFragment() {
         // Required empty public constructor
@@ -67,10 +75,10 @@ public class PostServiceMainTabFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_post_service_tab_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_post_service_tab_category_name);
         Picasso.with(mContext)
-                .load(selectedCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
 
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_service_tabbar_view);
         tabbarView = new PostServiceTabbarView(getContext());
@@ -160,7 +168,7 @@ public class PostServiceMainTabFragment extends Fragment {
                 @Override
                 public void onNextButtonClick() {
                     PostServiceSummaryFragment fragment = new PostServiceSummaryFragment();
-                    fragment.setEditStatus(PostServiceSummaryFragment.PostEditStatus.NONE);
+                    fragment.setEditStatus(editStatus);
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.post_service_container, fragment, fragment.getTag())

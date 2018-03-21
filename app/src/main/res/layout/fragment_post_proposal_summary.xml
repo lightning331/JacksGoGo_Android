@@ -1,13 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.kelvin.jacksgogo.Fragments.Jobs.PostProposalSummaryFragment">
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,7 +115,7 @@
                         android:textSize="@dimen/list_text_font_size"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="15dp"
+                        android:layout_height="24dp"
                         android:orientation="vertical">
                     </LinearLayout>
 
@@ -262,7 +264,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
                 android:background="@color/JGGWhite">
                 <LinearLayout
@@ -313,7 +315,7 @@
                 android:text="@string/btn_delete_proposal"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
@@ -322,23 +324,18 @@
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGCyan"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-            </LinearLayout>
-            <TextView
-                android:id="@+id/btn_post_proposal"
-                android:text="Submit Proposal"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:textSize="@dimen/button_font_size"
-                android:fontFamily="@font/mulibold"
-                android:textColor="@color/JGGWhite"
-                android:background="@color/JGGCyan"/>
         </LinearLayout>
     </ScrollView>
+    <TextView
+        android:id="@+id/btn_post_proposal"
+        android:text="Submit Proposal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="@dimen/button_font_size"
+        android:fontFamily="@font/mulibold"
+        android:textColor="@color/JGGWhite"
+        android:background="@color/JGGCyan"/>
 
-</FrameLayout>
+</LinearLayout>

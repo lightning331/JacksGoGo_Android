@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,8 +9,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.squareup.picasso.Picasso;
 
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertBudgetOnly;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 /**
  * Created by PUMA on 12/18/2017.
@@ -17,24 +21,50 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class JobListDetailCell extends RecyclerView.ViewHolder {
 
+    private Context mContext;
+
     public LinearLayout btnBackGround;
     public RelativeLayout likeButtonLayout;
     public ImageView btnLike;
-    public ImageView imgCategoryDetail;
     public ImageView imgCategory;
     public TextView lblCategoryName;
-    public MaterialRatingBar rateBar;
-    public TextView lblScore;
-    public TextView lblScoreStatus;
-    public TextView lblReviewCount;
+    public TextView lblTime;
     public TextView lblAddress;
     public TextView price;
     public TextView bookedCount;
     public LinearLayout btnNext;
 
-    public JobListDetailCell(View itemView) {
+    public JobListDetailCell(View itemView, Context context) {
         super(itemView);
+        mContext = context;
 
         btnBackGround = itemView.findViewById(R.id.btn_background);
+        likeButtonLayout = itemView.findViewById(R.id.like_button_layout);
+        btnLike = itemView.findViewById(R.id.btn_like);
+        imgCategory = itemView.findViewById(R.id.img_category);
+        lblCategoryName = itemView.findViewById(R.id.lbl_category_name);
+        lblTime = itemView.findViewById(R.id.lbl_job_detail_end_time);
+        lblAddress = itemView.findViewById(R.id.lbl_service_detail_address);
+        price = itemView.findViewById(R.id.lbl_service_detail_price);
+        bookedCount = itemView.findViewById(R.id.service_detail_booked_count);
+        btnNext = itemView.findViewById(R.id.btn_service_detail_next);
+    }
+
+    public void setJob(JGGAppointmentModel job) {
+        // Category
+        Picasso.with(mContext)
+                .load(job.getCategory().getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategoryName.setText(job.getCategory().getName());
+        // Address
+        if (job.getAddress().getStreet() == null)
+            lblAddress.setText(job.getAddress().getAddress());
+        else
+            lblAddress.setText(job.getAddress().getStreet());
+        // Budget
+        price.setText(convertBudgetOnly(job));
+        // Delivery Time
+        lblTime.setText(convertJobTimeString(job));
     }
 }

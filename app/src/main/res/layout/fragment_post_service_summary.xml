@@ -54,7 +54,8 @@
         </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -260,7 +261,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal"
                     android:background="@color/JGGWhite">
                     <LinearLayout
@@ -306,28 +307,23 @@
                         android:orientation="vertical">
                     </LinearLayout>
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/btn_post_service"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center"
-                    android:background="@color/JGGGreen"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:text="Post Service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textSize="@dimen/button_font_size"
-                        android:fontFamily="@font/mulibold"
-                        android:textColor="@color/JGGWhite"/>
-                </LinearLayout>
             </LinearLayout>
         </ScrollView>
+        <LinearLayout
+            android:id="@+id/btn_post_service"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:background="@color/JGGGreen"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Post Service"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/button_font_size"
+                android:fontFamily="@font/mulibold"
+                android:textColor="@color/JGGWhite"/>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
+import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceReviewsActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceTimeSlotsActivity;
@@ -22,17 +22,16 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTotalReviewCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertBudgetOnly;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
@@ -45,7 +44,6 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context mContext;
 
     private JGGAppointmentModel mService;
-    private JGGCategoryModel mCategory;
 
     /*
      *  Service BudgetType
@@ -57,7 +55,6 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public ServiceDetailAdapter(Context context) {
         this.mContext = context;
-        mCategory = selectedCategory;
         mService = selectedAppointment;
         if (mService.getBudget() != null) isFixedBudget = true;
     }
@@ -81,10 +78,10 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_header, parent, false);
                 ServiceDetailCategoryCell categoryViewHolder = new ServiceDetailCategoryCell(postCategoryView);
                 Picasso.with(mContext)
-                        .load(mCategory.getImage())
+                        .load(mService.getCategory().getImage())
                         .placeholder(null)
                         .into(categoryViewHolder.imgCategory);
-                categoryViewHolder.lblCategory.setText(mCategory.getName());
+                categoryViewHolder.lblCategory.setText(mService.getCategory().getName());
                 categoryViewHolder.title.setText(mService.getTitle());
                 return categoryViewHolder;
             case 2:     // Budget Cell
@@ -92,24 +89,13 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 JobDetailDescriptionCell priceViewHolder = new JobDetailDescriptionCell(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+                priceViewHolder.description.setText(convertBudgetOnly(mService));
+                if (mService.getBudget() == null) {
 
-                String budget = "";
-                if (mService.getBudget() == null && mService.getBudgetFrom() == null)
-                    budget =  "No limit";
-                else {
-                    if (mService.getBudget() != null) {
-                        priceViewHolder.title.setText("Fixed:");
-                        budget = "$ " + mService.getBudget().toString();
-                    } else if (mService.getBudgetFrom() != null && mService.getBudgetTo() != null) {
-                        priceViewHolder.title.setVisibility(View.VISIBLE);
-                        priceViewHolder.title.setText("Package:");
-                        budget = ("$ " + mService.getBudgetFrom().toString()
-                                + " - "
-                                + "$ " + mService.getBudgetTo().toString());
-                    }
+                } else {
+                    priceViewHolder.title.setText("Package");
+                    priceViewHolder.title.setVisibility(View.VISIBLE);
                 }
-                priceViewHolder.description.setText(budget);
-
                 return priceViewHolder;
             case 3:     // Description Cell
                 View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
@@ -125,12 +111,12 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     street = mService.getAddress().getAddress();
                 else
                     street = mService.getAddress().getStreet();
-                addressViewHolder.description.setText(street + ", 0.4 km away");
+                addressViewHolder.lblDescription.setText(street + ", 0.4 km away");
                 addressViewHolder.location.setVisibility(View.GONE);
 
                 if (isFixedBudget) {
-                    addressViewHolder.description.setText("Eunos Swim Club");
-                    addressViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+                    addressViewHolder.lblDescription.setText("Eunos Swim Club");
+                    addressViewHolder.lblDescription.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                     addressViewHolder.address.setVisibility(View.VISIBLE);
                     addressViewHolder.address.setText(street);
                     addressViewHolder.location.setVisibility(View.VISIBLE);
@@ -261,7 +247,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_location) {
-            mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
+            mContext.startActivity(new Intent(mContext, JGGMapViewActivity.class));
         } else if (view.getId() == R.id.btn_time_slots) {
             mContext.startActivity(new Intent(mContext, ServiceTimeSlotsActivity.class));
         } else if (view.getId() == R.id.btn_see_all_reviews) {

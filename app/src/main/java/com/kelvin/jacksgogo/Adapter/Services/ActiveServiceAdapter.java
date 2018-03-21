@@ -15,6 +15,12 @@ import com.kelvin.jacksgogo.R;
 
 public class ActiveServiceAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
+    private Context mContext;
+
+    public ActiveServiceAdapter(Context context) {
+        mContext = context;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -23,7 +29,7 @@ public class ActiveServiceAdapter extends RecyclerView.Adapter implements View.O
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        return new ServiceListDetailCell(view);
+        return new ServiceListDetailCell(view, mContext);
     }
 
     @Override

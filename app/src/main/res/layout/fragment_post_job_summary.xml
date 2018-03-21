@@ -1,62 +1,64 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/JGGWhite"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/img_category"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_cat_runningman"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/lbl_category_name"
+                    android:text="Running Man"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/JGGGrey4">
+    </LinearLayout>
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:background="@color/JGGWhite"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/img_category"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@mipmap/icon_cat_runningman"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/lbl_category_name"
-                            android:text="Running Man"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/JGGBlack"
-                            android:fontFamily="@font/mulibold"
-                            android:textSize="12dp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/JGGGrey4">
-            </LinearLayout>
             <LinearLayout
                 android:id="@+id/btn_post_job_summary_describe"
                 android:layout_width="match_parent"
@@ -306,7 +308,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
                 android:background="@color/JGGWhite">
                 <LinearLayout
@@ -352,28 +354,23 @@
                     android:orientation="vertical">
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btn_post_job"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center"
-                android:background="@color/JGGCyan"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/lbl_post_job"
-                    android:text="Post New Job"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="@dimen/button_font_size"
-                    android:fontFamily="@font/mulibold"
-                    android:textColor="@color/JGGWhite"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/btn_post_job"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:background="@color/JGGCyan"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/lbl_post_job"
+            android:text="Post New Job"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/button_font_size"
+            android:fontFamily="@font/mulibold"
+            android:textColor="@color/JGGWhite"/>
+    </LinearLayout>
+</LinearLayout>

@@ -54,7 +54,6 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
-    private JGGCategoryModel mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +67,8 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        mCategory = selectedCategory;
         mJob = selectedAppointment;
-        if (mCategory != null && mJob != null)
+        if (mJob != null)
             setCategory();
         showJobMainFragment();
 
@@ -85,10 +83,10 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(mCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(mCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
         lblTime.setText(convertJobTimeString(mJob));
     }

@@ -65,11 +65,11 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
             viewMyServiceButton.setVisibility(View.VISIBLE);
             imgAllService.setImageResource(R.mipmap.button_viewall_round_green);
             imgPostNew.setImageResource(R.mipmap.button_addnew_round_green);
-            setViewColor(ContextCompat.getColor(mContext, R.color.JGGGreen), SERVICES);
+            setViewColor(ContextCompat.getColor(mContext, R.color.JGGGreen), "Services");
         } else if (type == AppointmentType.JOBS) {
             imgAllService.setImageResource(R.mipmap.button_viewall_cyan);
             imgPostNew.setImageResource(R.mipmap.button_addnew_round_cyan);
-            setViewColor(ContextCompat.getColor(mContext, R.color.JGGCyan), JOBS);
+            setViewColor(ContextCompat.getColor(mContext, R.color.JGGCyan), "Jobs");
         } else if (type == AppointmentType.EVENT) {
 
         }

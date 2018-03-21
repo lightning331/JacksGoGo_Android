@@ -57,7 +57,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center">
                 <ImageView
-                    android:id="@+id/img_service_detail_category"
+                    android:id="@+id/img_category"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@mipmap/icon_cat_householdchores"
@@ -66,7 +66,7 @@
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:text="Help With Gardening"
-                    android:id="@+id/lbl_service_detail_category_name"
+                    android:id="@+id/lbl_category_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"

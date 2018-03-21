@@ -56,10 +56,10 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
 
         // Category
         Picasso.with(this)
-                .load(selectedCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
 
         // Create new Quotation Model
         selectedQuotation = new JGGQuotationModel();

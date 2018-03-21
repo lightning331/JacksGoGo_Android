@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Profile.SignUpSMSVerifyActivity;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -20,7 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class SplashActivity extends AppCompatActivity {
+public class JGGSplashActivity extends AppCompatActivity {
 
     private int SPLASH_DISPLAY_DURATION = 500;
     private String strEmail;
@@ -33,6 +32,12 @@ public class SplashActivity extends AppCompatActivity {
         strEmail = JGGAppManager.getInstance(this).getUsernamePassword()[0];
         strPassword = JGGAppManager.getInstance(this).getUsernamePassword()[1];
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
         loadRegions();
     }
 
@@ -40,9 +45,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                SplashActivity.this.startActivity(mainIntent);
-                SplashActivity.this.finish();
+                Intent mainIntent = new Intent(JGGSplashActivity.this, MainActivity.class);
+                JGGSplashActivity.this.startActivity(mainIntent);
+                JGGSplashActivity.this.finish();
             }
         }, SPLASH_DISPLAY_DURATION);
     }
@@ -55,20 +60,20 @@ public class SplashActivity extends AppCompatActivity {
             public void onResponse(Call<JGGRegionResponse> call, Response<JGGRegionResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        JGGAppManager.getInstance(SplashActivity.this).regions = response.body().getValue();
+                        JGGAppManager.getInstance(JGGSplashActivity.this).regions = response.body().getValue();
                         autoAuthorize();
                     } else {
-                        Toast.makeText(SplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(SplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JGGSplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGRegionResponse> call, Throwable t) {
-                Toast.makeText(SplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JGGSplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -99,24 +104,24 @@ public class SplashActivity extends AppCompatActivity {
                     String access_token = response.body().getAccess_token();
                     Long expire_in = response.body().getExpires_in();
 
-                    JGGAppManager.getInstance(SplashActivity.this).saveToken(access_token, expire_in);
+                    JGGAppManager.getInstance(JGGSplashActivity.this).saveToken(access_token, expire_in);
                     onAccountLogin();
 
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(SplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JGGSplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGTokenResponse> call, Throwable t) {
-                Toast.makeText(SplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JGGSplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void onAccountLogin() {
-        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, SplashActivity.this);
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, JGGSplashActivity.this);
         Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
         loginCall.enqueue(new Callback<JGGUserProfileResponse>() {
             @Override
@@ -124,18 +129,18 @@ public class SplashActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     JGGUserProfileModel user = response.body().getValue();
-                    JGGAppManager.getInstance(SplashActivity.this).currentUser = user;
+                    JGGAppManager.getInstance(JGGSplashActivity.this).currentUser = user;
                     onShowMainActivity();
 
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(SplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JGGSplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
-                Toast.makeText(SplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JGGSplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }

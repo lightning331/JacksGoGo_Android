@@ -35,11 +35,9 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private JGGAppointmentModel mJob;
-    private JGGCategoryModel mCategory;
 
     public JobDetailsAdapter (Context context) {
         this.mContext = context;
-        mCategory = selectedCategory;
         mJob = selectedAppointment;
     }
 
@@ -61,10 +59,10 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             ServiceDetailCategoryCell categoryViewHolder = new ServiceDetailCategoryCell(postCategoryView);
 
             Picasso.with(mContext)
-                    .load(mCategory.getImage())
+                    .load(selectedAppointment.getCategory().getImage())
                     .placeholder(null)
                     .into(categoryViewHolder.imgCategory);
-            categoryViewHolder.lblCategory.setText(mCategory.getName());
+            categoryViewHolder.lblCategory.setText(selectedAppointment.getCategory().getName());
             categoryViewHolder.title.setText(mJob.getTitle());
 
             return categoryViewHolder;
@@ -72,10 +70,10 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
             JobDetailLocationCell jobTimeViewHolder = new JobDetailLocationCell(addressView);
 
-            jobTimeViewHolder.description.setText("Package Job");
-            jobTimeViewHolder.description.setVisibility(View.VISIBLE);
-            jobTimeViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            jobTimeViewHolder.location.setVisibility(View.INVISIBLE);
+            jobTimeViewHolder.lblDescription.setText("Package Job");
+            jobTimeViewHolder.lblDescription.setVisibility(View.VISIBLE);
+            jobTimeViewHolder.lblDescription.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+            jobTimeViewHolder.location.setVisibility(View.GONE);
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_time);
             jobTimeViewHolder.address.setVisibility(View.VISIBLE);
             jobTimeViewHolder.address.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
@@ -95,14 +93,14 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
                 street = mJob.getAddress().getAddress();
             else
                 street = mJob.getAddress().getStreet();
-            addressViewHolder.description.setText(street + ", 0.4 km away");
+            addressViewHolder.lblDescription.setText(street + ", 0.4 km away");
             addressViewHolder.location.setVisibility(View.INVISIBLE);
             return addressViewHolder;
         } else if (viewType == 5) {    // Job Budget Cell
             View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
             JobDetailLocationCell jobTimeViewHolder = new JobDetailLocationCell(priceView);
 
-            jobTimeViewHolder.description.setVisibility(View.VISIBLE);
+            jobTimeViewHolder.lblDescription.setVisibility(View.VISIBLE);
             jobTimeViewHolder.address.setVisibility(View.VISIBLE);
             jobTimeViewHolder.location.setVisibility(View.INVISIBLE);
             jobTimeViewHolder.lblQuotePrice.setVisibility(View.VISIBLE);
@@ -112,10 +110,10 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             if (mJob.getBudget() == null && mJob.getBudgetFrom() == null)
                 budget =  "Budget No limit";
             else if (mJob.getBudget() != null) {
-                jobTimeViewHolder.description.setText("Fixed");
+                jobTimeViewHolder.lblDescription.setText("Fixed");
                 budget = "Budget " + mJob.getBudget().toString() + "/month";
             } else if (mJob.getBudgetFrom() != null && mJob.getBudgetTo() != null) {
-                jobTimeViewHolder.description.setText("Package");
+                jobTimeViewHolder.lblDescription.setText("Package");
                 budget = ("Budget $ " + mJob.getBudgetFrom().toString()
                         + " "
                         + "$ " + mJob.getBudgetTo().toString()

@@ -65,7 +65,7 @@ public class SearchResultMainFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        ActiveServiceAdapter adapter = new ActiveServiceAdapter();
+        ActiveServiceAdapter adapter = new ActiveServiceAdapter(mContext);
         adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick() {

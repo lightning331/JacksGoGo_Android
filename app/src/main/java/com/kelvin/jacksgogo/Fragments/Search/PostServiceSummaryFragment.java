@@ -35,7 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
@@ -65,9 +64,10 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private ArrayList<String> attachmentURLs;
 
     private ProgressDialog progressDialog;
+    private PostServiceMainTabFragment fragment;
 
     public enum PostEditStatus {
-        NONE,
+        POST,
         EDIT,
         DUPLICATE
     }
@@ -94,12 +94,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
         }
         attachmentURLs = new ArrayList<>();
-        if (editStatus == PostEditStatus.NONE) {
 
-        } else if (editStatus == PostEditStatus.EDIT
-                || editStatus == PostEditStatus.DUPLICATE) {
-
-        }
         String postTime = appointmentNewDate(new Date());
         selectedAppointment.setPostOn(postTime);
         selectedAppointment.setAttachmentURLs(attachmentURLs);
@@ -143,10 +138,10 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (selectedAppointment != null) {
             // Category
             Picasso.with(mContext)
-                    .load(selectedCategory.getImage())
+                    .load(selectedAppointment.getCategory().getImage())
                     .placeholder(null)
                     .into(imgCategory);
-            lblCategory.setText(selectedCategory.getName());
+            lblCategory.setText(selectedAppointment.getCategory().getName());
             // Describe
             lblDescribeTitle.setText(selectedAppointment.getTitle());
             lblDescribeDesc.setText(selectedAppointment.getDescription());
@@ -252,7 +247,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
         if (view.getId() == R.id.btn_post_service) {
             switch (editStatus) {
-                case NONE:
+                case POST:
                     onPostService();
                     //showAlertDialog();
                     break;
@@ -272,36 +267,43 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 default:
                     break;
             }
+            return;
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
             Intent intent = new Intent(mContext, PostedServiceActivity.class);
             intent.putExtra("is_post", true);
             mContext.startActivity(intent);
+            return;
         } else if (view.getId() == R.id.btn_post_main_describe) {
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE))
+                    .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_price) {
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.TIME);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.TIME))
+                    .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_time_slot) {
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.ADDRESS);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.ADDRESS))
+                    .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_address) {
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.REPORT);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_service_container, PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.REPORT))
+                    .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         }
+        fragment.setEditStatus(editStatus);
     }
 
     private void showAlertDialog() {

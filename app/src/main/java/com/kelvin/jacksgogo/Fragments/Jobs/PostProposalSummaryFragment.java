@@ -152,10 +152,10 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private void setData() {
 
         Picasso.with(mContext)
-                .load(selectedCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         lblTime.setText(convertJobTimeString(selectedAppointment));
 
         if (mProposal != null) {

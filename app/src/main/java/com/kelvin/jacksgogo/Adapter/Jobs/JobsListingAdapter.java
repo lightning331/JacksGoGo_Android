@@ -15,6 +15,11 @@ import com.kelvin.jacksgogo.R;
 
 public class JobsListingAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
+    private Context mContext;
+
+    public JobsListingAdapter(Context context) {
+        mContext = context;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,7 +29,7 @@ public class JobsListingAdapter extends RecyclerView.Adapter implements View.OnC
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        return new JobListDetailCell(view);
+        return new JobListDetailCell(view, mContext);
     }
 
     @Override

@@ -63,7 +63,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
-        ActiveServiceAdapter adapter = new ActiveServiceAdapter();
+        ActiveServiceAdapter adapter = new ActiveServiceAdapter(this);
         adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick() {

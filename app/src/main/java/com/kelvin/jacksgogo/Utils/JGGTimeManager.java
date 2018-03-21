@@ -1,5 +1,7 @@
 package com.kelvin.jacksgogo.Utils;
 
+import android.view.View;
+
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
@@ -302,6 +304,22 @@ public class JGGTimeManager {
             budget =  ("From $ " + jobModel.getBudgetFrom().toString()
                     + " "
                     + "to $ " + jobModel.getBudgetTo().toString());
+        return budget;
+    }
+
+    public static String convertBudgetOnly(JGGAppointmentModel app) {
+        String budget = "";
+        if (app.getBudget() == null && app.getBudgetFrom() == null)
+            budget =  "No limit";
+        else {
+            if (app.getBudget() != null) {
+                budget = "$ " + app.getBudget().toString();
+            } else if (app.getBudgetFrom() != null && app.getBudgetTo() != null) {
+                budget = ("$ " + app.getBudgetFrom().toString()
+                        + " - "
+                        + "$ " + app.getBudgetTo().toString());
+            }
+        }
         return budget;
     }
 }

@@ -74,7 +74,6 @@ public class PostedServiceActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mService;
-    private JGGCategoryModel mCategory;
     private boolean isVerified;
     private boolean isPost = false;
 
@@ -101,9 +100,8 @@ public class PostedServiceActivity extends AppCompatActivity {
             }
         });
 
-        mCategory = selectedCategory;
         mService = selectedAppointment;
-        if (mCategory != null && mService != null)
+        if (mService != null)
             initView();
     }
 
@@ -117,10 +115,10 @@ public class PostedServiceActivity extends AppCompatActivity {
         lblPostedTime.setText("Submitted on " + time + ". Pending verification.");
         // Category
         Picasso.with(this)
-                .load(mCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(mCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         lblTitle.setText(mService.getTitle());
         // Description
         lblDescription.setText(mService.getDescription());
@@ -129,7 +127,7 @@ public class PostedServiceActivity extends AppCompatActivity {
         // Price
         String price = "";
         if (mService.getAppointmentType() == 1) {
-            if (mService.getBudgetFrom() == null && mService.getBudgetFrom() == null)
+            if (mService.getBudget() == null && mService.getBudgetFrom() == null)
                 price = "No limit";
             else {
                 if (mService.getBudget() != null)

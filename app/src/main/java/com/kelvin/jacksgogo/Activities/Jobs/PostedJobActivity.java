@@ -78,7 +78,6 @@ public class PostedJobActivity extends AppCompatActivity {
 
     private JGGActionbarView actionbarView;
     private ProgressDialog progressDialog;
-    private JGGCategoryModel mCategory;
     private JGGAppointmentModel mJob;
 
     @Override
@@ -101,19 +100,18 @@ public class PostedJobActivity extends AppCompatActivity {
             }
         });
 
-        mCategory = selectedCategory;
         mJob = selectedAppointment;
-        if (mCategory != null && mJob != null)
+        if (mJob != null)
             setData();
     }
 
     private void setData() {
         // Category
         Picasso.with(this)
-                .load(mCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(mCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         lblTitle.setText(mJob.getTitle());
         // Time
         String time = "";

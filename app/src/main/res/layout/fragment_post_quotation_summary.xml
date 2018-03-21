@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/JGGGrey5"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <ScrollView
         android:id="@+id/edit_job_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,24 +95,20 @@
                 android:id="@+id/job_report_type_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical">
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-            </LinearLayout>
-            <TextView
-                android:id="@+id/btn_post_quotation"
-                android:text="Request A Quotation"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:textSize="@dimen/button_font_size"
-                android:fontFamily="@font/mulibold"
-                android:textColor="@color/JGGWhite"
-                android:background="@color/JGGGreen"/>
         </LinearLayout>
     </ScrollView>
+    <TextView
+        android:id="@+id/btn_post_quotation"
+        android:text="Request A Quotation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="@dimen/button_font_size"
+        android:fontFamily="@font/mulibold"
+        android:textColor="@color/JGGWhite"
+        android:background="@color/JGGGreen"/>
 </LinearLayout>

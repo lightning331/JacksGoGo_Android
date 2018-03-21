@@ -1,21 +1,26 @@
 package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 
 /**
  * Created by PUMA on 12/19/2017.
@@ -25,6 +30,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Context mContext;
     private ArrayList<JGGCategoryModel> mCategories;
+    private ArrayList<JGGAppointmentModel> mJobs;
 
     public SearchJobsAdapter(Context context, ArrayList<JGGCategoryModel> data) {
         this.mContext = context;
@@ -57,26 +63,32 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return sectionView;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_list_detail, parent, false);
-            JobListDetailCell cell = new JobListDetailCell(view);
-            cell.btnBackGround.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(view);
-                }
-            });
-
+            JobListDetailCell cell = new JobListDetailCell(view, mContext);
             return cell;
         }
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (position > 3) {
+            JobListDetailCell cell = (JobListDetailCell) holder;
+            JGGAppointmentModel service = mJobs.get(position - 4);
 
+            cell.setJob(service);
+            cell.btnBackGround.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedAppointment = null;
+                    selectedAppointment = mJobs.get(position - 4);;
+                    listener.onItemClick(view);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 11;
+        return mJobs.size() + 4;
     }
 
     @Override
@@ -88,13 +100,12 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onClick(View view) {
         if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
             listener.onItemClick(view);
-        } if (view.getId() == R.id.btn_background) {
-            listener.onItemClick(view);
         }
     }
 
-    public void notifyDataChanged(ArrayList<JGGCategoryModel> data) {
+    public void notifyDataChanged(ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> jobs) {
         mCategories = data;
+        mJobs = jobs;
     }
 
     private OnItemClickListener listener;

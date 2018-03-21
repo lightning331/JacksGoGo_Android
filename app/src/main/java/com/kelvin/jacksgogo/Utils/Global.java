@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.WindowManager;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,17 +36,6 @@ public class Global {
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;
 
-    public enum AppointmentStatus {
-        NONE,
-        PENDING,
-        WORKINPROGRESS,
-        REJECTED,
-        CANCELLED,
-        WITHDRAWN,
-        COMPLETED,
-        WAITINGFORREVIEW
-    }
-
     public enum AppointmentType {
         JOBS,
         SERVICES,
@@ -63,7 +53,10 @@ public class Global {
         accepted(3),
         rejected(4),
         declined(5),
-        notresponded(6);
+        notresponded(6),
+        withdrawn(7),
+        completed(8),
+        waitingforreview(9);
 
         private int value;
         private static Map map = new HashMap<>();
@@ -115,34 +108,6 @@ public class Global {
         }
     }
 
-    public static enum JGGAppointmentType {
-        none(null),     // Not Selected
-        repeating(0),   // Repeating JOB
-        onetime(1);     // One-time JOB, One person at a time(in Service TimeSlot)
-                        // If AppointmentType greater than 1(onetime), It's Multiple people at a time(in Service TimeSlot)
-
-        private Integer value;
-        private static Map map = new HashMap<>();
-
-        JGGAppointmentType(final Integer value) {
-            this.value = value;
-        }
-
-        static {
-            for (JGGAppointmentType jobTimeSlotType : JGGAppointmentType.values()) {
-                map.put(jobTimeSlotType.value, jobTimeSlotType);
-            }
-        }
-
-        public static JGGAppointmentType valueOf(Integer jobTimeSlotType) {
-            return (JGGAppointmentType) map.get(jobTimeSlotType);
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-    }
-
     public static enum JGGRepetitionType {
         none(null),
         weekly(0),
@@ -163,33 +128,6 @@ public class Global {
 
         public static JGGRepetitionType valueOf(Integer repetitionType) {
             return (JGGRepetitionType) map.get(repetitionType);
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-    }
-
-    public static enum JGGProposalStatus {
-        none(null),
-        weekly(0),
-        monthly(1);
-
-        private Integer value;
-        private static Map map = new HashMap<>();
-
-        JGGProposalStatus(final Integer value) {
-            this.value = value;
-        }
-
-        static {
-            for (JGGProposalStatus proposalStatus : JGGProposalStatus.values()) {
-                map.put(proposalStatus.value, proposalStatus);
-            }
-        }
-
-        public static JGGProposalStatus valueOf(Integer proposalStatus) {
-            return (JGGProposalStatus) map.get(proposalStatus);
         }
 
         public Integer getValue() {
@@ -225,7 +163,7 @@ public class Global {
         }
     }
 
-    public static String getBiddingStatus(BiddingStatus status) {
+    public static String getBiddingStatus(JGGProposalStatus status) {
         switch (status) {
             case none:
                 return "";

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
+import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
@@ -110,11 +110,11 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 break;
             case 3:
                 JobDetailLocationCell jobDetailLocationCell = (JobDetailLocationCell)holder;
-                jobDetailLocationCell.description.setText(mJob.getAddress().getFullAddress());
+                jobDetailLocationCell.lblDescription.setText(mJob.getAddress().getFullAddress());
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
+                        mContext.startActivity(new Intent(mContext, JGGMapViewActivity.class));
                     }
                 });
                 break;

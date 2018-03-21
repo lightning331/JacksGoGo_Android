@@ -56,7 +56,6 @@ public class InviteProviderActivity extends AppCompatActivity {
     private ArrayList<JGGUserProfileModel> users = new ArrayList<>();
     private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
     private JGGUserProfileModel user;
-    private JGGCategoryModel mCategory;
     private JGGAppointmentModel mJob;
     private String proposalID;
 
@@ -79,9 +78,8 @@ public class InviteProviderActivity extends AppCompatActivity {
             }
         });
 
-        mCategory = selectedCategory;
         mJob = selectedAppointment;
-        if (mCategory != null && mJob != null)
+        if (mJob != null)
             setCategory();
 
         getInviteUsers();
@@ -106,10 +104,10 @@ public class InviteProviderActivity extends AppCompatActivity {
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(mCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(mCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
         lblTime.setText(convertJobTimeString(mJob));
     }

@@ -7,7 +7,6 @@ import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGProviderUserModel;
 
 import java.util.ArrayList;
 

@@ -15,9 +15,12 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDeta
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 
 /**
  * Created by PUMA on 11/14/2017.
@@ -27,15 +30,17 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private Context mContext;
     private ArrayList<JGGCategoryModel> mCategories;
+    private ArrayList<JGGAppointmentModel> mServices;
 
     private int HEADER_TYPE = 0;
     private int CATEGORY_SECTION_TITLE_TYPE = 1;
     private int CATEGORY_SECTION_TYPE = 2;
     private int RECOMMEND_SECTION_TITLE_TYPE = 3;
 
-    public SearchServicesAdapter(Context context, ArrayList<JGGCategoryModel> data) {
+    public SearchServicesAdapter(Context context, ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> services) {
         mContext = context;
         mCategories = data;
+        mServices = services;
     }
 
     @Override
@@ -44,10 +49,13 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext);
+            categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == CATEGORY_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
+            sectionView.txtTitle.setText("All Categories");
+            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
             View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
@@ -56,34 +64,28 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
+            sectionView.txtTitle.setText("Recommended For You");
+            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_list_detail, parent, false);
-            ServiceListDetailCell cell = new ServiceListDetailCell(view);
+            ServiceListDetailCell cell = new ServiceListDetailCell(view, mContext);
             return cell;
         }
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == HEADER_TYPE) {
-            SearchHomeHeaderView categoryListView = (SearchHomeHeaderView) holder;
-            categoryListView.setOnClickListener(this);
-        } else if (position == CATEGORY_SECTION_TITLE_TYPE) {
-            SectionTitleView sectionView = (SectionTitleView) holder;
-            sectionView.txtTitle.setText("All Categories");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-        } else if (position == CATEGORY_SECTION_TYPE) {
-            SearchCategoryCell categoryListView = (SearchCategoryCell) holder;
-        } else if (position == RECOMMEND_SECTION_TITLE_TYPE) {
-            SectionTitleView sectionView = (SectionTitleView) holder;
-            sectionView.txtTitle.setText("Recommended For You");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-        } else {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (position > RECOMMEND_SECTION_TITLE_TYPE)  {
             ServiceListDetailCell cell = (ServiceListDetailCell) holder;
+            JGGAppointmentModel service = mServices.get(position - 4);
+
+            cell.setService(service);
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    selectedAppointment = null;
+                    selectedAppointment = mServices.get(position - 4);;
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
                     mContext.startActivity(intent);
@@ -94,7 +96,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return 10;
+        return mServices.size() + 4;
     }
 
     @Override
@@ -113,8 +115,9 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public void notifyDataChanged(ArrayList<JGGCategoryModel> data) {
+    public void notifyDataChanged(ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> services) {
         mCategories = data;
+        mServices = services;
     }
 
     private OnItemClickListener listener;

@@ -18,8 +18,8 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -53,7 +53,6 @@ public class ServiceProviderActivity extends AppCompatActivity {
 
     private ArrayList<JGGProposalModel> proposals;
     private JGGAppointmentModel mJob;
-    private JGGCategoryModel mCategory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,9 +60,8 @@ public class ServiceProviderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_service_provider);
         ButterKnife.bind(this);
 
-        mCategory = selectedCategory;
         mJob = selectedAppointment;
-        if (mCategory != null && mJob != null)
+        if (mJob != null)
             setCategory();
         initView();
         getProposalsByJob();
@@ -136,7 +134,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     }
 
     private void onShowBidDetailClick(int position) {
-        BiddingStatus status = proposals.get(position).getStatus();
+        JGGProposalStatus status = proposals.get(position).getStatus();
         Intent intent = new Intent(this, BidDetailActivity.class);
         intent.putExtra("bid_status", status);
         startActivity(intent);
@@ -145,7 +143,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(selectedCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(selectedCategory.getName());

@@ -6,6 +6,9 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by PUMA on 1/18/2018.
  */
@@ -25,6 +28,42 @@ public class JGGAppointmentBaseModel {
     private int Status;
     private JGGAddressModel Address = new JGGAddressModel();
     private JGGAddressModel DAddress = new JGGAddressModel();
+
+    public static enum JGGProposalStatus {
+
+        none(0),
+        pending(1),
+        newproposal(2),
+        accepted(3),
+        rejected(4),
+        declined(5),
+        notresponded(6),
+        withdrawn(7),
+        completed(8),
+        waitingforreview(9);
+
+        private int value;
+        private static Map map = new HashMap<>();
+
+        JGGProposalStatus(final int value) {
+            this.value = value;
+        }
+
+        static {
+            for (JGGProposalStatus status : JGGProposalStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static JGGProposalStatus valueOf(int status) {
+            return (JGGProposalStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
 
     public JGGAppointmentBaseModel() {
         super();
@@ -110,11 +149,11 @@ public class JGGAppointmentBaseModel {
         PostOn = postOn;
     }
 
-    public BiddingStatus getStatus() {
-        return BiddingStatus.valueOf(Status);
+    public JGGProposalStatus getStatus() {
+        return JGGProposalStatus.valueOf(Status);
     }
 
-    public void setStatus(BiddingStatus status) {
+    public void setStatus(JGGProposalStatus status) {
         Status = status.getValue();
     }
 

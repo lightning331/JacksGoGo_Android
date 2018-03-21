@@ -72,10 +72,10 @@ public class PostProposalMainTabFragment extends Fragment {
         lblTime = (TextView) view.findViewById(R.id.lbl_date);
 
         Picasso.with(mContext)
-                .load(selectedCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         lblTime.setText(convertJobTimeString(selectedAppointment));
 
         initTabbarView(view);

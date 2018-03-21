@@ -80,8 +80,22 @@ public interface JGGAPIManager {
     Call<JGGPostAppResponse> editJob(@Body JGGAppointmentModel editingJob);
 
     @GET("api/Appointment/DeleteJob")
-    Call<JGGBaseResponse> deleteJob(@Query("ID") String jobID,
+    Call<JGGBaseResponse> deleteJob(@Query("JobID") String jobID,
                                     @Query("Reason") String reason);
+
+    @FormUrlEncoded
+    @POST("api/Appointment/SearchJob")
+    Call<JGGGetAppsResponse> searchJob(@Field("RegionID") String regionID,
+                                           @Field("UserProfileID") String userProfileID,
+                                           @Field("Query") String query,
+                                           @Field("CategoryID") String categoryID,
+                                           @Field("Tag") Integer tag,
+                                           @Field("PostedOn") Integer postedOn,
+                                           @Field("Lat") String lat,
+                                           @Field("Lon") String lon,
+                                           @Field("Distance") String distance,
+                                           @Field("PageIndex") String pageIndex,
+                                           @Field("PageSize") Integer pageSize);
 
     /*
      *  Appointment Service
@@ -93,7 +107,21 @@ public interface JGGAPIManager {
     Call<JGGPostAppResponse> editService(@Body JGGAppointmentModel editingService);
 
     @GET("api/Appointment/DeleteService")
-    Call<JGGBaseResponse> deleteService(@Query("ID") String serviceID);
+    Call<JGGBaseResponse> deleteService(@Query("ServiceID") String serviceID);
+
+    @FormUrlEncoded
+    @POST("api/Appointment/SearchService")
+    Call<JGGGetAppsResponse> searchService(@Field("RegionID") String regionID,
+                                           @Field("UserProfileID") String userProfileID,
+                                           @Field("Query") String query,
+                                           @Field("CategoryID") String categoryID,
+                                           @Field("Tag") Integer tag,
+                                           @Field("PostedOn") Integer postedOn,
+                                           @Field("Lat") String lat,
+                                           @Field("Lon") String lon,
+                                           @Field("Distance") String distance,
+                                           @Field("PageIndex") String pageIndex,
+                                           @Field("PageSize") Integer pageSize);
 
     /*
      *  Appointment Quotation
@@ -105,22 +133,22 @@ public interface JGGAPIManager {
      *  Appointment
      */
     @GET("api/Appointment/GetPendingAppointments")
-    Call<JGGGetAppsResponse> getPendingAppointments(@Query("UserID") String userProfileID,
+    Call<JGGGetAppsResponse> getPendingAppointments(@Query("UserProfileID") String userProfileID,
                                                     @Query("pageIndex") Integer pageIndex,
                                                     @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetConfirmedAppointments")
-    Call<JGGGetAppsResponse> getConfirmedAppointments(@Query("UserID") String userProfileID,
+    Call<JGGGetAppsResponse> getConfirmedAppointments(@Query("UserProfileID") String userProfileID,
                                                       @Query("pageIndex") Integer pageIndex,
                                                       @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("UserID") String userProfileID,
+    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("UserProfileID") String userProfileID,
                                                    @Query("pageIndex") Integer pageIndex,
                                                    @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetJobByID")
-    Call<JGGGetAppResponse> getJobByID(@Query("ID") String jobID);
+    Call<JGGGetAppResponse> getJobByID(@Query("JobID") String jobID);
 
     /*
      *  Proposal
@@ -140,9 +168,9 @@ public interface JGGAPIManager {
                                                    @Field("pageSize") Integer pageSize);
 
     @GET("api/Proposal/GetProposalsByJob")
-    Call<JGGProposalResponse> getProposalsByJob(@Query("ID") String jobID,
-                                                @Query("pageIndex") Integer pageIndex,
-                                                @Query("pageSize") Integer pageSize);
+    Call<JGGProposalResponse> getProposalsByJob(@Query("JobID") String jobID,
+                                                @Query("PageIndex") Integer pageIndex,
+                                                @Query("PageSize") Integer pageSize);
 
     @POST("api/Proposal/PostProposal")
     Call<JGGPostAppResponse> postNewProposal(@Body JGGProposalModel proposal);
@@ -151,5 +179,5 @@ public interface JGGAPIManager {
     Call<JGGPostAppResponse> editProposal(@Body JGGProposalModel proposal);
 
     @GET("api/Proposal/DeleteProposal")
-    Call<JGGBaseResponse> deleteProposal(@Query("ID") String proposalID);
+    Call<JGGBaseResponse> deleteProposal(@Query("ProposalID") String proposalID);
 }

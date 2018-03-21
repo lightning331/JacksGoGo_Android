@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
+import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -46,7 +46,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     private TextView btnLocation;
     private TextView lblCoordinate;
 
-    private boolean isChecked = false;
+    private boolean isShowFullAddress = false;
     private AppointmentType mType;
     private JGGAppointmentModel creatingJob;
 
@@ -136,20 +136,20 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_address_checkbox) {
-            isChecked = !isChecked;
-            if (isChecked) {
+            isShowFullAddress = !isShowFullAddress;
+            if (isShowFullAddress) {
                 btnCheckBox.setImageResource(R.mipmap.checkbox_on_green);
             } else
                 btnCheckBox.setImageResource(R.mipmap.checkbox_off);
         } else if (view.getId() == R.id.btn_location) {
-            mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
+            mContext.startActivity(new Intent(mContext, JGGMapViewActivity.class));
         } else if (view.getId() == R.id.btn_post_address_next) {
             JGGAddressModel address = new JGGAddressModel();
             address.setFloor(txtPlaceName.getText().toString());
             address.setUnit(txtUnit.getText().toString());
             address.setStreet(txtStreet.getText().toString());
             address.setPostalCode(txtPostCode.getText().toString());
-            address.setShowFullAddress(isChecked);
+            address.setShowFullAddress(!isShowFullAddress);
 
             creatingJob.setAddress(address);
             selectedAppointment = creatingJob;

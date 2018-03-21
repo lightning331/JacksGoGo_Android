@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.R;
 
 public class JobDetailLocationCell extends RecyclerView.ViewHolder {
 
-    public TextView description;
+    public TextView lblDescription;
     public LinearLayout location;
     public TextView address;
     public ImageView imgLocation;
@@ -23,7 +23,7 @@ public class JobDetailLocationCell extends RecyclerView.ViewHolder {
     public JobDetailLocationCell(View itemView) {
         super(itemView);
 
-        description = itemView.findViewById(R.id.lbl_location);
+        lblDescription = itemView.findViewById(R.id.lbl_location);
         location = itemView.findViewById(R.id.btn_location);
         address = itemView.findViewById(R.id.lbl_job_detail_address);
         imgLocation = itemView.findViewById(R.id.img_location);

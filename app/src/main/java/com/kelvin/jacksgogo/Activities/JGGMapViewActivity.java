@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Activities.Appointment;
+package com.kelvin.jacksgogo.Activities;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.kelvin.jacksgogo.Fragments.Appointments.AppMapViewFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
-public class AppMapViewActivity extends AppCompatActivity {
+public class JGGMapViewActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
@@ -32,12 +32,6 @@ public class AppMapViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_map_view);
 
-        // Fragment Initialize
-        AppMapViewFragment frag = new AppMapViewFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.map_container, frag, frag.getTag());
-        ft.commit();
-
         // Top Toolbar Initialize
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.map_view_actionbar);
@@ -49,7 +43,7 @@ public class AppMapViewActivity extends AppCompatActivity {
             @Override
             public void onActionbarItemClick(View view) {
                 if (view.getId() == R.id.btn_back) {
-                    AppMapViewActivity.this.finish();
+                    JGGMapViewActivity.this.finish();
                 }
             }
         });

@@ -90,10 +90,10 @@ public class PostJobMainTabFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_post_job_tab_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_post_job_tab_category_name);
         Picasso.with(mContext)
-                .load(selectedCategory.getImage())
+                .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
 
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));

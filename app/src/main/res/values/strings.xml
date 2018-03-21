@@ -35,7 +35,7 @@
     <string name="menu_option_edit">Edit</string>
     <string name="menu_option_delete">Delete</string>
     <string name="title_appointment">Appointment</string>
-    <string name="title_map">Map</string>
+    <string name="title_map">Select Location</string>
     <string name="title_service_listing">Service Listing</string>
     <string name="title_active_service_around">Active Services Around</string>
     <string name="title_active_job_around">Active Jobs Around</string>

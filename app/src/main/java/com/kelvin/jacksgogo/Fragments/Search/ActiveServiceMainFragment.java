@@ -79,7 +79,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         view.setLayoutParams(lp);
 
         if (appType.equals(SERVICES)) {
-            ActiveServiceAdapter adapter = new ActiveServiceAdapter();
+            ActiveServiceAdapter adapter = new ActiveServiceAdapter(mContext);
             adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
@@ -90,7 +90,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             });
             recyclerView.setAdapter(adapter);
         } else if (appType.equals(JOBS)) {
-            JobsListingAdapter adapter = new JobsListingAdapter();
+            JobsListingAdapter adapter = new JobsListingAdapter(mContext);
             adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {

@@ -9,14 +9,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.getBiddingStatus;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.declined;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.newproposal;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.notresponded;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.pending;
+import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.rejected;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -56,23 +63,23 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
     public void setData(JGGProposalModel proposal) {
 
         JGGUserProfileModel provider = proposal.getUserProfile();
-        BiddingStatus status = proposal.getAppointment().getStatus();
+        JGGProposalStatus status = proposal.getAppointment().getStatus();
 
         lblStatus.setVisibility(View.GONE);
 
-        if (status == BiddingStatus.newproposal) {
+        if (status == newproposal) {
             cellBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
-        } else if (status == BiddingStatus.pending) {
+        } else if (status == pending) {
 
-        } else if (status == BiddingStatus.notresponded) {
+        } else if (status == notresponded) {
             imgProposal.setVisibility(View.GONE);
             lblPrice.setVisibility(View.GONE);
-        } else if (status == BiddingStatus.declined) {
+        } else if (status == declined) {
             lblStatus.setVisibility(View.VISIBLE);
             imgProposal.setVisibility(View.GONE);
             lblPrice.setVisibility(View.GONE);
             itemView.setAlpha(.5f);
-        } else if (status == BiddingStatus.rejected) {
+        } else if (status == rejected) {
             lblStatus.setVisibility(View.VISIBLE);
             itemView.setAlpha(.5f);
         }
@@ -81,16 +88,28 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
         if (proposal.getMessageCount() == 0) {
             imgChat.setImageResource(R.mipmap.chat_green);
             lblMessageCount.setVisibility(View.GONE);
-        }
-        else if (proposal.getMessageCount() > 0) {
+        } else if (proposal.getMessageCount() > 0) {
             imgChat.setImageResource(R.mipmap.chat_filled_green);
             lblMessageCount.setText(String.valueOf(proposal.getMessageCount()));
         }
-
-        avatar.setImageResource(provider.getUser().getAvatarUrl());
-        lblUserName.setText(provider.getUser().getFullName());
-        ratingBar.setRating(provider.getUser().getRate().floatValue());
+        // User avatar
+        Picasso.with(mContext)
+                .load(provider.getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(avatar);
+        // User name
+        if (provider.getUser().getSurname() == null)
+            lblUserName.setText(provider.getUser().getUserName());
+        else
+            lblUserName.setText(provider.getUser().getFullName());
+        // User rating
+        if (provider.getUser().getRate() == null || provider.getUser().getRate() == 0)
+            ratingBar.setRating(0.0f);
+        else
+            ratingBar.setRating(provider.getUser().getRate().floatValue());
+        // Budget
         lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
+        // Status
         lblStatus.setText(getBiddingStatus(status));
     }
 }

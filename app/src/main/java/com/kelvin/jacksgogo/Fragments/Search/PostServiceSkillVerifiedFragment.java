@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
@@ -81,6 +82,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
             @Override
             public void onItemClick(int position) {
                 PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
+                frag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.POST);
                 selectedCategory = mCategories.get(position);
                 selectedAppointment.setCategory(selectedCategory);
                 selectedAppointment.setCategoryID(selectedCategory.getID());
