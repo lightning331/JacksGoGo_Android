@@ -51,6 +51,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         EDIT_MAIN,
         EDIT_DETAIL,
         MAP,
+        LOCATION,
         DETAILS,
         SERVICE_LISTING,
         SERVICE_LISTING_DETAIL,
@@ -141,6 +142,11 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case MAP:
                 setGreenBackButton("", R.string.title_map);
+                break;
+            case LOCATION:
+                setGreenBackButton("", R.string.title_location);
+                if (type == AppointmentType.JOBS)
+                    setCyanBackButton("", R.string.title_location);
                 break;
             case DETAILS:
                 mTitleTextView.setText("");

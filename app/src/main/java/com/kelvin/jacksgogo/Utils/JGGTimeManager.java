@@ -245,7 +245,7 @@ public class JGGTimeManager {
         if (job.getAppointmentType() == 1) {
             if (job.getSessions() != null
                     && job.getSessions().size() > 0) {
-                if (job.getSessions().get(0).isSpecific()) {
+                if (job.getSessions().get(0).isSpecific() == null) {
                     if (job.getSessions().get(0).getEndOn() != null)
                         time = "on "
                                 + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
@@ -257,16 +257,29 @@ public class JGGTimeManager {
                                 + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
                                 + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
                 } else {
-                    if (job.getSessions().get(0).getEndOn() != null)
-                        time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                + " - "
-                                + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
-                    else
-                        time = "any time until "
-                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                    if (job.getSessions().get(0).isSpecific()) {
+                        if (job.getSessions().get(0).getEndOn() != null)
+                            time = "on "
+                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + " - "
+                                    + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                        else
+                            time = "on "
+                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                    } else {
+                        if (job.getSessions().get(0).getEndOn() != null)
+                            time = "any time until "
+                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + " - "
+                                    + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                        else
+                            time = "any time until "
+                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                    }
                 }
             }
         } else if (job.getAppointmentType() == 0) {

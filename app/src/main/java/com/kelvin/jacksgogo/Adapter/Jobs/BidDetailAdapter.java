@@ -11,6 +11,12 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptio
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
 /**
  * Created by PUMA on 12/14/2017.
@@ -19,9 +25,11 @@ import com.kelvin.jacksgogo.R;
 public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
+    private JGGProposalModel mProposal;
 
-    public BidDetailAdapter(Context context) {
+    public BidDetailAdapter(Context context, JGGProposalModel proposal) {
         this.mContext = context;
+        mProposal = proposal;
     }
 
     @Override
@@ -29,45 +37,59 @@ public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewType == 0) {
             View biderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
             UserNameRatingCell biderCell = new UserNameRatingCell(mContext, biderView);
-            biderCell.ratingBar.setRating((float)4.8);
+            biderCell.setData(mProposal.getUserProfile());
             return biderCell;
         } else if (viewType == 1) {
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
             JobDetailDescriptionCell descriptionCell = new JobDetailDescriptionCell(descriptionView);
             descriptionCell.descriptionImage.setImageResource(R.mipmap.icon_info);
-            descriptionCell.setDescription("We are a team of 5 with 8+ experience in cleaning. We can send over 2 cleaners and have the work done in 1 hour.");
+            descriptionCell.description.setText(mProposal.getDescription());
             return descriptionCell;
         } else if (viewType == 2) {
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
-            JobDetailDescriptionCell descriptionCell = new JobDetailDescriptionCell(descriptionView);
-            descriptionCell.titleLayout.setVisibility(View.VISIBLE);
-            descriptionCell.titleLayout.setOrientation(LinearLayout.VERTICAL);
-            descriptionCell.setTitle("$100.00", true);
-            descriptionCell.setDescription("- Our own supplies $20.");
-            return descriptionCell;
+            JobDetailDescriptionCell budgetCell = new JobDetailDescriptionCell(descriptionView);
+            budgetCell.titleLayout.setVisibility(View.VISIBLE);
+            budgetCell.titleLayout.setOrientation(LinearLayout.VERTICAL);
+            budgetCell.setTitle("$ " + String.valueOf(mProposal.getBudget()), true);
+            budgetCell.description.setText("- Our own supplies $20.");
+            return budgetCell;
+//        } else if (viewType == 3) {
+//            View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
+//            JobDetailDescriptionCell descriptionCell = new JobDetailDescriptionCell(descriptionView);
+//            descriptionCell.titleLayout.setVisibility(View.VISIBLE);
+//            descriptionCell.titleLayout.setOrientation(LinearLayout.VERTICAL);
+//            descriptionCell.setTitle("$800.00 for 10", true);
+//            descriptionCell.setDescription("- Min. 3 days prior booking required. Booking subject to availability." +
+//                    "- Must be same address.");
+//            return descriptionCell;
         } else if (viewType == 3) {
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
-            JobDetailDescriptionCell descriptionCell = new JobDetailDescriptionCell(descriptionView);
-            descriptionCell.titleLayout.setVisibility(View.VISIBLE);
-            descriptionCell.titleLayout.setOrientation(LinearLayout.VERTICAL);
-            descriptionCell.setTitle("$800.00 for 10", true);
-            descriptionCell.setDescription("- Min. 3 days prior booking required. Booking subject to availability." +
-                    "- Must be same address.");
-            return descriptionCell;
+            JobDetailDescriptionCell rescheduleCell = new JobDetailDescriptionCell(descriptionView);
+            rescheduleCell.descriptionImage.setImageResource(R.mipmap.icon_reschedule);
+            rescheduleCell.titleLayout.setVisibility(View.VISIBLE);
+            rescheduleCell.setTitle("Rescheduling:", true);
+            if (selectedProposal.isRescheduleAllowed())
+                rescheduleCell.description.setText(getDaysString(Long.valueOf(selectedProposal.getRescheduleTime())));
+            else
+                rescheduleCell.description.setText("No rescheduling allowed.");
+            return rescheduleCell;
         } else if (viewType == 4) {
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
-            JobDetailDescriptionCell descriptionCell = new JobDetailDescriptionCell(descriptionView);
-            descriptionCell.descriptionImage.setImageResource(R.mipmap.icon_reschedule);
-            descriptionCell.titleLayout.setVisibility(View.VISIBLE);
-            descriptionCell.setTitle("Rescheduling:", true);
-            descriptionCell.setDescription("at least 1 day before.");
-            return descriptionCell;
+            JobDetailDescriptionCell cancellationCell = new JobDetailDescriptionCell(descriptionView);
+            cancellationCell.descriptionImage.setImageResource(R.mipmap.icon_cancellation);
+            cancellationCell.titleLayout.setVisibility(View.VISIBLE);
+            cancellationCell.setTitle("Cancellation:", true);
+            if (selectedProposal.isCancellationAllowed())
+                cancellationCell.description.setText(getDaysString(Long.valueOf(selectedProposal.getCancellationTime())));
+            else
+                cancellationCell.description.setText("No cancellation allowed.");
+            return cancellationCell;
         } else if (viewType == 5) {
             View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_reference_no, parent, false);
-            JobDetailReferenceNoCell jobDetailReferenceNoCell = new JobDetailReferenceNoCell(referenceView);
-            jobDetailReferenceNoCell.lblReferenceNo.setText("Proposal reference no: P38235-11");
-            jobDetailReferenceNoCell.lblPostedDate.setText("Posted on 14 Dec, 2017");
-            return jobDetailReferenceNoCell;
+            JobDetailReferenceNoCell cancellationCell = new JobDetailReferenceNoCell(referenceView);
+            cancellationCell.lblReferenceNo.setText("Proposal reference no: " + mProposal.getID());
+            cancellationCell.lblPostedDate.setText("Posted on " + getDayMonthYear(appointmentMonthDate(mProposal.getPostOn())));
+            return cancellationCell;
         }
         return null;
     }

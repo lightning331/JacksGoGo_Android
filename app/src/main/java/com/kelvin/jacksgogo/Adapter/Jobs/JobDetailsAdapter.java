@@ -34,7 +34,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private JGGAppointmentModel mJob;
+    private JGGAppointmentModel mJob = new JGGAppointmentModel();
 
     public JobDetailsAdapter (Context context) {
         this.mContext = context;
@@ -126,7 +126,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             JobDetailDescriptionCell requestViewHolder = new JobDetailDescriptionCell(requestView);
             requestViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
             requestViewHolder.setTitle("Reports:", true);
-            requestViewHolder.setDescription(reportTypeName(mJob.getReportType()));
+            requestViewHolder.description.setText(reportTypeName(mJob.getReportType()));
             return requestViewHolder;
         } else if (viewType == 7) {    // Job Poster Cell
             View posterView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_invite_provider, parent, false);
@@ -134,15 +134,45 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             posterViewHolder.btnInvite.setVisibility(View.GONE);
             posterViewHolder.setUser(mJob.getUserProfile());
             return posterViewHolder;
-        } else if (viewType == 8) {    // Taglist Cell
-            View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
-            ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
-            tagListViewHolder.setTagList(mJob.getTags());
-            return tagListViewHolder;
-        } else if (viewType == 9) {    // Proposal status Cell
-            View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
-            JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
-            return averageViewHolder;
+        } else if (viewType == 8) {    // Proposal status Cell
+            if (mJob.getTags() == null) {
+                View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
+                JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
+                return averageViewHolder;
+            } else {    // Taglist Cell
+                if (mJob.getTags().equals("")) {
+                    View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
+                    JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
+                    return averageViewHolder;
+                } else {
+                    View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
+                    ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
+                    tagListViewHolder.setTagList(mJob.getTags());
+                    return tagListViewHolder;
+                }
+            }
+        } else if (viewType == 9) {
+            if (mJob.getTags() == null) {    // Job no cell
+                View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
+                ServiceDetailReferenceNoCell referenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
+                referenceNo.lblTitle.setText("Job reference no: ");
+                referenceNo.lblNumber.setText(mJob.getID());
+                referenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mJob.getPostOn())));
+                return referenceNo;
+            } else {        // Proposal status Cell
+                if (mJob.getTags().equals("")) {
+                    View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
+                    ServiceDetailReferenceNoCell referenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
+                    referenceNo.lblTitle.setText("Job reference no: ");
+                    referenceNo.lblNumber.setText(mJob.getID());
+                    referenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mJob.getPostOn())));
+                    return referenceNo;
+                } else {
+                    View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
+                    JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
+                    return averageViewHolder;
+                }
+            }
         } else if (viewType == 10) {    // Job no cell
             View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
             ServiceDetailReferenceNoCell referenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
@@ -166,6 +196,12 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 11;
+        if (mJob.getTags() == null)
+            return 10;
+        else {
+            if (mJob.getTags().equals(""))
+                return 10;
+            return 11;
+        }
     }
 }

@@ -26,13 +26,13 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/view_quotation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:orientation="vertical">
         <LinearLayout
+            android:id="@+id/view_quotation_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/lbl_received_quotation_time"
                 android:text="12 Jul 2017 8:15 PM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical">
                 <TextView
+                    android:id="@+id/lbl_quotation_count"
                     android:text="You have awarded catherinedesilva the job."
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -25,16 +25,17 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
     private Double Budget;
     private String BidBreakDown;
     private Boolean RescheduleAllowed;
-    private Integer RescheduleDate;
+    private Integer RescheduleTime;
     private String RescheduleNote;
     private Boolean CancellationAllowed;
-    private Integer CancellationDate;
+    private Integer CancellationTime;
     private String CancellationNote;
     private Boolean IsInvited;
     private String SubmitOn;
     private String ExpireOn;
     private boolean IsViewed;
 
+    // Dumy field
     private int MessageCount;
 
     public int getMessageCount() {
@@ -113,12 +114,12 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
         RescheduleAllowed = rescheduleAllowed;
     }
 
-    public Integer getRescheduleDate() {
-        return RescheduleDate;
+    public Integer getRescheduleTime() {
+        return RescheduleTime;
     }
 
-    public void setRescheduleDate(Integer rescheduleDate) {
-        RescheduleDate = rescheduleDate;
+    public void setRescheduleTime(Integer rescheduleTime) {
+        RescheduleTime = rescheduleTime;
     }
 
     public String getRescheduleNote() {
@@ -137,12 +138,12 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
         CancellationAllowed = cancellationAllowed;
     }
 
-    public Integer getCancellationDate() {
-        return CancellationDate;
+    public Integer getCancellationTime() {
+        return CancellationTime;
     }
 
-    public void setCancellationDate(Integer cancellationDate) {
-        CancellationDate = cancellationDate;
+    public void setCancellationTime(Integer cancellationTime) {
+        CancellationTime = cancellationTime;
     }
 
     public String getCancellationNote() {

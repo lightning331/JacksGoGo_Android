@@ -7,6 +7,6 @@
     <item
         android:id="@+id/menu_option_report_service"
         android:icon="@mipmap/icon_flag_purple"
-        android:title="@string/menu_option_report" />
+        android:title="@string/menu_option_report_event" />
 </menu>
 

@@ -15,7 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.R;
 
 
@@ -23,7 +23,8 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     private OnFragmentInteractionListener mListener;
 
-    private JGGMapViewActivity mActivity;
+    private Context mContext;
+    private AppMapViewActivity mActivity;
 
     public AppMapViewFragment() {
         // Required empty public constructor
@@ -62,7 +63,8 @@ public class AppMapViewFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onAttach(Context context) {
-        mActivity = (JGGMapViewActivity) context;
+        mContext = context;
+        mActivity = (AppMapViewActivity) context;
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

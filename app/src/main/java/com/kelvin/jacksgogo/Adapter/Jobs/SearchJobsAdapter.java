@@ -72,9 +72,9 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (position > 3) {
             JobListDetailCell cell = (JobListDetailCell) holder;
-            JGGAppointmentModel service = mJobs.get(position - 4);
+            JGGAppointmentModel job = mJobs.get(position - 4);
 
-            cell.setJob(service);
+            cell.setJob(job);
             cell.btnBackGround.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

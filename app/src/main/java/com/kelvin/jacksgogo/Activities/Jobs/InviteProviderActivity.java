@@ -57,6 +57,7 @@ public class InviteProviderActivity extends AppCompatActivity {
     private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
     private JGGUserProfileModel user;
     private JGGAppointmentModel mJob;
+    private JGGCategoryModel mCategory;
     private String proposalID;
 
     @Override
@@ -79,7 +80,8 @@ public class InviteProviderActivity extends AppCompatActivity {
         });
 
         mJob = selectedAppointment;
-        if (mJob != null)
+        mCategory = mJob.getCategory();
+        if (mCategory != null)
             setCategory();
 
         getInviteUsers();
@@ -104,10 +106,10 @@ public class InviteProviderActivity extends AppCompatActivity {
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(selectedAppointment.getCategory().getImage())
+                .load(mCategory.getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedAppointment.getCategory().getName());
+        lblCategory.setText(mCategory.getName());
         // Time
         lblTime.setText(convertJobTimeString(mJob));
     }
@@ -116,7 +118,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         if (currentUser == null) return;
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(selectedCategory.getID(), null, null, null, 0, 40);
+        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(mCategory.getID(), null, null, null, 0, 40);
         call.enqueue(new Callback<JGGInviteUsersResponse>() {
             @Override
             public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {

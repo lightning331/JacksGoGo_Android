@@ -1,13 +1,10 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
-import com.kelvin.jacksgogo.Utils.Global.BiddingStatus;
+import com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by PUMA on 1/18/2018.
@@ -19,51 +16,15 @@ public class JGGAppointmentBaseModel {
     private String Description;
     private String Tags;
     private String RegionID;
-    private JGGRegionModel Region = new JGGRegionModel();
-    private JGGCurrencyModel Currency = new JGGCurrencyModel();
     private String CurrencyCode;
     private String UserProfileID;
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private String PostOn;  // Originally date type
     private int Status;
+    private JGGRegionModel Region = new JGGRegionModel();
+    private JGGCurrencyModel Currency = new JGGCurrencyModel();
     private JGGAddressModel Address = new JGGAddressModel();
     private JGGAddressModel DAddress = new JGGAddressModel();
-
-    public static enum JGGProposalStatus {
-
-        none(0),
-        pending(1),
-        newproposal(2),
-        accepted(3),
-        rejected(4),
-        declined(5),
-        notresponded(6),
-        withdrawn(7),
-        completed(8),
-        waitingforreview(9);
-
-        private int value;
-        private static Map map = new HashMap<>();
-
-        JGGProposalStatus(final int value) {
-            this.value = value;
-        }
-
-        static {
-            for (JGGProposalStatus status : JGGProposalStatus.values()) {
-                map.put(status.value, status);
-            }
-        }
-
-        public static JGGProposalStatus valueOf(int status) {
-            return (JGGProposalStatus) map.get(status);
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
 
     public JGGAppointmentBaseModel() {
         super();

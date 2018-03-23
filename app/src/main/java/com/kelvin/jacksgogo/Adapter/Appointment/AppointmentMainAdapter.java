@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.withdrawn;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonth;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
@@ -101,9 +103,9 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     .placeholder(R.mipmap.icon_profile)
                     .into(cellView.img_Profile);
 
-            if (appointment.getStatus().getValue() == 1) {
+            if (appointment.getStatus() == rejected) {
                 cellView.lbl_Status.setText("Cancelled");
-            } else if (appointment.getStatus().getValue() == 2) {
+            } else if (appointment.getStatus() == withdrawn) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
                 cellView.lbl_Status.setVisibility(View.GONE);

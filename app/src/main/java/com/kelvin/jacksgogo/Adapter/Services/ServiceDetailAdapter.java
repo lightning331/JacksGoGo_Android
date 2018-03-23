@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceReviewsActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceTimeSlotsActivity;
@@ -131,7 +131,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     rescheduleViewHolder.descriptionImage.setImageResource(R.mipmap.icon_reschedule);
                     if (mService.getProposal() != null)
                         if (mService.getProposal().isRescheduleAllowed())
-                            rescheduleViewHolder.description.setText(getDaysString(Long.valueOf(mService.getProposal().getRescheduleDate())));
+                            rescheduleViewHolder.description.setText(getDaysString(Long.valueOf(mService.getProposal().getRescheduleTime())));
                         else
                             rescheduleViewHolder.description.setText("No rescheduling allowed.");
                     rescheduleViewHolder.setTitle("Rescheduling:", true);
@@ -214,11 +214,13 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             case 10:     // Service Reference Cell
                 if (isFixedBudget) {
-                    View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
-                    ServiceDetailReferenceNoCell reserenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
-                    reserenceNo.lblNumber.setText(mService.getID());
-                    reserenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mService.getPostOn())));
-                    return reserenceNo;
+                    if (mService.getTags().length() > 0) {
+                        View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
+                        ServiceDetailReferenceNoCell reserenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
+                        reserenceNo.lblNumber.setText(mService.getID());
+                        reserenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mService.getPostOn())));
+                        return reserenceNo;
+                    }
                 }
         }
         return null;
@@ -235,8 +237,11 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (mService.getTags().length() == 0)
                 return 9;
             return 10;
+        } else {
+            if (mService.getTags().length() == 0)
+                return 10;
+            return ITEM_COUNT;
         }
-        return ITEM_COUNT;
     }
 
     @Override
@@ -247,7 +252,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_location) {
-            mContext.startActivity(new Intent(mContext, JGGMapViewActivity.class));
+            mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
         } else if (view.getId() == R.id.btn_time_slots) {
             mContext.startActivity(new Intent(mContext, ServiceTimeSlotsActivity.class));
         } else if (view.getId() == R.id.btn_see_all_reviews) {

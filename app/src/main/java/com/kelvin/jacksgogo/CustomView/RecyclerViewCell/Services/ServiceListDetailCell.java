@@ -70,19 +70,19 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         rateBar.setRating(user.getRate().floatValue());
         // Score
         lblScoreStatus.setText("");
-        if (user.getScore() == null) {
+        if (user.getRate() == null) {
             lblScore.setText("");
         } else {
-            lblScore.setText(String.valueOf(user.getScore()));
+            lblScore.setText(String.valueOf(user.getRate()));
             // Score Status
-            float f1 = user.getScore().floatValue();
+            float f1 = user.getRate().floatValue();
             float f2 = 4.5f;
             int retval = Float.compare(f1, f2);
             if (retval > 0)
                 lblScoreStatus.setText("Very Good");
         }
         // View Count
-        lblReviewCount.setText("(0 reviews)");
+        lblReviewCount.setText("(327)");
         // Address
         if (service.getAddress().getStreet() == null)
             lblAddress.setText(service.getAddress().getAddress());

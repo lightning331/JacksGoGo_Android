@@ -23,20 +23,15 @@ public class JGGAddressModel {
 
     public String getFullAddress() {
         fullAddress = "";
-        if (getFloor() != null)
-            fullAddress = fullAddress + getFloor() + " ";
-        if (getUnit() != null)
-            fullAddress = fullAddress + getUnit() + " ";
-        if (getStreet() == null)
-            fullAddress = fullAddress + getAddress() + ", ";
-        else
+        if (getStreet() == null) {
+            fullAddress = fullAddress + getAddress() + ", " + getPostalCode();
+        } else {
+            if (getUnit() != null)
+                fullAddress = fullAddress + getUnit() + " ";
             fullAddress = fullAddress + getStreet() + ", ";
-        if (getCity() != null)
-            fullAddress = fullAddress + getCity() + ", ";
-        if (getState() != null)
-            fullAddress = fullAddress + getState() + ", ";
-        if (getPostalCode() != null)
-            fullAddress = fullAddress + getPostalCode();
+            if (getPostalCode() != null)
+                fullAddress = fullAddress + getPostalCode();
+        }
         return fullAddress;
     }
 

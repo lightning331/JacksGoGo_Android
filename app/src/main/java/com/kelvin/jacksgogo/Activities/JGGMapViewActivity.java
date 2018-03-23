@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +29,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,8 +40,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -50,6 +49,7 @@ import com.kelvin.jacksgogo.Utils.LocationManager.JGGMapPermissionUtils;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -57,8 +57,12 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+
 public class JGGMapViewActivity extends AppCompatActivity implements View.OnClickListener,
-        LocationListener,
         OnMapReadyCallback,
         GoogleMap.OnMapClickListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -70,23 +74,25 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.lbl_lng) TextView lblLng;
     @BindView(R.id.lbl_address) TextView lblAddress;
     @BindView(R.id.btn_location) LinearLayout btnLocation;
+    @BindView(R.id.img_location) ImageView imgLocation;
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
+
 
     private final static int PLAY_SERVICES_REQUEST = 1000;
     private final static int REQUEST_CHECK_SETTINGS = 2000;
     private ArrayList<String> permissions = new ArrayList<>();
     private JGGMapPermissionUtils permissionUtils;
     boolean isPermissionGranted;
-    private Double mLatitude;
-    private Double mLongitude;
 
     private GoogleMap mGoogleMap;
+    private MarkerOptions markerOpt;
     private SupportMapFragment mapFrag;
-    private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private Marker mCurrLocationMarker;
+    private int markerResource;
+
+    private AppointmentType mType;
 
     public JGGAddressModel mAddress = new JGGAddressModel();
 
@@ -96,17 +102,36 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_jgg_map_view);
         ButterKnife.bind(this);
 
+        String type = getIntent().getExtras().getString(APPOINTMENT_TYPE);
+        if (type.equals(SERVICES)) {
+            mType = AppointmentType.SERVICES;
+            imgLocation.setImageResource(R.mipmap.button_location_green);
+            markerResource = R.mipmap.icon_pin;
+        } else if (type.equals(JOBS)) {
+            mType = AppointmentType.JOBS;
+            imgLocation.setImageResource(R.mipmap.button_location_cyan);
+            markerResource = R.mipmap.icon_pin;
+        } else if (type.equals(GOCLUB)) {
+            mType = AppointmentType.GOCLUB;
+            imgLocation.setImageResource(R.mipmap.button_location_purple);
+            markerResource = R.mipmap.icon_pin;
+        }
+
         // Top Toolbar Initialize
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.map_view_actionbar);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.MAP, AppointmentType.UNKNOWN);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.LOCATION, mType);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
                 if (view.getId() == R.id.btn_back) {
+                    Gson gson = new Gson();
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("result", gson.toJson(mAddress));
+                    setResult(Activity.RESULT_OK, returnIntent);
                     JGGMapViewActivity.this.finish();
                 }
             }
@@ -163,9 +188,7 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
                 if (mLastLocation != null) {
                     LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                    mLatitude = mLastLocation.getLatitude();
-                    mLongitude = mLastLocation.getLongitude();
-                    getAddress(JGGMapViewActivity.this, mLatitude, mLongitude);
+                    getAddress(JGGMapViewActivity.this, mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 }
@@ -190,19 +213,37 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
                 String country = addresses.get(0).getCountryName();
                 String countryCode = addresses.get(0).getCountryCode();
                 String postalCode = addresses.get(0).getPostalCode();
-                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+                String featureName = addresses.get(0).getFeatureName();
+                String subLocality = addresses.get(0).getSubLocality();
+                String thoroughfare = addresses.get(0).getThoroughfare();// Only if available else return NULL
 
                 lblAddress.setText(address);
-                lblLat.setText(String.valueOf(mLatitude) + " N");
-                lblLng.setText(String.valueOf(mLongitude) + " E");
+                DecimalFormat df2 = new DecimalFormat(".#####");
+                lblLat.setText(String.valueOf(df2.format(LATITUDE)) + "° N");
+                lblLng.setText(String.valueOf(df2.format(LONGITUDE)) + "° E");
 
-                mAddress.setUnit(city);
-                mAddress.setStreet(state);
-                mAddress.setPostalCode(postalCode);
+                String street;
+                if (thoroughfare == null) {
+                    if (featureName == null)
+                        street = subLocality;
+                    else
+                        street = featureName + ", " + subLocality + ", " + city;
+                } else {
+                    if (featureName.equals(thoroughfare))
+                        street = thoroughfare + ", " + subLocality + ", " + city;
+                    else
+                        street = featureName + ", " + thoroughfare + ", " + subLocality + ", " + city;
+                }
+
                 mAddress.setAddress(address);
+                mAddress.setCity(city);
+                mAddress.setUnit(state);
+                mAddress.setState(state);
+                mAddress.setStreet(street);
+                mAddress.setPostalCode(postalCode);
                 mAddress.setCountryCode(countryCode);
-                mAddress.setLat(mLatitude);
-                mAddress.setLon(mLongitude);
+                mAddress.setLat(Double.valueOf(df2.format(LATITUDE)));
+                mAddress.setLon(Double.valueOf(df2.format(LONGITUDE)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -284,26 +325,6 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        // All required changes were successfully made
-                        //getLocation();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        // The user was asked to change settings, but chose not to
-                        break;
-                    default:
-                        break;
-                }
-                break;
-        }
-    }
-
     /**
      * Google api callback methods
      */
@@ -325,32 +346,6 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
-
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.anchor(.5f, .5f);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        //stop location updates when Activity is no longer active
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
@@ -364,6 +359,17 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
                 //Location Permission already granted
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
+                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng position) {
+                        mGoogleMap.clear();
+                        markerOpt = new MarkerOptions();
+                        markerOpt.position(position)
+                                .icon(BitmapDescriptorFactory.fromResource(markerResource));
+                        mGoogleMap.addMarker(markerOpt);
+                        JGGMapViewActivity.this.getAddress(JGGMapViewActivity.this, position.latitude, position.longitude);
+                    }
+                });
             } else {
                 //Request Location Permission
                 permissionUtils.check_permission(permissions,"Need GPS permission for getting your location",1);
@@ -372,6 +378,17 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
         else {
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng position) {
+                    mGoogleMap.clear();
+                    markerOpt = new MarkerOptions();
+                    markerOpt.position(position)
+                            .icon(BitmapDescriptorFactory.fromResource(markerResource));
+                    mGoogleMap.addMarker(markerOpt);
+                    JGGMapViewActivity.this.getAddress(JGGMapViewActivity.this, position.latitude, position.longitude);
+                }
+            });
         }
     }
 

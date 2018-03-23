@@ -64,7 +64,7 @@
                 android:gravity="center_vertical">
                 <com.makeramen.roundedimageview.RoundedImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/imgAvatar"
+                    android:id="@+id/img_avatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/nurse1"
@@ -83,7 +83,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_weight="70">
                 <TextView
-                    android:id="@+id/lblComment"
+                    android:id="@+id/lbl_comment"
                     android:text="*A familly emergency suddenly ccame up. I'm sorry but I have to cancel the job.*"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

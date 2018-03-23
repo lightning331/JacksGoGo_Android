@@ -24,7 +24,6 @@ import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
@@ -33,7 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
@@ -70,7 +68,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
         mJob = selectedAppointment;
         if (mJob != null)
             setCategory();
-        showJobMainFragment();
+        showJobStatusSummaryFragment();
 
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
@@ -102,7 +100,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                     onShowEditPopUpMenu(view);
                     break;
                 case EDIT_MAIN:
-                    showJobMainFragment();
+                    showJobStatusSummaryFragment();
                     break;
                 case EDIT_DETAIL:
                     //backToEditJobMainFragment();
@@ -135,7 +133,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                     finish();
                     break;
                 case EDIT_MAIN:
-                    showJobMainFragment();
+                    showJobStatusSummaryFragment();
                     break;
                 case EDIT_DETAIL:
                     //backToEditJobMainFragment();
@@ -170,7 +168,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
         popupMenu.show();
     }
 
-    private void showJobMainFragment() {
+    private void showJobStatusSummaryFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
         frag = new JobStatusSummaryFragment();
         getSupportFragmentManager()

@@ -18,10 +18,9 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
@@ -35,7 +34,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
@@ -51,7 +52,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     private JGGActionbarView actionbarView;
     private ProgressDialog progressDialog;
 
-    private ArrayList<JGGProposalModel> proposals;
+    private ArrayList<JGGProposalModel> proposals = new ArrayList<>();
     private JGGAppointmentModel mJob;
 
     @Override
@@ -64,6 +65,13 @@ public class ServiceProviderActivity extends AppCompatActivity {
         if (mJob != null)
             setCategory();
         initView();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        proposals.clear();
         getProposalsByJob();
     }
 
@@ -100,7 +108,27 @@ public class ServiceProviderActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        proposals = response.body().getValue();
+
+                        ArrayList<JGGProposalModel> openProposal = new ArrayList<>();
+                        ArrayList<JGGProposalModel> invitedProposal = new ArrayList<>();
+                        ArrayList<JGGProposalModel> declinedProposal = new ArrayList<>();
+                        ArrayList<JGGProposalModel> rejectedProposal = new ArrayList<>();
+
+                        for (JGGProposalModel p: response.body().getValue()) {
+                            if (p.getStatus() == Global.JGGProposalStatus.open)
+                                openProposal.add(p);
+                            else if (p.isInvited())
+                                invitedProposal.add(p);
+                            else if (p.getStatus() == declined)
+                                declinedProposal.add(p);
+                            else if (p.getStatus() == rejected)
+                                rejectedProposal.add(p);
+                        }
+                        proposals.addAll(openProposal);
+                        proposals.addAll(invitedProposal);
+                        proposals.addAll(declinedProposal);
+                        proposals.addAll(rejectedProposal);
+
                         updateRecyclerView();
                     } else {
                         Toast.makeText(ServiceProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -134,9 +162,8 @@ public class ServiceProviderActivity extends AppCompatActivity {
     }
 
     private void onShowBidDetailClick(int position) {
-        JGGProposalStatus status = proposals.get(position).getStatus();
+        selectedProposal = proposals.get(position);
         Intent intent = new Intent(this, BidDetailActivity.class);
-        intent.putExtra("bid_status", status);
         startActivity(intent);
     }
 
@@ -146,7 +173,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
                 .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedCategory.getName());
+        lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
         lblTime.setText(convertJobTimeString(mJob));
     }

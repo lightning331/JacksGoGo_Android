@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.WindowManager;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +34,7 @@ public class Global {
 
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;
+    public static final int REQUEST_CODE = 1;
 
     public enum AppointmentType {
         JOBS,
@@ -45,34 +45,29 @@ public class Global {
         UNKNOWN
     }
 
-    public static enum BiddingStatus {
+    public static enum JGGProposalStatus {
 
-        none(0),
-        pending(1),
-        newproposal(2),
-        accepted(3),
-        rejected(4),
-        declined(5),
-        notresponded(6),
-        withdrawn(7),
-        completed(8),
-        waitingforreview(9);
+        open(0),        // Posted
+        rejected(1),    // Client rejected provider's proposal
+        confirmed(2),   // Client accepted provider's proposal
+        withdrawn(3),   //
+        declined(4);    // Provider declined Client's invite
 
         private int value;
         private static Map map = new HashMap<>();
 
-        BiddingStatus(final int value) {
+        JGGProposalStatus(final int value) {
             this.value = value;
         }
 
         static {
-            for (BiddingStatus status : BiddingStatus.values()) {
+            for (JGGProposalStatus status : JGGProposalStatus.values()) {
                 map.put(status.value, status);
             }
         }
 
-        public static BiddingStatus valueOf(int status) {
-            return (BiddingStatus) map.get(status);
+        public static JGGProposalStatus valueOf(int status) {
+            return (JGGProposalStatus) map.get(status);
         }
 
         public int getValue() {
@@ -163,22 +158,16 @@ public class Global {
         }
     }
 
-    public static String getBiddingStatus(JGGProposalStatus status) {
+    public static String getProposalStatus(JGGProposalStatus status) {
         switch (status) {
-            case none:
-                return "";
-            case pending:
-                return "Pending";
-            case newproposal:
-                return "New Proposal";
-            case accepted:
-                return "Accepted";
             case rejected:
                 return "Rejected";
+            case confirmed:
+                return "Confirmed";
+            case withdrawn:
+                return "Withdrawn";
             case declined:
                 return "Declined";
-            case notresponded:
-                return "Not Responded";
             default:
                 return "";
         }

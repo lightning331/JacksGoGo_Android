@@ -5,5 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/jgg_map_view_activity_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:theme="@style/AppTheme"
+        app:elevation="0dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/map_view_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/JGGWhite"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme"/>
+    </android.support.design.widget.AppBarLayout>
 
+    <FrameLayout
+        android:id="@+id/map_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/JGGGrey5"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/jgg_map_view_activity_appbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

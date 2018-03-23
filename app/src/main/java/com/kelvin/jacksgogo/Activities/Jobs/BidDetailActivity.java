@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -12,8 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnDismissListener;
@@ -23,18 +26,41 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelp
 import com.kelvin.jacksgogo.Adapter.Jobs.BidDetailAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
 
 public class BidDetailActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener, OnDismissListener {
 
-    private Toolbar mToolbar;
-    private JGGActionbarView actionbarView;
-    private BottomNavigationView mbtmView;;
-    private RecyclerView recyclerView;
-    private TextView btnRejectBid;
-    private TextView btnAcceptBid;
+    @BindView(R.id.bid_detail_actionbar) Toolbar mToolbar;
+    @BindView(R.id.bid_detail_navigation) BottomNavigationView mbtmView;;
+    @BindView(R.id.bid_detail_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.btn_bid_detail_reject) TextView btnRejectBid;
+    @BindView(R.id.btn_bid_detail_accept) TextView btnAcceptBid;
+    @BindView(R.id.img_bid_detail_category) ImageView imgCategory;
+    @BindView(R.id.lbl_bid_detail_category_title) TextView lblCategory;
+    @BindView(R.id.lbl_bid_detail_category_date) TextView lblTime;
 
+    private JGGActionbarView actionbarView;
     private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
+
+    private JGGProposalModel mProposal;
 
     public static boolean getRandomBoolean() {
         return Math.random() < 0.5;
@@ -44,26 +70,23 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_detail);
+        ButterKnife.bind(this);
 
+        mProposal = selectedProposal;
         initView();
+        setCategory();
     }
 
     private void initView() {
 
         // Hide Bottom NavigationView and ToolBar
-        mbtmView = (BottomNavigationView) findViewById(R.id.bid_detail_navigation);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
         mbtmView.setOnClickListener(this);
-
-        btnRejectBid = (TextView) findViewById(R.id.btn_bid_detail_reject);
         btnRejectBid.setOnClickListener(this);
-        btnAcceptBid = (TextView) findViewById(R.id.btn_bid_detail_accept);
         btnAcceptBid.setOnClickListener(this);
-        int status = getIntent().getIntExtra("bid_status", 0);
-        if (status == 4) {      // Rejected
-        btnAcceptBid.setOnClickListener(this);
+        if (mProposal.getStatus() == rejected) {      // Rejected
             btnRejectBid.setVisibility(View.GONE);
         }
 
@@ -81,41 +104,59 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.bid_detail_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
 
-        BidDetailAdapter adapter = new BidDetailAdapter(this);
+        BidDetailAdapter adapter = new BidDetailAdapter(this, mProposal);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setCategory() {
+        // Category
+        Picasso.with(this)
+                .load(selectedAppointment.getCategory().getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory.setText(selectedAppointment.getCategory().getName());
+        // Time
+        lblTime.setText(convertJobTimeString(mProposal.getAppointment()));
+    }
+
+    private void rejectProposal() {
+        progressDialog = createProgressDialog(this);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        String proposalID = selectedProposal.getID();
+        Call<JGGBaseResponse> call = apiManager.rejectProposal(proposalID);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        BidDetailActivity.this.finish();
+                    } else {
+                        Toast.makeText(BidDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(BidDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Toast.makeText(BidDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_back) {
             super.finish();
         }
-    }
-
-    private void onShowAlertDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = (this).getLayoutInflater();
-        //JGGAlertView alertView = new JGGAlertView(this);
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
-        alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_reject_title);
-        okButton.setText(R.string.alert_reject_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
-        okButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
-        desc.setVisibility(View.GONE);
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
     }
 
     @Override
@@ -136,8 +177,29 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
             alertDialog.dismiss();
         } else if (view.getId() == R.id.btn_alert_ok) {
             alertDialog.dismiss();
-            super.finish();
+            rejectProposal();
         }
+    }
+
+    private void onShowAlertDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (this).getLayoutInflater();
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
+        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
+        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText(R.string.alert_reject_title);
+        okButton.setText(R.string.alert_reject_ok);
+        okButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
+        okButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
+        desc.setVisibility(View.GONE);
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
     }
 
     @Override

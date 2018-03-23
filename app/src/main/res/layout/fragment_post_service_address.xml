@@ -163,7 +163,6 @@
                         android:hint="e.g."
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="text"
                         android:textColor="@color/JGGBlack"
                         android:background="@color/transparent"
                         android:fontFamily="@font/muliregular"

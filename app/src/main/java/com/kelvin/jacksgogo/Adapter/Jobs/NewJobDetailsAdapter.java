@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
@@ -114,7 +114,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mContext.startActivity(new Intent(mContext, JGGMapViewActivity.class));
+                        mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
                     }
                 });
                 break;
@@ -134,7 +134,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 JobDetailDescriptionCell requestViewHolder = (JobDetailDescriptionCell)holder;
                 requestViewHolder.descriptionImage.setImageResource(R.mipmap.icon_completion);
                 requestViewHolder.setTitle("Requests:", true);
-                requestViewHolder.setDescription(reportTypeName(mJob.getReportType()));
+                requestViewHolder.description.setText(reportTypeName(mJob.getReportType()));
                 break;
             case 5:
                 JobDetailReferenceNoCell jobDetailReferenceNoCell = (JobDetailReferenceNoCell)holder;

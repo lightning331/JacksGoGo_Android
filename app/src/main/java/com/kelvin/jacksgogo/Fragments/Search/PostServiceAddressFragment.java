@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -26,9 +29,11 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
-public class PostServiceAddressFragment extends Fragment implements View.OnClickListener, TextWatcher {
+public class PostServiceAddressFragment extends Fragment
+        implements View.OnClickListener, TextWatcher {
 
     private Context mContext;
     private OnFragmentInteractionListener mListener;
@@ -48,7 +53,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
 
     private boolean isShowFullAddress = false;
     private AppointmentType mType;
+    private String type;
     private JGGAppointmentModel creatingJob;
+    private JGGAddressModel mAddress;
+
+    private static final String TAG = PostServiceAddressFragment.class.getSimpleName();
 
     public PostServiceAddressFragment() {
         // Required empty public constructor
@@ -66,7 +75,7 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String type = getArguments().getString(APPOINTMENT_TYPE);
+            type = getArguments().getString(APPOINTMENT_TYPE);
             if (type.equals(SERVICES))
                 mType = AppointmentType.SERVICES;
             else if (type.equals(JOBS))
@@ -81,8 +90,10 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_post_service_address, container, false);
 
         creatingJob = selectedAppointment;
+        mAddress = creatingJob.getAddress();
 
         initView(view);
+        setData();
 
         return view;
     }
@@ -106,7 +117,9 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
         txtUnit.addTextChangedListener(this);
         txtStreet.addTextChangedListener(this);
         txtPostCode.addTextChangedListener(this);
+    }
 
+    public void setData() {
         txtPlaceName.setText("");
         txtUnit.setText("2");
         txtStreet.setText("Jurong West Avenue 5");
@@ -122,15 +135,11 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             btnLocation.setBackgroundResource(R.drawable.cyan_border_background);
             btnLocation.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
         }
-        txtPlaceName.setText(creatingJob.getAddress().getFloor());
-        txtUnit.setText(creatingJob.getAddress().getUnit());
-        String street;
-        if (creatingJob.getAddress().getStreet() == null)
-            street = creatingJob.getAddress().getAddress();
-        else
-            street = creatingJob.getAddress().getStreet();
-        txtStreet.setText(street);
-        txtPostCode.setText(creatingJob.getAddress().getPostalCode());
+        txtPlaceName.setText(mAddress.getFloor());
+        txtUnit.setText(mAddress.getUnit());
+        txtStreet.setText(mAddress.getStreet());
+        txtPostCode.setText(mAddress.getPostalCode());
+        lblCoordinate.setText(String.valueOf(mAddress.getLat()) + "° N, " + String.valueOf(mAddress.getLon()) + "° E");
     }
 
     @Override
@@ -142,19 +151,36 @@ public class PostServiceAddressFragment extends Fragment implements View.OnClick
             } else
                 btnCheckBox.setImageResource(R.mipmap.checkbox_off);
         } else if (view.getId() == R.id.btn_location) {
-            mContext.startActivity(new Intent(mContext, JGGMapViewActivity.class));
+            Intent intent = new Intent(mContext, JGGMapViewActivity.class);
+            intent.putExtra(APPOINTMENT_TYPE, type);
+            startActivityForResult(intent, REQUEST_CODE);
         } else if (view.getId() == R.id.btn_post_address_next) {
-            JGGAddressModel address = new JGGAddressModel();
-            address.setFloor(txtPlaceName.getText().toString());
-            address.setUnit(txtUnit.getText().toString());
-            address.setStreet(txtStreet.getText().toString());
-            address.setPostalCode(txtPostCode.getText().toString());
-            address.setShowFullAddress(!isShowFullAddress);
+            mAddress.setFloor(txtPlaceName.getText().toString());
+            mAddress.setUnit(txtUnit.getText().toString());
+            mAddress.setStreet(txtStreet.getText().toString());
+            mAddress.setPostalCode(txtPostCode.getText().toString());
+            mAddress.setShowFullAddress(!isShowFullAddress);
 
-            creatingJob.setAddress(address);
+            creatingJob.setAddress(mAddress);
             selectedAppointment = creatingJob;
 
             listener.onNextButtonClick();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if(resultCode == Activity.RESULT_OK){
+                Gson gson = new Gson();
+                String result=data.getStringExtra("result");
+                Log.d(TAG, result);
+                mAddress = gson.fromJson(result, JGGAddressModel.class);
+                setData();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
         }
     }
 

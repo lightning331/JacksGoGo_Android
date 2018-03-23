@@ -1,7 +1,8 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.AppointmentReportAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationAddressAdapter;
@@ -31,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.selectedCategoryID;
 
@@ -44,9 +49,10 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     private PostServiceTabbarView tabbarView;
 
     private AppointmentReportAdapter reportAdapter;
-    private AlertDialog alertDialog;
+    private PostQuotationAddressAdapter addressAdapter;
 
     private JGGQuotationModel mQuotation;
+    private JGGAddressModel mAddress;
     private List<Integer> selectedIds = new ArrayList<>();
     private boolean isRequest;      // true: Request, false: Edit
     private boolean isMultiSelect;
@@ -70,6 +76,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mQuotation = selectedQuotation;
+        mAddress = mQuotation.getAddress();
     }
 
     @Override
@@ -165,14 +172,20 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             recyclerView.setAdapter(mTimeAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.ADDRESS) {
             recyclerView.setVisibility(View.VISIBLE);
-            PostQuotationAddressAdapter addressAdapter = new PostQuotationAddressAdapter(mContext, mQuotation);
+            addressAdapter = new PostQuotationAddressAdapter(mContext, mAddress);
             addressAdapter.setOnItemClickListener(new PostQuotationAddressAdapter.OnItemClickListener() {
                 @Override
-                public void onNextButtonClick(JGGAddressModel address) {
-                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
-                    // Save Quotation Address Data
-                    mQuotation.setAddress(address);
-                    refreshRecyclerView();
+                public void onNextButtonClick(View view, JGGAddressModel address) {
+                    if (view.getId() == R.id.btn_invite) {
+                        Intent intent = new Intent(mContext, JGGMapViewActivity.class);
+                        intent.putExtra(APPOINTMENT_TYPE, SERVICES);
+                        startActivityForResult(intent, REQUEST_CODE);
+                    } else if (view.getId() == R.id.view_filter_bg) {
+                        tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
+                        // Save Quotation Address Data
+                        mQuotation.setAddress(address);
+                        refreshRecyclerView();
+                    }
                 }
             });
             recyclerView.setAdapter(addressAdapter);
@@ -207,6 +220,22 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         }
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.refreshDrawableState();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if(resultCode == Activity.RESULT_OK){
+                Gson gson = new Gson();
+                String result=data.getStringExtra("result");
+                mAddress = gson.fromJson(result, JGGAddressModel.class);
+                addressAdapter.notifyDataChanged(mAddress);
+                recyclerView.setAdapter(addressAdapter);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     private void onSaveCreatingQuotation() {
@@ -268,7 +297,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
+
         }
     }
 

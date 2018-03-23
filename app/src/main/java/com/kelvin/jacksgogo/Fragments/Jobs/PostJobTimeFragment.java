@@ -148,10 +148,12 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 selectedDay = dateFormat.format(date);
                 lblDate.setText(getDayMonthString(date));
-                startTime = getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                startOn = appointmentMonthDate(mJob.getSessions().get(0).getStartOn());
+                startTime = getTimePeriodString(startOn);
                 lblTime.setText(startTime);
                 if (mJob.getSessions().get(0).getEndOn() != null) {
-                    endTime = getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                    endOn = appointmentMonthDate(mJob.getSessions().get(0).getEndOn());
+                    endTime = getTimePeriodString(endOn);
                     lblTime.setText(startTime + " - " + endTime);
                 }
             }

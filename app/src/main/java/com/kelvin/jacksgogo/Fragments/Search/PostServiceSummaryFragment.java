@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -51,6 +52,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private LinearLayout btnTimeSlot;
     private LinearLayout btnAddress;
     private LinearLayout btnPostService;
+    private TextView lblPostService;
     private TextView lblDescribeTitle;
     private TextView lblDescribeDesc;
     private TextView lblPrice;
@@ -126,7 +128,9 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         lblTimeSlot = view.findViewById(R.id.lbl_post_main_time_slot);
         lblAddress = view.findViewById(R.id.lbl_post_main_address);
         btnPostService = view.findViewById(R.id.btn_post_service);
+        lblPostService = view.findViewById(R.id.lbl_post_service);
 
+        if (editStatus == PostEditStatus.EDIT) lblPostService.setText("Save Changes");
         btnDescribe.setOnClickListener(this);
         btnPrice.setOnClickListener(this);
         btnTimeSlot.setOnClickListener(this);

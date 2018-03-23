@@ -137,17 +137,15 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         btnPostJob = view.findViewById(R.id.btn_post_job);
         lblPostJob = view.findViewById(R.id.lbl_post_job);
 
-//        if (jobStatus == PostJobStatus.DUPLICATE || jobStatus == PostJobStatus.EDIT) {
-//            if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Save Changes");
-//            getJobByID();
-//        } else {
-            attachmentURLs = new ArrayList<>();
-            category = selectedCategory;
-            String postTime = appointmentNewDate(new Date());
-            selectedAppointment.setPostOn(postTime);
-            selectedAppointment.setAttachmentURLs(attachmentURLs);
-            creatingJob = selectedAppointment;
-//        }
+        if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Save Changes");
+
+        attachmentURLs = new ArrayList<>();
+        category = selectedCategory;
+        String postTime = appointmentNewDate(new Date());
+        selectedAppointment.setPostOn(postTime);
+        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        creatingJob = selectedAppointment;
+
         btnDescribe.setOnClickListener(this);
         btnTime.setOnClickListener(this);
         btnAddress.setOnClickListener(this);
@@ -309,13 +307,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                if (isEdit) {
-                    mActivity.onBackPressed();
-                } else {
-                    //getActivity().finish();
-                    Intent intent = new Intent(mContext, PostedJobActivity.class);
-                    mContext.startActivity(intent);
-                }
+                //getActivity().finish();
+                Intent intent = new Intent(mContext, PostedJobActivity.class);
+                mContext.startActivity(intent);
             }
         });
 

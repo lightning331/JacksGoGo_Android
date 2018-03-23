@@ -35,7 +35,8 @@
     <string name="menu_option_edit">Edit</string>
     <string name="menu_option_delete">Delete</string>
     <string name="title_appointment">Appointment</string>
-    <string name="title_map">Select Location</string>
+    <string name="title_map">Map</string>
+    <string name="title_location">Select Location</string>
     <string name="title_service_listing">Service Listing</string>
     <string name="title_active_service_around">Active Services Around</string>
     <string name="title_active_job_around">Active Jobs Around</string>
@@ -54,7 +55,9 @@
 
     <!-- TODO: JGG Service PopUp Menu -->
     <string name="menu_option_share">Share</string>
-    <string name="menu_option_report">Report Service</string>
+    <string name="menu_option_report_service">Report Service</string>
+    <string name="menu_option_report_job">Report Job</string>
+    <string name="menu_option_report_event">Report Event</string>
     <string name="setup_credit_card">Set Up Credit Card</string>
     <string name="jacks_wallet">Top Up Jacks Wallet - balance $10.00</string>
     <string name="posted_service_duplicate">Duplicate</string>

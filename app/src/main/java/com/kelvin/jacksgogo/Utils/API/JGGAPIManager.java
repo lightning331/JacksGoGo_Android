@@ -153,6 +153,34 @@ public interface JGGAPIManager {
     /*
      *  Proposal
      */
+    @POST("api/Proposal/PostProposal")
+    Call<JGGPostAppResponse> postNewProposal(@Body JGGProposalModel proposal);
+
+    @POST("api/Proposal/EditProposal")
+    Call<JGGPostAppResponse> editProposal(@Body JGGProposalModel proposal);
+
+    @GET("api/Proposal/DeleteProposal")
+    Call<JGGBaseResponse> deleteProposal(@Query("ProposalID") String proposalID);
+
+    @GET("api/Proposal/GetProposalsByJob")
+    Call<JGGProposalResponse> getProposalsByJob(@Query("JobID") String jobID,
+                                                @Query("PageIndex") Integer pageIndex,
+                                                @Query("PageSize") Integer pageSize);
+
+    @GET("api/Proposal/GetProposalsByUser")
+    Call<JGGProposalResponse> getProposalsByUser(@Query("UserProfileID") String profileID,
+                                                 @Query("PageIndex") Integer pageIndex,
+                                                 @Query("PageSize") Integer pageSize);
+    @GET("api/Proposal/WithdrawProposal")
+    Call<JGGProposalResponse> withdrawProposal(@Query("ProposalID") String proposalID);
+
+    @GET("api/Proposal/GetProposedStatus")
+    Call<JGGProposalResponse> getProposedStatus(@Query("JobID") String jobID,
+                                                @Query("UserProfileID") String userProfileID);
+
+    @GET("api/Proposal/RejectProposal")
+    Call<JGGBaseResponse> rejectProposal(@Query("ProposalID") String proposalID);
+
     @FormUrlEncoded
     @POST("api/Proposal/SendInvite")
     Call<JGGSendInviteResponse> sendInvite(@Field("AppointmentID") String appointmentID,
@@ -167,17 +195,10 @@ public interface JGGAPIManager {
                                                    @Field("pageIndex") Integer pageIndex,
                                                    @Field("pageSize") Integer pageSize);
 
-    @GET("api/Proposal/GetProposalsByJob")
-    Call<JGGProposalResponse> getProposalsByJob(@Query("JobID") String jobID,
-                                                @Query("PageIndex") Integer pageIndex,
-                                                @Query("PageSize") Integer pageSize);
-
-    @POST("api/Proposal/PostProposal")
-    Call<JGGPostAppResponse> postNewProposal(@Body JGGProposalModel proposal);
-
-    @POST("api/Proposal/EditProposal")
-    Call<JGGPostAppResponse> editProposal(@Body JGGProposalModel proposal);
-
-    @GET("api/Proposal/DeleteProposal")
-    Call<JGGBaseResponse> deleteProposal(@Query("ProposalID") String proposalID);
+    @FormUrlEncoded
+    @POST("api/Proposal/ApproveProposal")
+    Call<JGGBaseResponse> approveProposal(@Field("AppointmentID") String appointmentID,
+                                                 @Field("ProposalID") String proposalID,
+                                                 @Field("GrossAmt") Double grossAmt,
+                                                 @Field("CurrencyCode") String postalCode);
 }

@@ -5,8 +5,8 @@
         android:icon="@mipmap/icon_share_cyan"
         android:title="@string/menu_option_share" />
     <item
-        android:id="@+id/menu_option_report_service"
+        android:id="@+id/menu_option_report_job"
         android:icon="@mipmap/icon_flag_cyan"
-        android:title="@string/menu_option_report" />
+        android:title="@string/menu_option_report_job" />
 </menu>
 

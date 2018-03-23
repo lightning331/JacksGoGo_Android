@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
@@ -22,15 +24,28 @@ import com.kelvin.jacksgogo.Adapter.Jobs.JobDetailsAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class JobDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,7 +58,10 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
 
     private JGGActionbarView actionbarView;
     private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
+    private BottomNavigationView mbtmView;
 
+    private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private boolean reportFlag = false;
 
     @Override
@@ -53,18 +71,24 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         ButterKnife.bind(this);
 
         // Hide Bottom NavigationView and ToolBar
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.job_detail_bottom);
-        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        mbtmView = findViewById(R.id.job_detail_bottom);
         btnMakeProposal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JobDetailActivity.this, PostProposalActivity.class);
-                intent.putExtra(EDIT_STATUS, POST);
+                if (mProposals.size() > 0) {
+                    intent.putExtra(EDIT_STATUS, "VIEW");
+                } else {
+                    intent.putExtra(EDIT_STATUS, POST);
+                }
                 startActivity(intent);
             }
         });
+
+        mbtmView.setVisibility(View.GONE);
+        if (!selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+            getProposalsByJob();
+        }
 
         // Top ActionbarView
         actionbarView = new JGGActionbarView(this);
@@ -83,6 +107,43 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         }
         JobDetailsAdapter adapter = new JobDetailsAdapter(this);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    private void getProposalsByJob() {
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
+        call.enqueue(new Callback<JGGProposalResponse>() {
+            @Override
+            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mProposals = response.body().getValue();
+
+                        if (mProposals.size() > 0) {
+                            selectedProposal = mProposals.get(0);
+                            btnMakeProposal.setText("View Proposals");
+                        }
+                        mbtmView.setVisibility(View.VISIBLE);
+                        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+                        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+                        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+                    } else {
+                        Toast.makeText(JobDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(JobDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void actionbarViewItemClick(View view) {

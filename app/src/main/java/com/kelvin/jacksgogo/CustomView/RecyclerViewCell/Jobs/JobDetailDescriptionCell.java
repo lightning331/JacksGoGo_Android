@@ -32,18 +32,6 @@ public class JobDetailDescriptionCell extends RecyclerView.ViewHolder {
         titleLayout = itemView.findViewById(R.id.job_detail_title_layout);
     }
 
-    public TextView getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description.setText(description);
-    }
-
-    public TextView getTitle() {
-        return title;
-    }
-
     public void setTitle(String title, boolean bold) {
         if (bold) {
             this.title.setVisibility(View.VISIBLE);

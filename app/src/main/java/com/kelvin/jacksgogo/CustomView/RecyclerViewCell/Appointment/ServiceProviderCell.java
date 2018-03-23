@@ -1,7 +1,6 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus;
+import com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -17,13 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.Global.getBiddingStatus;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.declined;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.newproposal;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.notresponded;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.pending;
-import static com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel.JGGProposalStatus.rejected;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
+import static com.kelvin.jacksgogo.Utils.Global.getProposalStatus;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -63,18 +58,18 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
     public void setData(JGGProposalModel proposal) {
 
         JGGUserProfileModel provider = proposal.getUserProfile();
-        JGGProposalStatus status = proposal.getAppointment().getStatus();
+        JGGProposalStatus status = proposal.getStatus();
 
         lblStatus.setVisibility(View.GONE);
 
-        if (status == newproposal) {
-            cellBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
-        } else if (status == pending) {
-
-        } else if (status == notresponded) {
+        if (proposal.isInvited()) {
             imgProposal.setVisibility(View.GONE);
             lblPrice.setVisibility(View.GONE);
-        } else if (status == declined) {
+        }
+//        if (status == newproposal) {
+//            cellBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
+//        }
+        if (status == declined) {
             lblStatus.setVisibility(View.VISIBLE);
             imgProposal.setVisibility(View.GONE);
             lblPrice.setVisibility(View.GONE);
@@ -110,6 +105,6 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
         // Budget
         lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
         // Status
-        lblStatus.setText(getBiddingStatus(status));
+        lblStatus.setText(getProposalStatus(status));
     }
 }

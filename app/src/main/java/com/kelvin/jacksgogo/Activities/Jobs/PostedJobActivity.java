@@ -119,7 +119,7 @@ public class PostedJobActivity extends AppCompatActivity {
         if (mJob.getAppointmentType() == 1) {    // One-time
             if (mJob.getSessions() != null
                     && mJob.getSessions().size() > 0) {
-                if (mJob.getSessions().get(0).isSpecific()) {
+                if (mJob.getSessions().get(0).isSpecific() == null) {
                     type = "on";
                     if (mJob.getSessions().get(0).getEndOn() != null)
                         time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
@@ -130,15 +130,27 @@ public class PostedJobActivity extends AppCompatActivity {
                         time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
                                 + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
                 } else {
-                    type = "any time until";
-                    if (mJob.getSessions().get(0).getEndOn() != null)
-                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " - "
-                                + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
-                    else
-                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                    if (mJob.getSessions().get(0).isSpecific()) {
+                        type = "on";
+                        if (mJob.getSessions().get(0).getEndOn() != null)
+                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                    + " - "
+                                    + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                        else
+                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                    } else {
+                        type = "any time until";
+                        if (mJob.getSessions().get(0).getEndOn() != null)
+                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                    + " - "
+                                    + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                        else
+                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                    }
                 }
             }
             lblType.setText(type);

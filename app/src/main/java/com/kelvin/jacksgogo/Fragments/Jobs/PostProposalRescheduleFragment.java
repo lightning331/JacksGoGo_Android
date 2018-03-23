@@ -162,14 +162,14 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
 
     private void onShowAllowedLayout() {
         if (isRescheduling) {
-            txtDay.setText(getDays(mProposal.getRescheduleDate()));
-            txtHour.setText(getHours(mProposal.getRescheduleDate()));
-            txtMinute.setText(getMinutes(mProposal.getRescheduleDate()));
+            txtDay.setText(getDays(mProposal.getRescheduleTime()));
+            txtHour.setText(getHours(mProposal.getRescheduleTime()));
+            txtMinute.setText(getMinutes(mProposal.getRescheduleTime()));
             txtTerms.setText(mProposal.getRescheduleNote());
         } else {
-            txtDay.setText(getDays(mProposal.getCancellationDate()));
-            txtHour.setText(getHours(mProposal.getCancellationDate()));
-            txtMinute.setText(getMinutes(mProposal.getCancellationDate()));
+            txtDay.setText(getDays(mProposal.getCancellationTime()));
+            txtHour.setText(getHours(mProposal.getCancellationTime()));
+            txtMinute.setText(getMinutes(mProposal.getCancellationTime()));
             txtTerms.setText(mProposal.getCancellationNote());
         }
     }
@@ -178,21 +178,21 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
         if (isRescheduling) {
             if (noAllowed) {
                 mProposal.setRescheduleAllowed(false);
-                mProposal.setRescheduleDate(0);
+                mProposal.setRescheduleTime(0);
             } else {
                 mProposal.setRescheduleAllowed(true);
                 // Allowed Rescheduling Date
-                mProposal.setRescheduleDate(getSeconds(txtDay.getText().toString(), txtHour.getText().toString(), txtMinute.getText().toString()));
+                mProposal.setRescheduleTime(getSeconds(txtDay.getText().toString(), txtHour.getText().toString(), txtMinute.getText().toString()));
             }
             mProposal.setRescheduleNote(txtTerms.getText().toString());
         } else {
             if (noAllowed) {
                 mProposal.setCancellationAllowed(false);
-                mProposal.setCancellationDate(0);
+                mProposal.setCancellationTime(0);
             } else {
                 mProposal.setCancellationAllowed(true);
                 // Allowed Cancellation Date
-                mProposal.setCancellationDate(getSeconds(txtDay.getText().toString(), txtHour.getText().toString(), txtMinute.getText().toString()));
+                mProposal.setCancellationTime(getSeconds(txtDay.getText().toString(), txtHour.getText().toString(), txtMinute.getText().toString()));
             }
             mProposal.setCancellationNote(txtTerms.getText().toString());
         }

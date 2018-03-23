@@ -98,6 +98,7 @@ public class PostQuotationTimeAdapter extends RecyclerView.Adapter<RecyclerView.
                         return;
                     }
                     JGGTimeSlotModel timeSlot = getTimeSlot(position, calendarViewCell.calendarView.getSelectedDate().getDate());
+                    timeSlot.setSpecific(true);
                     mSessions.add(timeSlot);
                     listener.onItemClick(mSessions);
                 }
