@@ -58,9 +58,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.Global.USERS;
 
 public class JGGMapViewActivity extends AppCompatActivity implements View.OnClickListener,
         OnMapReadyCallback,
@@ -111,9 +113,13 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
             mType = AppointmentType.JOBS;
             imgLocation.setImageResource(R.mipmap.button_location_cyan);
             markerResource = R.mipmap.icon_pin;
-        } else if (type.equals(GOCLUB)) {
+        } else if (type.equals(GOCLUB) || type.equals(EVENTS)) {
             mType = AppointmentType.GOCLUB;
             imgLocation.setImageResource(R.mipmap.button_location_purple);
+            markerResource = R.mipmap.icon_pin;
+        } else if (type.equals(USERS)) {
+            mType = AppointmentType.USERS;
+            imgLocation.setImageResource(R.mipmap.button_location_orange);
             markerResource = R.mipmap.icon_pin;
         }
 

@@ -1,11 +1,13 @@
 package com.kelvin.jacksgogo.Adapter.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.Profile.BusinessProfileActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeSignOutCell;
@@ -13,8 +15,6 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.squareup.picasso.Picasso;
-
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
 /**
  * Created by PUMA on 1/27/2018.
@@ -70,6 +70,13 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
                     .placeholder(null)
                     .into(header.imgBackground);
             header.lblUserName.setText(user.getUser().getFullName());
+            header.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, BusinessProfileActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
         } else if (holder instanceof ProfileHomeCell) {
             ProfileHomeCell cell = (ProfileHomeCell) holder;
             if (position == JOINED_GOCLUB_TYPE) {

@@ -147,7 +147,18 @@
         <activity
             android:name=".Activities.Jobs.PostProposalActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Appointment.AppMapViewActivity"></activity>
+        <activity
+            android:name=".Activities.Appointment.AppMapViewActivity"
+            android:screenOrientation="portrait"  />
+        <activity
+            android:name=".Activities.Profile.BusinessProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.PublickProfileActivity"
+            android:screenOrientation="portrait"  />
+        <activity
+            android:name=".Activities.Profile.EditProfileActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

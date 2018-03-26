@@ -26,6 +26,9 @@ public class JGGUserBaseModel {
     private Boolean TwoFactorEnabled = false;
     private int AccessFailedCount = 0;
     private String UserName;
+    private String BusinessDetail;
+    private String CredentialDetail;
+    private String TagList;
 
     private int avatarUrl;
     private String fullName;
@@ -200,5 +203,29 @@ public class JGGUserBaseModel {
 
     public void setUserName(String userName) {
         UserName = userName;
+    }
+
+    public String getBusinessDetail() {
+        return BusinessDetail;
+    }
+
+    public void setBusinessDetail(String companyName) {
+        BusinessDetail = companyName;
+    }
+
+    public String getCredentialDetail() {
+        return CredentialDetail;
+    }
+
+    public void setCredentialDetail(String credentials) {
+        CredentialDetail = credentials;
+    }
+
+    public String getTagList() {
+        return TagList;
+    }
+
+    public void setTagList(String tagList) {
+        TagList = tagList;
     }
 }

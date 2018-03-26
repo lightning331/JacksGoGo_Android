@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.Fragments.Profile;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Profile.BusinessProfileActivity;
 import com.kelvin.jacksgogo.Adapter.Profile.ProfileHomeAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
@@ -74,7 +76,6 @@ public class ProfileHomeFragment extends Fragment {
             public void onItemClick(RecyclerView.ViewHolder holder, int position) {
                 if (holder instanceof ProfileHomeHeaderCell) {
                     ProfileHomeHeaderCell header = (ProfileHomeHeaderCell) holder;
-
                 } else if (holder instanceof ProfileHomeCell) {
                     if (position == JOINED_GOCLUB_TYPE) {
 

@@ -41,7 +41,7 @@
             </EditText>
             <TextView
                 android:id="@+id/lbl_description"
-                android:text="Describ your service."
+                android:text="Describe your service."
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"

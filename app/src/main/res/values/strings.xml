@@ -192,4 +192,8 @@
     <string name="accept_bid_header_title">Congratulations on finding a good match!</string>
     <string name="accept_bid_description">Next, Lets set up a payment method. The payment will only be released when the job is completed.</string>
     <string name="title_activity_app_map_view_activity">AppMapViewActivityActivity</string>
+
+    <!-- TODO: Profile -->
+    <string name="edit_profile_actionbar_title">Edit Profile</string>
+
 </resources>

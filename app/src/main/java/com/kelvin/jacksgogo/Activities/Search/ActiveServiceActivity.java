@@ -20,6 +20,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -34,7 +35,8 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     private BottomNavigationView mbtmView;;
     private TextView btnPost;
 
-    private String appType;
+    public String appType;
+    public String editStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     private void initializeView() {
 
         appType = getIntent().getStringExtra(APPOINTMENT_TYPE);
+        editStatus = getIntent().getStringExtra(EDIT_STATUS);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = (BottomNavigationView) findViewById(R.id.active_service_navigation);
@@ -75,6 +78,10 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
             btnPost.setText(R.string.title_post_goclub);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGPurple));
         }
+        if (editStatus.equals(EDIT))
+            setBottomViewHidden(true);
+        else
+            setBottomViewHidden(false);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

@@ -116,13 +116,11 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                     startActivity(intent);
                 } else if (view.getId() == R.id.btn_active_service_mapview) {
                     ActiveServiceMapFragment mapFragment = ActiveServiceMapFragment.newInstance(appType);
-
                     mapFragment.setOnFragmentInteractionListener(ActiveServiceMainFragment.this);
-
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.active_service_container, mapFragment, mapFragment.getTag());
-                    ft.addToBackStack("active_service");
-                    ft.commit();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.active_service_container, mapFragment, mapFragment.getTag())
+                            .addToBackStack("active_service")
+                            .commit();
                 } else {
                     if (view.getId() == R.id.btn_active_service_distance) {
 

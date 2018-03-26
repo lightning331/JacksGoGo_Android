@@ -68,6 +68,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         SEARCH,
         SEARCH_RESULT,
         INVITE,
+        EDIT_PROFILE,
         SERVICE_PROVIDER,
         BID,
         ACCEPT_BIDE,
@@ -147,6 +148,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 setGreenBackButton("", R.string.title_location);
                 if (type == AppointmentType.JOBS)
                     setCyanBackButton("", R.string.title_location);
+                else if (type == AppointmentType.USERS)
+                    setOrangeBackButton(R.string.title_location, "");
                 break;
             case DETAILS:
                 mTitleTextView.setText("");
@@ -291,7 +294,10 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 }
                 break;
             case INVITE:
-                setInviteButton();
+                setInviteButton(R.string.invite_actionbar_title);
+                break;
+            case EDIT_PROFILE:
+                setInviteButton(R.string.edit_profile_actionbar_title);
                 break;
             case SERVICE_PROVIDER:
                 setOrangeBackButton(R.string.service_provider_actionbar_title, "");
@@ -336,8 +342,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         }
     }
 
-    private void setInviteButton() {
-        mTitleTextView.setText(R.string.invite_actionbar_title);
+    private void setInviteButton(int title) {
+        mTitleTextView.setText(title);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
         mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
     }
@@ -376,6 +382,12 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_cyan);
+    }
+
+    public void setProfileActionBar() {
+        mTitleTextView.setText("");
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+        mMoreButtonImage.setImageResource(R.mipmap.button_edit_orange);
     }
 
     public void setEditMoreButtonClicked(boolean isSelected) {

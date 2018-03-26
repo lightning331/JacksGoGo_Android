@@ -23,6 +23,8 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTi
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTotalReviewCell;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
@@ -44,6 +46,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context mContext;
 
     private JGGAppointmentModel mService;
+    private JGGUserProfileModel mUserProfile;
+    private JGGUserBaseModel mUser;
 
     /*
      *  Service BudgetType
@@ -56,6 +60,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     public ServiceDetailAdapter(Context context) {
         this.mContext = context;
         mService = selectedAppointment;
+        mUserProfile = mService.getUserProfile();
+        mUser = mUserProfile.getUser();
         if (mService.getBudget() != null) isFixedBudget = true;
     }
 
@@ -152,7 +158,10 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 } else {     // Review Cell
                     View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_total_review, parent, false);
                     ServiceDetailTotalReviewCell reviewViewHolder = new ServiceDetailTotalReviewCell(reviewView);
-                    reviewViewHolder.ratingBar.setRating(mService.getUserProfile().getUser().getRate().floatValue());
+                    if (mUser.getRate() == null)
+                        reviewViewHolder.ratingBar.setRating(0);
+                    else
+                        reviewViewHolder.ratingBar.setRating(mUser.getRate().floatValue());
                     reviewViewHolder.btnReviews.setOnClickListener(this);
                     return reviewViewHolder;
                 }
@@ -160,7 +169,10 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 if (isFixedBudget) {
                     View reviewView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_total_review, parent, false);
                     ServiceDetailTotalReviewCell reviewViewHolder = new ServiceDetailTotalReviewCell(reviewView);
-                    reviewViewHolder.ratingBar.setRating(mService.getUserProfile().getUser().getRate().floatValue());
+                    if (mUser.getRate() == null)
+                        reviewViewHolder.ratingBar.setRating(0);
+                    else
+                        reviewViewHolder.ratingBar.setRating(mUser.getRate().floatValue());
                     reviewViewHolder.btnReviews.setOnClickListener(this);
                     return reviewViewHolder;
                 } else {     // Service Provider Cell

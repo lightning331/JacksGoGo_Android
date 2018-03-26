@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Utils.API;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
@@ -69,6 +70,12 @@ public interface JGGAPIManager {
      */
     @GET("api/Category/GetAllCategories")
     Call<JGGCategoryResponse> getCategory();
+
+    /*
+     * User
+     */
+    @POST("api/User/EditProfile")
+    Call<JGGUserProfileResponse> editProfile(@Body JGGUserProfileModel user);
 
     /*
      *  Appointment Job

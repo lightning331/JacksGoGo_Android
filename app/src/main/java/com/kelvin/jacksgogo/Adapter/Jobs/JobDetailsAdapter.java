@@ -100,6 +100,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             View priceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
             JobDetailLocationCell jobTimeViewHolder = new JobDetailLocationCell(priceView);
 
+            jobTimeViewHolder.lblDescription.setText("Package");
             jobTimeViewHolder.lblDescription.setVisibility(View.VISIBLE);
             jobTimeViewHolder.address.setVisibility(View.VISIBLE);
             jobTimeViewHolder.location.setVisibility(View.INVISIBLE);
@@ -108,7 +109,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_budget);
             String budget = "";
             if (mJob.getBudget() == null && mJob.getBudgetFrom() == null)
-                budget =  "Budget No limit";
+                budget =  "Budget  No limit";
             else if (mJob.getBudget() != null) {
                 jobTimeViewHolder.lblDescription.setText("Fixed");
                 budget = "Budget " + mJob.getBudget().toString() + "/month";

@@ -31,8 +31,8 @@ public class JGGUserProfileModel {
     private String ResidentialAddress_City;
     private String ResidentialAddress_State;
     private String ResidentialAddress_PostalCode;
-    private String ResidentialAddress_Lat;
-    private String ResidentialAddress_Lon;
+    private Double ResidentialAddress_Lat;
+    private Double ResidentialAddress_Lon;
     private String ResidentialAddress_CountryCode;
     private String BillingAddress_Unit;
     private String BillingAddress_Floor;
@@ -40,8 +40,8 @@ public class JGGUserProfileModel {
     private String BillingAddress_City;
     private String BillingAddress_State;
     private String BillingAddress_PostalCode;
-    private String BillingAddress_Lat;
-    private String BillingAddress_Lon;
+    private Double BillingAddress_Lat;
+    private Double BillingAddress_Lon;
     private String BillingAddress_CountryCode;
     private String BillingContact;
     private String BillingContractNo_CountryCode;
@@ -52,6 +52,23 @@ public class JGGUserProfileModel {
     private String BillingMobileNo_AreaCode;
     private String BillingMobileNo_Number;
     private String BillingMobileNo_Extension;
+
+    private String fullAddress;
+
+    public String getFullAddress() {
+        fullAddress = "";
+        if (getResidentialAddress_State() == null) {
+            fullAddress = fullAddress + getResidentialAddress_Address() + ", " + getResidentialAddress_PostalCode();
+        } else {
+            if (getResidentialAddress_Unit() != null)
+                fullAddress = fullAddress + getResidentialAddress_Unit() + " ";
+            if (getResidentialAddress_Address() != null)
+                fullAddress = fullAddress + getResidentialAddress_Address() + ", ";
+            if (getResidentialAddress_PostalCode() != null)
+                fullAddress = fullAddress + getResidentialAddress_PostalCode();
+        }
+        return fullAddress;
+    }
 
     public String getID() {
         return ID;
@@ -229,19 +246,19 @@ public class JGGUserProfileModel {
         ResidentialAddress_PostalCode = residentialAddress_PostalCode;
     }
 
-    public String getResidentialAddress_Lat() {
+    public Double getResidentialAddress_Lat() {
         return ResidentialAddress_Lat;
     }
 
-    public void setResidentialAddress_Lat(String residentialAddress_Lat) {
+    public void setResidentialAddress_Lat(Double residentialAddress_Lat) {
         ResidentialAddress_Lat = residentialAddress_Lat;
     }
 
-    public String getResidentialAddress_Lon() {
+    public Double getResidentialAddress_Lon() {
         return ResidentialAddress_Lon;
     }
 
-    public void setResidentialAddress_Lon(String residentialAddress_Lon) {
+    public void setResidentialAddress_Lon(Double residentialAddress_Lon) {
         ResidentialAddress_Lon = residentialAddress_Lon;
     }
 
@@ -301,19 +318,19 @@ public class JGGUserProfileModel {
         BillingAddress_PostalCode = billingAddress_PostalCode;
     }
 
-    public String getBillingAddress_Lat() {
+    public Double getBillingAddress_Lat() {
         return BillingAddress_Lat;
     }
 
-    public void setBillingAddress_Lat(String billingAddress_Lat) {
+    public void setBillingAddress_Lat(Double billingAddress_Lat) {
         BillingAddress_Lat = billingAddress_Lat;
     }
 
-    public String getBillingAddress_Lon() {
+    public Double getBillingAddress_Lon() {
         return BillingAddress_Lon;
     }
 
-    public void setBillingAddress_Lon(String billingAddress_Lon) {
+    public void setBillingAddress_Lon(Double billingAddress_Lon) {
         BillingAddress_Lon = billingAddress_Lon;
     }
 

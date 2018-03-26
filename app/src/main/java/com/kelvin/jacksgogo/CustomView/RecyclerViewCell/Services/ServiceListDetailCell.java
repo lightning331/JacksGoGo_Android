@@ -67,7 +67,10 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         lblCategoryName.setText(service.getCategory().getName());
         // Rating
         JGGUserBaseModel user = service.getUserProfile().getUser();
-        rateBar.setRating(user.getRate().floatValue());
+        if (user.getRate() == null)
+            rateBar.setRating(0);
+        else
+            rateBar.setRating(user.getRate().floatValue());
         // Score
         lblScoreStatus.setText("");
         if (user.getRate() == null) {
