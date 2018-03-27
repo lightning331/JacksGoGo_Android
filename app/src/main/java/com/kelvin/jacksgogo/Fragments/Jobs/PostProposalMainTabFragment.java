@@ -18,10 +18,9 @@ import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class PostProposalMainTabFragment extends Fragment {
 
@@ -76,7 +75,7 @@ public class PostProposalMainTabFragment extends Fragment {
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
-        lblTime.setText(convertJobTimeString(selectedAppointment));
+        lblTime.setText(getAppointmentTime(selectedAppointment));
 
         initTabbarView(view);
 

@@ -16,11 +16,11 @@ public class JobStatusSummaryFooterView extends RelativeLayout implements View.O
 
     private Context mContext;
 
-    private LinearLayout reportLayout;
-    private LinearLayout invoiceLayout;
-    private LinearLayout reviewLayout;
-    private LinearLayout tipLayout;
-    private LinearLayout rehireLayout;
+    public LinearLayout reportLayout;
+    public LinearLayout invoiceLayout;
+    public LinearLayout reviewLayout;
+    public LinearLayout tipLayout;
+    public LinearLayout rehireLayout;
 
     public JobStatusSummaryFooterView(Context context) {
         super(context);

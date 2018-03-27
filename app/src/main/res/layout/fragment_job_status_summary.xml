@@ -9,11 +9,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_weight="1">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
             <LinearLayout
@@ -102,7 +101,7 @@
                     <LinearLayout
                         android:id="@+id/btn_posted_job"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="32dp"
                         android:gravity="center_vertical">
@@ -112,7 +111,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:maxLines="1"
                             android:textColor="@color/JGGBlack"
                             android:fontFamily="@font/muliregular"
                             android:textSize="@dimen/list_title_font_size"/>
@@ -126,10 +124,10 @@
         </LinearLayout>
     </ScrollView>
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/posted_service_chat_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -138,7 +136,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="match_parent"
             android:gravity="center_vertical">
             <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -155,6 +153,7 @@
                 app:riv_mutate_background="true"
                 app:riv_oval="true"/>
             <TextView
+                android:id="@+id/lbl_provider_name"
                 android:text="catherinedesilva"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -166,6 +165,7 @@
                 android:textSize="@dimen/button_font_size"
                 android:gravity="center_vertical"/>
             <LinearLayout
+                android:id="@+id/btn_view_proposal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="25"
@@ -178,7 +178,7 @@
                     android:src="@mipmap/proposalviewed"/>
             </LinearLayout>
             <RelativeLayout
-                android:id="@+id/btn_posted_service_chat"
+                android:id="@+id/btn_chat"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="25"

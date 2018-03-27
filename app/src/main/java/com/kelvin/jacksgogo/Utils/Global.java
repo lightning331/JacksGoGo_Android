@@ -20,6 +20,9 @@ import java.util.Map;
 public class Global {
 
     public static final String APPOINTMENT_TYPE = "APPOINTMENT_TYPE";
+    public static final String PENDING = "PENDING";
+    public static final String CONFIRMED = "CONFIRMED";
+    public static final String HISTORY = "HISTORY";
     public static final String SERVICES = "SERVICES";
     public static final String JOBS = "JOBS";
     public static final String EVENTS = "EVENTS";
@@ -53,10 +56,10 @@ public class Global {
         withdrawn(3),   //
         declined(4);    // Provider declined Client's invite
 
-        private int value;
+        private Integer value;
         private static Map map = new HashMap<>();
 
-        JGGProposalStatus(final int value) {
+        JGGProposalStatus(final Integer value) {
             this.value = value;
         }
 
@@ -66,11 +69,11 @@ public class Global {
             }
         }
 
-        public static JGGProposalStatus valueOf(int status) {
+        public static JGGProposalStatus valueOf(Integer status) {
             return (JGGProposalStatus) map.get(status);
         }
 
-        public int getValue() {
+        public Integer getValue() {
             return value;
         }
     }

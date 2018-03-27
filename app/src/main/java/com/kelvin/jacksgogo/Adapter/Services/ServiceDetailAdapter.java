@@ -33,7 +33,7 @@ import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertBudgetOnly;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudget;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
@@ -95,7 +95,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 JobDetailDescriptionCell priceViewHolder = new JobDetailDescriptionCell(priceView);
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-                priceViewHolder.description.setText(convertBudgetOnly(mService));
+                priceViewHolder.description.setText(getAppointmentBudget(mService));
                 if (mService.getBudget() == null) {
 
                 } else {

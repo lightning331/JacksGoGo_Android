@@ -36,7 +36,7 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class JobStatusSummaryActivity extends AppCompatActivity implements TextWatcher {
 
@@ -86,7 +86,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
-        lblTime.setText(convertJobTimeString(mJob));
+        lblTime.setText(getAppointmentTime(mJob));
     }
 
     private void actionbarViewItemClick(View view) {

@@ -12,8 +12,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertBudgetOnly;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudget;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 /**
  * Created by PUMA on 12/18/2017.
@@ -63,8 +63,8 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
         else
             lblAddress.setText(job.getAddress().getStreet());
         // Budget
-        price.setText(convertBudgetOnly(job));
+        price.setText(getAppointmentBudget(job));
         // Delivery Time
-        lblTime.setText(convertJobTimeString(job));
+        lblTime.setText(getAppointmentTime(job));
     }
 }

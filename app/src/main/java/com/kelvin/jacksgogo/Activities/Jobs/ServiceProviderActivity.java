@@ -38,7 +38,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class ServiceProviderActivity extends AppCompatActivity {
 
@@ -175,6 +175,6 @@ public class ServiceProviderActivity extends AppCompatActivity {
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
-        lblTime.setText(convertJobTimeString(mJob));
+        lblTime.setText(getAppointmentTime(mJob));
     }
 }

@@ -3,7 +3,10 @@ package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
@@ -15,6 +18,13 @@ public class JobStatusSummaryConfirmedView extends RelativeLayout {
 
     private Context mContext;
 
+    public LinearLayout confirmedLine;
+    public ImageView imgConfirmed;
+    public TextView lblConfirmedTime;
+    public TextView lblConfirmedTitle;
+    public TextView lblConfirmedDesc;
+    public TextView btnSetAppDate;
+
     public JobStatusSummaryConfirmedView(Context context) {
         super(context);
         this.mContext = context;
@@ -25,5 +35,12 @@ public class JobStatusSummaryConfirmedView extends RelativeLayout {
     private void initView() {
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_confirmed, this);
+
+        confirmedLine = view.findViewById(R.id.confirmed_line);
+        imgConfirmed = view.findViewById(R.id.img_confirmed);
+        lblConfirmedTime = view.findViewById(R.id.lbl_confirmed_time);
+        lblConfirmedTitle = view.findViewById(R.id.lbl_confirmed_title);
+        lblConfirmedDesc = view.findViewById(R.id.lbl_confirmed_desc);
+        btnSetAppDate = view.findViewById(R.id.btn_set_appointment_date);
     }
 }

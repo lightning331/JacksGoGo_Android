@@ -37,6 +37,9 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
+import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
+import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 
@@ -47,7 +50,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
     private RecyclerView recyclerView;
     private SearchView searchView;
-    private Object searchTag;
+    private String mStatus;
     private ProgressDialog progressDialog;
     private android.app.AlertDialog alertDialog;
 
@@ -85,7 +88,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             return;
         }
         // create list and custom adapter
-        refreshFragment("PENDING");
+        refreshFragment(PENDING);
     }
 
     @Override
@@ -254,20 +257,17 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         }
     }
 
-    public void refreshFragment(Object textView) {
-
-        //Log.d("Refresh Fragement", "=====================" + searchTag);
-
-        searchTag = textView;
-        if (textView == "PENDING") {
+    public void refreshFragment(String status) {
+        mStatus = status;
+        if (status.equals(PENDING)) {
             searchView.setQueryHint("Search through Pending list");
             loadPendingAppointments();
 
-        } else if (textView == "CONFIRM") {
+        } else if (status.equals(CONFIRMED)) {
             searchView.setQueryHint("Search through Confirmed list");
             loadConfirmedAppointments();
 
-        } else if (textView == "HISTORY") {
+        } else if (status.equals(HISTORY)) {
             searchView.setQueryHint("Search through History list");
             loadAppointmentsHistory();
         }
@@ -303,10 +303,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
-        Log.d("Search Tag", "==========" + searchTag + "==========");
-
-        if (searchTag == "PENDING") {
+        if (mStatus.equals(PENDING)) {
             filteredArrayList = filter(arrayAllPendingAppointments, newText);
 
             pendingListAdapter = new AppointmentMainAdapter(getContext());
@@ -323,13 +320,13 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                 }
             });
 
-        } else if (searchTag == "CONFIRM") {
+        } else if (mStatus.equals(CONFIRMED)) {
             filteredArrayList = filter(arrayConfirmedAppointments, newText);
 
             setDataToAdapter("Confirmed",
                     filteredArrayList, true);
 
-        } else if (searchTag == "HISTORY") {
+        } else if (mStatus.equals(HISTORY)) {
             filteredArrayList = filter(arrayHistoryAppointments, newText);
 
             setDataToAdapter("History",
@@ -356,14 +353,20 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         selectedCategory = appointment.getCategory();
         selectedAppointment = appointment;
         if (appointment.isRequest()) {
-            Log.d("Job Model Selected", "==========" + object + "============");
             Intent intent = new Intent(getActivity(), JobStatusSummaryActivity.class);
             startActivity(intent);
-        } else {
-            Log.d("Service Model Selected", "==========" + object + "============");
+        } else if (!appointment.isRequest()) {
             Intent intent = new Intent(getActivity(), ServiceDetailActivity.class);
             intent.putExtra("is_service", false);
             startActivity(intent);
+        }
+
+        if (mStatus.equals(PENDING)) {
+
+        } else if (mStatus.equals(CONFIRMED)) {
+
+        } else if (mStatus.equals(HISTORY)) {
+
         }
     }
 

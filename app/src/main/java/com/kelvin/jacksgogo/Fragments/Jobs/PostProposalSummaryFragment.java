@@ -21,7 +21,6 @@ import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
@@ -37,7 +36,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
 public class PostProposalSummaryFragment extends Fragment implements View.OnClickListener {
@@ -152,7 +151,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
-        lblTime.setText(convertJobTimeString(selectedAppointment));
+        lblTime.setText(getAppointmentTime(selectedAppointment));
 
         if (selectedProposal != null) {
             // Description

@@ -134,7 +134,7 @@ public class SearchFragment extends Fragment {
             });
             searchJobs();
         } else if (appType.equals(GOCLUB)) {
-
+            progressDialog.dismiss();
         }
     }
 

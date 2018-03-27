@@ -21,7 +21,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 
 
@@ -100,7 +100,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 1:
                 JobDetailDescriptionCell priceViewHolder = (JobDetailDescriptionCell)holder;
                 priceViewHolder.descriptionImage.setImageResource(R.mipmap.icon_budget);
-                priceViewHolder.description.setText(convertJobBudgetString(mJob));
+                priceViewHolder.description.setText(getAppointmentBudgetWithString(mJob));
                 priceViewHolder.description.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 break;
             case 2:

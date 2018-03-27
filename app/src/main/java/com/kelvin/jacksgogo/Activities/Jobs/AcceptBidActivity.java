@@ -16,6 +16,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +29,7 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class AcceptBidActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -84,7 +85,7 @@ public class AcceptBidActivity extends AppCompatActivity implements View.OnClick
                 .into(imgCategory);
         lblCategory.setText(mProposal.getAppointment().getCategory().getName());
         // Time
-        lblTime.setText(convertJobTimeString(mProposal.getAppointment()));
+        lblTime.setText(getAppointmentTime(mProposal.getAppointment()));
     }
 
     private void approveProposal() {
@@ -95,14 +96,14 @@ public class AcceptBidActivity extends AppCompatActivity implements View.OnClick
         String appointmentID = mProposal.getAppointmentID();
         String currencyCode = mProposal.getCurrencyCode();
         Double grossAmt = mProposal.getBudget();
-        Call<JGGBaseResponse> call = apiManager.approveProposal(appointmentID, proposalID, grossAmt, currencyCode);
-        call.enqueue(new Callback<JGGBaseResponse>() {
+        Call<JGGPostAppResponse> call = apiManager.approveProposal(appointmentID, proposalID, grossAmt, currencyCode);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-
+                        String contractID = response.body().getValue();
                     } else {
                         Toast.makeText(AcceptBidActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -113,7 +114,7 @@ public class AcceptBidActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(AcceptBidActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }

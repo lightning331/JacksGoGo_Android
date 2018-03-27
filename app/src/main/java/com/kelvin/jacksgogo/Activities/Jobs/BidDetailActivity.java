@@ -43,7 +43,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class BidDetailActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener, OnDismissListener {
 
@@ -120,7 +120,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
-        lblTime.setText(convertJobTimeString(mProposal.getAppointment()));
+        lblTime.setText(getAppointmentTime(mProposal.getAppointment()));
     }
 
     private void rejectProposal() {

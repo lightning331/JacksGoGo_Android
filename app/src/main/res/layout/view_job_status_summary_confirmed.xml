@@ -11,15 +11,18 @@
         android:gravity="center_horizontal">
 
         <ImageView
+            android:id="@+id/img_confirmed"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@mipmap/icon_appointment_inactive"/>
         <LinearLayout
+            android:id="@+id/confirmed_line"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
-            android:background="@color/JGGGrey3">
+            android:background="@color/JGGGrey3"
+            android:orientation="horizontal">
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -30,6 +33,7 @@
         android:layout_marginBottom="32dp"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/lbl_confirmed_time"
             android:text="12 Jul 2017 8:15 PM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +41,7 @@
             android:fontFamily="@font/muliregular"
             android:textSize="12dp"/>
         <TextView
+            android:id="@+id/lbl_confirmed_title"
             android:text="Appointment Confirmed."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,6 +51,7 @@
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/list_title_font_size"/>
         <TextView
+            android:id="@+id/lbl_confirmed_desc"
             android:text="We'll drop you a notification a day before your appointment."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

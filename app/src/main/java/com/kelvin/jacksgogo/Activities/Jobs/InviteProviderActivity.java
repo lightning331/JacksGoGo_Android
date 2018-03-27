@@ -37,9 +37,8 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class InviteProviderActivity extends AppCompatActivity {
 
@@ -111,7 +110,7 @@ public class InviteProviderActivity extends AppCompatActivity {
                 .into(imgCategory);
         lblCategory.setText(mCategory.getName());
         // Time
-        lblTime.setText(convertJobTimeString(mJob));
+        lblTime.setText(getAppointmentTime(mJob));
     }
 
     private void getInviteUsers() {

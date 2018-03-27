@@ -20,7 +20,7 @@ import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDays;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getHours;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getMinutes;
@@ -98,7 +98,7 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
                 lblJobType.setText("Package Job");
             else
                 lblJobType.setText("One Time Job");
-            lblJobTime.setText(convertJobTimeString(mJob));
+            lblJobTime.setText(getAppointmentTime(mJob));
         }
         mProposal = selectedProposal;
 

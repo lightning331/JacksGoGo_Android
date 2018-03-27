@@ -25,7 +25,6 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -43,7 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -52,7 +50,7 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -184,7 +182,7 @@ public class PostedJobActivity extends AppCompatActivity {
         // Address
         lblAddress.setText(mJob.getAddress().getFullAddress());
         // Price
-        lblBudget.setText(convertJobBudgetString(mJob));
+        lblBudget.setText(getAppointmentBudgetWithString(mJob));
         // Report
         lblReportType.setText(reportTypeName(mJob.getReportType()));
         // User

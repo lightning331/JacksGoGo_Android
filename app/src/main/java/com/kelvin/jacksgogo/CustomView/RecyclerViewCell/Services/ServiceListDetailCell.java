@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertBudgetOnly;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudget;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -92,6 +92,6 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         else
             lblAddress.setText(service.getAddress().getStreet());
         // Budget
-        price.setText(convertBudgetOnly(service));
+        price.setText(getAppointmentBudget(service));
     }
 }

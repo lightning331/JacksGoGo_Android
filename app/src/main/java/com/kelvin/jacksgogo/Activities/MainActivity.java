@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,9 @@ import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 
 import io.fabric.sdk.android.Fabric;
 
+import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
+import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
+import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
 
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {
@@ -83,10 +87,8 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
         switch (mItem.getItemId()) {
             case R.id.navigation_home:
-                frag = HomeFragment.newInstance(null,
-                        null);
-                mToolbar.setTitle(R.string.title_home);
-
+                frag = HomeFragment.newInstance();
+                onHideTopNavigationBar();
                 break;
             case R.id.navigation_search:
                 frag = SearchFragment.newInstance();
@@ -98,12 +100,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 frag = FavouriteFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                // Remove Top Navigation Bar
-                topNavLayoutParams.setBehavior(null);
-                // Disable Bottom Navigation Bar hidden
-                bottomNavLayoutParams.setBehavior(null);
-                mContainer.requestLayout();
-
+                onHideTopNavigationBar();
                 String username = JGGAppManager.getInstance(this).getUsernamePassword()[0];
                 if (!username.equals("")) {
                     frag = ProfileHomeFragment.newInstance();
@@ -127,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     @Override
     public void onResume(){
         super.onResume();
-
     }
 
     private void initView() {
@@ -147,10 +143,6 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
             mbtmView.setSelectedItemId(R.id.navigation_home);
         }
 
-        appMainTabView = new AppMainTabView(this);
-        searchTabView = new SearchMainTabView(this);
-        favouriteTabView = new FavouriteMainTabView(this);
-
         setSupportActionBar(mToolbar);
     }
 
@@ -162,48 +154,40 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
 
             if (frag instanceof AppMainFragment) {
                 this.addTopActionBarForAppointment(frag);
-            } else {
-                this.removeTopActionBarForAppointment();
             }
             if (frag instanceof SearchFragment) {
                 this.addTopActionBarForSearch(frag);
-            } else {
-                this.removeToActionBarForSearch();
             }
             if (frag instanceof FavouriteFragment) {
                 this.addTopActionBarForFavourite(frag);
-            } else {
-                this.removeToActionBarForFavourite();
             }
         }
     }
 
     private void addTopActionBarForAppointment(final Fragment frag) {
-        mToolbar.removeView(appMainTabView);
-        if (appMainTabView == null) {
-            appMainTabView = new AppMainTabView(this);
-        }
+        mToolbar.removeAllViews();
+        appMainTabView = new AppMainTabView(this);
         mToolbar.addView(appMainTabView);
-
         appMainTabView.setTabbarItemClickListener(new AppMainTabView.OnTabbarItemClickListener() {
             @Override
-            public void onTabbarItemClick(TextView item) {
+            public void onTabbarItemClick(View view) {
                 if (frag instanceof AppMainFragment) {
-                    ((AppMainFragment)frag).refreshFragment(item.getTag());
+                    if (view.getId() == R.id.pending_layout) {
+                        ((AppMainFragment)frag).refreshFragment(PENDING);
+                    } else if (view.getId() == R.id.confirm_layout) {
+                        ((AppMainFragment)frag).refreshFragment(CONFIRMED);
+                    } else if (view.getId() == R.id.history_layout) {
+                        ((AppMainFragment)frag).refreshFragment(HISTORY);
+                    }
                 }
             }
         });
     }
 
-    private void removeTopActionBarForAppointment() {
-        mToolbar.removeView(appMainTabView);
-    }
-
     private void addTopActionBarForSearch(final Fragment frag) {
-        mToolbar.removeView(searchTabView);
-        if (searchTabView == null) searchTabView = new SearchMainTabView(this);
+        mToolbar.removeAllViews();
+        searchTabView = new SearchMainTabView(this);
         mToolbar.addView(searchTabView);
-
         searchTabView.setTabbarItemClickListener(new SearchMainTabView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
@@ -214,15 +198,10 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         });
     }
 
-    private void removeToActionBarForSearch() {
-        mToolbar.removeView(searchTabView);
-    }
-
     private void addTopActionBarForFavourite(final Fragment frag) {
-        mToolbar.removeView(favouriteTabView);
-        if (favouriteTabView == null) favouriteTabView = new FavouriteMainTabView(this);
+        mToolbar.removeAllViews();
+        favouriteTabView = new FavouriteMainTabView(this);
         mToolbar.addView(favouriteTabView);
-
         favouriteTabView.setTabbarItemClickListener(new FavouriteMainTabView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
@@ -233,8 +212,12 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         });
     }
 
-    private void removeToActionBarForFavourite() {
-        mToolbar.removeView(favouriteTabView);
+    private void onHideTopNavigationBar() {
+        // Remove Top Navigation Bar
+        topNavLayoutParams.setBehavior(null);
+        // Disable Bottom Navigation Bar hidden
+        bottomNavLayoutParams.setBehavior(null);
+        mContainer.requestLayout();
     }
 
     @Override

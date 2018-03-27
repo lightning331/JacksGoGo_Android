@@ -16,21 +16,22 @@ import com.kelvin.jacksgogo.R;
 
 public class AppMainTabView extends RelativeLayout implements View.OnClickListener {
 
-    Context mContext;
-    LayoutInflater mLayoutInflater;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
 
-    LinearLayout pendingButton;
-    LinearLayout confirmButton;
-    LinearLayout historyButton;
-    TextView pendingTextView;
-    TextView confirmTextView;
-    TextView historyTextView;
-    ImageView pendingDotImageView;
-    ImageView confirmDotImageView;
-    ImageView historyDotImageView;
-    ImageButton filterButton;
-    View actionbarView;
+    private LinearLayout pendingButton;
+    private LinearLayout confirmButton;
+    private LinearLayout historyButton;
+    private TextView pendingTextView;
+    private TextView confirmTextView;
+    private TextView historyTextView;
+    private ImageView pendingDotImageView;
+    private ImageView confirmDotImageView;
+    private ImageView historyDotImageView;
+    private ImageButton filterButton;
+    private View actionbarView;
 
+    private String mStatus;
 
     public AppMainTabView(Context context) {
         super(context);
@@ -58,9 +59,27 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
         pendingButton.setOnClickListener(this);
         confirmButton.setOnClickListener(this);
         historyButton.setOnClickListener(this);
-        pendingTextView.setTag("PENDING");
-        confirmTextView.setTag("CONFIRM");
-        historyTextView.setTag("HISTORY");
+    }
+
+    private void updateAppointmentTabbar(View view) {
+        pendingDotImageView.setVisibility(View.INVISIBLE);
+        confirmDotImageView.setVisibility(View.INVISIBLE);
+        historyDotImageView.setVisibility(View.INVISIBLE);
+
+        pendingTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
+        confirmTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
+        historyTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
+
+        if (view.getId() == R.id.pending_layout) {
+            pendingTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
+            pendingDotImageView.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.confirm_layout) {
+            confirmTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
+            confirmDotImageView.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.history_layout) {
+            historyTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
+            historyDotImageView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -71,34 +90,15 @@ public class AppMainTabView extends RelativeLayout implements View.OnClickListen
             Intent intent = new Intent(view.getContext(), AppFilterActivity.class);
             mContext.startActivity(intent);
         } else {
-            pendingDotImageView.setVisibility(View.INVISIBLE);
-            confirmDotImageView.setVisibility(View.INVISIBLE);
-            historyDotImageView.setVisibility(View.INVISIBLE);
-
-            pendingTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
-            confirmTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
-            historyTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
-
-            if (view.getId() == R.id.pending_layout) {
-                pendingTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
-                pendingDotImageView.setVisibility(View.VISIBLE);
-                listener.onTabbarItemClick(pendingTextView);
-            } else if (view.getId() == R.id.confirm_layout) {
-                confirmTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
-                confirmDotImageView.setVisibility(View.VISIBLE);
-                listener.onTabbarItemClick(confirmTextView);
-            } else if (view.getId() == R.id.history_layout) {
-                historyTextView.setTextColor(getResources().getColor(R.color.JGGOrange));
-                historyDotImageView.setVisibility(View.VISIBLE);
-                listener.onTabbarItemClick(historyTextView);
-            }
+            updateAppointmentTabbar(view);
+            listener.onTabbarItemClick(view);
         }
     }
 
     private OnTabbarItemClickListener listener;
 
     public interface OnTabbarItemClickListener {
-        void onTabbarItemClick(TextView item);
+        void onTabbarItemClick(View view);
     }
 
     public void setTabbarItemClickListener(OnTabbarItemClickListener listener) {

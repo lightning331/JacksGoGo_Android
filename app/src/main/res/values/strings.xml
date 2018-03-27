@@ -13,6 +13,9 @@
     <string name="title_favourite">Favourite</string>
     <string name="title_profile">Profile</string>
 
+    <!-- TODO: Quock Job -->
+    <string name="quick_job_title">Quick Jobs</string>
+
     <!-- TODO: Appointments -->
     <string name="pending">Pending</string>
     <string name="confirmed">Confirmed</string>
@@ -169,6 +172,7 @@
     <string name="btn_delete_proposal">Delete Proposal And Remove Bid</string>
     <string name="alert_delete_proposal_title">Delete Proposal And Remove Bide?</string>
     <string name="alert_delete_proposal_desc">This action cannot be undone.</string>
+    <string name="accepted_bide_title">Accepted Bid</string>
 
 
     <!-- TODO: Reject Bid -->

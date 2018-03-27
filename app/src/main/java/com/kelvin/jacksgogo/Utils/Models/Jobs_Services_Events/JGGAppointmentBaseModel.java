@@ -20,7 +20,7 @@ public class JGGAppointmentBaseModel {
     private String UserProfileID;
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private String PostOn;  // Originally date type
-    private int Status;
+    private Integer Status;
     private JGGRegionModel Region = new JGGRegionModel();
     private JGGCurrencyModel Currency = new JGGCurrencyModel();
     private JGGAddressModel Address = new JGGAddressModel();

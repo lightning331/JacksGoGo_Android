@@ -105,6 +105,12 @@ public class PostProposalActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.post_proposal_container, new PostedProposalFragment())
                     .commit();
+        } else if (status.equals("ACCEPTED")) {
+            actionbarView.setAcceptedBid();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                    .commit();
         }
     }
 

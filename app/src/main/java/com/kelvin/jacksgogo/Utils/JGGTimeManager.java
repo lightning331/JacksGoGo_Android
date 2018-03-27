@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Utils;
 import android.view.View;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.text.ParseException;
@@ -240,7 +241,7 @@ public class JGGTimeManager {
         return 0;
     }
 
-    public static String convertJobTimeString(JGGAppointmentModel job) {
+    public static String getAppointmentTime(JGGAppointmentModel job) {
         String time = "";
         if (job.getAppointmentType() == 1) {
             if (job.getSessions() != null
@@ -307,7 +308,7 @@ public class JGGTimeManager {
         return time;
     }
 
-    public static String convertJobBudgetString(JGGAppointmentModel jobModel) {
+    public static String getAppointmentBudgetWithString(JGGAppointmentModel jobModel) {
         String budget = "";
         if (jobModel.getBudget() == null && jobModel.getBudgetFrom() == null)
             budget =  "No limit";
@@ -320,7 +321,7 @@ public class JGGTimeManager {
         return budget;
     }
 
-    public static String convertBudgetOnly(JGGAppointmentModel app) {
+    public static String getAppointmentBudget(JGGAppointmentModel app) {
         String budget = "";
         if (app.getBudget() == null && app.getBudgetFrom() == null)
             budget =  "No limit";
@@ -331,6 +332,22 @@ public class JGGTimeManager {
                 budget = ("$ " + app.getBudgetFrom().toString()
                         + "-"
                         + "$ " + app.getBudgetTo().toString());
+            }
+        }
+        return budget;
+    }
+
+    public static String getProposalBudget(JGGProposalModel proposal) {
+        String budget = "";
+        if (proposal.getBudget() == null && proposal.getBudgetFrom() == null)
+            budget =  "No limit";
+        else {
+            if (proposal.getBudget() != null) {
+                budget = "$ " + proposal.getBudget().toString();
+            } else if (proposal.getBudgetFrom() != null && proposal.getBudgetTo() != null) {
+                budget = ("$ " + proposal.getBudgetFrom().toString()
+                        + "-"
+                        + "$ " + proposal.getBudgetTo().toString());
             }
         }
         return budget;

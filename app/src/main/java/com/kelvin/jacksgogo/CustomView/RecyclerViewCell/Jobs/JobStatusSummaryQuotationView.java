@@ -11,12 +11,10 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;

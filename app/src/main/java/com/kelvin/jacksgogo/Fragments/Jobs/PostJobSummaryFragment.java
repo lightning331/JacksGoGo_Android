@@ -42,8 +42,8 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobBudgetString;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class PostJobSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -174,11 +174,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             // Address
             lblAddress.setText(creatingJob.getAddress().getFullAddress());
             // Budget
-            lblBudget.setText(convertJobBudgetString(creatingJob));
+            lblBudget.setText(getAppointmentBudgetWithString(creatingJob));
             // Report
             lblReport.setText(reportTypeName(creatingJob.getReportType()));
             // Time
-            lblTime.setText(convertJobTimeString(creatingJob));
+            lblTime.setText(getAppointmentTime(creatingJob));
         } else {
             lblDescribeTitle.setText("No title");
             lblDescribeDesc.setText("");

@@ -22,9 +22,9 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertBudgetOnly;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getProposalBudget;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
 public class PostedProposalFragment extends Fragment {
@@ -107,7 +107,7 @@ public class PostedProposalFragment extends Fragment {
                 .placeholder(null)
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
-        lblTime.setText(convertJobTimeString(selectedAppointment));
+        lblTime.setText(getAppointmentTime(selectedAppointment));
 
         if (mProposal != null) {
             // Proposed User
@@ -131,7 +131,7 @@ public class PostedProposalFragment extends Fragment {
             // Budget Type
             //lblBudgetType.setText();
             // Budget
-            String budget = convertBudgetOnly(mProposal.getAppointment()) + "/month";
+            String budget = getProposalBudget(mProposal) + "/month";
             lblBudget.setText(budget);
             // Supplies
             String supplies = "Our own supplies - $ ";

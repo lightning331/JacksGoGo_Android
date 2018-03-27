@@ -86,9 +86,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         });
 
         mbtmView.setVisibility(View.GONE);
-        if (!selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
-            getProposalsByJob();
-        }
+        getProposalsByJob();
 
         // Top ActionbarView
         actionbarView = new JGGActionbarView(this);
@@ -119,16 +117,26 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
+
                         mProposals = response.body().getValue();
 
-                        if (mProposals.size() > 0) {
-                            selectedProposal = mProposals.get(0);
-                            btnMakeProposal.setText("View Proposals");
+                        if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+                            if (mProposals.size() > 0) {
+                                selectedProposal = mProposals.get(0);
+                                btnMakeProposal.setText("View Proposals");
+
+                                mbtmView.setVisibility(View.VISIBLE);
+                                BottomNavigationViewHelper.disableShiftMode(mbtmView);
+                                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+                                layoutParams.setBehavior(new BottomNavigationViewBehavior());
+                            }
+                        } else {
+                            mbtmView.setVisibility(View.VISIBLE);
+                            BottomNavigationViewHelper.disableShiftMode(mbtmView);
+                            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+                            layoutParams.setBehavior(new BottomNavigationViewBehavior());
                         }
-                        mbtmView.setVisibility(View.VISIBLE);
-                        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-                        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-                        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+
                     } else {
                         Toast.makeText(JobDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }

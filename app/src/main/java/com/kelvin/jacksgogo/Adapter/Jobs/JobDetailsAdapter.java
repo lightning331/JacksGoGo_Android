@@ -16,15 +16,13 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertJobTimeString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 
 /**
@@ -77,7 +75,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             jobTimeViewHolder.imgLocation.setImageResource(R.mipmap.icon_time);
             jobTimeViewHolder.address.setVisibility(View.VISIBLE);
             jobTimeViewHolder.address.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            jobTimeViewHolder.address.setText(convertJobTimeString(mJob));
+            jobTimeViewHolder.address.setText(getAppointmentTime(mJob));
             return jobTimeViewHolder;
         } else if (viewType == 3) {    // Job Description Cell
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);

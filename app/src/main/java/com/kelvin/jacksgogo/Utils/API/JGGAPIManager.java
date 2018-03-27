@@ -204,8 +204,8 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("api/Proposal/ApproveProposal")
-    Call<JGGBaseResponse> approveProposal(@Field("AppointmentID") String appointmentID,
-                                                 @Field("ProposalID") String proposalID,
-                                                 @Field("GrossAmt") Double grossAmt,
-                                                 @Field("CurrencyCode") String postalCode);
+    Call<JGGPostAppResponse> approveProposal(@Field("AppointmentID") String appointmentID,
+                                             @Field("ProposalID") String proposalID,
+                                             @Field("GrossAmt") Double grossAmt,
+                                             @Field("CurrencyCode") String postalCode);
 }
