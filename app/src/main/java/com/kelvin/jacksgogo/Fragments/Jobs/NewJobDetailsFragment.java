@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.NewJobDetailsAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 
 
@@ -62,7 +60,6 @@ public class NewJobDetailsFragment extends Fragment {
     public void onAttach(Context context) {
         mContext = context;
         super.onAttach(context);
-        //((JobStatusSummaryActivity) context).setStatus(JGGActionbarView.EditStatus.NONE);
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
@@ -37,6 +36,7 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
@@ -353,7 +353,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         selectedCategory = appointment.getCategory();
         selectedAppointment = appointment;
         if (appointment.isRequest()) {
-            Intent intent = new Intent(getActivity(), JobStatusSummaryActivity.class);
+            Intent intent = new Intent(getActivity(), ProgressJobSummaryActivity.class);
             startActivity(intent);
         } else if (!appointment.isRequest()) {
             Intent intent = new Intent(getActivity(), ServiceDetailActivity.class);

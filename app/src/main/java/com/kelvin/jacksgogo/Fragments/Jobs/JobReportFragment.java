@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
@@ -29,7 +29,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private JobStatusSummaryActivity mActivity;
+    private ProgressJobSummaryActivity mActivity;
 
     private RecyclerView startRecyclerView;
     private RecyclerView endRecyclerView;
@@ -139,7 +139,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mActivity = ((JobStatusSummaryActivity) mContext);
+        mActivity = ((ProgressJobSummaryActivity) mContext);
         if (getArguments() != null) {
             isVerified = getArguments().getBoolean("isVerified");
         }
@@ -170,7 +170,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
             mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
             mActivity.getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.app_detail_container, new JobStatusSummaryFragment())
+                    .replace(R.id.app_detail_container, new ProgressJobSummaryFragment())
                     .commit();
         }
     }

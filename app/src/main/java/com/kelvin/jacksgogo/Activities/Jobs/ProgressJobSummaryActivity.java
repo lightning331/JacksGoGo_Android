@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.JobStatusSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -38,7 +38,7 @@ import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
-public class JobStatusSummaryActivity extends AppCompatActivity implements TextWatcher {
+public class ProgressJobSummaryActivity extends AppCompatActivity implements TextWatcher {
 
     @BindView(R.id.app_detail_actionbar) Toolbar mToolbar;
     @BindView(R.id.img_detail) ImageView imgCategory;
@@ -48,7 +48,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     private EditText reason;
 
     public JGGActionbarView actionbarView;
-    private JobStatusSummaryFragment frag;
+    private ProgressJobSummaryFragment frag;
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
@@ -56,7 +56,7 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_status_summary);
+        setContentView(R.layout.activity_progress_job_summary);
 
         ButterKnife.bind(this);
 
@@ -170,10 +170,10 @@ public class JobStatusSummaryActivity extends AppCompatActivity implements TextW
 
     private void showJobStatusSummaryFragment() {
         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-        frag = new JobStatusSummaryFragment();
+        frag = new ProgressJobSummaryFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, frag, frag.getTag())
+                .replace(R.id.app_detail_container, frag)
                 .commit();
     }
 

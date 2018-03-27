@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
-import com.kelvin.jacksgogo.Activities.Jobs.JobStatusSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.ServiceProviderActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryFooterView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryPaymentView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryQuotationView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryReview;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryTipView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryWorkProgressView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
@@ -57,11 +55,11 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class JobStatusSummaryFragment extends Fragment implements View.OnClickListener {
+public class ProgressJobSummaryFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private JobStatusSummaryActivity mActivity;
+    private ProgressJobSummaryActivity mActivity;
 
     private TextView lblPostedTime;
     private TextView lblPostedJob;
@@ -95,12 +93,12 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     private String mReason;
     private boolean isDeleted;
 
-    public JobStatusSummaryFragment() {
+    public ProgressJobSummaryFragment() {
         // Required empty public constructor
     }
 
-    public static JobStatusSummaryFragment newInstance(String param1, String param2) {
-        JobStatusSummaryFragment fragment = new JobStatusSummaryFragment();
+    public static ProgressJobSummaryFragment newInstance(String param1, String param2) {
+        ProgressJobSummaryFragment fragment = new ProgressJobSummaryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -129,7 +127,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_job_status_summary, container, false);
+        view = inflater.inflate(R.layout.fragment_job_progress_summary, container, false);
 
         initView();
         return view;
@@ -364,7 +362,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        ((JobStatusSummaryActivity)mContext).deleteJobFinished();
+                        ((ProgressJobSummaryActivity)mContext).deleteJobFinished();
                         isDeleted = true;
                         onRefreshView();
                     } else {
@@ -421,7 +419,7 @@ public class JobStatusSummaryFragment extends Fragment implements View.OnClickLi
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mActivity = ((JobStatusSummaryActivity) mContext);
+        mActivity = ((ProgressJobSummaryActivity) mContext);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
