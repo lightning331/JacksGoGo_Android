@@ -141,7 +141,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@mipmap/button_right_green"/>
+                    android:background="@mipmap/button_next_green"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

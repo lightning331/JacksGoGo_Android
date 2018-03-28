@@ -43,7 +43,7 @@
             app:mcv_arrowColor="@color/JGGGreen"
             app:mcv_selectionColor="@color/JGGGreen"
             app:mcv_leftArrowMask="@mipmap/button_previous_green"
-            app:mcv_rightArrowMask="@mipmap/button_right_green"
+            app:mcv_rightArrowMask="@mipmap/button_next_green"
             app:mcv_showOtherDates="none|other_months|out_of_range|decorated_disabled"
             app:mcv_tileHeight="36dp"
             app:mcv_tileSize="match_parent"/>

@@ -23,6 +23,7 @@ public class JobStatusSummaryWorkProgressView extends RelativeLayout {
     public LinearLayout startWorkLine;
     public TextView lblStartTime;
     public TextView lblUserName;
+    public TextView lblStartedWork;
     public LinearLayout billableLayout;
 
     public JobStatusSummaryWorkProgressView(Context context) {
@@ -40,6 +41,7 @@ public class JobStatusSummaryWorkProgressView extends RelativeLayout {
         startWorkLine = view.findViewById(R.id.start_time_line);
         lblStartTime = view.findViewById(R.id.lbl_start_time);
         lblUserName = view.findViewById(R.id.lbl_confirmed_user_name);
+        lblStartedWork = view.findViewById(R.id.lbl_started_work);
         billableLayout = view.findViewById(R.id.billable_item_layout);
     }
 }

@@ -59,7 +59,7 @@
                     android:textSize="@dimen/list_title_font_size"/>
 
                 <ImageView
-                    android:src="@mipmap/button_right_green"
+                    android:src="@mipmap/button_next_green"
                     android:layout_width="25dp"
                     android:layout_height="25dp"/>
             </LinearLayout>

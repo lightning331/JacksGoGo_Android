@@ -27,7 +27,6 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 
@@ -44,7 +43,8 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
+import static com.kelvin.jacksgogo.Utils.Global.VIEW;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class JobDetailActivity extends AppCompatActivity implements View.OnClickListener {
@@ -76,17 +76,17 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JobDetailActivity.this, PostProposalActivity.class);
-                if (mProposals.size() > 0) {
-                    intent.putExtra(EDIT_STATUS, "VIEW");
+                if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+                    intent.putExtra(EDIT_STATUS, VIEW);
                 } else {
-                    intent.putExtra(EDIT_STATUS, POST);
+                    intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
                 }
                 startActivity(intent);
             }
         });
 
         mbtmView.setVisibility(View.GONE);
-        getProposalsByJob();
+        getProposedStatus();
 
         // Top ActionbarView
         actionbarView = new JGGActionbarView(this);
@@ -107,7 +107,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         mRecyclerView.setAdapter(adapter);
     }
 
-    private void getProposalsByJob() {
+    private void getProposedStatus() {
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
@@ -125,16 +125,10 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                                 selectedProposal = mProposals.get(0);
                                 btnMakeProposal.setText("View Proposals");
 
-                                mbtmView.setVisibility(View.VISIBLE);
-                                BottomNavigationViewHelper.disableShiftMode(mbtmView);
-                                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-                                layoutParams.setBehavior(new BottomNavigationViewBehavior());
+                                onShowBottomView();
                             }
                         } else {
-                            mbtmView.setVisibility(View.VISIBLE);
-                            BottomNavigationViewHelper.disableShiftMode(mbtmView);
-                            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-                            layoutParams.setBehavior(new BottomNavigationViewBehavior());
+                            onShowBottomView();
                         }
 
                     } else {
@@ -152,6 +146,13 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void onShowBottomView() {
+        mbtmView.setVisibility(View.VISIBLE);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     private void actionbarViewItemClick(View view) {

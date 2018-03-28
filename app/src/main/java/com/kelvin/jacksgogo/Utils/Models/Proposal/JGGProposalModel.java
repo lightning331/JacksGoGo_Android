@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils.Models.Proposal;
 
+import com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
@@ -33,7 +34,10 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
     private Boolean IsInvited;
     private String SubmitOn;
     private String ExpireOn;
+    private Integer Status;
     private boolean IsViewed;
+    private boolean IsDeleted;
+    private String Note;
 
     // Dumy field
     private int MessageCount;
@@ -178,12 +182,36 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
         ExpireOn = appointmentMonthDateString(expireOn);
     }
 
+    public JGGProposalStatus getStatus() {
+        return JGGProposalStatus.valueOf(Status);
+    }
+
+    public void setStatus(JGGProposalStatus status) {
+        Status = status.getValue();
+    }
+
     public boolean isViewed() {
         return IsViewed;
     }
 
     public void setViewed(boolean viewed) {
         IsViewed = viewed;
+    }
+
+    public boolean isDeleted() {
+        return IsDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        IsDeleted = deleted;
+    }
+
+    public String getNote() {
+        return Note;
+    }
+
+    public void setNote(String note) {
+        Note = note;
     }
 
     public static Integer getSeconds(String days, String hours, String min) {

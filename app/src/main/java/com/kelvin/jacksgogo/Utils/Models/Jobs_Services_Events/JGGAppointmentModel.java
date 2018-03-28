@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 import android.media.Image;
 
 import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
+import com.kelvin.jacksgogo.Utils.Global.JGGJobStatus;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -29,6 +30,7 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
     private Integer AppointmentType;
     private Integer RepetitionType;
     private Integer BudgetType;
+    private Integer Status;
     private int ReportType = 0;
     private int ViewCount = 0;
     private JGGCategoryModel Category = new JGGCategoryModel();
@@ -138,6 +140,14 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
 
     public void setExpiredOn(String expiredOn) {
         ExpiredOn = expiredOn;
+    }
+
+    public JGGJobStatus getStatus() {
+        return JGGJobStatus.valueOf(Status);
+    }
+
+    public void setStatus(JGGJobStatus status) {
+        Status = status.getValue();
     }
 
     public int getReportType() {

@@ -170,9 +170,14 @@
     <string name="alert_view_proposal">View Proposal</string>
     <string name="alert_proposal_posted_title">Proposal Sent!</string>
     <string name="btn_delete_proposal">Delete Proposal And Remove Bid</string>
-    <string name="alert_delete_proposal_title">Delete Proposal And Remove Bide?</string>
+    <string name="alert_delete_proposal_title">Delete Proposal And Remove Bid?</string>
     <string name="alert_delete_proposal_desc">This action cannot be undone.</string>
-    <string name="accepted_bide_title">Accepted Bid</string>
+    <string name="accepted_bid_title">Accepted Bid</string>
+    <string name="my_proposal_title">Your Proposal</string>
+    <string name="invited_proposal_title">You were invited to send a proposal to this job.</string>
+    <string name="sent_proposal_title">You sent in a proposal to this job.</string>
+    <string name="waiting_client_decision">Waiting for client\'s decision....</string>
+    <string name="proposal_accepted_title">Congratulations! Your proposal was accepted.</string>
 
 
     <!-- TODO: Reject Bid -->

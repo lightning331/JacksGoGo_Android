@@ -36,6 +36,7 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
     public TextView btnViewQuotation;
     public LinearLayout viewQuotationLayout;
     public LinearLayout awardedLayout;
+    public ImageView imgRightButton;
 
     public JobStatusSummaryQuotationView(Context context) {
         super(context);
@@ -56,13 +57,14 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
         lblQuotationCount = view.findViewById(R.id.lbl_quotation_count);
         viewQuotationLayout = view.findViewById(R.id.view_quotation_layout);
         awardedLayout = view.findViewById(R.id.awarded_layout);
+        imgRightButton = view.findViewById(R.id.img_right);
 
         btnViewQuotation.setOnClickListener(this);
     }
 
-    public void notifyDataChanged(boolean isDeleted, ArrayList<JGGProposalModel> proposals) {
+    public void notifyDataChanged(boolean isDeleted, int count) {
         Date postOn = appointmentMonthDate(selectedAppointment.getPostOn());
-        String proposalCount = "You have received " + proposals.size() + " new quotation!";
+        String proposalCount = "You have received " + count + " new quotation!";
         if (isDeleted) {
             quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
             imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
@@ -76,10 +78,10 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
             quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             imgQuotation.setImageResource(R.mipmap.icon_provider_green);
 
-            if (proposals.size() == 0) {       // Invite Service Provider
+            if (count == 0) {       // Invite Service Provider
                 lblTitle.setText(R.string.waiting_service_provider);
                 btnViewQuotation.setText(R.string.invite_service_provider);
-            } else if (proposals.size() > 0) {      // View Quotation
+            } else if (count > 0) {      // View Quotation
                 lblTitle.setText(proposalCount);
                 btnViewQuotation.setText(R.string.view_quotation);
             }

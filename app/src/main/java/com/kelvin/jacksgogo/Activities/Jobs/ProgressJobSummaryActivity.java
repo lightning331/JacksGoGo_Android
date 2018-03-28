@@ -3,7 +3,6 @@ package com.kelvin.jacksgogo.Activities.Jobs;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,26 +15,43 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.ProgressProposalFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.APPOINTMENT;
+import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_DETAILS;
+import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_REPORT;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class ProgressJobSummaryActivity extends AppCompatActivity implements TextWatcher {
@@ -48,10 +64,12 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     private EditText reason;
 
     public JGGActionbarView actionbarView;
-    private ProgressJobSummaryFragment frag;
+    private ProgressJobFragment frag;
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
+    private JGGProposalModel mProposal = new JGGProposalModel();
+    private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +78,25 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
 
         ButterKnife.bind(this);
 
-        actionbarView = new JGGActionbarView(this);
         /* ---------    Custom view add to TopToolbar     --------- */
+        actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
         mJob = selectedAppointment;
-        if (mJob != null)
-            setCategory();
-        showJobStatusSummaryFragment();
+        setCategory();
+        if (mJob.getUserProfileID().equals(currentUser.getID())) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
+            getProposalsByJob();
+        } else {
+            actionbarView.setDeleteJobStatus();
+            if (mJob.getProposal() == null)
+                getProposedStatus();
+            else {
+                mProposal = mJob.getProposal();
+                onProgressProposalFragment();
+            }
+        }
 
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
@@ -100,7 +128,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                     onShowEditPopUpMenu(view);
                     break;
                 case EDIT_MAIN:
-                    showJobStatusSummaryFragment();
+                    //showJobStatusSummaryFragment();
                     break;
                 case EDIT_DETAIL:
                     //backToEditJobMainFragment();
@@ -109,39 +137,101 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                     break;
             }
         } else if (view.getId() == R.id.btn_back) {
-            /* ---------    Back button pressed     --------- */
-            FragmentManager manager = getSupportFragmentManager();
-            int backStackCount = manager.getBackStackEntryCount();
-            switch (actionbarView.getEditStatus()) {
-                case NONE:
-                    if (backStackCount == 0) {
-                        onBackPressed();
-                    } else {
+            if (actionbarView.getEditStatus() == null) {
+                onBackPressed();
+            } else {
+                if (actionbarView.getEditStatus() == JOB_DETAILS
+                        || actionbarView.getEditStatus() == JOB_REPORT) {
+                    if (mJob.getUserProfileID().equals(currentUser.getID()))
                         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                        manager.popBackStack();
-                    }
-                    break;
-                case JOB_REPORT:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                    manager.popBackStack();
-                    break;
-                case JOB_DETAILS:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                    manager.popBackStack();
-                    break;
-                case APPOINTMENT:
+                    else
+                        actionbarView.setDeleteJobStatus();
+                    onBackPressed();
+                } else if (actionbarView.getEditStatus() == APPOINTMENT)
                     finish();
-                    break;
-                case EDIT_MAIN:
-                    showJobStatusSummaryFragment();
-                    break;
-                case EDIT_DETAIL:
-                    //backToEditJobMainFragment();
-                    break;
-                default:
-                    break;
             }
         }
+    }
+
+    private void getProposalsByJob() {
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 40);
+        call.enqueue(new Callback<JGGProposalResponse>() {
+            @Override
+            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mProposals = response.body().getValue();
+                        for (JGGProposalModel p : mProposals) {
+                            if (p.getStatus() == confirmed)
+                                selectedProposal = p;
+                        }
+                        onProgressJobFragment();
+                    } else {
+                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getProposedStatus() {
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
+        call.enqueue(new Callback<JGGProposalResponse>() {
+            @Override
+            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mProposals = response.body().getValue();
+                        mProposal = mProposals.get(0);
+                        onProgressProposalFragment();
+                    } else {
+                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onProgressJobFragment() {
+        frag = new ProgressJobFragment();
+        frag.setProposals(mProposals);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.app_detail_container, frag)
+                .commit();
+    }
+
+    private void onProgressProposalFragment() {
+        ProgressProposalFragment frag = new ProgressProposalFragment();
+        frag.setProposal(mProposal);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.app_detail_container, frag)
+                .commit();
     }
 
     private void onShowEditPopUpMenu(View view) {
@@ -166,15 +256,6 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
             return;
         }
         popupMenu.show();
-    }
-
-    private void showJobStatusSummaryFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-        frag = new ProgressJobSummaryFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_detail_container, frag)
-                .commit();
     }
 
     private void backToEditJobMainFragment() {

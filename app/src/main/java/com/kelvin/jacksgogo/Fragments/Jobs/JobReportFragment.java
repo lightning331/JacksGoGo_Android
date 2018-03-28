@@ -170,7 +170,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
             mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
             mActivity.getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.app_detail_container, new ProgressJobSummaryFragment())
+                    .replace(R.id.app_detail_container, new ProgressJobFragment())
                     .commit();
         }
     }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
@@ -17,8 +18,11 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCe
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
@@ -33,10 +37,12 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Context mContext;
     private JGGAppointmentModel mJob;
+    private JGGProposalModel mProposal;
 
     public NewJobDetailsAdapter(Context context) {
         this.mContext = context;
         mJob = selectedAppointment;
+        mProposal = selectedProposal;
     }
 
     @Override
@@ -147,12 +153,13 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 originalViewHolder.inviteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                    /*Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    intent.putExtra("is_service", false);
-                    mContext.startActivity(intent);*/
-
-                    Intent intent = new Intent(mContext, PostedJobActivity.class);
-                    mContext.startActivity(intent);
+                        if (mJob.getUserProfileID().equals(currentUser.getID())) {
+                            Intent intent = new Intent(mContext, PostedJobActivity.class);
+                            mContext.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(mContext, JobDetailActivity.class);
+                            mContext.startActivity(intent);
+                        }
                     }
                 });
                 break;

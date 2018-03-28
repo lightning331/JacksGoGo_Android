@@ -46,6 +46,7 @@ public class PostedProposalFragment extends Fragment {
     private TextView lblCancellation;
     private TextView lblReferenceNo;
     private TextView lblPostedTime;
+    private TextView btnDeleteProposal;
 
     private PostProposalActivity mActivity;
 
@@ -98,6 +99,14 @@ public class PostedProposalFragment extends Fragment {
         lblCancellation = view.findViewById(R.id.lbl_cancellation);
         lblReferenceNo = view.findViewById(R.id.lbl_reference_no);
         lblPostedTime = view.findViewById(R.id.lbl_reference_posted_date);
+        btnDeleteProposal = view.findViewById(R.id.btn_delete_proposal);
+
+        btnDeleteProposal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setData() {

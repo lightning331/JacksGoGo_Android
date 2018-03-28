@@ -49,13 +49,13 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
+import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class ProgressJobSummaryFragment extends Fragment implements View.OnClickListener {
+public class ProgressJobFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -64,7 +64,7 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
     private TextView lblPostedTime;
     private TextView lblPostedJob;
     private LinearLayout btnPostedJob;
-    private LinearLayout mBottomLayout;
+    private LinearLayout providerDetailLayout;
     private RoundedImageView imgProvider;
     private TextView lblProviderName;
     private LinearLayout btnViewProposal;
@@ -88,20 +88,27 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
     private ProgressDialog progressDialog;
     private View view;
 
+    private JGGProposalModel mProposal;
     private JGGAppointmentModel mJob;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private String mReason;
     private boolean isDeleted;
 
-    public ProgressJobSummaryFragment() {
+    public ProgressJobFragment() {
         // Required empty public constructor
     }
 
-    public static ProgressJobSummaryFragment newInstance(String param1, String param2) {
-        ProgressJobSummaryFragment fragment = new ProgressJobSummaryFragment();
+    public static ProgressJobFragment newInstance(String param1, String param2) {
+        ProgressJobFragment fragment = new ProgressJobFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setProposals(ArrayList<JGGProposalModel> proposals) {
+        mProposals = proposals;
+        mProposal = selectedProposal;
+        mJob = selectedAppointment;
     }
 
     @Override
@@ -118,16 +125,14 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
         if (!getUserVisibleHint()) {
             return;
         }
-        mJob = selectedAppointment;
-        if (mJob.getStatus() == confirmed)
-            getProposalsByJob();
+        getProposalsByJob();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_job_progress_summary, container, false);
+        view = inflater.inflate(R.layout.fragment_progress_job, container, false);
 
         initView();
         return view;
@@ -137,7 +142,7 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
         lblPostedTime = view.findViewById(R.id.lbl_posted_time);
         lblPostedJob = view.findViewById(R.id.lbl_next_step_title);
         btnPostedJob = view.findViewById(R.id.btn_posted_job);
-        mBottomLayout = view.findViewById(R.id.posted_service_chat_layout);
+        providerDetailLayout = view.findViewById(R.id.posted_service_chat_layout);
         imgProvider = view.findViewById(R.id.img_avatar);
         lblProviderName = view.findViewById(R.id.lbl_provider_name);
         btnViewProposal = view.findViewById(R.id.btn_view_proposal);
@@ -249,7 +254,7 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
             progressView.lblStartTime.setText(postedTime);
             progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork);
             progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
-            progressView.lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
+            progressView.lblUserName.setText(mProposal.getUserProfile().getUser().getFullName());
 
             // Confirmed Layout
             confirmedLayout.addView(confirmedView);
@@ -257,13 +262,28 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
             confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
             //confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             //confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment);
+            /*
+             *  Provider detail bottom view
+             */
             Picasso.with(mContext)
-                    .load(mJob.getUserProfile().getUser().getPhotoURL())
+                    .load(mProposal.getUserProfile().getUser().getPhotoURL())
                     .placeholder(R.mipmap.icon_profile)
                     .into(imgProvider);
-            lblProviderName.setText(mJob.getUserProfile().getUser().getFullName());
-            mBottomLayout.setVisibility(View.VISIBLE);
-        }
+            lblProviderName.setText(mProposal.getUserProfile().getUser().getFullName());
+            providerDetailLayout.setVisibility(View.VISIBLE);
+            /*
+             *  Quotation View
+             */
+            quotationView.lblTime.setText(postedTime);
+            quotationView.viewQuotationLayout.setVisibility(View.GONE);
+            quotationView.awardedLayout.setVisibility(View.VISIBLE);
+            quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+            quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+            String award = "You have awarded " + mProposal.getUserProfile().getUser().getFullName() + " to the job.";
+            quotationView.lblQuotationCount.setText(award);
+            quotationView.lblQuotationCount.setOnClickListener(this);
+        } else
+            quotationView.notifyDataChanged(isDeleted, mProposals.size());
         if (isDeleted) {
             /*
              *  Cancelled View
@@ -282,20 +302,6 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
                 lblPostedJob.setText(R.string.outgoing_job);
         }
 
-        /*
-         *  Quotation View
-         */
-        if (mJob.getStatus() == confirmed) {
-            quotationView.lblTime.setText(postedTime);
-            quotationView.viewQuotationLayout.setVisibility(View.GONE);
-            quotationView.awardedLayout.setVisibility(View.VISIBLE);
-            quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
-            quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
-            String award = "You have awarded " + mJob.getUserProfile().getUser().getFullName() + " to the job.";
-            quotationView.lblQuotationCount.setText(award);
-            quotationView.lblQuotationCount.setOnClickListener(this);
-        } else
-            quotationView.notifyDataChanged(isDeleted, mProposals);
         quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
@@ -327,10 +333,6 @@ public class ProgressJobSummaryFragment extends Fragment implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
-                        for (JGGProposalModel p : mProposals) {
-                            if (p.getStatus() == confirmed)
-                                selectedProposal = p;
-                        }
                         onRefreshView();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();

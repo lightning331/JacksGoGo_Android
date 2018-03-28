@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
@@ -163,6 +164,8 @@ public class PostProposalMainTabFragment extends Fragment {
                         fragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.POST);
                     else if (postStatus.equals(EDIT))
                         fragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.EDIT);
+                    else if (postStatus.equals(INVITE_PROPOSAL))
+                        fragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.INVITE);
 
                     mActivity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.post_proposal_container, fragment)

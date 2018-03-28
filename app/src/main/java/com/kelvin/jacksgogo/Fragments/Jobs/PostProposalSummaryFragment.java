@@ -68,7 +68,8 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private PostProposalActivity mActivity;
     public enum ProposalStatus {
         POST,
-        EDIT
+        EDIT,
+        INVITE
     }
 
     public void setEditStatus(ProposalStatus status) {
@@ -212,6 +213,37 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         });
     }
 
+    public void onEditProposal() {
+        //showPostProposalAlertDialog();
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = manager.editProposal(selectedProposal);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        postedProposalID = response.body().getValue();
+                        selectedProposal.setID(postedProposalID);
+                        showPostProposalAlertDialog();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     private void onDeleteProposal() {
         progressDialog = createProgressDialog(mContext);
 
@@ -317,7 +349,10 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_proposal) {
             //showPostProposalAlertDialog();
-            onPostProposal();
+            if (proposalStatus == ProposalStatus.POST)
+                onPostProposal();
+            else if (proposalStatus == ProposalStatus.INVITE)
+                onEditProposal();
             return;
         } else if (view.getId() == R.id.btn_delete_proposal) {
             showDeleteAlertDialog();

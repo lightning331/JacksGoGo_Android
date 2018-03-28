@@ -30,10 +30,14 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.Global.ACCEPTED;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
+import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.NONE;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.VIEW;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class PostProposalActivity extends AppCompatActivity {
@@ -91,6 +95,12 @@ public class PostProposalActivity extends AppCompatActivity {
                     .replace(R.id.post_proposal_container, PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE,
                             PostProposalSummaryFragment.ProposalStatus.POST))
                     .commit();
+        } else if (status.equals(INVITE_PROPOSAL)) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.post_proposal_container, PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE,
+                            PostProposalSummaryFragment.ProposalStatus.INVITE))
+                    .commit();
         } else if (status.equals(EDIT)) {
             proposalSummaryFragment = new PostProposalSummaryFragment();
             proposalSummaryFragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.EDIT);
@@ -98,45 +108,24 @@ public class PostProposalActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.post_proposal_container, proposalSummaryFragment)
                     .commit();
-        } else if (status.equals("VIEW")){
+        } else if (status.equals(VIEW)){
             isEdit = true;
             actionbarView.setEditProposalMenu(true);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_proposal_container, new PostedProposalFragment())
-                    .commit();
-        } else if (status.equals("ACCEPTED")) {
-            actionbarView.setAcceptedBid();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.post_proposal_container, new PostedProposalFragment())
-                    .commit();
+            onShowPostedProposalFragment();
+        } else if (status.equals(ACCEPTED)) {
+            actionbarView.setAcceptedBid(R.string.accepted_bid_title);
+            onShowPostedProposalFragment();
+        } else if (status.equals(MY_PROPOSAL)) {
+            actionbarView.setAcceptedBid(R.string.my_proposal_title);
+            onShowPostedProposalFragment();
         }
     }
 
-    private void actionbarViewItemClick(View view) {
-        if (view.getId() == R.id.btn_back) {
-            FragmentManager manager = getSupportFragmentManager();
-            if (manager.getBackStackEntryCount() == 0) {
-                showAlertDialog();
-            } else {
-                actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, AppointmentType.UNKNOWN);
-                actionbarView.mMoreButton.setVisibility(View.GONE);
-                manager.popBackStack();
-            }
-        } else if (view.getId() == R.id.btn_more) {
-            if (isEdit) {
-                proposalSummaryFragment = new PostProposalSummaryFragment();
-                proposalSummaryFragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.EDIT);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.post_proposal_container, proposalSummaryFragment)
-                        .commit();
-            } else {
-                onEditProposal();
-                //proposalSummaryFragment.showPostProposalAlertDialog();
-            }
-        }
+    private void onShowPostedProposalFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                .commit();
     }
 
     public void onEditProposal() {
@@ -168,6 +157,37 @@ public class PostProposalActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+    }
+
+    private void actionbarViewItemClick(View view) {
+        if (view.getId() == R.id.btn_back) {
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager.getBackStackEntryCount() == 0) {
+                if (status.equals(POST)
+                        || status.equals(EDIT)
+                        || status.equals(INVITE_PROPOSAL)) {
+                    showAlertDialog();
+                } else {
+                    manager.popBackStack();
+                }
+            } else {
+                actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, AppointmentType.UNKNOWN);
+                actionbarView.mMoreButton.setVisibility(View.GONE);
+                manager.popBackStack();
+            }
+        } else if (view.getId() == R.id.btn_more) {
+            if (isEdit) {
+                proposalSummaryFragment = new PostProposalSummaryFragment();
+                proposalSummaryFragment.setEditStatus(PostProposalSummaryFragment.ProposalStatus.EDIT);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.post_proposal_container, proposalSummaryFragment)
+                        .commit();
+            } else {
+                onEditProposal();
+                //proposalSummaryFragment.showPostProposalAlertDialog();
+            }
+        }
     }
 
     public void showPostProposalAlertDialog() {

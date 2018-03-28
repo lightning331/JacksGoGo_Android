@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:text="Waiting for service provider to respond"
+                android:text="@string/waiting_service_provider"
                 android:id="@+id/lbl_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
                 android:gravity="center_vertical">
                 <TextView
                     android:id="@+id/lbl_quotation_count"
@@ -91,7 +90,8 @@
                     android:fontFamily="@font/muliregular"
                     android:textSize="@dimen/list_title_font_size"/>
                 <ImageView
-                    android:src="@mipmap/button_right_green"
+                    android:id="@+id/img_right"
+                    android:src="@mipmap/button_next_green"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

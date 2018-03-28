@@ -31,7 +31,11 @@ public class Global {
     public static final String SIGNUP_FINISHED = "SIGNUP_FINISHED";
     public static final String EDIT_STATUS = "EDIT_STATUS";
     public static final String POST = "POST";
+    public static final String INVITE_PROPOSAL = "INVITE";
     public static final String EDIT = "EDIT";
+    public static final String ACCEPTED = "ACCEPTED";
+    public static final String MY_PROPOSAL = "MY_PROPOSAL";
+    public static final String VIEW = "VIEW";
     public static final String DUPLICATE = "DUPLICATE";
     public static final String NONE = "NONE";
 
@@ -46,6 +50,37 @@ public class Global {
         GOCLUB,
         USERS,
         UNKNOWN
+    }
+
+    public static enum JGGJobStatus {
+
+        open(0),        // Posted
+        closed(1),    // Client rejected provider's proposal
+        confirmed(2),   // Client accepted provider's proposal
+        finished(3),   //
+        flaged(4),    // Provider declined Client's invite
+        deleted(4);    // Provider declined Client's invite
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        JGGJobStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (JGGJobStatus status : JGGJobStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static JGGJobStatus valueOf(Integer status) {
+            return (JGGJobStatus) map.get(status);
+        }
+
+        public Integer getValue() {
+            return value;
+        }
     }
 
     public static enum JGGProposalStatus {

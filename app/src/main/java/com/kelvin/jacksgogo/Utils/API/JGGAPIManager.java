@@ -169,6 +169,9 @@ public interface JGGAPIManager {
     @GET("api/Proposal/DeleteProposal")
     Call<JGGBaseResponse> deleteProposal(@Query("ProposalID") String proposalID);
 
+    @GET("api/Proposal/RejectInvite")
+    Call<JGGBaseResponse> rejectInvite(@Query("ProposalID") String proposalID);
+
     @GET("api/Proposal/GetProposalsByJob")
     Call<JGGProposalResponse> getProposalsByJob(@Query("JobID") String jobID,
                                                 @Query("PageIndex") Integer pageIndex,

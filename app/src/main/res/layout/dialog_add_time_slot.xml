@@ -317,7 +317,7 @@
                 android:id="@+id/btn_add_time_pax_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/button_right_green"/>
+                android:src="@mipmap/button_next_green"/>
 
         </LinearLayout>
     </LinearLayout>

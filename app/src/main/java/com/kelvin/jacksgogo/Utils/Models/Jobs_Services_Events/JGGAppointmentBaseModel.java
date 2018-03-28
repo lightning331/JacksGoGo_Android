@@ -20,7 +20,6 @@ public class JGGAppointmentBaseModel {
     private String UserProfileID;
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private String PostOn;  // Originally date type
-    private Integer Status;
     private JGGRegionModel Region = new JGGRegionModel();
     private JGGCurrencyModel Currency = new JGGCurrencyModel();
     private JGGAddressModel Address = new JGGAddressModel();
@@ -108,14 +107,6 @@ public class JGGAppointmentBaseModel {
 
     public void setPostOn(String postOn) {
         PostOn = postOn;
-    }
-
-    public JGGProposalStatus getStatus() {
-        return JGGProposalStatus.valueOf(Status);
-    }
-
-    public void setStatus(JGGProposalStatus status) {
-        Status = status.getValue();
     }
 
     public JGGAddressModel getAddress() {

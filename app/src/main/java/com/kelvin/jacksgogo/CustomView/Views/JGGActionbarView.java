@@ -342,9 +342,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         }
     }
 
-    public void setAcceptedBid() {
+    public void setAcceptedBid(int title) {
         mMoreButton.setVisibility(INVISIBLE);
-        setOrangeBackButton(R.string.accepted_bide_title, "");
+        setOrangeBackButton(title, "");
     }
 
     private void setInviteButton(int title) {

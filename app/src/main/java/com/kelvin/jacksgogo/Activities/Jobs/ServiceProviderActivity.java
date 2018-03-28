@@ -115,10 +115,12 @@ public class ServiceProviderActivity extends AppCompatActivity {
                         ArrayList<JGGProposalModel> rejectedProposal = new ArrayList<>();
 
                         for (JGGProposalModel p: response.body().getValue()) {
-                            if (p.getStatus() == Global.JGGProposalStatus.open)
-                                openProposal.add(p);
-                            else if (p.isInvited())
-                                invitedProposal.add(p);
+                            if (p.getStatus() == Global.JGGProposalStatus.open) {
+                                if (p.isInvited())
+                                    invitedProposal.add(p);
+                                else
+                                    openProposal.add(p);
+                            }
                             else if (p.getStatus() == declined)
                                 declinedProposal.add(p);
                             else if (p.getStatus() == rejected)

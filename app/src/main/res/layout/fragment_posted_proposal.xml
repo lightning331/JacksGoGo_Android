@@ -9,6 +9,62 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/JGGGrey5">
+        <LinearLayout
+            android:id="@+id/category_layout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/JGGWhite"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="12"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/img_category"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="right"
+                    android:src="@mipmap/icon_cat_householdchores"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="88"
+                android:gravity="center"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lbl_category_name"
+                        android:text="Gardening"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/mulibold"
+                        android:textSize="@dimen/caption_font_size"/>
+                    <TextView
+                        android:id="@+id/lbl_date"
+                        android:text="21 Jul, 2017 10:00-12:00PM"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/caption_font_size"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/JGGGrey4">
+        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -19,62 +75,6 @@
                 android:layout_height="match_parent"
                 android:background="@color/JGGGrey5"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/category_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:background="@color/JGGWhite"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="12"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:id="@+id/img_category"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginRight="8dp"
-                            android:layout_gravity="right"
-                            android:src="@mipmap/icon_cat_householdchores"/>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="88"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/lbl_category_name"
-                                android:text="Gardening"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/JGGBlack"
-                                android:fontFamily="@font/mulibold"
-                                android:textSize="@dimen/caption_font_size"/>
-                            <TextView
-                                android:id="@+id/lbl_date"
-                                android:text="21 Jul, 2017 10:00-12:00PM"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@color/JGGBlack"
-                                android:fontFamily="@font/muliregular"
-                                android:textSize="@dimen/caption_font_size"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/JGGGrey4">
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="14dp"
@@ -394,12 +394,21 @@
                         android:textSize="12dp"/>
 
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                </LinearLayout>
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/btn_delete_proposal"
+                    android:text="@string/btn_delete_proposal"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/list_title_font_size"
+                    android:textColor="@color/JGGCyan"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
