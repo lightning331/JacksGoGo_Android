@@ -149,16 +149,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Appointment.AppMapViewActivity"
-            android:screenOrientation="portrait"  />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.BusinessProfileActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.PublickProfileActivity"
-            android:screenOrientation="portrait"  />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.EditProfileActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Jobs.JobReportActivity"></activity>
     </application>
 
 </manifest>

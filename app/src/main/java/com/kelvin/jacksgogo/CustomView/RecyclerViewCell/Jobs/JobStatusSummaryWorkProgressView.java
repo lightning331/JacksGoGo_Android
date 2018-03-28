@@ -1,7 +1,7 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs;
 
 import android.content.Context;
-import android.media.Image;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 
 /**
  * Created by PUMA on 12/12/2017.
@@ -18,17 +19,24 @@ import com.kelvin.jacksgogo.R;
 public class JobStatusSummaryWorkProgressView extends RelativeLayout {
 
     private Context mContext;
+    private int mColor;
 
     public ImageView imgStartWork;
     public LinearLayout startWorkLine;
     public TextView lblStartTime;
     public TextView lblUserName;
     public TextView lblStartedWork;
+    public TextView btnStart;
     public LinearLayout billableLayout;
 
-    public JobStatusSummaryWorkProgressView(Context context) {
+    public JobStatusSummaryWorkProgressView(Context context, JGGUserType userType) {
         super(context);
         this.mContext = context;
+
+        if (userType == JGGUserType.CLIENT)
+            mColor = ContextCompat.getColor(getContext(), R.color.JGGGreen);
+        else if (userType == JGGUserType.PROVIDER)
+            mColor = ContextCompat.getColor(getContext(), R.color.JGGCyan);
 
         initView();
     }
@@ -42,6 +50,7 @@ public class JobStatusSummaryWorkProgressView extends RelativeLayout {
         lblStartTime = view.findViewById(R.id.lbl_start_time);
         lblUserName = view.findViewById(R.id.lbl_confirmed_user_name);
         lblStartedWork = view.findViewById(R.id.lbl_started_work);
+        btnStart = view.findViewById(R.id.btn_start);
         billableLayout = view.findViewById(R.id.billable_item_layout);
     }
 }

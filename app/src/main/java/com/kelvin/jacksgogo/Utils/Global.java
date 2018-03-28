@@ -2,9 +2,13 @@ package com.kelvin.jacksgogo.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.view.WindowManager;
 
+import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class Global {
     public static final String EVENTS = "EVENTS";
     public static final String GOCLUB = "GOCLUB";
     public static final String USERS = "USERS";
+
     public static final String SIGNUP_FINISHED = "SIGNUP_FINISHED";
     public static final String EDIT_STATUS = "EDIT_STATUS";
     public static final String POST = "POST";
@@ -38,6 +43,7 @@ public class Global {
     public static final String VIEW = "VIEW";
     public static final String DUPLICATE = "DUPLICATE";
     public static final String NONE = "NONE";
+    public static final String JGG_USERTYPE = "JGG_USERTYPE";
 
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;
@@ -52,14 +58,20 @@ public class Global {
         UNKNOWN
     }
 
+    public static enum JGGUserType {
+        PROVIDER,
+        CLIENT
+    }
+
     public static enum JGGJobStatus {
 
         open(0),        // Posted
-        closed(1),    // Client rejected provider's proposal
+        closed(1),      // Client rejected provider's proposal
         confirmed(2),   // Client accepted provider's proposal
-        finished(3),   //
-        flaged(4),    // Provider declined Client's invite
-        deleted(4);    // Provider declined Client's invite
+        started(3),     // Provider started the work
+        finished(4),    //
+        flaged(5),      // Provider declined Client's invite
+        deleted(6);     // Provider declined Client's invite
 
         private Integer value;
         private static Map map = new HashMap<>();
@@ -264,6 +276,13 @@ public class Global {
             default:
                 return array;
         }
+    }
+
+    public static SpannableString setBoldText(String s) {
+        Typeface muliBold = Typeface.create("mulibold", Typeface.BOLD);
+        SpannableString spannableString = new SpannableString(s);
+        spannableString.setSpan(new CustomTypefaceSpan("", muliBold), 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 
     public static ProgressDialog createProgressDialog(Context mContext) {

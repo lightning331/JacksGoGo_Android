@@ -102,7 +102,6 @@
                         android:id="@+id/btn_posted_job"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="32dp"
                         android:gravity="center_vertical">
                         <TextView

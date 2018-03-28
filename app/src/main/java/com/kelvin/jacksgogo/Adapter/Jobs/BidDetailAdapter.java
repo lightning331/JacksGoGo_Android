@@ -88,7 +88,7 @@ public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View referenceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_reference_no, parent, false);
             JobDetailReferenceNoCell cancellationCell = new JobDetailReferenceNoCell(referenceView);
             cancellationCell.lblReferenceNo.setText("Proposal reference no: " + mProposal.getID());
-            cancellationCell.lblPostedDate.setText("Posted on " + getDayMonthYear(appointmentMonthDate(mProposal.getPostOn())));
+            cancellationCell.lblPostedDate.setText("Posted on " + getDayMonthYear(mProposal.getSubmitOn()));
             return cancellationCell;
         }
         return null;

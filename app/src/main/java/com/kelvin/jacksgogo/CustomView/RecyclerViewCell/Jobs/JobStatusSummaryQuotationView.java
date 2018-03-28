@@ -10,9 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
@@ -27,6 +26,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 public class JobStatusSummaryQuotationView extends RelativeLayout implements View.OnClickListener {
 
     private Context mContext;
+    private int mImage;
 
     public TextView lblTitle;
     public ImageView imgQuotation;
@@ -38,9 +38,14 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
     public LinearLayout awardedLayout;
     public ImageView imgRightButton;
 
-    public JobStatusSummaryQuotationView(Context context) {
+    public JobStatusSummaryQuotationView(Context context, JGGUserType userType) {
         super(context);
         this.mContext = context;
+
+        if (userType == JGGUserType.CLIENT)
+            mImage = R.mipmap.button_next_green;
+        else if (userType == JGGUserType.PROVIDER)
+            mImage = R.mipmap.button_next_cyan;
 
         initView();
     }
@@ -58,6 +63,7 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
         viewQuotationLayout = view.findViewById(R.id.view_quotation_layout);
         awardedLayout = view.findViewById(R.id.awarded_layout);
         imgRightButton = view.findViewById(R.id.img_right);
+        imgRightButton.setImageResource(mImage);
 
         btnViewQuotation.setOnClickListener(this);
     }
@@ -75,7 +81,7 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
             lblQuotationCount.setText(proposalCount);
             lblQuotationCount.setOnClickListener(this);
         } else {
-            quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+            quotationLine.setBackgroundColor(mImage);
             imgQuotation.setImageResource(R.mipmap.icon_provider_green);
 
             if (count == 0) {       // Invite Service Provider

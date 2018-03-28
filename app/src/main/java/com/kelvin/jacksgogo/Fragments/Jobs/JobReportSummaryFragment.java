@@ -16,25 +16,27 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.yanzhenjie.album.AlbumFile;
 
 import java.util.List;
 
-public class JobReportFragment extends Fragment implements View.OnClickListener {
+import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
+
+public class JobReportSummaryFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private ProgressJobSummaryActivity mActivity;
+    private JobReportActivity mActivity;
 
     private RecyclerView startRecyclerView;
     private RecyclerView endRecyclerView;
     private RecyclerView billableRecyclerView;
     private LinearLayout verifyBtnLayout;
+    private LinearLayout startJobLayout;
+    private LinearLayout endJobLayout;
     private TextView btnVerify;
     private TextView btnDispute;
 
@@ -42,16 +44,16 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
     private AlbumFile startJob;
 
     private AlertDialog alertDialog;
-    private boolean isVerified;
+    private String mUserType;
 
-    public JobReportFragment() {
+    public JobReportSummaryFragment() {
         // Required empty public constructor
     }
 
-    public static JobReportFragment newInstance(boolean b) {
-        JobReportFragment fragment = new JobReportFragment();
+    public static JobReportSummaryFragment newInstance(String userType) {
+        JobReportSummaryFragment fragment = new JobReportSummaryFragment();
         Bundle args = new Bundle();
-        args.putBoolean("isVerified", b);
+        args.putString("jgg_usertype", userType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +70,7 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_job_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_job_report_summary, container, false);
 
         initView(view);
         initStartRecyclerView(view);
@@ -78,12 +80,16 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
 
     private void initView(View view) {
         verifyBtnLayout = view.findViewById(R.id.verify_button_layout);
+        startJobLayout = view.findViewById(R.id.start_job_layout);
+        endJobLayout = view.findViewById(R.id.end_job_layout);
         btnVerify = view.findViewById(R.id.btn_verify_completed);
         btnVerify.setOnClickListener(this);
         btnDispute = view.findViewById(R.id.btn_dispute);
 
-        if (isVerified) {
+        if (mUserType.equals(PROVIDER.toString())) {
             verifyBtnLayout.setVisibility(View.GONE);
+            startJobLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan10Percent));
+            endJobLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan10Percent));
         }
     }
 
@@ -129,6 +135,20 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
         alertDialog.show();
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_verify_completed) {
+            onShowVerifyJobDialog();
+        } else if (view.getId() == R.id.btn_dispute) {
+
+        } else if (view.getId() == R.id.btn_alert_cancel) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_alert_ok) {
+            alertDialog.dismiss();
+            mActivity.finish();
+        }
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -139,11 +159,10 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mActivity = ((ProgressJobSummaryActivity) mContext);
+        mActivity = ((JobReportActivity) mContext);
         if (getArguments() != null) {
-            isVerified = getArguments().getBoolean("isVerified");
+            mUserType = getArguments().getString("jgg_usertype");
         }
-        mActivity.setStatus(JGGActionbarView.EditStatus.JOB_REPORT);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -155,24 +174,6 @@ public class JobReportFragment extends Fragment implements View.OnClickListener 
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_verify_completed) {
-            onShowVerifyJobDialog();
-        } else if (view.getId() == R.id.btn_dispute) {
-
-        } else if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
-            mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-            mActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.app_detail_container, new ProgressJobFragment())
-                    .commit();
-        }
     }
 
     public interface OnFragmentInteractionListener {

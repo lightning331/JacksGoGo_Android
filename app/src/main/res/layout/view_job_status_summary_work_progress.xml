@@ -46,7 +46,6 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/lbl_confirmed_user_name"
-                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/JGGBlack"
@@ -62,6 +61,20 @@
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/list_title_font_size"/>
         </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/btn_start"
+            android:text="I Am Ready To Start"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:padding="@dimen/edit_text_padding_size"
+            android:textAlignment="center"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/list_title_font_size"
+            android:textColor="@color/JGGWhite"
+            android:background="@drawable/cyan_background">
+        </TextView>
         <LinearLayout
             android:id="@+id/billable_item_layout"
             android:visibility="gone"

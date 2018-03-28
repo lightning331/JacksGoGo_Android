@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 
 /**
  * Created by PUMA on 12/12/2017.
@@ -17,6 +19,7 @@ import com.kelvin.jacksgogo.R;
 public class JobStatusSummaryConfirmedView extends RelativeLayout {
 
     private Context mContext;
+    private int mColor;
 
     public LinearLayout confirmedLine;
     public ImageView imgConfirmed;
@@ -25,9 +28,14 @@ public class JobStatusSummaryConfirmedView extends RelativeLayout {
     public TextView lblConfirmedDesc;
     public TextView btnSetAppDate;
 
-    public JobStatusSummaryConfirmedView(Context context) {
+    public JobStatusSummaryConfirmedView(Context context, JGGUserType userType) {
         super(context);
         this.mContext = context;
+
+        if (userType == JGGUserType.CLIENT)
+            mColor = ContextCompat.getColor(getContext(), R.color.JGGGreen);
+        else if (userType == JGGUserType.PROVIDER)
+            mColor = ContextCompat.getColor(getContext(), R.color.JGGCyan);
 
         initView();
     }

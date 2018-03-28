@@ -178,6 +178,8 @@
     <string name="sent_proposal_title">You sent in a proposal to this job.</string>
     <string name="waiting_client_decision">Waiting for client\'s decision....</string>
     <string name="proposal_accepted_title">Congratulations! Your proposal was accepted.</string>
+    <string name="set_app_date_title">Appointment to be set.</string>
+    <string name="set_app_date_desc">Discuss an appropriate date to set an appointment.</string>
 
 
     <!-- TODO: Reject Bid -->

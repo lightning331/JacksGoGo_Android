@@ -11,13 +11,14 @@
         android:layout_marginRight="16dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/job_report_layout"
-                android:layout_width="0dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -38,10 +39,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/job_invoice_layout"
-                android:layout_width="0dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -61,11 +62,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/job_review_layout"
-                android:layout_width="0dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -84,11 +84,10 @@
                     android:text="Review"/>
             </LinearLayout>
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/job_tip_layout"
-                android:layout_width="0dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
@@ -107,11 +106,10 @@
                     android:text="Tip"/>
             </LinearLayout>
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/job_rehire_layout"
-                android:layout_width="0dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 

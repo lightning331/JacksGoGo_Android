@@ -168,7 +168,7 @@ public class PostProposalActivity extends AppCompatActivity {
                         || status.equals(INVITE_PROPOSAL)) {
                     showAlertDialog();
                 } else {
-                    manager.popBackStack();
+                    onBackPressed();
                 }
             } else {
                 actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, AppointmentType.UNKNOWN);

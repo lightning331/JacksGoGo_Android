@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Activities.Jobs;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -138,10 +139,13 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
             }
         } else if (view.getId() == R.id.btn_back) {
             if (actionbarView.getEditStatus() == null) {
-                onBackPressed();
+                FragmentManager manager = getSupportFragmentManager();
+                if (manager.getBackStackEntryCount() == 0)
+                    onBackPressed();
+                else
+                    manager.popBackStack();
             } else {
-                if (actionbarView.getEditStatus() == JOB_DETAILS
-                        || actionbarView.getEditStatus() == JOB_REPORT) {
+                if (actionbarView.getEditStatus() == JOB_DETAILS) {
                     if (mJob.getUserProfileID().equals(currentUser.getID()))
                         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                     else
@@ -154,13 +158,11 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     }
 
     private void getProposalsByJob() {
-        progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 40);
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
@@ -180,20 +182,17 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
                 Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void getProposedStatus() {
-        progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
@@ -210,18 +209,15 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
                 Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void onProgressJobFragment() {
-        frag = new ProgressJobFragment();
-        frag.setProposals(mProposals);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, frag)
+                .replace(R.id.app_detail_container, new ProgressJobFragment())
                 .commit();
     }
 
