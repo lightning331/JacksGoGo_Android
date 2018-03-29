@@ -52,6 +52,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
+import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.open;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.started;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
@@ -139,6 +140,8 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
 
         mProposal = selectedProposal;
         mJob = selectedAppointment;
+        if (mProposal != null)
+            providerName = mProposal.getUserProfile().getUser().getFullName();
 
         initView();
         return view;
@@ -187,40 +190,42 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         footerLayout.removeAllViews();
     }
 
-    private void onRefreshView() {
+    public void onRefreshView() {
         resetViews();
 
         Date postOn = appointmentMonthDate(mJob.getPostOn());
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
-        providerName = mProposal.getUserProfile().getUser().getFullName();
 
         lblPostedTime.setText(postedTime);
-        /*
-         *  Job Open View
-         */
+
+        // Job Open View
         if (mJob.getStatus() == open) {
             quotationView.notifyDataChanged(isDeleted, mProposals.size());
             lblPostedJob.setText(R.string.outgoing_job);
+            quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
+                @Override
+                public void onItemClick(View item) {
+                    quotationViewItemClick(item);
+                }
+            });
+            quotationLayout.addView(quotationView);
         }
-        /*
-         *  Job Confirmed View
-         */
+
+        // Job Confirmed View
         if (mJob.getStatus() == confirmed) {
             setJobConfirmedStatus();
             //setJobStartedStatus();
         }
-        /*
-         *  Job Started View
-         */
+
+        // Job Started View
         if (mJob.getStatus() == started) {
             setJobConfirmedStatus();
             setJobStartedStatus();
         }
-        if (isDeleted) {
+        if (mJob.getStatus() == deleted) {
             setJobConfirmedStatus();
-            /*
-             *  Cancelled View
-             */
+
+            // Cancelled View
             Picasso.with(mContext).load(currentUser.getUser().getPhotoURL())
                     .placeholder(R.mipmap.icon_profile)
                     .into(cancelledView.imgAvatar);
@@ -273,7 +278,6 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         lblPostedJob.setText(R.string.job_request_posted);
 
         // Quotation View
-
         quotationView.lblTime.setText(postedTime);
         quotationView.viewQuotationLayout.setVisibility(View.GONE);
         quotationView.awardedLayout.setVisibility(View.VISIBLE);
@@ -287,24 +291,12 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                if (item.getId() == R.id.btn_view_quotation) {
-                    if (mProposals.size() == 0) {
-                        Intent intent = new Intent(mContext, InviteProviderActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(mContext, ServiceProviderActivity.class);
-                        startActivity(intent);
-                    }
-                } else if (item.getId() == R.id.lbl_quotation_count) {
-                    Intent intent = new Intent(mContext, ServiceProviderActivity.class);
-                    startActivity(intent);
-                }
+                quotationViewItemClick(item);
             }
         });
         quotationLayout.addView(quotationView);
 
         // Confirmed Layout
-
         confirmedLayout.addView(confirmedView);
         confirmedView.lblConfirmedTime.setText(postedTime);
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
@@ -313,7 +305,6 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
             setAppointmentDate();
 
         // Provider Info view
-
         Picasso.with(mContext)
                 .load(mProposal.getUserProfile().getUser().getPhotoURL())
                 .placeholder(R.mipmap.icon_profile)
@@ -337,7 +328,6 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         progressLayout.addView(progressView);
 
         // Footer Layout
-
         footerView.reportLayout.setVisibility(View.VISIBLE);
         footerView.invoiceLayout.setVisibility(View.VISIBLE);
         footerView.setOnItemClickListener(new JobStatusSummaryFooterView.OnItemClickListener() {
@@ -368,6 +358,21 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         });
     }
 
+    private void quotationViewItemClick(View item) {
+        if (item.getId() == R.id.btn_view_quotation) {
+            if (mProposals.size() == 0) {
+                Intent intent = new Intent(mContext, InviteProviderActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(mContext, ServiceProviderActivity.class);
+                startActivity(intent);
+            }
+        } else if (item.getId() == R.id.lbl_quotation_count) {
+            Intent intent = new Intent(mContext, ServiceProviderActivity.class);
+            startActivity(intent);
+        }
+    }
+
     private void getProposalsByJob() {
         progressDialog = createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
@@ -379,6 +384,7 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
+
                         onRefreshView();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -393,39 +399,6 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void deleteJob(String reason) {
-        mReason = reason;
-        progressDialog = createProgressDialog(mContext);
-
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        String jobID = mJob.getID();
-        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
-        call.enqueue(new Callback<JGGBaseResponse>() {
-            @Override
-            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        ((ProgressJobSummaryActivity)mContext).deleteJobFinished();
-                        isDeleted = true;
-                        onRefreshView();
-                    } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
         });
     }

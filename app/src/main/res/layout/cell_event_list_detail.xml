@@ -16,7 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:src="@drawable/carousel05"
+                    android:src="@mipmap/carousel05"
                     android:id="@+id/img_service_detail_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -398,7 +398,7 @@
                                 android:id="@+id/img_posted_job_user_avatar"
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
-                                android:src="@drawable/nurse"
+                                android:src="@mipmap/nurse"
                                 android:background="@color/transparent"
                                 android:adjustViewBounds="true"
                                 android:scaleType="centerCrop"

@@ -18,7 +18,6 @@ import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -31,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.categories;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 
@@ -42,7 +42,7 @@ public class PostJobCategoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryCellAdapter adapter;
     private View view;
-    private ArrayList<JGGCategoryModel> categories;
+    private ArrayList<JGGCategoryModel> mCategories = new ArrayList<>();
 
     private ProgressDialog progressDialog;
 
@@ -71,8 +71,13 @@ public class PostJobCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_post_job_category, container, false);
 
-        loadCategories();
+        if (categories != null)
+            mCategories = categories;
+        else
+            loadCategories();
+
         initRecyclerView(view);
+
         return view;
     }
 
@@ -82,7 +87,7 @@ public class PostJobCategoryFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, categories, AppointmentType.JOBS);
+        adapter = new CategoryCellAdapter(mContext, mCategories, AppointmentType.JOBS);
         adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -90,7 +95,7 @@ public class PostJobCategoryFragment extends Fragment {
 
                 } else {
                     PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobSummaryFragment.PostJobStatus.POST);
-                    selectedCategory = categories.get(position - 1);
+                    selectedCategory = mCategories.get(position - 1);
                     selectedAppointment.setCategory(selectedCategory);
                     selectedAppointment.setCategoryID(selectedCategory.getID());
                     getActivity().getSupportFragmentManager()
@@ -105,39 +110,35 @@ public class PostJobCategoryFragment extends Fragment {
     }
 
     private void loadCategories() {
-        if (JGGAppManager.getInstance(mContext).categories != null) {
-            categories = JGGAppManager.getInstance(mContext).categories;
-        } else {
-            progressDialog = Global.createProgressDialog(mContext);
+        progressDialog = Global.createProgressDialog(mContext);
 
-            final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-            Call<JGGCategoryResponse> call = apiManager.getCategory();
-            call.enqueue(new Callback<JGGCategoryResponse>() {
-                @Override
-                public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
-                    progressDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        if (response.body().getSuccess()) {
-                            JGGAppManager.getInstance(mContext).categories = response.body().getValue();
-                            categories = JGGAppManager.getInstance(mContext).categories;
-                            adapter.refreshData(categories);
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGCategoryResponse> call = apiManager.getCategory();
+        call.enqueue(new Callback<JGGCategoryResponse>() {
+            @Override
+            public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        categories = response.body().getValue();
+                        categories = mCategories;
+                        adapter.refreshData(mCategories);
+                        adapter.notifyDataSetChanged();
                     } else {
-                        int statusCode  = response.code();
-                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
-                    progressDialog.dismiss();
-                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            @Override
+            public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void onButtonPressed(Uri uri) {

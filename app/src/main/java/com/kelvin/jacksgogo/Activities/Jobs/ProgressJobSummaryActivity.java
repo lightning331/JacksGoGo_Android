@@ -29,6 +29,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
@@ -50,6 +51,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
@@ -215,9 +217,10 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     }
 
     private void onProgressJobFragment() {
+        frag = new ProgressJobFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, new ProgressJobFragment())
+                .replace(R.id.app_detail_container, frag)
                 .commit();
     }
 
@@ -284,7 +287,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         desc.setText(R.string.alert_edit_job_delete_desc);
         TextView cancelButton = (TextView) dialogView.findViewById(R.id.btn_alert_cancel);
         TextView deleteButton = (TextView) dialogView.findViewById(R.id.btn_alert_ok);
-        reason = (EditText) dialogView.findViewById(R.id.txt_alert_reason);
+        reason = dialogView.findViewById(R.id.txt_alert_reason);
         reason.addTextChangedListener(this);
         reason.setVisibility(View.VISIBLE);
         final AlertDialog alertDialog = builder.create();
@@ -299,10 +302,44 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                frag.deleteJob(reason.getText().toString());
+                deleteJob(reason.getText().toString());
             }
         });
         alertDialog.show();
+    }
+
+    public void deleteJob(String reason) {
+        selectedAppointment.setStatus(deleted);
+        selectedAppointment.setReason(reason);
+        mJob = selectedAppointment;
+        progressDialog = createProgressDialog(this);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        String jobID = mJob.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        deleteJobFinished();
+                        frag.onRefreshView();
+                    } else {
+                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
     public void deleteJobFinished() {

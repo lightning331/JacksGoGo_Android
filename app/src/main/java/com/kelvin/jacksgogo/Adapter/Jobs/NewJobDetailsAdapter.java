@@ -96,8 +96,8 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         switch (position) {
             case 0:
                 JobDetailImageCarouselCell cell = (JobDetailImageCarouselCell)holder;
-                int[] array = {R.drawable.carousel04, R.drawable.carousel05, R.drawable.carousel06, R.drawable.carousel01,
-                        R.drawable.carousel02, R.drawable.carousel03, R.drawable.carousel04, R.drawable.carousel05};
+                int[] array = {R.mipmap.carousel04, R.mipmap.carousel05, R.mipmap.carousel06, R.mipmap.carousel01,
+                        R.mipmap.carousel02, R.mipmap.carousel03, R.mipmap.carousel04, R.mipmap.carousel05};
 
                 cell.imageArray = array;
                 cell.carouselView.setPageCount(array.length);

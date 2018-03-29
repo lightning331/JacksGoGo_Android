@@ -22,6 +22,7 @@ public class JobStatusSummaryCancelled extends RelativeLayout {
 
     public RoundedImageView imgAvatar;
     public TextView lblComment;
+    public TextView lblCancelTitle;
 
     public JobStatusSummaryCancelled(Context context, JGGUserType userType) {
         super(context);
@@ -40,5 +41,6 @@ public class JobStatusSummaryCancelled extends RelativeLayout {
         View view                           = mLayoutInflater.inflate(R.layout.view_job_status_summary_cancelled, this);
         imgAvatar                           = view.findViewById(R.id.img_avatar);
         lblComment                          = view.findViewById(R.id.lbl_comment);
+        lblCancelTitle                      = view.findViewById(R.id.cancel_title);
     }
 }

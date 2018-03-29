@@ -68,10 +68,10 @@ public class Global {
         open(0),        // Posted
         closed(1),      // Client rejected provider's proposal
         confirmed(2),   // Client accepted provider's proposal
-        started(3),     // Provider started the work
-        finished(4),    //
-        flaged(5),      // Provider declined Client's invite
-        deleted(6);     // Provider declined Client's invite
+        finished(3),    //
+        flaged(4),      // Provider declined Client's invite
+        deleted(5),     // Provider declined Client's invite
+        started(6);     // Provider started the work
 
         private Integer value;
         private static Map map = new HashMap<>();

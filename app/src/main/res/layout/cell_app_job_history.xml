@@ -105,7 +105,7 @@
                             android:id="@+id/imgAvatar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/nurse1"
+                            android:src="@mipmap/nurse1"
                             android:background="@color/transparent"
                             android:adjustViewBounds="true"
                             android:scaleType="centerCrop"

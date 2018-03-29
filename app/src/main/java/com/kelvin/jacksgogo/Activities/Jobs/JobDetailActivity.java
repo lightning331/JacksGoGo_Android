@@ -44,6 +44,7 @@ import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.VIEW;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
@@ -79,7 +80,10 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                 if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
                     intent.putExtra(EDIT_STATUS, VIEW);
                 } else {
-                    intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
+                    if (selectedAppointment.getProposal() == null)
+                        intent.putExtra(EDIT_STATUS, POST);
+                    else
+                        intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
                 }
                 startActivity(intent);
             }

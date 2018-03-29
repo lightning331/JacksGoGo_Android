@@ -182,7 +182,7 @@
                     android:layout_height="35dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/nurse"
+                    android:src="@mipmap/nurse"
                     android:background="@color/transparent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"

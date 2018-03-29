@@ -56,7 +56,7 @@ public class JobReviewFragment extends Fragment {
         ReviewCell givenReviewView = new ReviewCell(mContext);
         givenReviewView.ratingBar.setRating((float)5.0);
         givenReviewView.lblDate.setText("By you on 25 Dec, 2017");
-        givenReviewView.avatar.setImageResource(R.drawable.nurse);
+        givenReviewView.avatar.setImageResource(R.mipmap.nurse);
         givenReviewLayout.addView(givenReviewView);
 
         LinearLayout getReviewLayout = (LinearLayout)view.findViewById(R.id.job_get_review_layout);

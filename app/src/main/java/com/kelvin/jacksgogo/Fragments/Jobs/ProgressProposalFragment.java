@@ -47,14 +47,17 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.open;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -213,51 +216,40 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
         });
 
         //Provider invited to Job
-        if (mProposal.isInvited()) {
-            imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
-            lblPostedJob.setText(R.string.invited_proposal_title);
-            bottomLayout.setVisibility(View.VISIBLE);
-            acceptLayout.setVisibility(View.VISIBLE);
-        } else {
-            /*
-             *  Provider proposed to Job
-             */
+        if (mProposal.getStatus() == JGGProposalStatus.open) {
+            if (mProposal.isInvited()) {
+                imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
+                lblPostedJob.setText(R.string.invited_proposal_title);
+                bottomLayout.setVisibility(View.VISIBLE);
+                acceptLayout.setVisibility(View.VISIBLE);
+            }
+        } else if (mProposal.getStatus() == JGGProposalStatus.rejected) {
+            // Client rejected provider's proposal
+            setDeclineProposalStatus();
+        } else if (mProposal.getStatus() == JGGProposalStatus.confirmed) {
+
             lblPostedJob.setText(R.string.sent_proposal_title);
             quotationView.btnViewQuotation.setVisibility(View.GONE);
             quotationView.lblTitle.setText(R.string.waiting_client_decision);
             quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
             quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-            /*
-             *  Client Info view
-             */
-            clientName = mJob.getUserProfile().getUser().getFullName();
-            Picasso.with(mContext)
-                    .load(mJob.getUserProfile().getUser().getPhotoURL())
-                    .placeholder(R.mipmap.icon_profile)
-                    .into(imgClient);
-            lblClientName.setText(clientName);
-            clientDetailLayout.setVisibility(View.VISIBLE);
-            /*
-             *  Job confirmed View
-             */
+
+            // Client Info view
+            onShowClientInfoView();
+
+            // Job confirmed View
             if (mJob.getStatus() == confirmed) {
                 setJobConfirmedStatus();
-                /*
-                 *  Client set Job time
-                 */
+
+                // Client set Job time
                 if (!getAppointmentTime(mJob).equals(""))
                     setJobStartedStatus();
             }
             if (mJob.getStatus() == deleted) {
-                /*
-                 *  Cancelled View
-                 */
-                Picasso.with(mContext).load(currentUser.getUser().getPhotoURL())
-                        .placeholder(R.mipmap.icon_profile)
-                        .into(cancelledView.imgAvatar);
-                //cancelledView.lblComment.setText(mReason);
-                cancelledLayout.addView(cancelledView);
+
+                setDeletedJobStatus();
             }
+        }
 
             /*LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
             JobStatusSummaryReview givenReviewView = new JobStatusSummaryReview(mContext);
@@ -296,7 +288,6 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
                 }
             });
             paymentLayout.addView(paymentView);*/
-        }
     }
 
     private void setJobConfirmedStatus() {
@@ -380,6 +371,47 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
         footerLayout.addView(footerView);*/
     }
 
+    private void setDeclineProposalStatus() {
+        lblPostedJob.setText(R.string.sent_proposal_title);
+        quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
+        quotationView.btnViewQuotation.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationView.btnViewQuotation.setText(R.string.edit_your_title);
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
+        quotationView.lblTitle.setText(R.string.proposal_declined);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationView.btnViewQuotation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, PostProposalActivity.class);
+                intent.putExtra(EDIT_STATUS, EDIT);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setDeletedJobStatus() {
+
+        // Cancelled View
+        Picasso.with(mContext).load(mJob.getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(cancelledView.imgAvatar);
+        cancelledView.lblComment.setText(mJob.getReason());
+        cancelledView.lblCancelTitle.setText("");
+        cancelledView.lblCancelTitle.append(setBoldText(mJob.getUserProfile().getUser().getFullName()));
+        cancelledView.lblCancelTitle.append(" has cancelled the job.");
+        cancelledLayout.addView(cancelledView);
+    }
+
+    private void onShowClientInfoView() {
+        clientName = mJob.getUserProfile().getUser().getFullName();
+        Picasso.with(mContext)
+                .load(mJob.getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(imgClient);
+        lblClientName.setText(clientName);
+        clientDetailLayout.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_invite_reject) {
@@ -401,6 +433,7 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
     }
 
     private void onAcceptInvitation() {
+        selectedProposal.setStatus(JGGProposalStatus.confirmed);
         Intent intent = new Intent(mContext, PostProposalActivity.class);
         intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
         startActivity(intent);

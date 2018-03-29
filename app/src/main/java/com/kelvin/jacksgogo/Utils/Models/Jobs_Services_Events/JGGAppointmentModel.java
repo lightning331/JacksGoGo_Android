@@ -31,6 +31,7 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
     private Integer RepetitionType;
     private Integer BudgetType;
     private Integer Status;
+    private String Reason;
     private int ReportType = 0;
     private int ViewCount = 0;
     private JGGCategoryModel Category = new JGGCategoryModel();
@@ -148,6 +149,14 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
 
     public void setStatus(JGGJobStatus status) {
         Status = status.getValue();
+    }
+
+    public String getReason() {
+        return Reason;
+    }
+
+    public void setReason(String reason) {
+        Reason = reason;
     }
 
     public int getReportType() {

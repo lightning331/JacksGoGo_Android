@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,20 +14,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.categories;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.POST;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
@@ -35,6 +44,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     private TextView btnVerify;
     private RecyclerView recyclerView;
     private CategoryCellAdapter adapter;
+    private ProgressDialog progressDialog;
 
     private ArrayList<JGGCategoryModel> mCategories;
 
@@ -62,6 +72,10 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_skill_verified, container, false);
 
+        if (categories != null)
+            mCategories = categories;
+        else
+            loadCategories();
         initView(view);
 
         return view;
@@ -70,7 +84,6 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     private void initView(View view) {
         btnVerify = view.findViewById(R.id.btn_verify_new_skills);
         btnVerify.setOnClickListener(this);
-        mCategories = JGGAppManager.getInstance(mContext).categories;
 
         recyclerView = view.findViewById(R.id.category_recycler_view);
         if (recyclerView != null) {
@@ -96,7 +109,49 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         recyclerView.setAdapter(adapter);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    private void loadCategories() {
+        progressDialog = Global.createProgressDialog(mContext);
+
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGCategoryResponse> call = apiManager.getCategory();
+        call.enqueue(new Callback<JGGCategoryResponse>() {
+            @Override
+            public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mCategories = response.body().getValue();
+                        categories = mCategories;
+                        adapter.refreshData(mCategories);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_verify_new_skills) {
+            Intent intent = new Intent(mContext, VerifyNewSkillsActivity.class);
+            intent.putExtra("already_verified_skills", true);
+            mContext.startActivity(intent);
+        } else {
+
+        }
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -118,17 +173,6 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_verify_new_skills) {
-            Intent intent = new Intent(mContext, VerifyNewSkillsActivity.class);
-            intent.putExtra("already_verified_skills", true);
-            mContext.startActivity(intent);
-        } else {
-
-        }
     }
 
     public interface OnFragmentInteractionListener {

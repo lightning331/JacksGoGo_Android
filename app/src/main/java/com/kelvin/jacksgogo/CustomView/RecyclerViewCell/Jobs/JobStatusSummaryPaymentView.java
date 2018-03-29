@@ -41,14 +41,14 @@ public class JobStatusSummaryPaymentView extends RelativeLayout implements View.
         btnReportToVerify.setOnClickListener(this);
     }
 
-    private OnItemClickListener listener;
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_report_to_verify) {
             listener.onItemClick(view);
         }
     }
+
+    private OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(View item);

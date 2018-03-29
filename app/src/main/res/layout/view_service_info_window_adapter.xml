@@ -13,7 +13,7 @@
             android:layout_width="104dp"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@drawable/carousel03"
+                android:src="@mipmap/carousel03"
                 android:id="@+id/img_service_info_window_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

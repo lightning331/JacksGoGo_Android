@@ -81,8 +81,8 @@ public class BusinessProfileActivity extends AppCompatActivity {
 
     private void initView() {
         // User Photo
-        imageArray = new int[]{R.drawable.carousel03, R.drawable.carousel01,
-                R.drawable.carousel04, R.drawable.carousel05, R.drawable.carousel06, R.drawable.carousel01, R.drawable.carousel03, R.drawable.carousel02};
+        imageArray = new int[]{R.mipmap.carousel03, R.mipmap.carousel01,
+                R.mipmap.carousel04, R.mipmap.carousel05, R.mipmap.carousel06, R.mipmap.carousel01, R.mipmap.carousel03, R.mipmap.carousel02};
 
         carouselView.setPageCount(imageArray.length);
         carouselView.setImageListener(imageListener);

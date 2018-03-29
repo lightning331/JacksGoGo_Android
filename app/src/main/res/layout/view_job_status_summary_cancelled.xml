@@ -45,6 +45,7 @@
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/list_title_font_size"/>
         <TextView
+            android:id="@+id/cancel_title"
             android:text="You have cancelled this job."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
                     android:id="@+id/img_avatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/nurse1"
+                    android:src="@mipmap/nurse1"
                     android:background="@color/transparent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"

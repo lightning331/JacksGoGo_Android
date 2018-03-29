@@ -73,8 +73,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
                 JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView);
 
-                int[] array = {R.drawable.carousel03, R.drawable.carousel01,
-                        R.drawable.carousel04, R.drawable.carousel05, R.drawable.carousel06, R.drawable.carousel01, R.drawable.carousel03, R.drawable.carousel02};
+                int[] array = {R.mipmap.carousel03, R.mipmap.carousel01,
+                        R.mipmap.carousel04, R.mipmap.carousel05, R.mipmap.carousel06, R.mipmap.carousel01, R.mipmap.carousel03, R.mipmap.carousel02};
 
                 pageViewHolder.imageArray = array;
                 pageViewHolder.carouselView.setPageCount(array.length);
