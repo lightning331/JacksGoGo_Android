@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomeMainDetails;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomeMainExplore;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomeMainUserInfo;
@@ -23,7 +24,6 @@ import com.squareup.picasso.Picasso;
 import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -125,6 +125,12 @@ public class HomeFragment extends Fragment {
             userInfoLayout.addView(userInfoView);
 
             // Details view
+            detailsView.btnVerified.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(mContext, ServiceListingActivity.class));
+                }
+            });
             detailsLayout.addView(detailsView);
 
             // Explore view

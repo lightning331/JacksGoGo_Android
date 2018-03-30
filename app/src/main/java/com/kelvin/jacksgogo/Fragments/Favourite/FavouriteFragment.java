@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Favourite;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
@@ -19,7 +21,19 @@ import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.Adapter.Users.UserListingAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -31,6 +45,13 @@ public class FavouriteFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView recyclerView;
+    private ProgressDialog progressDialog;
+    private android.app.AlertDialog alertDialog;
+    private ActiveServiceAdapter serviceAdapter;
+    private JobsListingAdapter jobAdapter;
+
+    private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
+    private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType = SERVICES;
 
     public FavouriteFragment() {
@@ -71,32 +92,36 @@ public class FavouriteFragment extends Fragment {
         return view;
     }
 
-    public void refreshFragment(String textView) {
+    public void refreshFragment(String type) {
 
-        appType = textView;
+        appType = type;
 
-        if (textView == SERVICES) {
-            ActiveServiceAdapter adapter = new ActiveServiceAdapter(mContext);
-            adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
+        if (type.equals(SERVICES)) {
+            serviceAdapter = new ActiveServiceAdapter(mContext);
+            serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick() {
+                public void onItemClick(int position) {
+                    selectedAppointment = mServices.get(position);
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     intent.putExtra("is_service", true);
                     mContext.startActivity(intent);
                 }
             });
-            recyclerView.setAdapter(adapter);
-        } else if (textView == JOBS) {
-            JobsListingAdapter adapter = new JobsListingAdapter(mContext);
-            adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
+            recyclerView.setAdapter(serviceAdapter);
+            searchServices();
+        } else if (type.equals(JOBS)) {
+            jobAdapter = new JobsListingAdapter(mContext);
+            jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick() {
+                public void onItemClick(int position) {
+                    selectedAppointment = mJobs.get(position);
                     Intent intent = new Intent(mContext, JobDetailActivity.class);
                     mContext.startActivity(intent);
                 }
             });
-            recyclerView.setAdapter(adapter);
-        } else if (textView == EVENTS) {
+            recyclerView.setAdapter(jobAdapter);
+            searchJobs();
+        } else if (type.equals(EVENTS)) {
             EventsListingAdapter adapter = new EventsListingAdapter();
             adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
@@ -105,10 +130,78 @@ public class FavouriteFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(adapter);
-        } else if (textView == USERS) {
+        } else if (type.equals(USERS)) {
             UserListingAdapter adapter = new UserListingAdapter(mContext);
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    private void searchServices() {
+        progressDialog = Global.createProgressDialog(mContext);
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+                null, null, null, null, null,
+                null, null, 0, 50);
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mServices = response.body().getValue();
+
+                        serviceAdapter.notifyDataChanged(mServices);
+                        serviceAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(serviceAdapter);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchJobs() {
+        progressDialog = Global.createProgressDialog(mContext);
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+                null, null, null, null, null, null,
+                null, 0, 50);
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mJobs = response.body().getValue();
+
+                        jobAdapter.notifyDataChanged(mJobs);
+                        jobAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(jobAdapter);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void onButtonPressed(Uri uri) {
@@ -134,16 +227,6 @@ public class FavouriteFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

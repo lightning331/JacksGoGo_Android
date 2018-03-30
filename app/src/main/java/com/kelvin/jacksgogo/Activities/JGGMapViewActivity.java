@@ -80,7 +80,6 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
 
-
     private final static int PLAY_SERVICES_REQUEST = 1000;
     private final static int REQUEST_CHECK_SETTINGS = 2000;
     private ArrayList<String> permissions = new ArrayList<>();

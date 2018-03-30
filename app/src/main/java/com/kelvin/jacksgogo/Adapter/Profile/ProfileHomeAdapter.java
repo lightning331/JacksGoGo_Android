@@ -70,7 +70,7 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
                     .placeholder(null)
                     .into(header.imgBackground);
             header.lblUserName.setText(user.getUser().getFullName());
-            header.itemView.setOnClickListener(new View.OnClickListener() {
+            header.btnViewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, BusinessProfileActivity.class);

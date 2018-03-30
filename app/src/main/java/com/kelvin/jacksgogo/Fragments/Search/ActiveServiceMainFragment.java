@@ -1,17 +1,18 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
@@ -20,7 +21,19 @@ import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -33,6 +46,12 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     private RecyclerView recyclerView;
     private ActiveServiceTabView tabView;
 
+    private JobsListingAdapter jobAdapter;
+    private ActiveServiceAdapter serviceAdapter;
+    private ProgressDialog progressDialog;
+
+    private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
+    private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType;
 
     public ActiveServiceMainFragment() {
@@ -64,8 +83,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_active_service_main, container, false);
 
-        initRecyclerView(view);
         initTabView(view);
+        initRecyclerView(view);
 
         return view;
     }
@@ -79,27 +98,97 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         view.setLayoutParams(lp);
 
         if (appType.equals(SERVICES)) {
-            ActiveServiceAdapter adapter = new ActiveServiceAdapter(mContext);
-            adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
+            serviceAdapter = new ActiveServiceAdapter(mContext);
+            searchServices();
+            serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick() {
+                public void onItemClick(int position) {
+                    selectedAppointment = mServices.get(position);
                     Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
                     intent.putExtra("is_post", false);
                     startActivity(intent);
                 }
             });
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(serviceAdapter);
         } else if (appType.equals(JOBS)) {
-            JobsListingAdapter adapter = new JobsListingAdapter(mContext);
-            adapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
+            jobAdapter = new JobsListingAdapter(mContext);
+            searchJobs();
+            jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick() {
+                public void onItemClick(int position) {
+                    selectedAppointment = mJobs.get(position);
                     Intent intent = new Intent(mContext, PostedJobActivity.class);
                     startActivity(intent);
                 }
             });
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(jobAdapter);
         }
+    }
+
+    private void searchJobs() {
+        progressDialog = Global.createProgressDialog(mContext);
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+                null, null, null, null, null,
+                null, null, 0, 50);
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mJobs = response.body().getValue();
+
+                        jobAdapter.notifyDataChanged(mJobs);
+                        jobAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchServices() {
+        progressDialog = Global.createProgressDialog(mContext);
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+                null, null, null, null, null, null,
+                null, 0, 50);
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mServices = response.body().getValue();
+
+                        serviceAdapter.notifyDataChanged(mServices);
+                        serviceAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initTabView(View view) {
@@ -116,9 +205,13 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                     startActivity(intent);
                 } else if (view.getId() == R.id.btn_active_service_mapview) {
                     ActiveServiceMapFragment mapFragment = ActiveServiceMapFragment.newInstance(appType);
+                    if (appType.equals(SERVICES))
+                        mapFragment.setAppointment(mServices);
+                    else
+                        mapFragment.setAppointment(mJobs);
                     mapFragment.setOnFragmentInteractionListener(ActiveServiceMainFragment.this);
                     getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.active_service_container, mapFragment, mapFragment.getTag())
+                            .replace(R.id.active_service_container, mapFragment)
                             .addToBackStack("active_service")
                             .commit();
                 } else {
@@ -132,7 +225,6 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

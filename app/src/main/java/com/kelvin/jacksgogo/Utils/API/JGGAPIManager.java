@@ -63,7 +63,7 @@ public interface JGGAPIManager {
     @FormUrlEncoded
     @POST("api/Account/VerifyCode")
     Call<JGGUserProfileResponse> verifyPhoneNumber(@Field("Provider") String phoneNumber,
-                                                @Field("Code") String code);
+                                                   @Field("Code") String code);
 
     /*
      *  System
@@ -101,7 +101,7 @@ public interface JGGAPIManager {
                                            @Field("Lat") String lat,
                                            @Field("Lon") String lon,
                                            @Field("Distance") String distance,
-                                           @Field("PageIndex") String pageIndex,
+                                           @Field("PageIndex") Integer pageIndex,
                                            @Field("PageSize") Integer pageSize);
 
     /*
@@ -116,6 +116,11 @@ public interface JGGAPIManager {
     @GET("api/Appointment/DeleteService")
     Call<JGGBaseResponse> deleteService(@Query("ServiceID") String serviceID);
 
+    @GET("api/Appointment/GetServicesByCategory")
+    Call<JGGGetAppsResponse> getServicesByCategory(@Query("CategoryID") String categoryID,
+                                                   @Query("PageIndex") Integer pageIndex,
+                                                   @Query("PageSize") Integer pageSize);
+
     @FormUrlEncoded
     @POST("api/Appointment/SearchService")
     Call<JGGGetAppsResponse> searchService(@Field("RegionID") String regionID,
@@ -127,7 +132,7 @@ public interface JGGAPIManager {
                                            @Field("Lat") String lat,
                                            @Field("Lon") String lon,
                                            @Field("Distance") String distance,
-                                           @Field("PageIndex") String pageIndex,
+                                           @Field("PageIndex") Integer pageIndex,
                                            @Field("PageSize") Integer pageSize);
 
     /*

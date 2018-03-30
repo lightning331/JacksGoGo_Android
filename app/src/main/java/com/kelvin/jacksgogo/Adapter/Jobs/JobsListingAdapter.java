@@ -8,17 +8,25 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by PUMA on 12/18/2017.
  */
 
-public class JobsListingAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class JobsListingAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
+    private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
 
     public JobsListingAdapter(Context context) {
         mContext = context;
+    }
+
+    public void notifyDataChanged(ArrayList<JGGAppointmentModel> jobs) {
+        mJobs = jobs;
     }
 
     @Override
@@ -33,25 +41,27 @@ public class JobsListingAdapter extends RecyclerView.Adapter implements View.OnC
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         JobListDetailCell cell = (JobListDetailCell) holder;
-        cell.itemView.setOnClickListener(this);
+        JGGAppointmentModel job = mJobs.get(position);
+        cell.setJob(job);
+        cell.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 7;
-    }
-
-    @Override
-    public void onClick(View view) {
-        listener.onItemClick();
+        return mJobs.size();
     }
 
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick();
+        void onItemClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

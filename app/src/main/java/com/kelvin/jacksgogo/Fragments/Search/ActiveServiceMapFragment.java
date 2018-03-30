@@ -16,7 +16,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +29,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,12 +38,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceInfoWindowAdapter;
+import com.kelvin.jacksgogo.CustomView.JGGJobInfoWindow;
+import com.kelvin.jacksgogo.CustomView.JGGServiceInfoWindow;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
+import java.util.ArrayList;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -64,10 +68,9 @@ public class ActiveServiceMapFragment extends Fragment implements
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mapFrag;
-    private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    private Marker mCurrLocationMarker;
+    private JGGServiceInfoWindow serviceinfoWindow;
+    private JGGJobInfoWindow jobInfoWindow;
 
     private SeekBar seekBar;
     private TextView lblServiceCount;
@@ -79,6 +82,7 @@ public class ActiveServiceMapFragment extends Fragment implements
     private ImageView imgUserLocation;
     private ImageView imgListView;
 
+    private ArrayList<JGGAppointmentModel> mAppointments = new ArrayList<>();
     private String appType;
     private int mColor;
 
@@ -96,6 +100,10 @@ public class ActiveServiceMapFragment extends Fragment implements
         args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setAppointment(ArrayList<JGGAppointmentModel> appointments) {
+        mAppointments = appointments;
     }
 
     @Override
@@ -138,18 +146,21 @@ public class ActiveServiceMapFragment extends Fragment implements
                 imgListView.setImageResource(R.mipmap.button_listview_green);
                 imgFilter.setImageResource(R.mipmap.button_filter_green);
                 imgUserLocation.setImageResource(R.mipmap.button_location_green);
+                lblServiceCount.setText(mAppointments.size() + " Services");
                 break;
             case JOBS:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
                 imgListView.setImageResource(R.mipmap.button_listview_cyan);
                 imgFilter.setImageResource(R.mipmap.button_filter_cyan);
                 imgUserLocation.setImageResource(R.mipmap.button_location_cyan);
+                lblServiceCount.setText(mAppointments.size() + " Jobs");
                 break;
             case GOCLUB:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
                 imgListView.setImageResource(R.mipmap.button_listview_purple);
                 imgFilter.setImageResource(R.mipmap.button_filter_purple);
                 imgUserLocation.setImageResource(R.mipmap.button_location_purple);
+                lblServiceCount.setText(mAppointments.size() + " Events");
                 break;
         }
         seekBar.getProgressDrawable().setColorFilter(mColor, PorterDuff.Mode.SRC_ATOP);
@@ -217,6 +228,44 @@ public class ActiveServiceMapFragment extends Fragment implements
         });
     }
 
+    private void addAppointmentMarker() {
+        if (appType.equals(SERVICES)) {
+            serviceinfoWindow = new JGGServiceInfoWindow(mContext, mAppointments);
+            mGoogleMap.setInfoWindowAdapter(serviceinfoWindow);
+        } else if (appType.equals(JOBS)) {
+            jobInfoWindow = new JGGJobInfoWindow(mContext, mAppointments);
+            mGoogleMap.setInfoWindowAdapter(jobInfoWindow);
+        }
+
+        MarkerOptions markerOpt = new MarkerOptions();
+        for (int i = 0 ; i < mAppointments.size() ; i++ ) {
+            JGGAppointmentModel app = mAppointments.get(i);
+            LatLng marker = new LatLng(app.getAddress().getLat(), app.getAddress().getLon());
+            String pinSnippet = String.valueOf(i);
+            markerOpt.position(marker)
+                    .snippet(pinSnippet)
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
+            mGoogleMap.addMarker(markerOpt);
+        }
+
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if (marker.getSnippet() != null) {
+                    int index = Integer.parseInt(marker.getSnippet());
+                    selectedAppointment = null;
+                    selectedAppointment = mAppointments.get(index);
+                    if (appType.equals(SERVICES)) {
+                        Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                        intent.putExtra("is_service", true);
+                        mContext.startActivity(intent);
+                    } else if (appType.equals(JOBS)) {
+                        mContext.startActivity(new Intent(getContext(), JobDetailActivity.class));
+                    }
+                }
+            }
+        });}
+
     @Override
     public void onPause() {
         super.onPause();
@@ -232,9 +281,8 @@ public class ActiveServiceMapFragment extends Fragment implements
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
         mGoogleMap = googleMap;
-        ServiceInfoWindowAdapter infoWindowAdapter = new ServiceInfoWindowAdapter(mContext);
-        mGoogleMap.setInfoWindowAdapter(infoWindowAdapter);
-        addDummyMarker();
+
+        addAppointmentMarker();
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -255,26 +303,6 @@ public class ActiveServiceMapFragment extends Fragment implements
         }
     }
 
-    private void addDummyMarker() {
-        MarkerOptions markerOpt = new MarkerOptions();
-        LatLng marker1 = new LatLng(1.0008, 103.3545);
-        markerOpt.position(marker1)
-                .title("test")
-                .snippet("this is Sub title")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
-        mGoogleMap.addMarker(markerOpt);
-
-        MarkerOptions markerOpt1 = new MarkerOptions();
-        LatLng marker2 = new LatLng(2.0038, 114.4545);
-        markerOpt1.position(marker2)
-                .title("test")
-                .snippet("this is Sub title")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
-        mGoogleMap.addMarker(markerOpt1);
-
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker1, 3));
-    }
-
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this.mContext)
                 .addConnectionCallbacks(this)
@@ -286,14 +314,15 @@ public class ActiveServiceMapFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(this.mContext,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        try {
+            Location mLastLocation = LocationServices.FusedLocationApi
+                    .getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
     }
 
@@ -309,19 +338,7 @@ public class ActiveServiceMapFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(Location location) {
-        mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
 
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.anchor(.5f, .5f);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;

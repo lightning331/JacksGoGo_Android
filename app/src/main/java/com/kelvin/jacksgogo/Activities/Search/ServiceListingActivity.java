@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -10,14 +11,28 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Adapter.Services.ServiceListingAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.categories;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -26,8 +41,13 @@ import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 public class ServiceListingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar mToolbar;
-    JGGActionbarView actionbarView;
-    RecyclerView recyclerView;
+    private JGGActionbarView actionbarView;
+    private RecyclerView recyclerView;
+
+    private ServiceListingAdapter adapter;
+    private ProgressDialog progressDialog;
+
+    private ArrayList<JGGCategoryModel> mCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +79,53 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
 
-        ServiceListingAdapter adapter = new ServiceListingAdapter(this);
+        adapter = new ServiceListingAdapter(this);
+        if (categories != null) {
+            mCategories = categories;
+            adapter.notifyDataChanged(mCategories);
+        } else
+            loadCategories();
         adapter.setOnItemClickListener(new ServiceListingAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick() {
-                onCellClick();
+            public void onItemClick(int position) {
+                selectedCategory = mCategories.get(position);
+                Intent intent = new Intent(ServiceListingActivity.this, ServiceListingDetailActivity.class);
+                intent.putExtra("is_post", false);
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(adapter);
     }
 
-    private void onCellClick() {
-        Intent intent = new Intent(this, ServiceListingDetailActivity.class);
-        intent.putExtra("is_post", false);
-        startActivity(intent);
+    private void loadCategories() {
+        progressDialog = Global.createProgressDialog(this);
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGCategoryResponse> call = apiManager.getCategory();
+        call.enqueue(new Callback<JGGCategoryResponse>() {
+            @Override
+            public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mCategories = response.body().getValue();
+                        categories = mCategories;
+                        adapter.notifyDataChanged(mCategories);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(ServiceListingActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(ServiceListingActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(ServiceListingActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void actionbarViewItemClick(View view) {

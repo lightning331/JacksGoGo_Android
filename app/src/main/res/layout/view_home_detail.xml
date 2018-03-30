@@ -51,7 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -80,15 +79,16 @@
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:src="@mipmap/button_next_green"
+                android:layout_marginRight="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/btn_verified"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -110,6 +110,7 @@
             <ImageView
                 android:src="@mipmap/button_next_green"
                 android:layout_width="wrap_content"
+                android:layout_marginRight="4dp"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
@@ -154,7 +155,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -183,6 +183,7 @@
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:src="@mipmap/button_next_cyan"
+                android:layout_marginRight="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -191,7 +192,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -212,6 +212,7 @@
                 android:layout_weight="1"/>
             <ImageView
                 android:src="@mipmap/button_next_cyan"
+                android:layout_marginRight="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -265,7 +266,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -294,6 +294,7 @@
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:src="@mipmap/button_next_green"
+                android:layout_marginRight="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -302,7 +303,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -331,6 +331,7 @@
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:src="@mipmap/button_next_green"
+                android:layout_marginRight="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

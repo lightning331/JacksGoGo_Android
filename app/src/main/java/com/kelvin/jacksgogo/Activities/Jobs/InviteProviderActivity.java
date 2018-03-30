@@ -117,7 +117,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         if (currentUser == null) return;
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(mCategory.getID(), null, null, null, 0, 40);
+        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(mCategory.getID(), null, null, null, 0, 50);
         call.enqueue(new Callback<JGGInviteUsersResponse>() {
             @Override
             public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {

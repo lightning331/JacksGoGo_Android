@@ -122,7 +122,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (isLoggedIn("")) {
             progressDialog = createProgressDialog(mContext);
             JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-            Call<JGGGetAppsResponse> call = apiManager.getPendingAppointments(userID, 0, 40);
+            Call<JGGGetAppsResponse> call = apiManager.getPendingAppointments(userID, 0, 50);
             call.enqueue(new Callback<JGGGetAppsResponse>() {
                 @Override
                 public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -154,7 +154,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         for (JGGAppointmentModel job : jobs) {
             if (job.isQuickJob()) {
                 arrayLoadedQuickAppointments.add(job);
-            } else if (job.isRequest() == false && job.getAppointmentType() > 1) {
+            } else if (!job.isRequest() && job.getAppointmentType() > 1) {
                 arrayLoadedServicePackages.add(job);
             } else {
                 arrayLoadedPendingAppointments.add(job);
@@ -180,7 +180,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (isLoggedIn("Confirmed")) {
             progressDialog = createProgressDialog(mContext);
             JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getConfirmedAppointments(userID, 0, 40);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getConfirmedAppointments(userID, 0, 50);
             call.enqueue(new Callback<JGGGetAppsResponse>() {
                 @Override
                 public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -213,7 +213,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (isLoggedIn("History")) {
             progressDialog = createProgressDialog(mContext);
             JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getAppointmentHistory(userID, 0, 40);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getAppointmentHistory(userID, 0, 50);
             call.enqueue(new Callback<JGGGetAppsResponse>() {
                 @Override
                 public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {

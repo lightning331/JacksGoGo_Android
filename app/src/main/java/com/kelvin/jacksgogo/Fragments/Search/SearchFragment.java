@@ -38,6 +38,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.categories;
+import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
@@ -51,7 +53,7 @@ public class SearchFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView recyclerView;
-    private ArrayList<JGGCategoryModel> categories;
+    private ArrayList<JGGCategoryModel> mCategories;
     private SearchJobsAdapter jobAdapter;
     private SearchServicesAdapter serviceAdapter;
     private ProgressDialog progressDialog;
@@ -61,7 +63,6 @@ public class SearchFragment extends Fragment {
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType = SERVICES;
     private Intent mIntent;
-
 
     public SearchFragment() {
         // Required empty public constructor
@@ -104,14 +105,15 @@ public class SearchFragment extends Fragment {
     }
 
     public void refreshFragment(String textView) {
+
         progressDialog = Global.createProgressDialog(mContext);
-        if (JGGAppManager.getInstance(mContext).categories != null)
-            categories = JGGAppManager.getInstance(mContext).categories;
+        if (categories != null)
+            mCategories = categories;
         else
             loadCategories();
         appType = textView;
         if (appType.equals(SERVICES)) {
-            serviceAdapter = new SearchServicesAdapter(mContext, categories, mServices);
+            serviceAdapter = new SearchServicesAdapter(mContext, mCategories, mServices);
             serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
@@ -120,7 +122,7 @@ public class SearchFragment extends Fragment {
             });
             searchServices();
         } else if (appType.equals(JOBS)) {
-            jobAdapter = new SearchJobsAdapter(mContext, categories);
+            jobAdapter = new SearchJobsAdapter(mContext, mCategories);
             jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
@@ -138,39 +140,20 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private void loadCategories() {
-        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGCategoryResponse> call = apiManager.getCategory();
-        call.enqueue(new Callback<JGGCategoryResponse>() {
-            @Override
-            public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
-                //progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        JGGAppManager.getInstance(mContext).categories = response.body().getValue();
-                        categories = JGGAppManager.getInstance(mContext).categories;
-
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private boolean isLoggedIn() {
+        if (currentUser == null) {
+            showAlertDialog();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void searchServices() {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null, null, null, null, null, null, null, null, null, null);
+        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+                null, null, null, null, null,
+                null, null, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -179,7 +162,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         mServices = response.body().getValue();
 
-                        serviceAdapter.notifyDataChanged(categories, mServices);
+                        serviceAdapter.notifyDataChanged(mCategories, mServices);
                         serviceAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(serviceAdapter);
                     } else {
@@ -201,7 +184,9 @@ public class SearchFragment extends Fragment {
 
     private void searchJobs() {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null, null, null, null, null, null, null, null, null, null);
+        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+                null, null, null, null, null, null,
+                null, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -210,7 +195,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         mJobs = response.body().getValue();
 
-                        jobAdapter.notifyDataChanged(categories, mJobs);
+                        jobAdapter.notifyDataChanged(mCategories, mJobs);
                         jobAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(jobAdapter);
                     } else {
@@ -230,6 +215,35 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    private void loadCategories() {
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGCategoryResponse> call = apiManager.getCategory();
+        call.enqueue(new Callback<JGGCategoryResponse>() {
+            @Override
+            public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                //progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mCategories = response.body().getValue();
+                        categories = mCategories;
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void onViewHolderItemClick(View view) {
 
         if (view.getId() == R.id.btn_view_my_service) {
@@ -239,7 +253,6 @@ public class SearchFragment extends Fragment {
         } else if (view.getId() == R.id.btn_post_new) {
             if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
                 mIntent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
-                mIntent.putExtra(EDIT_STATUS, POST);
             } else {
                 showAlertDialog();
                 return;

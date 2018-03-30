@@ -68,7 +68,7 @@ public class SearchResultMainFragment extends Fragment {
         ActiveServiceAdapter adapter = new ActiveServiceAdapter(mContext);
         adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick() {
+            public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
                 intent.putExtra("is_post", false);
                 startActivity(intent);
@@ -90,10 +90,10 @@ public class SearchResultMainFragment extends Fragment {
 //                    Intent intent = new Intent(getActivity(), ServiceFilterActivity.class);
 //                    startActivity(intent);
                 } else if (view.getId() == R.id.btn_active_service_mapview) {
-                    ActiveServiceMapFragment activeServiceMapFragment = new ActiveServiceMapFragment();
+                    ActiveServiceMapFragment frag = new ActiveServiceMapFragment();
 
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.active_service_container, activeServiceMapFragment, activeServiceMapFragment.getTag());
+                    ft.replace(R.id.active_service_container, frag);
                     ft.addToBackStack("active_service");
                     ft.commit();
                 } else {
