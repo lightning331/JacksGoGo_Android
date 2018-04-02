@@ -32,10 +32,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -47,9 +45,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
@@ -301,6 +299,7 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         confirmedView.lblConfirmedTime.setText(postedTime);
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment);
+        // Make Appointment
         if (getAppointmentTime(mJob).equals(""))
             setAppointmentDate();
 
@@ -403,13 +402,6 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
         });
     }
 
-    private void onShowReviewFragment() {
-        mActivity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.app_detail_container, new JobReviewFragment())
-                .addToBackStack("review_fragment")
-                .commit();
-    }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_posted_job) {
@@ -428,6 +420,13 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
             Intent intent = new Intent(mContext, ServiceProviderActivity.class);
             startActivity(intent);
         }
+    }
+
+    private void onShowReviewFragment() {
+        mActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.app_detail_container, new JobReviewFragment())
+                .addToBackStack("review_fragment")
+                .commit();
     }
 
     public void onButtonPressed(Uri uri) {

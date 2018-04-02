@@ -22,7 +22,7 @@
                 android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:alpha="0.5"
+                android:alpha="0.55"
                 android:src="@mipmap/nurse" />
             <LinearLayout
                 android:layout_width="match_parent"

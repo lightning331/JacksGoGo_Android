@@ -21,7 +21,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomePostAppointment
 import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;

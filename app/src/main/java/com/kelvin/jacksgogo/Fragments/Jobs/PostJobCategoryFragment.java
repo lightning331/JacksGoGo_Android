@@ -30,9 +30,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class PostJobCategoryFragment extends Fragment {
 

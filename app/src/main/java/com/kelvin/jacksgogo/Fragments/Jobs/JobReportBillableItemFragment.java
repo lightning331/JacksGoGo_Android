@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Fragments.Search;
+package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,15 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -35,48 +33,34 @@ import com.yanzhenjie.album.api.widget.Widget;
 import java.io.File;
 import java.util.ArrayList;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_REPORT;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
-public class PostServiceDescribeFragment extends Fragment
-        implements View.OnClickListener, TextWatcher {
+public class JobReportBillableItemFragment extends Fragment implements TextWatcher {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private JobReportActivity mActivity;
+
+    private LinearLayout btnTakePhoto;
+    private EditText txtItemDesc;
+    private LinearLayout budgetLayout;
+    private EditText txtBudget;
+    private TextView btnSendApproval;
 
     private RecyclerView recyclerView;
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
 
-    private TextView lblTitle;
-    private TextView lblDescription;
-    private TextView lblTags;
-    private EditText txtServiceTitle;
-    private EditText txtServiceDesc;
-    private EditText txtServiceTag;
-    private LinearLayout btnTakePhoto;
-    private ImageView imgTakePhoto;
-    private TextView txtTakePhoto;
-    private RelativeLayout btnNext;
-    private TextView lblNext;
-
-    private String strTitle;
-    private String strDesc;
-    private String strTags;
-
-    private String appType;
-    private JGGAppointmentModel creatingApp;
-
-    public PostServiceDescribeFragment() {
+    public JobReportBillableItemFragment() {
         // Required empty public constructor
     }
 
-    public static PostServiceDescribeFragment newInstance(String type) {
-        PostServiceDescribeFragment fragment = new PostServiceDescribeFragment();
+    public static JobReportBillableItemFragment newInstance(String param1, String param2) {
+        JobReportBillableItemFragment fragment = new JobReportBillableItemFragment();
         Bundle args = new Bundle();
-        args.putString(APPOINTMENT_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +69,7 @@ public class PostServiceDescribeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            appType = getArguments().getString(APPOINTMENT_TYPE);
+
         }
     }
 
@@ -93,9 +77,7 @@ public class PostServiceDescribeFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
-
-        creatingApp = selectedAppointment;
+        View view = inflater.inflate(R.layout.fragment_job_report_billable_item, container, false);
 
         initView(view);
         initRecyclerView(view);
@@ -104,38 +86,29 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     private void initView(View view) {
-
-        lblTitle = view.findViewById(R.id.lbl_title);
-        lblDescription = view.findViewById(R.id.lbl_description);
-        lblTags = view.findViewById(R.id.lbl_tags);
-        txtServiceTitle = view.findViewById(R.id.txt_post_service_title);
-        txtServiceTitle.addTextChangedListener(this);
-        txtServiceDesc = view.findViewById(R.id.txt_post_service_description);
-        txtServiceDesc.addTextChangedListener(this);
-        txtServiceTag = view.findViewById(R.id.txt_post_service_tag);
-        txtServiceTag.addTextChangedListener(this);
-        btnTakePhoto = view.findViewById(R.id.btn_post_service_take_photo);
-        btnTakePhoto.setOnClickListener(this);
-        imgTakePhoto = view.findViewById(R.id.img_take_photo);
-        txtTakePhoto = view.findViewById(R.id.lbl_take_photo);
-        btnNext = view.findViewById(R.id.btn_post_service_next);
-        lblNext = view.findViewById(R.id.lbl_post_service_next);
-        if (appType.equals(JOBS)) {
-            lblTitle.setText(R.string.post_job_desc_title);
-            lblDescription.setText(R.string.post_job_desc_description);
-            lblTags.setText(R.string.post_job_desc_tag);
-            btnTakePhoto.setBackgroundResource(R.drawable.cyan_border_background);
-            imgTakePhoto.setImageResource(R.mipmap.icon_photo_cyan);
-            txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGCyan));
-        }
-        // Set Job Describe Data
-        txtServiceTitle.setText(creatingApp.getTitle());
-        txtServiceDesc.setText(creatingApp.getDescription());
-        txtServiceTag.setText(creatingApp.getTags());
+        txtItemDesc = view.findViewById(R.id.txt_billable_item_desc);
+        txtItemDesc.addTextChangedListener(this);
+        budgetLayout = view.findViewById(R.id.budget_layout);
+        txtBudget = view.findViewById(R.id.txt_billable_item_budget);
+        txtBudget.addTextChangedListener(this);
+        btnSendApproval = view.findViewById(R.id.btn_send_billable_item);
+        btnSendApproval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendBillableItemForApproval();
+            }
+        });
+        btnTakePhoto = view.findViewById(R.id.btn_item_take_photo);
+        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
     }
 
     private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.describe_photo_recycler_view);
+        recyclerView = view.findViewById(R.id.item_photo_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
 
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -151,7 +124,7 @@ public class PostServiceDescribeFragment extends Fragment
                     Uri imageUri = Uri.parse(new File(name).toString());
                     Intent intent = new Intent(mContext, JGGImageCropActivity.class);
                     intent.putExtra("imageUri", name);
-                    intent.putExtra(APPOINTMENT_TYPE, SERVICES);
+                    intent.putExtra(APPOINTMENT_TYPE, JOBS);
                     startActivityForResult(intent, 1);
                 } else {
                     selectImage();
@@ -159,6 +132,24 @@ public class PostServiceDescribeFragment extends Fragment
             }
         });
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private void sendBillableItemForApproval() {
+        if (txtItemDesc.length() > 0 && txtBudget.length() > 0) {
+            mActivity.setActionbarView(JOB_REPORT);
+            JobReportMainFragment frag = JobReportMainFragment.newInstance(PROVIDER.toString());
+            frag.setBillableItem(txtItemDesc.getText().toString(), Double.parseDouble(txtBudget.getText().toString()));
+            mActivity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.job_report_container, frag)
+                    .addToBackStack("report_main")
+                    .commit();
+        } else {
+            if (txtItemDesc.getText().toString().equals(""))
+                txtItemDesc.setBackgroundResource(R.drawable.red_border_background);
+            if (txtBudget.getText().toString().equals(""))
+                budgetLayout.setBackgroundResource(R.drawable.red_border_background);
+        }
     }
 
     private void selectImage() {
@@ -174,12 +165,12 @@ public class PostServiceDescribeFragment extends Fragment
                                 .title("Include Photos") // Title.
                                 .statusBarColor(ContextCompat.getColor(mContext, R.color.JGGGrey1)) // StatusBar color.
                                 .toolBarColor(Color.WHITE) // Toolbar color.
-                                .navigationBarColor(Color.GREEN) // Virtual NavigationBar color of Android5.0+.
-                                .mediaItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), Color.GREEN) // Image or video selection box.
-                                .bucketItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), ContextCompat.getColor(mContext, R.color.JGGGreen)) // Select the folder selection box.
+                                .navigationBarColor(Color.CYAN) // Virtual NavigationBar color of Android5.0+.
+                                .mediaItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGCyan), Color.CYAN) // Image or video selection box.
+                                .bucketItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGCyan), ContextCompat.getColor(mContext, R.color.JGGCyan)) // Select the folder selection box.
                                 .buttonStyle( // Used to configure the style of button when the image/video is not found.
                                         Widget.ButtonStyle.newLightBuilder(mContext) // With Widget's Builder model.
-                                                .setButtonSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), Color.WHITE) // Button selector.
+                                                .setButtonSelector(ContextCompat.getColor(mContext, R.color.JGGCyan), Color.WHITE) // Button selector.
                                                 .build()
                                 )
                                 .build()
@@ -188,9 +179,9 @@ public class PostServiceDescribeFragment extends Fragment
                     @Override
                     public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
+                        btnTakePhoto.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         mAdapter.notifyDataSetChanged(mAlbumFiles);
-                        btnTakePhoto.setVisibility(View.GONE);
                     }
                 })
                 .onCancel(new Action<String>() {
@@ -203,44 +194,16 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_post_service_next) {
-            setAppointmentData();
-        } else if (view.getId() == R.id.btn_post_service_take_photo) {
-            selectImage();
-        }
-    }
-
-    private void setAppointmentData() {
-        strTitle = txtServiceTitle.getText().toString();
-        strDesc = txtServiceDesc.getText().toString();
-        strTags = txtServiceTag.getText().toString();
-        creatingApp.setTitle(strTitle);
-        creatingApp.setDescription(strDesc);
-        creatingApp.setTags(strTags);
-        selectedAppointment = creatingApp;
-        listener.onNextButtonClick();
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (txtItemDesc.length() > 0)
+            txtItemDesc.setBackgroundResource(R.drawable.grey_border_background);
+        if (txtBudget.length() > 0)
+            budgetLayout.setBackgroundResource(R.drawable.grey_border_background);
     }
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (txtServiceTitle.length() > 0
-                && txtServiceDesc.length() > 0) {
-
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            btnNext.setBackgroundResource(R.drawable.green_background);
-            if (appType.equals(JOBS)) btnNext.setBackgroundResource(R.drawable.cyan_background);
-            btnNext.setOnClickListener(this);
-        } else {
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
-            btnNext.setBackgroundResource(R.drawable.grey_background);
-            btnNext.setClickable(false);
-        }
     }
 
     @Override
@@ -258,6 +221,7 @@ public class PostServiceDescribeFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((JobReportActivity) context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -269,16 +233,6 @@ public class PostServiceDescribeFragment extends Fragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onNextButtonClick();
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 
     public interface OnFragmentInteractionListener {

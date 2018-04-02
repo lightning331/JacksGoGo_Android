@@ -28,13 +28,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedCategory;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
-import static com.kelvin.jacksgogo.Utils.Global.selectedCategoryID;
+import static com.kelvin.jacksgogo.Utils.Global.getReportTypeID;
 
 public class PostJobMainTabFragment extends Fragment {
 
@@ -197,7 +196,7 @@ public class PostJobMainTabFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
 
             creatingJob = selectedAppointment;
-            selectedIds = selectedCategoryID(creatingJob.getReportType());
+            selectedIds = getReportTypeID(creatingJob.getReportType());
 
             reportAdapter = new AppointmentReportAdapter(mContext, true, JOBS);
             reportAdapter.setSelectedIds(selectedIds);

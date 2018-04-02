@@ -28,10 +28,10 @@ import com.kelvin.jacksgogo.Fragments.Profile.ProfileHomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.SignInFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 
 import io.fabric.sdk.android.Fabric;
 
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
@@ -101,12 +101,10 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
                 break;
             case R.id.navigation_profile:
                 onHideTopNavigationBar();
-                String username = JGGAppManager.getInstance(this).getUsernamePassword()[0];
-                if (!username.equals("")) {
-                    frag = ProfileHomeFragment.newInstance();
-                } else {
+                if (currentUser == null)
                     frag = SignInFragment.newInstance();
-                }
+                else
+                    frag = ProfileHomeFragment.newInstance();
                 break;
         }
         initTopNavigation(frag);

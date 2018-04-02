@@ -19,8 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
@@ -123,7 +123,7 @@ public class PostedProposalFragment extends Fragment {
             JGGUserBaseModel user = mProposal.getUserProfile().getUser();
             Picasso.with(mContext)
                     .load(user.getPhotoURL())
-                    .placeholder(null)
+                    .placeholder(R.mipmap.icon_profile)
                     .into(imgAvatar);
             lblUserName.setText(user.getUserName());
             if (user.getGivenName() == null)

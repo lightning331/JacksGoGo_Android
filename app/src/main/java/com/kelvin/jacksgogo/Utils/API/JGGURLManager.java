@@ -3,6 +3,8 @@ package com.kelvin.jacksgogo.Utils.API;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

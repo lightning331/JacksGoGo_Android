@@ -12,6 +12,7 @@ import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JGGImageGalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -22,7 +23,7 @@ public class JGGImageGalleryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private boolean isEdit;
     private OnItemClickListener mItemClickListener;
 
-    private List<AlbumFile> mAlbumFiles;
+    private List<AlbumFile> mAlbumFiles = null;
 
     public JGGImageGalleryAdapter(Context context, int itemSize, boolean isEdit, OnItemClickListener itemClickListener) {
         this.mContext = context;

@@ -19,7 +19,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.nolimit;

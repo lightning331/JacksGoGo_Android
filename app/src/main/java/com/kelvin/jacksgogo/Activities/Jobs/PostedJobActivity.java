@@ -41,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -190,8 +190,16 @@ public class PostedJobActivity extends AppCompatActivity {
                 .load(mJob.getUserProfile().getUser().getPhotoURL())
                 .placeholder(R.mipmap.icon_profile)
                 .into(imgAvatar);
-        lblUserName.setText(mJob.getUserProfile().getUser().getFullName());
-        ratingBar.setRating(mJob.getUserProfile().getUser().getRate().floatValue());
+        String userName = mJob.getUserProfile().getUser().getFullName();
+        if (mJob.getUserProfile().getUser().getSurname() == null)
+            lblUserName.setText(mJob.getUserProfile().getUser().getUserName());
+        else
+            lblUserName.setText(userName);
+        Double rating = mJob.getUserProfile().getUser().getRate();
+        if (rating == null)
+            ratingBar.setRating(0.0f);
+        else
+            ratingBar.setRating(rating.floatValue());
         // Tag View
         String tags = mJob.getTags();
         if (tags != null && tags.length() > 0) {

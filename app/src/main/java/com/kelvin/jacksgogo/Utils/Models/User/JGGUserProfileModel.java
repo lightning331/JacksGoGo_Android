@@ -53,10 +53,8 @@ public class JGGUserProfileModel {
     private String BillingMobileNo_Number;
     private String BillingMobileNo_Extension;
 
-    private String fullAddress;
-
     public String getFullAddress() {
-        fullAddress = "";
+        String fullAddress = "";
         if (getResidentialAddress_State() == null) {
             fullAddress = fullAddress + getResidentialAddress_Address() + ", " + getResidentialAddress_PostalCode();
         } else {

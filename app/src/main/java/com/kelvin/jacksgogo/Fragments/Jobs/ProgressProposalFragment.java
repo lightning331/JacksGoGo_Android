@@ -45,14 +45,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.open;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
@@ -120,7 +119,8 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
     public void setProposal(JGGProposalModel proposal) {
         mProposal = proposal;
         selectedProposal = mProposal;
-        mJob = mProposal.getAppointment();
+        mJob = selectedAppointment;
+        //mJob = mProposal.getAppointment();
     }
 
     @Override
@@ -218,21 +218,22 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
         //Provider invited to Job
         if (mProposal.getStatus() == JGGProposalStatus.open) {
             if (mProposal.isInvited()) {
+                // Invited from Client
                 imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
                 lblPostedJob.setText(R.string.invited_proposal_title);
                 bottomLayout.setVisibility(View.VISIBLE);
                 acceptLayout.setVisibility(View.VISIBLE);
+            } else {
+                // Waiting for Client's decision
+                setWaitingClientDecision();
             }
         } else if (mProposal.getStatus() == JGGProposalStatus.rejected) {
             // Client rejected provider's proposal
             setDeclineProposalStatus();
         } else if (mProposal.getStatus() == JGGProposalStatus.confirmed) {
 
-            lblPostedJob.setText(R.string.sent_proposal_title);
-            quotationView.btnViewQuotation.setVisibility(View.GONE);
-            quotationView.lblTitle.setText(R.string.waiting_client_decision);
-            quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
-            quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            // Waiting for Client's decision
+            setWaitingClientDecision();
 
             // Client Info view
             onShowClientInfoView();
@@ -290,6 +291,16 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
             paymentLayout.addView(paymentView);*/
     }
 
+    private void setWaitingClientDecision() {
+        bottomLayout.setVisibility(View.GONE);
+        lblPostedJob.setText(R.string.sent_proposal_title);
+        quotationView.btnViewQuotation.setVisibility(View.GONE);
+        quotationView.lblTitle.setText(R.string.waiting_client_decision);
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationLayout.addView(quotationView);
+    }
+
     private void setJobConfirmedStatus() {
         Date submitOn = mProposal.getSubmitOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
@@ -301,11 +312,13 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment);
 
         // Quotation View
+        quotationLayout.removeAllViews();
         quotationView.lblTime.setText(submitTime);
         quotationView.viewQuotationLayout.setVisibility(View.GONE);
         quotationView.awardedLayout.setVisibility(View.VISIBLE);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.imgRightButton.setVisibility(View.GONE);
         quotationView.lblQuotationCount.setText(R.string.proposal_accepted_title);
         quotationView.lblQuotationCount.setOnClickListener(this);
         quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
@@ -326,11 +339,6 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
         Date submitOn = mProposal.getSubmitOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
-        // Confirmed View
-        confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
-        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
-        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
-
         // Progress View
         progressLayout.addView(progressView);
         progressView.lblStartTime.setText(submitTime);
@@ -350,6 +358,11 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
                 mActivity.startActivity(intent);
             }
         });
+
+        // Confirmed View
+        confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
 
         // Footer Layout
 
@@ -403,6 +416,7 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
     }
 
     private void onShowClientInfoView() {
+        bottomLayout.setVisibility(View.VISIBLE);
         clientName = mJob.getUserProfile().getUser().getFullName();
         Picasso.with(mContext)
                 .load(mJob.getUserProfile().getUser().getPhotoURL())

@@ -33,11 +33,11 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedQuotation;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.Global.selectedCategoryID;
+import static com.kelvin.jacksgogo.Utils.Global.getReportTypeID;
 
 public class PostQuotationMainTabFragment extends Fragment implements View.OnClickListener {
 
@@ -191,7 +191,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             recyclerView.setAdapter(addressAdapter);
         } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
 
-            selectedIds = selectedCategoryID(mQuotation.getReportType());
+            selectedIds = getReportTypeID(mQuotation.getReportType());
 
             recyclerView.setVisibility(View.VISIBLE);
             reportAdapter = new AppointmentReportAdapter(mContext, isRequest, SERVICES);

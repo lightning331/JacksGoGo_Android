@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Utils.API;
+package com.kelvin.jacksgogo.Utils;
 
 import android.app.Activity;
 import android.content.Context;

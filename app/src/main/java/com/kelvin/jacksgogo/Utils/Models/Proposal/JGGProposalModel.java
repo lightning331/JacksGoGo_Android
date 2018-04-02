@@ -24,7 +24,7 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
-    private String BidBreakDown;
+    private String Breakdown;
     private Boolean RescheduleAllowed;
     private Integer RescheduleTime;
     private String RescheduleNote;
@@ -33,7 +33,7 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
     private String CancellationNote;
     private Boolean IsInvited;
     private String SubmitOn;
-    private String ExpireOn;
+    private String LastUpdatedOn;
     private Integer Status;
     private boolean IsViewed;
     private boolean IsDeleted;
@@ -94,12 +94,12 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
         BudgetTo = budgetTo;
     }
 
-    public String getBidBreakDown() {
-        return BidBreakDown;
+    public String getBreakdown() {
+        return Breakdown;
     }
 
-    public void setBidBreakDown(String bidBreakDown) {
-        BidBreakDown = bidBreakDown;
+    public void setBreakdown(String breakdown) {
+        Breakdown = breakdown;
     }
 
     public Double getBudget() {
@@ -174,12 +174,12 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
         SubmitOn = appointmentMonthDateString(submitOn);
     }
 
-    public Date getExpireOn() {
-        return appointmentMonthDate(ExpireOn);
+    public Date getLastUpdatedOn() {
+        return appointmentMonthDate(LastUpdatedOn);
     }
 
-    public void setExpireOn(Date expireOn) {
-        ExpireOn = appointmentMonthDateString(expireOn);
+    public void setLastUpdatedOn(Date lastUpdatedOn) {
+        LastUpdatedOn = appointmentMonthDateString(lastUpdatedOn);
     }
 
     public JGGProposalStatus getStatus() {

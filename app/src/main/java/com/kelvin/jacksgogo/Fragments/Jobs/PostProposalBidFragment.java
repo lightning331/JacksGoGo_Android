@@ -17,8 +17,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 
 public class PostProposalBidFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -97,7 +97,7 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
         mProposal = selectedProposal;
         if (mProposal.getBudget() != null) {
             txtAmount.setText(String.valueOf(selectedProposal.getBudget()));
-            txtBidDesc.setText(mProposal.getBidBreakDown());
+            txtBidDesc.setText(mProposal.getBreakdown());
         }
     }
 
@@ -118,7 +118,7 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
         if (view.getId() == R.id.btn_post_proposal_next) {
             String amount = txtAmount.getText().toString();
             mProposal.setBudget(Double.parseDouble(amount));
-            mProposal.setBidBreakDown(txtBidDesc.getText().toString());
+            mProposal.setBreakdown(txtBidDesc.getText().toString());
             selectedProposal = mProposal;
             listener.onNextButtonClick();
         }

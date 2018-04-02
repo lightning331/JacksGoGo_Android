@@ -76,11 +76,11 @@ public class AppointmentReportAdapter extends RecyclerView.Adapter<RecyclerView.
             int id = list.get(position - 1).getId();
 
             if (selectedIds.contains(id)) {
-                //if item is selected then,set foreground color of FrameLayout.
+                // item is selected then,set foreground color of FrameLayout.
                 viewHolder.btnBackground.setBackgroundResource(R.drawable.yellow_background);
                 viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
             } else {
-                //else remove selected item color.
+                // remove selected item color.
                 viewHolder.btnBackground.setBackgroundResource(R.drawable.green_border_background);
                 viewHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
                 if (appointmentType.equals(JOBS)) {

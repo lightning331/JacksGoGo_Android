@@ -44,10 +44,9 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.APPOINTMENT;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_DETAILS;
-import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_REPORT;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
@@ -93,12 +92,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
             getProposalsByJob();
         } else {
             actionbarView.setDeleteJobStatus();
-            if (mJob.getProposal() == null)
-                getProposedStatus();
-            else {
-                mProposal = mJob.getProposal();
-                onProgressProposalFragment();
-            }
+            getProposedStatus();
         }
 
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
@@ -159,7 +153,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         }
     }
 
-    private void getProposalsByJob() {
+    public void getProposalsByJob() {
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 50);
         call.enqueue(new Callback<JGGProposalResponse>() {
@@ -216,6 +210,40 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         });
     }
 
+    public void deleteJob(String reason) {
+        selectedAppointment.setStatus(deleted);
+        selectedAppointment.setReason(reason);
+        mJob = selectedAppointment;
+        progressDialog = createProgressDialog(this);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        String jobID = mJob.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        deleteJobFinished();
+                        frag.onRefreshView();
+                    } else {
+                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     private void onProgressJobFragment() {
         frag = new ProgressJobFragment();
         getSupportFragmentManager()
@@ -255,15 +283,6 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
             return;
         }
         popupMenu.show();
-    }
-
-    private void backToEditJobMainFragment() {
-        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, AppointmentType.UNKNOWN);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_detail_container, PostQuotationSummaryFragment.newInstance(false))
-                .commit();
     }
 
     public void setStatus(JGGActionbarView.EditStatus status) {
@@ -308,40 +327,6 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         alertDialog.show();
     }
 
-    public void deleteJob(String reason) {
-        selectedAppointment.setStatus(deleted);
-        selectedAppointment.setReason(reason);
-        mJob = selectedAppointment;
-        progressDialog = createProgressDialog(this);
-
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        String jobID = mJob.getID();
-        Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
-        call.enqueue(new Callback<JGGBaseResponse>() {
-            @Override
-            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        deleteJobFinished();
-                        frag.onRefreshView();
-                    } else {
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-    }
-
     public void deleteJobFinished() {
         lblCancel.setVisibility(View.VISIBLE);
         actionbarView.setDeleteJobStatus();
@@ -367,6 +352,15 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
             }
             return true;
         }
+    }
+
+    private void backToEditJobMainFragment() {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_MAIN, AppointmentType.UNKNOWN);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.app_detail_container, PostQuotationSummaryFragment.newInstance(false))
+                .commit();
     }
 
     @Override

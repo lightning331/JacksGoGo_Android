@@ -45,19 +45,18 @@
                     android:background="@color/JGGWhite">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:gravity="center"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal">
                         <LinearLayout
                             android:layout_width="110dp"
                             android:layout_height="match_parent"
+                            android:gravity="center"
                             android:orientation="vertical">
                             <ImageView
                                 android:id="@+id/img_category_icon"
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="10dp"
                                 android:src="@mipmap/icon_cat_cooking_baking"/>
                             <TextView
                                 android:id="@+id/lbl_category_name"

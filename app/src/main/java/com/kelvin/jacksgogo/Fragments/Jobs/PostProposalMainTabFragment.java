@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.POST;

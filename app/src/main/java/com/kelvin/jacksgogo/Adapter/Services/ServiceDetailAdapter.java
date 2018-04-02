@@ -27,7 +27,7 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -35,7 +35,6 @@ import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudget;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
-import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
 /**
  * Created by PUMA on 11/7/2017.
@@ -135,10 +134,10 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     View requestView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
                     JobDetailDescriptionCell rescheduleViewHolder = new JobDetailDescriptionCell(requestView);
                     rescheduleViewHolder.descriptionImage.setImageResource(R.mipmap.icon_reschedule);
-                    if (mService.getProposal() != null)
-                        if (mService.getProposal().isRescheduleAllowed())
-                            rescheduleViewHolder.description.setText(getDaysString(Long.valueOf(mService.getProposal().getRescheduleTime())));
-                        else
+//                    if (mService.getProposal() != null)
+//                        if (mService.getProposal().isRescheduleAllowed())
+//                            rescheduleViewHolder.description.setText(getDaysString(Long.valueOf(mService.getProposal().getRescheduleTime())));
+//                        else
                             rescheduleViewHolder.description.setText("No rescheduling allowed.");
                     rescheduleViewHolder.setTitle("Rescheduling:", true);
 

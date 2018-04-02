@@ -6,7 +6,6 @@ import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
 import com.kelvin.jacksgogo.Utils.Global.JGGJobStatus;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
-import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.ArrayList;
@@ -19,23 +18,22 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
 
     private String ID;
     private String CategoryID;
-    private String ExpiredOn;   // Originally date type
     private String Repetition;
+    private String Reason;
     private Double BudgetFrom;
     private Double BudgetTo;
     private Double Budget;
     private boolean IsRequest;
     private boolean IsRescheduled;
     private boolean IsQuickJob;
+    private boolean IsQuotation;
     private Integer AppointmentType;
     private Integer RepetitionType;
     private Integer BudgetType;
     private Integer Status;
-    private String Reason;
     private int ReportType = 0;
     private int ViewCount = 0;
     private JGGCategoryModel Category = new JGGCategoryModel();
-    private JGGProposalModel Proposal = new JGGProposalModel();
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
     private ArrayList<String> AttachmentURLs;
 
@@ -135,14 +133,6 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
         Budget = budget;
     }
 
-    public String getExpiredOn() {
-        return ExpiredOn;
-    }
-
-    public void setExpiredOn(String expiredOn) {
-        ExpiredOn = expiredOn;
-    }
-
     public JGGJobStatus getStatus() {
         return JGGJobStatus.valueOf(Status);
     }
@@ -187,6 +177,14 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
         IsQuickJob = quickJob;
     }
 
+    public boolean isQuotation() {
+        return IsQuotation;
+    }
+
+    public void setQuotation(boolean quotation) {
+        IsQuotation = quotation;
+    }
+
     public int getViewCount() {
         return ViewCount;
     }
@@ -201,14 +199,6 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
 
     public void setSessions(ArrayList<JGGTimeSlotModel> sessions) {
         Sessions = sessions;
-    }
-
-    public JGGProposalModel getProposal() {
-        return Proposal;
-    }
-
-    public void setProposal(JGGProposalModel proposal) {
-        Proposal = proposal;
     }
 
     public void setRepetition(String repetition) {

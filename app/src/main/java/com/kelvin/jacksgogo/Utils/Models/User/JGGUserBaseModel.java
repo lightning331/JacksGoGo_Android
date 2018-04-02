@@ -34,6 +34,8 @@ public class JGGUserBaseModel {
     private String fullName;
 
     public String getFullName() {
+        if (Surname == null || GivenName == null)
+            return UserName;
         return Surname + " " + GivenName;
     }
 

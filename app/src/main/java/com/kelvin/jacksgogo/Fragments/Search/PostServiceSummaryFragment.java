@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -35,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;

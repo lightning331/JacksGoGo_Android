@@ -94,10 +94,15 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             cellView.lbl_Title.setText(appointment.getTitle());
             cellView.lbl_Comment.setText(appointment.getDescription());
-            String dateString = appointment.getPostOn();
-            Date appDay = appointmentMonthDate(dateString);
-            cellView.lbl_Day.setText(appointmentDay(appDay));
-            cellView.lbl_Month.setText(appointmentMonth(appDay));
+            if (appointment.getSessions() == null || appointment.getSessions().size() == 0) {
+                cellView.lbl_Day.setText("");
+                cellView.lbl_Month.setText("");
+            } else {
+                String dateString = appointment.getSessions().get(0).getStartOn();
+                Date appDay = appointmentMonthDate(dateString);
+                cellView.lbl_Day.setText(appointmentDay(appDay));
+                cellView.lbl_Month.setText(appointmentMonth(appDay));
+            }
             Picasso.with(mContext)
                     .load(appointment.getUserProfile().getUser().getPhotoURL())
                     .placeholder(R.mipmap.icon_profile)

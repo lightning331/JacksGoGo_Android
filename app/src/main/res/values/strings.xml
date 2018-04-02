@@ -200,6 +200,8 @@
     <string name="invite_header_title">Here are some recommendations for your posted job. Inviting people to your job increases the chances of finding a perfect match.</string>
 
     <string name="accept_bid_title">Accept Bid</string>
+    <string name="job_report_tools_title">Add Tools</string>
+    <string name="job_report_billable_title">Add Billable Item</string>
     <string name="job_report_title">Job Report</string>
     <string name="edit_job_back">Back</string>
     <string name="accept_bid_header_title">Congratulations on finding a good match!</string>

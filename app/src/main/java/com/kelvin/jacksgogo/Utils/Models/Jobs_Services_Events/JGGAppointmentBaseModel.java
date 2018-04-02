@@ -20,6 +20,7 @@ public class JGGAppointmentBaseModel {
     private String UserProfileID;
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private String PostOn;  // Originally date type
+    private String ExpiredOn;  // Originally date type
     private JGGRegionModel Region = new JGGRegionModel();
     private JGGCurrencyModel Currency = new JGGCurrencyModel();
     private JGGAddressModel Address = new JGGAddressModel();
@@ -107,6 +108,14 @@ public class JGGAppointmentBaseModel {
 
     public void setPostOn(String postOn) {
         PostOn = postOn;
+    }
+
+    public String getExpiredOn() {
+        return ExpiredOn;
+    }
+
+    public void setExpiredOn(String expiredOn) {
+        ExpiredOn = expiredOn;
     }
 
     public JGGAddressModel getAddress() {

@@ -73,6 +73,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         BID,
         ACCEPT_BIDE,
         JOB_REPORT,
+        ADD_TOOLS,
+        ADD_BILLABLE_ITEM,
         POST_PROPOSAL,
         JOB_DETAILS,
         EDIT_JOB
@@ -246,6 +248,16 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 moreButtonsLayout.setVisibility(INVISIBLE);
                 moreButtonsLayout.setClickable(false);
                 setOrangeBackButton(R.string.job_report_title, "");
+                break;
+            case ADD_TOOLS:
+                moreButtonsLayout.setVisibility(INVISIBLE);
+                moreButtonsLayout.setClickable(false);
+                setOrangeBackButton(R.string.job_report_tools_title, "");
+                break;
+            case ADD_BILLABLE_ITEM:
+                moreButtonsLayout.setVisibility(INVISIBLE);
+                moreButtonsLayout.setClickable(false);
+                setOrangeBackButton(R.string.job_report_billable_title, "");
                 break;
             case EDIT_JOB:
                 setOrangeBackButton(R.string.title_empty, "Back");

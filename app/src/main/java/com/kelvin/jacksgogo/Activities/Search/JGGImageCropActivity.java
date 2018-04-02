@@ -15,6 +15,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.Global.USERS;
+
 public class JGGImageCropActivity extends AppCompatActivity
         implements CropImageView.OnSetImageUriCompleteListener,
         CropImageView.OnCropImageCompleteListener,
@@ -28,6 +34,7 @@ public class JGGImageCropActivity extends AppCompatActivity
     private CropImageView mCropImageView;
     private LinearLayout cropButtonLayout;
 
+    private String appType;
     private Uri imageUri;
 
     @Override
@@ -37,6 +44,7 @@ public class JGGImageCropActivity extends AppCompatActivity
 
         Bundle extra = getIntent().getExtras();
         String filePath = extra.getString("imageUri");
+        appType = extra.getString(APPOINTMENT_TYPE);
         imageUri = Uri.fromFile(new File(filePath));
 
         initView();
@@ -55,6 +63,15 @@ public class JGGImageCropActivity extends AppCompatActivity
         btnCrop.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         btnDone.setOnClickListener(this);
+
+        if (appType.equals(SERVICES))
+            btnClose.setImageResource(R.mipmap.button_close_round_green);
+        else if (appType.equals(JOBS))
+            btnClose.setImageResource(R.mipmap.button_close_round_cyan);
+        else if (appType.equals(EVENTS))
+            btnClose.setImageResource(R.mipmap.button_close_round_purple);
+        else if (appType.equals(USERS))
+            btnClose.setImageResource(R.mipmap.button_close_round_orange);
     }
 
     private void initCropImageView(Uri uri) {

@@ -39,9 +39,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -80,7 +80,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                 if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
                     intent.putExtra(EDIT_STATUS, VIEW);
                 } else {
-                    if (selectedAppointment.getProposal() == null)
+                    if (selectedProposal == null)
                         intent.putExtra(EDIT_STATUS, POST);
                     else
                         intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);

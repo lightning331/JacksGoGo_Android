@@ -12,9 +12,9 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeSignOutCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
-import com.squareup.picasso.Picasso;
+
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 /**
  * Created by PUMA on 1/27/2018.
@@ -34,14 +34,14 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
 
     public ProfileHomeAdapter(Context context) {
         mContext = context;
-        user = JGGAppManager.getInstance(mContext).currentUser;
+        user = currentUser;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_profile_home_header, parent, false);
-            ProfileHomeHeaderCell header = new ProfileHomeHeaderCell(view);
+            ProfileHomeHeaderCell header = new ProfileHomeHeaderCell(view, mContext);
             return header;
         } else if (viewType == JOINED_GOCLUB_TYPE
                 || viewType == SETTINGS_TYPE
@@ -61,15 +61,7 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ProfileHomeHeaderCell) {
             ProfileHomeHeaderCell header = (ProfileHomeHeaderCell) holder;
-            Picasso.with(mContext)
-                    .load(user.getUser().getPhotoURL())
-                    .placeholder(null)
-                    .into(header.avatar);
-            Picasso.with(mContext)
-                    .load(user.getUser().getPhotoURL())
-                    .placeholder(null)
-                    .into(header.imgBackground);
-            header.lblUserName.setText(user.getUser().getFullName());
+            header.setData(user);
             header.btnViewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

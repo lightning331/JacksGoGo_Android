@@ -83,6 +83,7 @@
                     android:textSize="@dimen/caption_font_size"
                     android:text="Review"/>
             </LinearLayout>
+
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/job_tip_layout"
@@ -105,6 +106,7 @@
                     android:textSize="@dimen/caption_font_size"
                     android:text="Tip"/>
             </LinearLayout>
+
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/job_rehire_layout"

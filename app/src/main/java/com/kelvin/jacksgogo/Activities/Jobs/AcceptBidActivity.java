@@ -15,7 +15,6 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -27,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedProposal;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
@@ -86,6 +85,17 @@ public class AcceptBidActivity extends AppCompatActivity implements View.OnClick
         lblCategory.setText(mProposal.getAppointment().getCategory().getName());
         // Time
         lblTime.setText(getAppointmentTime(mProposal.getAppointment()));
+        // User Info
+        Picasso.with(this)
+                .load(mProposal.getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(userAvatar);
+        lblUserName.setText(mProposal.getUserProfile().getUser().getFullName());
+        Double rating = mProposal.getUserProfile().getUser().getRate();
+        if (rating == null)
+            ratingBar.setRating(0);
+        else
+            ratingBar.setRating(rating.floatValue());
     }
 
     private void approveProposal() {

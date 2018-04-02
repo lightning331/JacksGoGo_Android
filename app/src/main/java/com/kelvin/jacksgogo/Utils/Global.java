@@ -244,7 +244,7 @@ public class Global {
         }
     }
 
-    public static List<Integer> selectedCategoryID(int reportType) {
+    public static List<Integer> getReportTypeID(int reportType) {
         List<Integer> array = new ArrayList<>();
         switch (reportType) {
             case 1:

@@ -49,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
 import static com.kelvin.jacksgogo.Utils.Global.USERS;
@@ -189,6 +189,7 @@ public class EditProfileActivity extends AppCompatActivity implements
         mUser.setBusinessDetail(txtCompanyName.getText().toString());
         mUser.setCredentialDetail(txtCredential.getText().toString());
         mUser.setTagList(txtTags.getText().toString());
+        mUserProfile.setUser(mUser);
 
         progressDialog = Global.createProgressDialog(this);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
@@ -233,6 +234,7 @@ public class EditProfileActivity extends AppCompatActivity implements
                     Uri imageUri = Uri.parse(new File(name).toString());
                     Intent intent = new Intent(EditProfileActivity.this, JGGImageCropActivity.class);
                     intent.putExtra("imageUri", name);
+                    intent.putExtra(APPOINTMENT_TYPE, USERS);
                     startActivityForResult(intent, 1);
                 } else {
                     selectImage();

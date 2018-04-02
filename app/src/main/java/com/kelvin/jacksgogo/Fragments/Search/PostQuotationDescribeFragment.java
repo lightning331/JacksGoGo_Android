@@ -32,7 +32,7 @@ import com.yanzhenjie.album.api.widget.Widget;
 
 import java.util.ArrayList;
 
-import static com.kelvin.jacksgogo.Utils.API.JGGAppManager.selectedQuotation;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedQuotation;
 
 public class PostQuotationDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 

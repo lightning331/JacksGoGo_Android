@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.API.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
@@ -18,6 +18,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.regions;
 
 public class JGGSplashActivity extends AppCompatActivity {
 
@@ -60,7 +62,7 @@ public class JGGSplashActivity extends AppCompatActivity {
             public void onResponse(Call<JGGRegionResponse> call, Response<JGGRegionResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        JGGAppManager.getInstance(JGGSplashActivity.this).regions = response.body().getValue();
+                        regions = response.body().getValue();
                         autoAuthorize();
                     } else {
                         Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
