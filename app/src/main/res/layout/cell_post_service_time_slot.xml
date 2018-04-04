@@ -49,8 +49,8 @@
             <ImageView
                 android:id="@+id/btn_time_slots_edit"
                 android:text="Book"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:fontFamily="@font/mulibold"
@@ -60,8 +60,8 @@
             <ImageView
                 android:id="@+id/btn_time_slots_delete"
                 android:text="Book"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginRight="15dp"
                 android:gravity="center"
                 android:fontFamily="@font/mulibold"

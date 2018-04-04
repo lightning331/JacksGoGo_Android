@@ -24,6 +24,7 @@ import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
@@ -254,23 +258,28 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         builder.btnCalendarOk.setText("Done");
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
             @Override
-            public void onDoneButtonClick(View view, String month, String day, String year) {
+            public void onDoneButtonClick(View view, List<CalendarDay> dates) {
                 if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-                    try {
-                        Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
-                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        selectedDay = dateFormat.format(varDate);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
-                    lblDate.setText(day + " " + month);
                     alertDialog.dismiss();
-                    if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
-                        onNextButtonEnable();
+                    if (dates.size() > 0) {
+                        String year = getAppointmentYear(dates.get(0).getDate());
+                        String month = getAppointmentMonth(dates.get(0).getDate());
+                        String day = getAppointmentDay(dates.get(0).getDate());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                        try {
+                            Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
+                            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            selectedDay = dateFormat.format(varDate);
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                            e.printStackTrace();
+                        }
+                        lblDate.setText(day + " " + month);
+                        if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
+                            onNextButtonEnable();
+                    }
                 }
             }
         });

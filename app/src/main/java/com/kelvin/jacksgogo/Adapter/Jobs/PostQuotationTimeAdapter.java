@@ -1,7 +1,6 @@
 package com.kelvin.jacksgogo.Adapter.Jobs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,15 +13,11 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCel
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeSlot;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeSlotPosition;
 

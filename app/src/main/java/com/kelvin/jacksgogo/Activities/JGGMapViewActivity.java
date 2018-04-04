@@ -132,13 +132,13 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
-                if (view.getId() == R.id.btn_back) {
+                if (view.getId() == R.id.btn_more) {
                     Gson gson = new Gson();
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("result", gson.toJson(mAddress));
                     setResult(Activity.RESULT_OK, returnIntent);
-                    JGGMapViewActivity.this.finish();
                 }
+                JGGMapViewActivity.this.finish();
             }
         });
 

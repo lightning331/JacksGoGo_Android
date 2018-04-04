@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.CustomView.JGGCalendarDecorator;
+import com.kelvin.jacksgogo.CustomView.JGGCalendarDotDecorator;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -15,6 +17,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_MULTIPLE;
 
 /**
  * Created by PUMA on 1/20/2018.
@@ -32,6 +39,7 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
     private AppointmentType mType;
     private int okButtonColor;
     private int cancelButtonColor;
+    private int textColor;
     private Drawable leftArrow;
     private Drawable rightArrow;
 
@@ -44,21 +52,30 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
             cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGGreen10Percent);
             leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_green);
             rightArrow = mContext.getResources().getDrawable(R.mipmap.button_next_green);
+            textColor = R.style.GreenTextAppearance;
         } else if (mType == AppointmentType.JOBS) {
             okButtonColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
             cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGCyan10Percent);
             leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_cyan);
             rightArrow = mContext.getResources().getDrawable(R.mipmap.button_next_cyan);
+            textColor = R.style.CyanTextAppearance;
         } else if (mType == AppointmentType.GOCLUB) {
             okButtonColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
             cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGPurple10Percent);
             leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_purple);
             rightArrow = mContext.getResources().getDrawable(R.mipmap.button_next_purple);
+            textColor = R.style.PurpleTextAppearance;
+        } else if (mType == AppointmentType.USERS) {
+            okButtonColor = ContextCompat.getColor(mContext, R.color.JGGOrange);
+            cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGOrange10Percent);
+            leftArrow = mContext.getResources().getDrawable(R.mipmap.button_previous_orange);
+            rightArrow = mContext.getResources().getDrawable(R.mipmap.button_next_orange);
+            textColor = R.style.OrangeTextAppearance;
         }
-        init();
+        initView();
     }
 
-    private void init() {
+    private void initView() {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.dialog_calendar, null);
 
@@ -71,38 +88,52 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
         btnCalendarCancel.setBackgroundColor(cancelButtonColor);
         btnCalendarCancel.setTextColor(okButtonColor);
         calendar.setArrowColor(okButtonColor);
-        calendar.setSelectionColor(okButtonColor);
         calendar.setLeftArrowMask(leftArrow);
         calendar.setRightArrowMask(rightArrow);
+        calendar.setDateTextAppearance(textColor);
+        setCurrentDateDot();
+        setSelectedDateCircle();
 
         this.setView(view);
     }
 
+    public void setSelectedDate(Date date) {
+        calendar.setSelectedDate(date);
+    }
+
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        setCurrentDateDot();
+        setSelectedDateCircle();
         btnCalendarOk.setBackgroundColor(okButtonColor);
         btnCalendarOk.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
         btnCalendarOk.setOnClickListener(this);
     }
 
+    private void setCurrentDateDot() {
+        List<CalendarDay> currentDateList = new ArrayList<>();
+        currentDateList.add(new CalendarDay(new Date()));
+        calendar.addDecorator(new JGGCalendarDotDecorator(mContext, currentDateList, mType));
+    }
+
+    private void setSelectedDateCircle() {
+        List<CalendarDay> selectedDateList = new ArrayList<>();
+        selectedDateList.add(calendar.getSelectedDate());
+        calendar.addDecorator(new JGGCalendarDecorator(mContext, selectedDateList, mType));
+    }
+
     @Override
     public void onClick(View view) {
         if (calendar.getSelectedDate() != null) {
-            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
-            SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-            String month = monthFormat.format(calendar.getSelectedDate().getDate());
-            String day = dayFormat.format(calendar.getSelectedDate().getDate());
-            String year = yearFormat.format(calendar.getSelectedDate().getDate());
-            listener.onDoneButtonClick(view, month, day, year);
+            listener.onDoneButtonClick(view, calendar.getSelectedDates());
         } else
-            listener.onDoneButtonClick(view, null, null, null);
+            listener.onDoneButtonClick(view, null);
     }
 
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onDoneButtonClick(View view, String month, String day, String year);
+        void onDoneButtonClick(View view, List<CalendarDay> dates);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

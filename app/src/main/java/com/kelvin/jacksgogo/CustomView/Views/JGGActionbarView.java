@@ -148,10 +148,17 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 break;
             case LOCATION:
                 setGreenBackButton("", R.string.title_location);
-                if (type == AppointmentType.JOBS)
+                mMoreButtonImage.setImageResource(R.mipmap.button_tick_green);
+                if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_location);
-                else if (type == AppointmentType.USERS)
+                    mMoreButtonImage.setImageResource(R.mipmap.button_tick_cyan);
+                } else if (type == AppointmentType.EVENT) {
                     setOrangeBackButton(R.string.title_location, "");
+                    mMoreButtonImage.setImageResource(R.mipmap.button_tick_purple);
+                } else if (type == AppointmentType.USERS) {
+                    setOrangeBackButton(R.string.title_location, "");
+                    mMoreButtonImage.setImageResource(R.mipmap.button_tick_orange);
+                }
                 break;
             case DETAILS:
                 mTitleTextView.setText("");

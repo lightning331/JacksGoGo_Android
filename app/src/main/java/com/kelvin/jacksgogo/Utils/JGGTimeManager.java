@@ -1,7 +1,5 @@
 package com.kelvin.jacksgogo.Utils;
 
-import android.view.View;
-
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
@@ -22,7 +20,7 @@ public class JGGTimeManager {
     public static String TIMESLOT_AFTERNOON = "01:00 PM";
     public static String TIMESLOT_EVEN = "04:00 PM";
 
-    public static String appointmentDay(Date date) {
+    public static String getAppointmentDay(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
             String day = dayFormat.format(date);
@@ -31,11 +29,20 @@ public class JGGTimeManager {
         return "";
     }
 
-    public static String appointmentMonth(Date date) {
+    public static String getAppointmentMonth(Date date) {
         if (date != null) {
             SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
             String month = monthFormat.format(date);
             return month;
+        }
+        return "";
+    }
+
+    public static String getAppointmentYear(Date date) {
+        if (date != null) {
+            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+            String year = yearFormat.format(date);
+            return year;
         }
         return "";
     }

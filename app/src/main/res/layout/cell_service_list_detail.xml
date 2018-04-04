@@ -65,7 +65,7 @@
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:text="Tennis Coach"
-                    android:id="@+id/lbl_service_detail_category_name"
+                    android:id="@+id/lbl_service_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -101,20 +101,13 @@
                     android:fontFamily="@font/mulibold"
                     android:textSize="@dimen/caption_font_size"/>
                 <TextView
-                    android:text="Very Good"
-                    android:id="@+id/lbl_service_detail_score_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/JGGGrey2"
-                    android:fontFamily="@font/muliregular"
-                    android:textSize="@dimen/caption_font_size"/>
-                <TextView
-                    android:text="(327)"
+                    android:text="(327 reviews)"
                     android:id="@+id/lbl_service_detail_review_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="5dp"
                     android:textColor="@color/JGGGrey2"
                     android:fontFamily="@font/muliregular"
@@ -169,7 +162,7 @@
                     android:textSize="@dimen/list_title_font_size" />
             </LinearLayout>
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/service_detail_booked_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -189,6 +182,8 @@
                     android:text="people have booked this service!"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGOrange"
                     android:fontFamily="@font/muliregular"

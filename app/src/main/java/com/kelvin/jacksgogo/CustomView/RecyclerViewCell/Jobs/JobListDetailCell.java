@@ -27,7 +27,7 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
     public RelativeLayout likeButtonLayout;
     public ImageView btnLike;
     public ImageView imgCategory;
-    public TextView lblCategoryName;
+    public TextView lblJobTitle;
     public TextView lblTime;
     public TextView lblAddress;
     public TextView price;
@@ -42,7 +42,7 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
         likeButtonLayout = itemView.findViewById(R.id.like_button_layout);
         btnLike = itemView.findViewById(R.id.btn_like);
         imgCategory = itemView.findViewById(R.id.img_category);
-        lblCategoryName = itemView.findViewById(R.id.lbl_category_name);
+        lblJobTitle = itemView.findViewById(R.id.lbl_job_title);
         lblTime = itemView.findViewById(R.id.lbl_job_detail_end_time);
         lblAddress = itemView.findViewById(R.id.lbl_service_detail_address);
         price = itemView.findViewById(R.id.lbl_service_detail_price);
@@ -56,7 +56,8 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
                 .load(job.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategoryName.setText(job.getCategory().getName());
+        // Job title
+        lblJobTitle.setText(job.getTitle());
         // Address
         if (job.getAddress().getStreet() == null)
             lblAddress.setText(job.getAddress().getAddress());

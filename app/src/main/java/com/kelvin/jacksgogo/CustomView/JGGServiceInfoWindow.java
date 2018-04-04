@@ -34,7 +34,7 @@ public class JGGServiceInfoWindow implements GoogleMap.InfoWindowAdapter {
 
     private ImageView imgPhoto;
     private ImageView imgCategory;
-    private TextView lblCategoryName;
+    private TextView lblServiceTitle;
     private MaterialRatingBar rateBar;
     private TextView lblReviewCount;
     private TextView lblAddress;
@@ -50,7 +50,7 @@ public class JGGServiceInfoWindow implements GoogleMap.InfoWindowAdapter {
 
         imgPhoto = contentView.findViewById(R.id.img_service_info_window_photo);
         imgCategory = contentView.findViewById(R.id.img_service_info_window_category);
-        lblCategoryName = contentView.findViewById(R.id.lbl_service_info_window_category_name);
+        lblServiceTitle = contentView.findViewById(R.id.lbl_service_info_title);
         rateBar = contentView.findViewById(R.id.service_info_window_user_ratingbar);
         lblReviewCount = contentView.findViewById(R.id.lbl_service_info_window_review_count);
         lblAddress = contentView.findViewById(R.id.lbl_service_info_window_address);
@@ -70,7 +70,7 @@ public class JGGServiceInfoWindow implements GoogleMap.InfoWindowAdapter {
                 .load(service.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategoryName.setText(service.getCategory().getName());
+        lblServiceTitle.setText(service.getTitle());
         // Rating
         JGGUserBaseModel user = service.getUserProfile().getUser();
         if (user.getRate() == null)

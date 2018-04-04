@@ -110,71 +110,59 @@
                 android:padding="5dp"
                 android:background="@color/JGGWhite">
 
-                <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/post_service_calendar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:foregroundGravity="center"
+                    app:mcv_selectionColor="@color/JGGWhite"
+                    app:mcv_dateTextAppearance="@style/GreenTextAppearance"
                     app:mcv_arrowColor="@color/JGGGreen"
                     app:mcv_calendarMode="month"
                     app:mcv_firstDayOfWeek="sunday"
                     app:mcv_leftArrowMask="@mipmap/button_previous_green"
                     app:mcv_rightArrowMask="@mipmap/button_next_green"
-                    app:mcv_selectionColor="@color/JGGGreen"
                     app:mcv_showOtherDates="none|other_months|out_of_range|decorated_disabled"
                     app:mcv_tileHeight="36dp"
                     app:mcv_tileSize="match_parent" />
             </LinearLayout>
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/post_add_timeslot_bg"
+                android:id="@+id/post_add_time_slot_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:background="@color/JGGWhite">
                 <LinearLayout
+                    android:id="@+id/edit_time_slots"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <EditText
-                            android:id="@+id/txt_post_timeslot"
-                            android:focusable="false"
-                            android:text="Time Slots"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:padding="@dimen/edit_text_padding_size"
-                            android:fontFamily="@font/muliregular"
-                            android:textSize="@dimen/list_title_font_size"
-                            android:background="@color/JGGWhite">
-                        </EditText>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/edit_text_padding_size"
-                            android:weightSum="100">
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_weight="100">
-
-                            </LinearLayout>
-                            <ImageView
-                                android:id="@+id/btn_post_timeslot_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/button_edit_green"/>
-                        </LinearLayout>
-                    </RelativeLayout>
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/txt_post_time_slot"
+                        android:text="Time Slots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="center"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:background="@color/JGGWhite">
+                    </EditText>
+                    <ImageView
+                        android:id="@+id/btn_post_time_slot_title"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@mipmap/button_edit_green"/>
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView
                     android:visibility="gone"

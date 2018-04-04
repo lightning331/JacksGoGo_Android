@@ -27,16 +27,12 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
     private final View contentView;
     private final Context mContext;
 
-    public LinearLayout btnBackGround;
-    public RelativeLayout likeButtonLayout;
-    public ImageView btnLike;
     public ImageView imgCategory;
-    public TextView lblCategoryName;
+    public TextView lblJobTitle;
     public TextView lblTime;
     public TextView lblAddress;
     public TextView price;
     public TextView bookedCount;
-    public LinearLayout btnNext;
 
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
 
@@ -45,16 +41,12 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
         mContext = context;
         mJobs = jobs;
 
-        btnBackGround = contentView.findViewById(R.id.btn_background);
-        likeButtonLayout = contentView.findViewById(R.id.like_button_layout);
-        btnLike = contentView.findViewById(R.id.btn_like);
         imgCategory = contentView.findViewById(R.id.img_category);
-        lblCategoryName = contentView.findViewById(R.id.lbl_category_name);
+        lblJobTitle = contentView.findViewById(R.id.lbl_job_title);
         lblTime = contentView.findViewById(R.id.lbl_job_detail_end_time);
         lblAddress = contentView.findViewById(R.id.lbl_service_detail_address);
         price = contentView.findViewById(R.id.lbl_service_detail_price);
         bookedCount = contentView.findViewById(R.id.service_detail_booked_count);
-        btnNext = contentView.findViewById(R.id.btn_service_detail_next);
     }
 
     public void setJob(JGGAppointmentModel job) {
@@ -63,7 +55,8 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
                 .load(job.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategoryName.setText(job.getCategory().getName());
+        // Job title
+        lblJobTitle.setText(job.getTitle());
         // Address
         if (job.getAddress().getStreet() == null)
             lblAddress.setText(job.getAddress().getAddress());

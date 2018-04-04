@@ -146,10 +146,13 @@ public class PostedServiceActivity extends AppCompatActivity {
         // User
         Picasso.with(this)
                 .load(mService.getUserProfile().getUser().getPhotoURL())
-                .placeholder(null)
+                .placeholder(R.mipmap.icon_profile)
                 .into(imgAvatar);
         lblUserName.setText(mService.getUserProfile().getUser().getFullName());
-        ratingBar.setRating(mService.getUserProfile().getUser().getRate().floatValue());
+        if (mService.getUserProfile().getUser().getRate() == null)
+            ratingBar.setRating(0);
+        else
+            ratingBar.setRating(mService.getUserProfile().getUser().getRate().floatValue());
         // Tag View
         String tags = mService.getTags();
         if (tags != null && tags.length() > 0) {

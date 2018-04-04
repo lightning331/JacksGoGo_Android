@@ -157,8 +157,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.btn_back) {
             FragmentManager manager = getSupportFragmentManager();
             if (manager.getBackStackEntryCount() == 0) {
-                if (appType == AppointmentType.JOBS) showAlertDialog();
-                else super.onBackPressed();
+                showAlertDialog();
             } else {
                 manager.popBackStack();
             }
@@ -177,12 +176,18 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
         TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
         TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
 
-        title.setText(R.string.alert_quit_post_job_title);
+        if (appType == AppointmentType.JOBS) {
+            title.setText(R.string.alert_quit_post_job_title);
+            cancelButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan10Percent));
+            cancelButton.setTextColor(ContextCompat.getColor(this, R.color.JGGCyan));
+        } else if (appType == AppointmentType.SERVICES) {
+            title.setText(R.string.alert_quit_post_service_title);
+            cancelButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen10Percent));
+            cancelButton.setTextColor(ContextCompat.getColor(this, R.color.JGGGreen));
+        }
         desc.setText(R.string.alert_quit_quotation_desc);
         okButton.setText(R.string.alert_quit_button);
         okButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGRed));
-        cancelButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan10Percent));
-        cancelButton.setTextColor(ContextCompat.getColor(this, R.color.JGGCyan));
         cancelButton.setOnClickListener(this);
         okButton.setOnClickListener(this);
         alertDialog.setCanceledOnTouchOutside(false);

@@ -66,11 +66,13 @@
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:text="Help With Gardening"
-                    android:id="@+id/lbl_category_name"
+                    android:id="@+id/lbl_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="10dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="@color/JGGBlack"
                     android:fontFamily="@font/mulibold"
                     android:textSize="@dimen/list_title_font_size"/>
@@ -148,7 +150,7 @@
                     android:textSize="@dimen/list_title_font_size" />
             </LinearLayout>
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/service_detail_booked_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,6 +170,8 @@
                     android:text="people have viewed this job!"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGOrange"
                     android:fontFamily="@font/muliregular"

@@ -24,17 +24,21 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.CustomView.Views.SelectAreaDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
 
 public class ServiceSearchAdvanceFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -187,10 +191,12 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         builder.btnCalendarOk.setText("Done");
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
             @Override
-            public void onDoneButtonClick(View view, String month, String day, String year) {
+            public void onDoneButtonClick(View view, List<CalendarDay> dates) {
                 if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
+                    String day = getAppointmentDay(dates.get(0).getDate());
+                    String month = getAppointmentMonth(dates.get(0).getDate());
                     lblDate.setText(month + " " + day);
                     alertDialog.dismiss();
                 }

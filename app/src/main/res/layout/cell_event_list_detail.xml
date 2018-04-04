@@ -65,7 +65,7 @@
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:text="Neighbourhood Clean Up"
-                    android:id="@+id/lbl_service_detail_category_name"
+                    android:id="@+id/lbl_event_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"

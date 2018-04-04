@@ -29,10 +29,9 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
     public ImageView btnLike;
     public ImageView imgCategoryDetail;
     public ImageView imgCategory;
-    public TextView lblCategoryName;
+    public TextView lblServiceTitle;
     public MaterialRatingBar rateBar;
     public TextView lblScore;
-    public TextView lblScoreStatus;
     public TextView lblReviewCount;
     public TextView lblAddress;
     public TextView price;
@@ -47,10 +46,9 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         btnLike = itemView.findViewById(R.id.btn_like);
         imgCategoryDetail = itemView.findViewById(R.id.img_service_detail_photo);
         imgCategory = itemView.findViewById(R.id.img_service_detail_category);
-        lblCategoryName = itemView.findViewById(R.id.lbl_service_detail_category_name);
+        lblServiceTitle = itemView.findViewById(R.id.lbl_service_title);
         rateBar = itemView.findViewById(R.id.service_detail_user_ratingbar);
         lblScore = itemView.findViewById(R.id.lbl_service_detail_score);
-        lblScoreStatus = itemView.findViewById(R.id.lbl_service_detail_score_status);
         lblReviewCount = itemView.findViewById(R.id.lbl_service_detail_review_count);
         lblAddress = itemView.findViewById(R.id.lbl_service_detail_address);
         price = itemView.findViewById(R.id.lbl_service_detail_price);
@@ -64,7 +62,7 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
                 .load(service.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategoryName.setText(service.getCategory().getName());
+        lblServiceTitle.setText(service.getTitle());
         // Rating
         JGGUserBaseModel user = service.getUserProfile().getUser();
         if (user.getRate() == null)
@@ -72,20 +70,20 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         else
             rateBar.setRating(user.getRate().floatValue());
         // Score
-        lblScoreStatus.setText("");
         if (user.getRate() == null) {
             lblScore.setText("");
         } else {
             lblScore.setText(String.valueOf(user.getRate()));
+
             // Score Status
-            float f1 = user.getRate().floatValue();
+            /*float f1 = user.getRate().floatValue();
             float f2 = 4.5f;
             int retval = Float.compare(f1, f2);
             if (retval > 0)
-                lblScoreStatus.setText("Very Good");
+                lblScoreStatus.setText("Very Good"); */
         }
         // View Count
-        lblReviewCount.setText("(327)");
+        lblReviewCount.setText("(327 reviews)");
         // Address
         if (service.getAddress().getStreet() == null)
             lblAddress.setText(service.getAddress().getAddress());

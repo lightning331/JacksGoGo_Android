@@ -280,7 +280,7 @@
                                         android:layout_width="18dp"
                                         android:layout_height="18dp"
                                         android:layout_gravity="center_horizontal"
-                                        android:src="@mipmap/icon_email"/>
+                                        android:src="@mipmap/icon_business"/>
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="0dp"
@@ -322,7 +322,7 @@
                                             android:layout_height="18dp"
                                             android:layout_gravity="center_horizontal"
                                             android:layout_marginTop="6dp"
-                                            android:src="@mipmap/icon_info"/>
+                                            android:src="@mipmap/icon_credentials"/>
                                     </LinearLayout>
                                     <LinearLayout
                                         android:layout_width="0dp"

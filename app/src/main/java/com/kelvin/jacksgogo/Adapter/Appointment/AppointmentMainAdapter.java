@@ -22,8 +22,8 @@ import java.util.Map;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.closed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.flaged;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDay;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonth;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 
 /**
@@ -100,8 +100,8 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 String dateString = appointment.getSessions().get(0).getStartOn();
                 Date appDay = appointmentMonthDate(dateString);
-                cellView.lbl_Day.setText(appointmentDay(appDay));
-                cellView.lbl_Month.setText(appointmentMonth(appDay));
+                cellView.lbl_Day.setText(getAppointmentDay(appDay));
+                cellView.lbl_Month.setText(getAppointmentMonth(appDay));
             }
             Picasso.with(mContext)
                     .load(appointment.getUserProfile().getUser().getPhotoURL())

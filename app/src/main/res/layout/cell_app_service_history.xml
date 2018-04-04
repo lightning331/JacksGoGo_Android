@@ -111,11 +111,12 @@
                         android:textSize="@dimen/button_font_size" />
                     <TextView
                         android:id="@+id/lblComment"
-                        android:text="Badminton,Jurong Event on 10 Jul, 2017 10:00 AM - 12:00 PM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginRight="5dp"
+                        android:maxLines="4"
+                        android:ellipsize="end"
                         android:textColor="@color/JGGGrey1"
                         android:fontFamily="@font/mulibold"
                         android:textSize="@dimen/caption_font_size"/>

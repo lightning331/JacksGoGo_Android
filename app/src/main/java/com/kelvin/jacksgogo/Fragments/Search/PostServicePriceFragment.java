@@ -239,6 +239,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         selectedAppointment.setBudgetTo(null);
         selectedAppointment.setBudget(null);
         if (serviceType == 1) {     // One-time Service Budget
+            mService.setAppointmentType(serviceType);
             if (budgetType == fixed) {
                 mService.setBudget(Double.parseDouble(txtFixedAmount.getText().toString()));
             } else if (budgetType == from) {
@@ -246,11 +247,10 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
                 mService.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
             }
         } else if (serviceType >= 2){       // Package Service Budget
-            mService.setAppointmentType(Integer.parseInt(txtPackageNum.getText().toString()));
             mService.setBudget(Double.parseDouble(txtPackageAmount.getText().toString()));
+            mService.setAppointmentType(Integer.parseInt(txtPackageNum.getText().toString()));
         }
         mService.setBudgetType(budgetType);
-        mService.setAppointmentType(serviceType);
         selectedAppointment = mService;
         listener.onNextButtonClick();
     }
@@ -270,19 +270,19 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
                 if (txtFromMax.length() > 0 && txtFromMin.length() > 0) onNextButtonEnable();
                 else onNextButtonDisable();
             }
-        } else if (serviceType >= 2) {
+        } else if (serviceType > 1) {
             String packageNum = txtPackageNum.getText().toString();
             if (packageNum.length() > 0
                     && Integer.valueOf(packageNum) >= 2
                     && txtPackageAmount.length() > 0) {
                 onNextButtonEnable();
             } else {
-                if (packageNum.equals("")) {
+                if (packageNum.equals("")
+                        || Integer.valueOf(packageNum) >= 2) {
                     txtPackageNum.setBackgroundResource(R.drawable.grey_border_background);
                 } else if (Integer.valueOf(packageNum) < 2) {
                     Toast.makeText(mContext, "The number of service should be greater than 2!", Toast.LENGTH_LONG).show();
                     txtPackageNum.setBackgroundResource(R.drawable.red_border_background);
-                    serviceType = 2;
                 }
                 onNextButtonDisable();
             }

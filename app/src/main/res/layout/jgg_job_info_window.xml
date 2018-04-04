@@ -44,7 +44,7 @@
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:text="Help With Gardening"
-                    android:id="@+id/lbl_category_name"
+                    android:id="@+id/lbl_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -123,7 +123,7 @@
                     android:textSize="@dimen/list_title_font_size" />
             </LinearLayout>
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/service_detail_booked_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
