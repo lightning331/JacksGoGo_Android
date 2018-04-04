@@ -98,13 +98,14 @@ public class PostServiceDescribeFragment extends Fragment
         creatingApp = selectedAppointment;
 
         initView(view);
-        initRecyclerView(view);
+        initRecyclerView();
 
         return view;
     }
 
     private void initView(View view) {
 
+        recyclerView = view.findViewById(R.id.describe_photo_recycler_view);
         lblTitle = view.findViewById(R.id.lbl_title);
         lblDescription = view.findViewById(R.id.lbl_description);
         lblTags = view.findViewById(R.id.lbl_tags);
@@ -134,8 +135,7 @@ public class PostServiceDescribeFragment extends Fragment
         txtServiceTag.setText(creatingApp.getTags());
     }
 
-    private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.describe_photo_recycler_view);
+    private void initRecyclerView() {
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
 
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -158,6 +158,10 @@ public class PostServiceDescribeFragment extends Fragment
                 }
             }
         });
+        if (creatingApp.getAlbumFiles().size() > 0) {
+            mAlbumFiles = creatingApp.getAlbumFiles();
+            mAdapter.notifyDataChanged(mAlbumFiles);
+        }
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -189,7 +193,7 @@ public class PostServiceDescribeFragment extends Fragment
                     public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
                         recyclerView.setVisibility(View.VISIBLE);
-                        mAdapter.notifyDataSetChanged(mAlbumFiles);
+                        mAdapter.notifyDataChanged(mAlbumFiles);
                         btnTakePhoto.setVisibility(View.GONE);
                     }
                 })
@@ -218,6 +222,7 @@ public class PostServiceDescribeFragment extends Fragment
         creatingApp.setTitle(strTitle);
         creatingApp.setDescription(strDesc);
         creatingApp.setTags(strTags);
+        creatingApp.setAlbumFiles(mAlbumFiles);
         selectedAppointment = creatingApp;
         listener.onNextButtonClick();
     }

@@ -43,13 +43,10 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {    // Job Photo Cell
             View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
-            JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView);
+            JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView, mContext);
 
-            int[] array = {R.mipmap.carousel03, R.mipmap.carousel01,
-                    R.mipmap.carousel04, R.mipmap.carousel05, R.mipmap.carousel06, R.mipmap.carousel01, R.mipmap.carousel03, R.mipmap.carousel02};
-
-            pageViewHolder.imageArray = array;
-            pageViewHolder.carouselView.setPageCount(array.length);
+            pageViewHolder.imageArray = mJob.getAttachmentURLs();
+            pageViewHolder.carouselView.setPageCount(mJob.getAttachmentURLs().size());
             pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
             return pageViewHolder;
         } else if (viewType == 1) {    // Category Cell

@@ -70,13 +70,10 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         switch (viewType) {
             case 0:     // Service Photo Cell
                 View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
-                JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView);
+                JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView, mContext);
 
-                int[] array = {R.mipmap.carousel03, R.mipmap.carousel01,
-                        R.mipmap.carousel04, R.mipmap.carousel05, R.mipmap.carousel06, R.mipmap.carousel01, R.mipmap.carousel03, R.mipmap.carousel02};
-
-                pageViewHolder.imageArray = array;
-                pageViewHolder.carouselView.setPageCount(array.length);
+                pageViewHolder.imageArray = mService.getAttachmentURLs();
+                pageViewHolder.carouselView.setPageCount(mService.getAttachmentURLs().size());
                 pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
                 return pageViewHolder;
             case 1:     // Service Category Cell
@@ -239,7 +236,13 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof JobDetailImageCarouselCell) {
+            JobDetailImageCarouselCell pageViewHolder = (JobDetailImageCarouselCell) holder;
 
+            pageViewHolder.imageArray = mService.getAttachmentURLs();
+            pageViewHolder.carouselView.setPageCount(mService.getAttachmentURLs().size());
+            pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
+        }
     }
 
     @Override

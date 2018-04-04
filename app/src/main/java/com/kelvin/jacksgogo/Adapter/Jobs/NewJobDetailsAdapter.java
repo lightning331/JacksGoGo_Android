@@ -51,7 +51,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         switch (viewType) {
             case 0:
                 View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
-                JobDetailImageCarouselCell jobDetailImageCarouselCell = new JobDetailImageCarouselCell(imgPageView);
+                JobDetailImageCarouselCell jobDetailImageCarouselCell = new JobDetailImageCarouselCell(imgPageView, mContext);
 
                 return jobDetailImageCarouselCell;
             case 1:
@@ -96,11 +96,9 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         switch (position) {
             case 0:
                 JobDetailImageCarouselCell cell = (JobDetailImageCarouselCell)holder;
-                int[] array = {R.mipmap.carousel04, R.mipmap.carousel05, R.mipmap.carousel06, R.mipmap.carousel01,
-                        R.mipmap.carousel02, R.mipmap.carousel03, R.mipmap.carousel04, R.mipmap.carousel05};
 
-                cell.imageArray = array;
-                cell.carouselView.setPageCount(array.length);
+                cell.imageArray = mJob.getAttachmentURLs();
+                cell.carouselView.setPageCount(mJob.getAttachmentURLs().size());
                 cell.carouselView.setImageListener(cell.imageListener);
                 break;
             case 1:

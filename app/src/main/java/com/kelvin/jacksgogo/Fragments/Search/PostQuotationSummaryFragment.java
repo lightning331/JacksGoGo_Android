@@ -171,7 +171,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
 
             }
         });
-        mAdapter.notifyDataSetChanged(mAlbumFiles);
+        mAdapter.notifyDataChanged(mAlbumFiles);
         recyclerView.setAdapter(mAdapter);
     }
 

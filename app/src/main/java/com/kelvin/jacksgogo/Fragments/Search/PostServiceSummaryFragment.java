@@ -24,19 +24,26 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
+import com.yanzhenjie.album.AlbumFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
 import co.lujun.androidtagview.TagContainerLayout;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment.PostEditStatus.EDIT;
+import static com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment.PostEditStatus.POST;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 public class PostServiceSummaryFragment extends Fragment implements View.OnClickListener {
@@ -62,7 +69,8 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
     private PostEditStatus editStatus;
     private String postedServiceID;
-    private ArrayList<String> attachmentURLs;
+    private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
+    private ArrayList<String> attachmentURLs = new ArrayList<>();
 
     private ProgressDialog progressDialog;
     private PostServiceMainTabFragment fragment;
@@ -94,11 +102,9 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (getArguments() != null) {
 
         }
-        attachmentURLs = new ArrayList<>();
-
         String postTime = appointmentNewDate(new Date());
         selectedAppointment.setPostOn(postTime);
-        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        mAlbumFiles = selectedAppointment.getAlbumFiles();
     }
 
     @Override
@@ -129,7 +135,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         btnPostService = view.findViewById(R.id.btn_post_service);
         lblPostService = view.findViewById(R.id.lbl_post_service);
 
-        if (editStatus == PostEditStatus.EDIT) lblPostService.setText("Save Changes");
+        if (editStatus == EDIT) lblPostService.setText("Save Changes");
         btnDescribe.setOnClickListener(this);
         btnPrice.setOnClickListener(this);
         btnTimeSlot.setOnClickListener(this);
@@ -185,8 +191,17 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         }
     }
 
+    private void onPostButtonClicked() {
+        if (attachmentURLs.size() == 0) {
+            uploadImage(0);
+        } else {
+            progressDialog = Global.createProgressDialog(mContext);
+            onPostService();
+        }
+    }
+
     private void onPostService() {
-        progressDialog = Global.createProgressDialog(mContext);
+        selectedAppointment.setAttachmentURLs(attachmentURLs);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostAppResponse> call = manager.postNewService(selectedAppointment);
         call.enqueue(new Callback<JGGPostAppResponse>() {
@@ -202,7 +217,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
+                    int statusCode = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -213,6 +228,60 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 progressDialog.dismiss();
             }
         });
+    }
+
+    private void uploadImage(final int index) {
+        progressDialog = Global.createProgressDialog(mContext);
+        if (index < mAlbumFiles.size()) {
+            String name = (String)mAlbumFiles.get(index).getPath();
+            Uri imageUri = Uri.parse(new File(name).toString());
+            File file = new File(String.valueOf(imageUri));
+
+            // Parsing any Media type file
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+            JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            Call<JGGPostAppResponse> call = manager.uploadAttachmentFile(fileToUpload);
+            call.enqueue(new Callback<JGGPostAppResponse>() {
+                @Override
+                public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body().getSuccess()) {
+                            String url = response.body().getValue();
+                            attachmentURLs.add(url);
+                            uploadImage(index + 1);
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        int statusCode  = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            if (editStatus == POST)
+                onPostService();
+            else if (editStatus == EDIT)
+                onEditService();
+        }
+    }
+
+    private void onEditButtonClicked() {
+        if (attachmentURLs.size() == 0) {
+            uploadImage(0);
+        } else {
+            progressDialog = Global.createProgressDialog(mContext);
+            onEditService();
+        }
     }
 
     private void onEditService() {
@@ -251,15 +320,15 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         if (view.getId() == R.id.btn_post_service) {
             switch (editStatus) {
                 case POST:
-                    onPostService();
+                    onPostButtonClicked();
                     //showAlertDialog();
                     break;
                 case EDIT:
-                    onEditService();
+                    onEditButtonClicked();
 //                    /showAlertDialog();
                     break;
                 case DUPLICATE:
-                    onPostService();
+                    onPostButtonClicked();
                     //showAlertDialog();
 
                     /*Intent intent = new Intent(mContext, PostServiceActivity.class);

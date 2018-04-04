@@ -268,12 +268,11 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                         if (isStartJob) {
                             beforePhotoAlbums = result;
                             initRecyclerView(true);
-                            beforePhotoAdapter.notifyDataSetChanged(beforePhotoAlbums);
-                            btnTakeBeforePhoto.setVisibility(View.GONE);
+                            beforePhotoAdapter.notifyDataChanged(beforePhotoAlbums);
                         } else {
                             afterPhotoAlbums = result;
                             initRecyclerView(false);
-                            afterPhotoAdapter.notifyDataSetChanged(afterPhotoAlbums);
+                            afterPhotoAdapter.notifyDataChanged(afterPhotoAlbums);
                             afterRecyclerView.setAdapter(afterPhotoAdapter);
                         }
                     }
@@ -303,8 +302,10 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                     .commit();
         } else if (view.getId() == R.id.btn_take_before_photo) {
             selectImage(true);
+            btnTakeBeforePhoto.setVisibility(View.GONE);
         } else if (view.getId() == R.id.btn_take_after_photo) {
             selectImage(false);
+            btnTakeAfterPhoto.setVisibility(View.GONE);
         } else if (view.getId() == R.id.btn_submit_report) {
             if (readyForSubmit) {
 

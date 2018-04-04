@@ -23,24 +23,31 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
+import com.yanzhenjie.album.AlbumFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
 import co.lujun.androidtagview.TagContainerLayout;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment.PostJobStatus.EDIT;
+import static com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment.PostJobStatus.POST;
+import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
-import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -73,7 +80,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private JGGCategoryModel category;
     private JGGAppointmentModel creatingJob;
     private ProgressDialog progressDialog;
-    private ArrayList<String> attachmentURLs;
+    private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
+    private ArrayList<String> attachmentURLs = new ArrayList<>();
     private String postedJobID;
 
     private PostJobMainTabFragment fragment;
@@ -137,13 +145,12 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         btnPostJob = view.findViewById(R.id.btn_post_job);
         lblPostJob = view.findViewById(R.id.lbl_post_job);
 
-        if (jobStatus == PostJobStatus.EDIT) lblPostJob.setText("Save Changes");
+        if (jobStatus == EDIT) lblPostJob.setText("Save Changes");
 
-        attachmentURLs = new ArrayList<>();
         category = selectedCategory;
         String postTime = appointmentNewDate(new Date());
         selectedAppointment.setPostOn(postTime);
-        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        mAlbumFiles = selectedAppointment.getAlbumFiles();
         creatingJob = selectedAppointment;
 
         btnDescribe.setOnClickListener(this);
@@ -190,8 +197,63 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void onPostJob() {
+    private void onPostButtonClicked() {
+        if (attachmentURLs.size() == 0) {
+            uploadImage(0);
+        } else {
+            progressDialog = Global.createProgressDialog(mContext);
+            onPostJob();
+        }
+    }
+
+    private void uploadImage(final int index) {
         progressDialog = Global.createProgressDialog(mContext);
+        if (index < mAlbumFiles.size()) {
+            String name = (String)mAlbumFiles.get(index).getPath();
+            Uri imageUri = Uri.parse(new File(name).toString());
+            File file = new File(String.valueOf(imageUri));
+
+            // Parsing any Media type file
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+            JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+            Call<JGGPostAppResponse> call = manager.uploadAttachmentFile(fileToUpload);
+            call.enqueue(new Callback<JGGPostAppResponse>() {
+                @Override
+                public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body().getSuccess()) {
+                            String url = response.body().getValue();
+                            attachmentURLs.add(url);
+                            uploadImage(index + 1);
+                        } else {
+                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        int statusCode  = response.code();
+                        Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                    Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            if (jobStatus == POST)
+                onPostJob();
+            else if (jobStatus == EDIT)
+                onEditJob();
+        }
+    }
+
+    private void onPostJob() {
+        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        creatingJob.setAttachmentURLs(attachmentURLs);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostAppResponse> call = manager.postNewJob(creatingJob);
         call.enqueue(new Callback<JGGPostAppResponse>() {
@@ -218,6 +280,15 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
             }
         });
+    }
+
+    private void onEditButtonClicked() {
+        if (attachmentURLs.size() == 0) {
+            uploadImage(0);
+        } else {
+            progressDialog = Global.createProgressDialog(mContext);
+            onEditJob();
+        }
     }
 
     private void onEditJob() {
@@ -322,11 +393,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         if (view.getId() == R.id.btn_post_job) {
             switch (jobStatus) {
                 case POST:
-                    onPostJob();
+                    onPostButtonClicked();
                     //showPostJobAlertDialog(false);
                     break;
                 case EDIT:
-                    onEditJob();
+                    onEditButtonClicked();
                     //showPostJobAlertDialog(true);
                     break;
                 case DUPLICATE:
@@ -340,29 +411,29 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
             return;
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobStatus.POST);
-            if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, PostJobStatus.EDIT);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, POST);
+            if (jobStatus == EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_time) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, PostJobStatus.POST);
-            if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, PostJobStatus.EDIT);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, POST);
+            if (jobStatus == EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_address) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, PostJobStatus.POST);
-            if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, PostJobStatus.EDIT);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, POST);
+            if (jobStatus == EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, EDIT);
             }
         }  else if (view.getId() == R.id.btn_post_job_summary_budget) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, PostJobStatus.POST);
-            if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, PostJobStatus.EDIT);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, POST);
+            if (jobStatus == EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_report) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, PostJobStatus.POST);
-            if (jobStatus == PostJobStatus.EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, PostJobStatus.EDIT);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, POST);
+            if (jobStatus == EDIT) {
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, EDIT);
             }
         }
         getActivity().getSupportFragmentManager()

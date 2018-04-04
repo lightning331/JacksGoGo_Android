@@ -181,7 +181,7 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
                         mAlbumFiles = result;
                         btnTakePhoto.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
-                        mAdapter.notifyDataSetChanged(mAlbumFiles);
+                        mAdapter.notifyDataChanged(mAlbumFiles);
                     }
                 })
                 .onCancel(new Action<String>() {

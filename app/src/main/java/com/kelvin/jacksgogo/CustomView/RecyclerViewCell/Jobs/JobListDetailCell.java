@@ -27,6 +27,7 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
     public RelativeLayout likeButtonLayout;
     public ImageView btnLike;
     public ImageView imgCategory;
+    public ImageView carouselView;
     public TextView lblJobTitle;
     public TextView lblTime;
     public TextView lblAddress;
@@ -42,6 +43,7 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
         likeButtonLayout = itemView.findViewById(R.id.like_button_layout);
         btnLike = itemView.findViewById(R.id.btn_like);
         imgCategory = itemView.findViewById(R.id.img_category);
+        carouselView = itemView.findViewById(R.id.img_job_detail_photo);
         lblJobTitle = itemView.findViewById(R.id.lbl_job_title);
         lblTime = itemView.findViewById(R.id.lbl_job_detail_end_time);
         lblAddress = itemView.findViewById(R.id.lbl_service_detail_address);
@@ -52,6 +54,12 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
 
     public void setJob(JGGAppointmentModel job) {
         // Category
+        if (job.getAttachmentURLs().size() != 0) {
+            Picasso.with(mContext)
+                    .load(job.getAttachmentURLs().get(0))
+                    .placeholder(R.mipmap.appointment_placeholder)
+                    .into(carouselView);
+        }
         Picasso.with(mContext)
                 .load(job.getCategory().getImage())
                 .placeholder(null)

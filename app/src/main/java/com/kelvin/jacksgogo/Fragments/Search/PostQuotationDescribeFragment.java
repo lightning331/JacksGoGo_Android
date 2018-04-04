@@ -150,7 +150,7 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
                     public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
                         recyclerView.setVisibility(View.VISIBLE);
-                        mAdapter.notifyDataSetChanged(mAlbumFiles);
+                        mAdapter.notifyDataChanged(mAlbumFiles);
                     }
                 })
                 .onCancel(new Action<String>() {

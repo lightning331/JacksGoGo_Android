@@ -16,12 +16,15 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -70,6 +73,10 @@ public interface JGGAPIManager {
      */
     @GET("api/Category/GetAllCategories")
     Call<JGGCategoryResponse> getCategory();
+
+    @Multipart
+    @POST("api/UpLoad/UploadAttachmentFile")
+    Call<JGGPostAppResponse> uploadAttachmentFile(@Part MultipartBody.Part file);
 
     /*
      * User

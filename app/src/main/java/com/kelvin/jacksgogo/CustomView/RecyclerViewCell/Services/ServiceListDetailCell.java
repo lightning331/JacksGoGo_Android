@@ -12,6 +12,10 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.squareup.picasso.Picasso;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
+
+import java.util.ArrayList;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -27,7 +31,7 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
 
     public RelativeLayout likeButtonLayout;
     public ImageView btnLike;
-    public ImageView imgCategoryDetail;
+    public ImageView carouselView;
     public ImageView imgCategory;
     public TextView lblServiceTitle;
     public MaterialRatingBar rateBar;
@@ -38,13 +42,15 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
     public TextView bookedCount;
     public LinearLayout btnNext;
 
+    public ArrayList<String> imageArray = new ArrayList<>();
+
     public ServiceListDetailCell(View itemView, Context context) {
         super(itemView);
         mContext = context;
 
         likeButtonLayout = itemView.findViewById(R.id.like_button_layout);
         btnLike = itemView.findViewById(R.id.btn_like);
-        imgCategoryDetail = itemView.findViewById(R.id.img_service_detail_photo);
+        carouselView = itemView.findViewById(R.id.img_service_detail_photo);
         imgCategory = itemView.findViewById(R.id.img_service_detail_category);
         lblServiceTitle = itemView.findViewById(R.id.lbl_service_title);
         rateBar = itemView.findViewById(R.id.service_detail_user_ratingbar);
@@ -57,6 +63,17 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
     }
 
     public void setService(JGGAppointmentModel service) {
+        // Service Image
+        if (service.getAttachmentURLs().size() != 0) {
+            Picasso.with(mContext)
+                    .load(service.getAttachmentURLs().get(0))
+                    .placeholder(R.mipmap.appointment_placeholder)
+                    .into(carouselView);
+        }
+        //imageArray = service.getAttachmentURLs();
+        //carouselView.setPageCount(service.getAttachmentURLs().size());
+        //carouselView.setImageListener(imageListener);
+
         // Category
         Picasso.with(mContext)
                 .load(service.getCategory().getImage())
@@ -92,4 +109,15 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         // Budget
         price.setText(getAppointmentBudget(service));
     }
+
+
+    public ImageListener imageListener = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            Picasso.with(mContext)
+                    .load(imageArray.get(position))
+                    .placeholder(R.mipmap.appointment_placeholder)
+                    .into(imageView);
+        }
+    };
 }

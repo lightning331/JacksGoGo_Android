@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Fragments.Search;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +50,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_NONE;
 
 
 public class PostServiceTimeSlotFragment extends Fragment implements
@@ -340,12 +343,27 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
                     alertDialog.dismiss();
+
+//                    calendarView.setSelectionMode (MaterialCalendarView.SELECTION_MODE_NONE);
+//
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.set(2018, 3, 14);
+//
+//                    Calendar calendar1 = Calendar.getInstance();
+//                    calendar1.set(2018, 3, 16);
+//
+//                    Calendar calendar2 = Calendar.getInstance();
+//                    calendar2.set(2018, 3, 17);
+//
+//                    calendarView.setDateSelected(calendar, true);
+//                    calendarView.setDateSelected(calendar1, true);
+//                    calendarView.setDateSelected(calendar2, true);
+
                     if (dates.size() > 0) {
-//                        for (int i = 0; i < dates.size(); i ++) {
-//                            Date duplicateDate = dates.get(i).getDate();
-//                            setDuplicateDate(duplicateDate);
-//                        }
-                        setDuplicateDate(null);
+                        for (int i = 0; i < dates.size(); i ++) {
+                            Date duplicateDate = dates.get(i).getDate();
+                            setDuplicateDate(duplicateDate);
+                        }
                     }
                 }
             }
@@ -357,55 +375,40 @@ public class PostServiceTimeSlotFragment extends Fragment implements
 
     private void setDuplicateDate(Date date) {
         //calendarView.removeDecorators();
+        calendarView.setSelectionMode(SELECTION_MODE_NONE);
+        if (mTimeSlots.size() > 0) {
+            for (int i = 0; i < mTimeSlots.size(); i ++) {
+                JGGTimeSlotModel timeSlot = mTimeSlots.get(i);
+                calendarView.setSelectedDate(appointmentMonthDate(mTimeSlots.get(i).getStartOn()));
+                String startOn = getTimeString(appointmentMonthDate(timeSlot.getStartOn()));
+                String endOn = getTimeString(appointmentMonthDate(timeSlot.getEndOn()));
+
+                String yearMonthDay = convertCalendarDate(date);
+
+                String duplicateStartOn = yearMonthDay + "T" + startOn;
+                String duplicateEndOn = yearMonthDay + "T" + endOn;
+
+//                calendarView.setSelectedDate(appointmentMonthDate(duplicateStartOn));
+                calendarView.setDateSelected(appointmentMonthDate(duplicateStartOn), true);
+
+                JGGTimeSlotModel duplicateTimeSlot = new JGGTimeSlotModel();
+                duplicateTimeSlot.setStartOn(duplicateStartOn);
+                duplicateTimeSlot.setEndOn(duplicateEndOn);
+            }
+        }
+
         calendarView.setSelectionMode(SELECTION_MODE_MULTIPLE);
-//        if (mTimeSlots.size() > 0) {
-//            for (int i = 0; i < mTimeSlots.size(); i ++) {
-//                JGGTimeSlotModel timeSlot = mTimeSlots.get(i);
-//                calendarView.setSelectedDate(appointmentMonthDate(mTimeSlots.get(i).getStartOn()));
-//                String startOn = getTimeString(appointmentMonthDate(timeSlot.getStartOn()));
-//                String endOn = getTimeString(appointmentMonthDate(timeSlot.getEndOn()));
-//
-//                String yearMonthDay = convertCalendarDate(date);
-//
-//                String duplicateStartOn = yearMonthDay + "T" + startOn;
-//                String duplicateEndOn = yearMonthDay + "T" + endOn;
-//
-////                calendarView.setSelectedDate(appointmentMonthDate(duplicateStartOn));
-//                calendarView.setDateSelected(appointmentMonthDate(duplicateStartOn), true);
-//
-//                JGGTimeSlotModel duplicateTimeSlot = new JGGTimeSlotModel();
-//                duplicateTimeSlot.setStartOn(duplicateStartOn);
-//                duplicateTimeSlot.setEndOn(duplicateEndOn);
-//            }
-//        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 4, 14);
-
-        Calendar calendar2 = Calendar.getInstance();
-        calendar.set(2018, 4, 15);
-
-        Calendar calendar3 = Calendar.getInstance();
-        calendar.set(2018, 4, 16);
-
-        Calendar calendar4 = Calendar.getInstance();
-        calendar.set(2018, 4, 17);
-
-
-
-        calendarView.setDateSelected(calendar, true);
-        calendarView.setDateSelected(calendar2, true);
-        calendarView.setDateSelected(calendar3, true);
-        calendarView.setDateSelected(calendar4, true);
-        calendarView.setDateSelected(CalendarDay.today(), false);
     }
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+
         calendarView.removeDecorators();
 
         setCurrentDateDot();
         setSelectedDateCircle();
+
+
     }
 
     @Override

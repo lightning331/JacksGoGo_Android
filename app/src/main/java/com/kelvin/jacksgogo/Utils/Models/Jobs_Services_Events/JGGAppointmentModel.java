@@ -7,6 +7,7 @@ import com.kelvin.jacksgogo.Utils.Global.JGGJobStatus;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
+import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,8 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
     private ArrayList<String> AttachmentURLs;
 
     // Dump Data
-    private ArrayList<Image> attachmentImages;
+    private ArrayList<Image> attachmentImages = new ArrayList<>();
+    private ArrayList<AlbumFile> albumFiles = new ArrayList<>();
     private Integer timeSlotType;
 
     public JGGAppointmentModel() {
@@ -51,6 +53,14 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
 
     public void setAttachmentImages(ArrayList<Image> attachmentImages) {
         this.attachmentImages = attachmentImages;
+    }
+
+    public ArrayList<AlbumFile> getAlbumFiles() {
+        return albumFiles;
+    }
+
+    public void setAlbumFiles(ArrayList<AlbumFile> albumFiles) {
+        this.albumFiles = albumFiles;
     }
 
     public TimeSlotSelectionStatus getTimeSlotType() {

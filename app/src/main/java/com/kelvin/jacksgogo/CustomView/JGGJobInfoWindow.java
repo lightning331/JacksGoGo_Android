@@ -28,6 +28,7 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
     private final Context mContext;
 
     public ImageView imgCategory;
+    public ImageView imgPhoto;
     public TextView lblJobTitle;
     public TextView lblTime;
     public TextView lblAddress;
@@ -42,6 +43,7 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
         mJobs = jobs;
 
         imgCategory = contentView.findViewById(R.id.img_category);
+        imgPhoto = contentView.findViewById(R.id.img_job_detail_photo);
         lblJobTitle = contentView.findViewById(R.id.lbl_job_title);
         lblTime = contentView.findViewById(R.id.lbl_job_detail_end_time);
         lblAddress = contentView.findViewById(R.id.lbl_service_detail_address);
@@ -50,6 +52,12 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
     }
 
     public void setJob(JGGAppointmentModel job) {
+        if (job.getAttachmentURLs().size() != 0) {
+            Picasso.with(mContext)
+                    .load(job.getAttachmentURLs().get(0))
+                    .placeholder(R.mipmap.appointment_placeholder)
+                    .into(imgPhoto);
+        }
         // Category
         Picasso.with(mContext)
                 .load(job.getCategory().getImage())

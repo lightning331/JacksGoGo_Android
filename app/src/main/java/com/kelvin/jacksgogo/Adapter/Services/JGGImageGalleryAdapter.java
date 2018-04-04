@@ -33,7 +33,7 @@ public class JGGImageGalleryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.mItemClickListener = itemClickListener;
     }
 
-    public void notifyDataSetChanged(List<AlbumFile> imagePathList) {
+    public void notifyDataChanged(List<AlbumFile> imagePathList) {
         this.mAlbumFiles = imagePathList;
         super.notifyDataSetChanged();
     }

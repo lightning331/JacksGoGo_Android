@@ -13,8 +13,8 @@
             android:layout_width="88dp"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@mipmap/carousel06"
-                android:id="@+id/img_service_detail_photo"
+                android:src="@mipmap/appointment_placeholder"
+                android:id="@+id/img_job_detail_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
