@@ -107,10 +107,14 @@ public class SearchFragment extends Fragment {
     public void refreshFragment(String textView) {
 
         progressDialog = Global.createProgressDialog(mContext);
-        if (categories != null)
-            mCategories = categories;
-        else
+        if (categories == null)
             loadCategories();
+        else {
+            if (categories.size() == 0)
+                loadCategories();
+            else
+                mCategories = categories;
+        }
         appType = textView;
         if (appType.equals(SERVICES)) {
             serviceAdapter = new SearchServicesAdapter(mContext, mCategories, mServices);

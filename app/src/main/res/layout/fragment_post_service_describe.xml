@@ -87,6 +87,7 @@
                 android:background="@drawable/grey_border_background">
             </EditText>
             <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/describe_photo_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

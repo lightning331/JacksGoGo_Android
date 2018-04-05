@@ -3,7 +3,6 @@ package com.kelvin.jacksgogo.Fragments.Search;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +37,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,9 +47,9 @@ import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SE
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeString;
-import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_NONE;
 
 
 public class PostServiceTimeSlotFragment extends Fragment implements
@@ -88,6 +87,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements
     private JGGTimeSlotModel mTimeSlot;
     private Integer peopleType;
     private ArrayList<JGGTimeSlotModel> mTimeSlots = new ArrayList<>();
+    private ArrayList<JGGTimeSlotModel> mDuplicateTimeSlots = new ArrayList<>();
     private Integer editingTimeSlot;
     private LinearLayout.LayoutParams params;
 
@@ -260,6 +260,34 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         }
     }
 
+    private void updateRecyclerView() {
+        recyclerView.setVisibility(View.VISIBLE);
+        btnDuplicate.setVisibility(View.VISIBLE);
+        btnDuplicate.setOnClickListener(PostServiceTimeSlotFragment.this);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        }
+        final PostServiceTimeSlotAdapter adapter = new PostServiceTimeSlotAdapter(mContext, mTimeSlots);
+        adapter.setOnItemClickListener(new PostServiceTimeSlotAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(boolean isDelete, int position) {
+                editingTimeSlot = position;
+                if (isDelete) {
+                    isEditTimeSlot = false;
+                    mTimeSlots.remove(position);
+                    if (mTimeSlots.size() == 0)
+                        btnDuplicate.setVisibility(View.GONE);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    isEditTimeSlot = true;
+                    onAddTimeClick();
+                }
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
     private void onAddTimeClick() {
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.SERVICES);
         if (peopleType == 1) // One person
@@ -291,8 +319,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                         mTimeSlots.set(editingTimeSlot, timeSlotModel);
                         isEditTimeSlot = false;
                     } else {
-                        if (mTimeSlots == null)
-                            mTimeSlots = new ArrayList<>();
                         mTimeSlots.add(timeSlotModel);
                     }
                     updateRecyclerView();
@@ -302,34 +328,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
-    }
-
-    private void updateRecyclerView() {
-        recyclerView.setVisibility(View.VISIBLE);
-        btnDuplicate.setVisibility(View.VISIBLE);
-        btnDuplicate.setOnClickListener(PostServiceTimeSlotFragment.this);
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
-        }
-        final PostServiceTimeSlotAdapter adapter = new PostServiceTimeSlotAdapter(mContext, mTimeSlots);
-        adapter.setOnItemClickListener(new PostServiceTimeSlotAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(boolean isDelete, int position) {
-                editingTimeSlot = position;
-                if (isDelete) {
-                    isEditTimeSlot = false;
-                    mTimeSlots.remove(position);
-                    if (mTimeSlots.size() == 0)
-                        btnDuplicate.setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
-                    recyclerView.setAdapter(adapter);
-                } else {
-                    isEditTimeSlot = true;
-                    onAddTimeClick();
-                }
-            }
-        });
-        recyclerView.setAdapter(adapter);
     }
 
     private void onShowDuplicateTimeCalendarView() {
@@ -359,11 +357,23 @@ public class PostServiceTimeSlotFragment extends Fragment implements
 //                    calendarView.setDateSelected(calendar1, true);
 //                    calendarView.setDateSelected(calendar2, true);
 
+
+                    calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE);
                     if (dates.size() > 0) {
                         for (int i = 0; i < dates.size(); i ++) {
                             Date duplicateDate = dates.get(i).getDate();
-                            setDuplicateDate(duplicateDate);
+
+                            Calendar calendar = Calendar.getInstance();
+                            int year = Integer.valueOf(getAppointmentYear(duplicateDate));
+                            SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+                            int month = Integer.valueOf(monthFormat.format(duplicateDate)) - 1;
+                            int day = Integer.valueOf(getAppointmentDay(duplicateDate));
+                            calendar.set(year, month, day);
+                            calendarView.setDateSelected(calendar, true);
+
+                            //setDuplicateDate(duplicateDate);
                         }
+                        //mTimeSlots = mDuplicateTimeSlots;
                     }
                 }
             }
@@ -375,7 +385,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements
 
     private void setDuplicateDate(Date date) {
         //calendarView.removeDecorators();
-        calendarView.setSelectionMode(SELECTION_MODE_NONE);
         if (mTimeSlots.size() > 0) {
             for (int i = 0; i < mTimeSlots.size(); i ++) {
                 JGGTimeSlotModel timeSlot = mTimeSlots.get(i);
@@ -388,16 +397,14 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                 String duplicateStartOn = yearMonthDay + "T" + startOn;
                 String duplicateEndOn = yearMonthDay + "T" + endOn;
 
-//                calendarView.setSelectedDate(appointmentMonthDate(duplicateStartOn));
-                calendarView.setDateSelected(appointmentMonthDate(duplicateStartOn), true);
-
                 JGGTimeSlotModel duplicateTimeSlot = new JGGTimeSlotModel();
                 duplicateTimeSlot.setStartOn(duplicateStartOn);
                 duplicateTimeSlot.setEndOn(duplicateEndOn);
+
+                mDuplicateTimeSlots.add(duplicateTimeSlot);
             }
         }
-
-        calendarView.setSelectionMode(SELECTION_MODE_MULTIPLE);
+        //calendarView.setSelectionMode(SELECTION_MODE_MULTIPLE);
     }
 
     @Override
@@ -407,8 +414,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements
 
         setCurrentDateDot();
         setSelectedDateCircle();
-
-
     }
 
     @Override

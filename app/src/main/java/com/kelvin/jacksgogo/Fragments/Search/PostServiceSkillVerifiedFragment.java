@@ -72,10 +72,14 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_skill_verified, container, false);
 
-        if (categories != null)
-            mCategories = categories;
-        else
+        if (categories == null)
             loadCategories();
+        else {
+            if (categories.size() == 0)
+                loadCategories();
+            else
+                mCategories = categories;
+        }
         initView(view);
 
         return view;

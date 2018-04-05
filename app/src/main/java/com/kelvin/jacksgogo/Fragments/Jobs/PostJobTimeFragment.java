@@ -146,7 +146,9 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         if (mJob.getSessions() != null
                 && mJob.getSessions().size() > 0) {
             isSpecific = mJob.getSessions().get(0).isSpecific();
-            if (mJob.getSessions().get(0).getStartOn() != null) {
+            if (mJob.getSessions().get(0).getStartOn() == null) {
+
+            } else {
                 String strDate = mJob.getSessions().get(0).getStartOn();
                 Date date = appointmentMonthDate(strDate);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -155,7 +157,9 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                 startOn = appointmentMonthDate(mJob.getSessions().get(0).getStartOn());
                 startTime = getTimePeriodString(startOn);
                 lblTime.setText(startTime);
-                if (mJob.getSessions().get(0).getEndOn() != null) {
+                if (mJob.getSessions().get(0).getEndOn() == null) {
+
+                } else {
                     endOn = appointmentMonthDate(mJob.getSessions().get(0).getEndOn());
                     endTime = getTimePeriodString(endOn);
                     lblTime.setText(startTime + " - " + endTime);
@@ -216,6 +220,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                 lblCertainDateTime.setVisibility(View.VISIBLE);
                 btnDate.setOnClickListener(this);
                 btnTime.setOnClickListener(this);
+                onNextButtonEnable();
             }
         } else if (jobType == 0) {      // Repeating Job TimeSlot
             onYellowButtonColor(btnRepeating);
@@ -250,103 +255,6 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                     break;
             }
         }
-    }
-
-    private void onShowCalendarDialog() {
-        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, AppointmentType.JOBS);
-        builder.lblCalendarTitle.setText("Pick the date:");
-        builder.btnCalendarOk.setText("Done");
-        builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
-            @Override
-            public void onDoneButtonClick(View view, List<CalendarDay> dates) {
-                if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
-                    alertDialog.dismiss();
-                } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
-                    alertDialog.dismiss();
-                    if (dates.size() > 0) {
-                        String year = getAppointmentYear(dates.get(0).getDate());
-                        String month = getAppointmentMonth(dates.get(0).getDate());
-                        String day = getAppointmentDay(dates.get(0).getDate());
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-                        try {
-                            Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
-                            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            selectedDay = dateFormat.format(varDate);
-                        } catch (Exception e) {
-                            // TODO: handle exception
-                            e.printStackTrace();
-                        }
-                        lblDate.setText(day + " " + month);
-                        if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
-                            onNextButtonEnable();
-                    }
-                }
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
-
-    private void onShowAddTimeClickDialog() {
-        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.JOBS);
-        builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
-            @Override
-            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
-                if (view.getId() == R.id.btn_add_time_cancel) {
-                    alertDialog.dismiss();
-                } else if (view.getId() == R.id.btn_add_time_ok) {
-                    alertDialog.dismiss();
-                    startTime = getTimePeriodString(start);
-                    startOn = start;
-                    if (end != null) {
-                        endTime = getTimePeriodString(end);
-                        endOn = end;
-                        lblTime.setText(startTime + " - " + endTime);
-                    } else {
-                        lblTime.setText(startTime);
-                    }
-                    if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
-                        onNextButtonEnable();
-                }
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
-
-    private void onShowRepeatingDayDialog(JGGRepetitionType type) {
-        repetitions.clear();
-        RepeatingDayDialog builder = new RepeatingDayDialog(mContext, type);
-        builder.setOnItemClickListener(new RepeatingDayDialog.OnItemClickListener() {
-            @Override
-            public void onDoneButtonClick(View view, List<Integer> days) {
-                if (view.getId() == R.id.btn_alert_cancel) {
-                    alertDialog.dismiss();
-                } else if (view.getId() == R.id.btn_alert_ok) {
-                    for (int i = 0; i < days.size(); i ++) {
-                        Integer day = days.get(i) - 1;
-                        if (repetition == null || repetition.equals("")) repetition = day.toString();
-                        else repetition = repetition + "," + day.toString();
-                        repetitions.add(day);
-                    }
-                    initRecyclerView(repetitionType);
-                    onNextButtonEnable();
-                    btnAnotherDay.setVisibility(View.VISIBLE);
-                    btnAnotherDay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            onShowRepeatingDayDialog(repetitionType);
-                        }
-                    });
-                    alertDialog.dismiss();
-                }
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
     }
 
     private void initRecyclerView(final JGGRepetitionType type) {
@@ -449,8 +357,10 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         JGGTimeSlotModel timeModel = new JGGTimeSlotModel();
         if (jobType == 1) {     // One-time
             timeModel.setSpecific(isSpecific);
-            String startTime = selectedDay + "T" + getTimeString(startOn);
-            timeModel.setStartOn(startTime);
+            if (startOn != null) {
+                String startTime = selectedDay + "T" + getTimeString(startOn);
+                timeModel.setStartOn(startTime);
+            }
             if (endOn != null) {
                 String endTime = selectedDay + "T" + getTimeString(endOn);
                 timeModel.setEndOn(endTime);
@@ -464,6 +374,103 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         mJob.setRepetitionType(repetitionType);
         mJob.setAppointmentType(jobType);
         selectedAppointment = mJob;
+    }
+
+    private void onShowCalendarDialog() {
+        JGGCalendarDialog builder = new JGGCalendarDialog(mContext, AppointmentType.JOBS);
+        builder.lblCalendarTitle.setText("Pick the date:");
+        builder.btnCalendarOk.setText("Done");
+        builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, List<CalendarDay> dates) {
+                if (view.getId() == R.id.btn_add_time_duplicate_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
+                    alertDialog.dismiss();
+                    if (dates.size() > 0) {
+                        String year = getAppointmentYear(dates.get(0).getDate());
+                        String month = getAppointmentMonth(dates.get(0).getDate());
+                        String day = getAppointmentDay(dates.get(0).getDate());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+                        try {
+                            Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
+                            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            selectedDay = dateFormat.format(varDate);
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                            e.printStackTrace();
+                        }
+                        lblDate.setText(day + " " + month);
+                        if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
+                            onNextButtonEnable();
+                    }
+                }
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
+
+    private void onShowAddTimeClickDialog() {
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.JOBS);
+        builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
+                if (view.getId() == R.id.btn_add_time_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_ok) {
+                    alertDialog.dismiss();
+                    startTime = getTimePeriodString(start);
+                    startOn = start;
+                    if (end != null) {
+                        endTime = getTimePeriodString(end);
+                        endOn = end;
+                        lblTime.setText(startTime + " - " + endTime);
+                    } else {
+                        lblTime.setText(startTime);
+                    }
+                    if (lblTime.getText().length() > 0 && lblDate.getText().length() > 0)
+                        onNextButtonEnable();
+                }
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
+
+    private void onShowRepeatingDayDialog(JGGRepetitionType type) {
+        repetitions.clear();
+        RepeatingDayDialog builder = new RepeatingDayDialog(mContext, type);
+        builder.setOnItemClickListener(new RepeatingDayDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, List<Integer> days) {
+                if (view.getId() == R.id.btn_alert_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_alert_ok) {
+                    for (int i = 0; i < days.size(); i ++) {
+                        Integer day = days.get(i) - 1;
+                        if (repetition == null || repetition.equals("")) repetition = day.toString();
+                        else repetition = repetition + "," + day.toString();
+                        repetitions.add(day);
+                    }
+                    initRecyclerView(repetitionType);
+                    onNextButtonEnable();
+                    btnAnotherDay.setVisibility(View.VISIBLE);
+                    btnAnotherDay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onShowRepeatingDayDialog(repetitionType);
+                        }
+                    });
+                    alertDialog.dismiss();
+                }
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
     }
 
     private void onYellowButtonColor(TextView button) {

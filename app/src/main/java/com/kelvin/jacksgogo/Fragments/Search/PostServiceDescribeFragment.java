@@ -158,9 +158,14 @@ public class PostServiceDescribeFragment extends Fragment
                 }
             }
         });
-        if (creatingApp.getAlbumFiles().size() > 0) {
-            mAlbumFiles = creatingApp.getAlbumFiles();
-            mAdapter.notifyDataChanged(mAlbumFiles);
+        if (creatingApp.getAlbumFiles() == null) {
+
+        } else {
+            if (creatingApp.getAlbumFiles().size() != 0) {
+                recyclerView.setVisibility(View.VISIBLE);
+                mAlbumFiles = creatingApp.getAlbumFiles();
+                mAdapter.notifyDataChanged(mAlbumFiles);
+            }
         }
         recyclerView.setAdapter(mAdapter);
     }

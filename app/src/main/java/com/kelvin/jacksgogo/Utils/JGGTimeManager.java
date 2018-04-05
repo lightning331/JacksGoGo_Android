@@ -277,16 +277,21 @@ public class JGGTimeManager {
                                     + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
                                     + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
                     } else {
-                        if (job.getSessions().get(0).getEndOn() != null)
-                            time = "any time until "
-                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                    + " - "
-                                    + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
-                        else
-                            time = "any time until "
-                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                        if (job.getSessions().get(0).getEndOn() == null
+                                && job.getSessions().get(0).getStartOn() == null)
+                            time = "No set";
+                        else {
+                            if (job.getSessions().get(0).getEndOn() == null)
+                                time = "any time until "
+                                        + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                        + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                            else
+                                time = "any time until "
+                                        + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                        + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                        + " - "
+                                        + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                        }
                     }
                 }
             }
