@@ -80,11 +80,14 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
         }
 
         adapter = new ServiceListingAdapter(this);
-        if (categories != null) {
-            mCategories = categories;
-            adapter.notifyDataChanged(mCategories);
-        } else
+        if (categories == null)
             loadCategories();
+        else {
+            if (categories.size() == 0)
+                loadCategories();
+            else
+                mCategories = categories;
+        }
         adapter.setOnItemClickListener(new ServiceListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

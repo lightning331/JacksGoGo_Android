@@ -71,13 +71,15 @@ public class PostJobCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_post_job_category, container, false);
 
-        if (categories != null)
-            mCategories = categories;
-        else
+        if (categories == null)
             loadCategories();
-
+        else {
+            if (categories.size() == 0)
+                loadCategories();
+            else
+                mCategories = categories;
+        }
         initRecyclerView(view);
-
         return view;
     }
 
@@ -120,7 +122,7 @@ public class PostJobCategoryFragment extends Fragment {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        categories = response.body().getValue();
+                        mCategories = response.body().getValue();
                         categories = mCategories;
                         adapter.refreshData(mCategories);
                         adapter.notifyDataSetChanged();
