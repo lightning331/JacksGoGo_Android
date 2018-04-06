@@ -223,4 +223,11 @@ public interface JGGAPIManager {
                                              @Field("ProposalID") String proposalID,
                                              @Field("GrossAmt") Double grossAmt,
                                              @Field("CurrencyCode") String postalCode);
+
+    /*
+     * Contract
+     */
+    @FormUrlEncoded
+    @POST("api/Contract/StartContract")
+    Call<JGGSendInviteResponse> startContract(@Field("ID") String appointmentID);
 }
