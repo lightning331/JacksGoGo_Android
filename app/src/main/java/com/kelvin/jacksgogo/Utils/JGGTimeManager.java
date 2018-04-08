@@ -279,7 +279,7 @@ public class JGGTimeManager {
                     } else {
                         if (job.getSessions().get(0).getEndOn() == null
                                 && job.getSessions().get(0).getStartOn() == null)
-                            time = "No set";
+                            time = "Any Day";
                         else {
                             if (job.getSessions().get(0).getEndOn() == null)
                                 time = "any time until "

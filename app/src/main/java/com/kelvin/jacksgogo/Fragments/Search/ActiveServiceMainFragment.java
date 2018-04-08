@@ -37,6 +37,7 @@ import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnFragmentInteractionListener {
 
@@ -53,6 +54,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType;
+    private String mCategoryID;
 
     public ActiveServiceMainFragment() {
         // Required empty public constructor
@@ -82,6 +84,11 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_active_service_main, container, false);
+
+        if (selectedCategory == null)
+            mCategoryID = null;
+        else
+            mCategoryID = selectedCategory.getID();
 
         initTabView(view);
         initRecyclerView(view);
@@ -129,7 +136,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         progressDialog = Global.createProgressDialog(mContext);
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
-                null, null, null, null, null,
+                null, mCategoryID, null, null, null,
                 null, null, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
@@ -162,7 +169,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         progressDialog = Global.createProgressDialog(mContext);
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
-                null, null, null, null, null, null,
+                null, mCategoryID, null, null, null, null,
                 null, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override

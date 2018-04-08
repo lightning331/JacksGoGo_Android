@@ -43,7 +43,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static android.view.accessibility.AccessibilityNodeInfo.CollectionInfo.SELECTION_MODE_MULTIPLE;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
@@ -332,7 +331,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements
 
     private void onShowDuplicateTimeCalendarView() {
         JGGCalendarDialog builder = new JGGCalendarDialog(mContext, AppointmentType.SERVICES);
-        builder.calendar.setSelectionMode(SELECTION_MODE_MULTIPLE);
+        builder.calendar.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
         builder.setSelectedDate(calendarView.getSelectedDate().getDate());
         builder.setOnItemClickListener(new JGGCalendarDialog.OnItemClickListener() {
             @Override
@@ -341,22 +340,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
                     alertDialog.dismiss();
-
-//                    calendarView.setSelectionMode (MaterialCalendarView.SELECTION_MODE_NONE);
-//
-//                    Calendar calendar = Calendar.getInstance();
-//                    calendar.set(2018, 3, 14);
-//
-//                    Calendar calendar1 = Calendar.getInstance();
-//                    calendar1.set(2018, 3, 16);
-//
-//                    Calendar calendar2 = Calendar.getInstance();
-//                    calendar2.set(2018, 3, 17);
-//
-//                    calendarView.setDateSelected(calendar, true);
-//                    calendarView.setDateSelected(calendar1, true);
-//                    calendarView.setDateSelected(calendar2, true);
-
 
                     calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE);
                     if (dates.size() > 0) {

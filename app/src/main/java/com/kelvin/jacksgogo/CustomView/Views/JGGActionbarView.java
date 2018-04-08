@@ -336,6 +336,17 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         }
     }
 
+    public void setCategoryNameToActionBar(String name, AppointmentType type) {
+        mTitleTextView.setText(name);
+        if (type == AppointmentType.SERVICES)
+            mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
+        else if (type == AppointmentType.JOBS)
+            mBackButtonImage.setImageResource(R.mipmap.button_backarrow_cyan);
+        else if (type == AppointmentType.GOCLUB
+                || type == AppointmentType.EVENT)
+            mBackButtonImage.setImageResource(R.mipmap.button_backarrow_purple);
+    }
+
     public void setDeleteJobStatus() {
         mTitleTextView.setText("");
         mBackButtonTitleTextView.setText(R.string.title_appointment);
