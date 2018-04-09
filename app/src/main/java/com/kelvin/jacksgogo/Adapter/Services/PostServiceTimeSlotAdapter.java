@@ -44,13 +44,13 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
         cell.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(false, position);
+                listener.onPostServiceTimeSlotItemClick(false, position);
             }
         });
         cell.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(true, position);
+                listener.onPostServiceTimeSlotItemClick(true, position);
             }
         });
     }
@@ -60,13 +60,13 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
         return mList.size();
     }
 
-    private OnItemClickListener listener;
+    private OnPostServiceTimeSlotItemClickListener listener;
 
-    public interface OnItemClickListener {
-        void onItemClick(boolean isDelete, int position);
+    public interface OnPostServiceTimeSlotItemClickListener {
+        void onPostServiceTimeSlotItemClick(boolean isDelete, int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnPostServiceTimeSlotItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -86,18 +86,18 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
             btnDelete = (ImageView) itemView.findViewById(R.id.btn_time_slots_delete);
         }
 
-        public void setData(JGGTimeSlotModel time) {
-            String startTime = getTimePeriodString(appointmentMonthDate(time.getStartOn()));
+        public void setData(JGGTimeSlotModel slotModel) {
+            String startTime = getTimePeriodString(appointmentMonthDate(slotModel.getStartOn()));
             String endTime = "";
-            if (time.getEndOn() != null) {
-                endTime = getTimePeriodString(appointmentMonthDate(time.getEndOn()));
+            if (slotModel.getEndOn() != null) {
+                endTime = getTimePeriodString(appointmentMonthDate(slotModel.getEndOn()));
                 lblTime.setText(startTime + " - " + endTime);
             } else {
                 lblTime.setText(startTime);
             }
-            if (time.getPeoples() > 1) {
+            if (slotModel.getPeoples() > 1) {
                 lblPax.setVisibility(View.VISIBLE);
-                lblPax.setText("" + time.getPeoples() + " pax");
+                lblPax.setText("" + slotModel.getPeoples() + " pax");
             }
         }
     }

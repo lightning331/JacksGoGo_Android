@@ -12,16 +12,16 @@ import com.kelvin.jacksgogo.CustomView.JGGCalendarDecorator;
 import com.kelvin.jacksgogo.CustomView.JGGCalendarDotDecorator;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.jggcalendarview.CalendarDay;
+import com.prolificinteractive.jggcalendarview.MaterialCalendarView;
+import com.prolificinteractive.jggcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_MULTIPLE;
+import static com.prolificinteractive.jggcalendarview.MaterialCalendarView.SELECTION_MODE_MULTIPLE;
 
 /**
  * Created by PUMA on 1/20/2018.

@@ -27,7 +27,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.jggcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Date;
