@@ -470,6 +470,10 @@ public class MaterialCalendarView extends ViewGroup {
                     // No selection! Clear out!
                     clearSelection();
                 }
+                List<CalendarDay> dates = getSelectedDates();
+                if (!dates.isEmpty()) {
+                    setSelectedDate(getSelectedDate());
+                }
                 break;
             default:
             case SELECTION_MODE_NONE:
@@ -1439,6 +1443,9 @@ public class MaterialCalendarView extends ViewGroup {
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
         switch (selectionMode) {
             case SELECTION_MODE_MULTIPLE: {
+                if (date.getDate().before(new Date())) {
+                    return;
+                }
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
             }

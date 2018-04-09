@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.CustomView.JGGCalendarDecorator;
 import com.kelvin.jacksgogo.CustomView.JGGCalendarDotDecorator;
@@ -42,6 +43,8 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
     private int textColor;
     private Drawable leftArrow;
     private Drawable rightArrow;
+
+    private CalendarDay mSourceDay;
 
     public JGGCalendarDialog(Context context, AppointmentType type) {
         super(context);
@@ -99,10 +102,19 @@ public class JGGCalendarDialog extends android.app.AlertDialog.Builder implement
 
     public void setSelectedDate(Date date) {
         calendar.setSelectedDate(date);
+        mSourceDay = calendar.getSelectedDate();
     }
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        if (date.equals(mSourceDay))  {
+            Toast.makeText(mContext, "Could not select source date.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (date.getDate().before(new Date())) {
+            Toast.makeText(mContext, "Could not select before today", Toast.LENGTH_SHORT).show();
+            return;
+        }
         setCurrentDateDot();
         setSelectedDateCircle();
         btnCalendarOk.setBackgroundColor(okButtonColor);

@@ -169,7 +169,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     }
 
     private void onAddTimeClick() {
-        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, mType);
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, mType, null, null);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
             @Override
             public void onDoneButtonClick(View view, Date start, Date end, Integer number) {

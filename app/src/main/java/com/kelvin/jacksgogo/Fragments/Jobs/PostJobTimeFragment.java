@@ -413,7 +413,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
     }
 
     private void onShowAddTimeClickDialog() {
-        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.JOBS);
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.JOBS, null, null);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
             @Override
             public void onDoneButtonClick(View view, Date start, Date end, Integer number) {

@@ -77,14 +77,14 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private Integer paxNo = 2;
     private boolean isPax;
 
-    public JGGAddTimeSlotDialog(Context context, AppointmentType type) {
+    public JGGAddTimeSlotDialog(Context context, AppointmentType type, String startDateStr, String endDateStr) {
         super(context);
         mContext = context;
         mType = type;
-        init();
+        init(startDateStr, endDateStr);
     }
 
-    private void init() {
+    private void init(String startDateStr, String endDateStr) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.dialog_add_time_slot, null);
 
@@ -163,6 +163,41 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         }
 
         onShowAddTimeView();
+
+        if (startDateStr != null && endDateStr != null) {
+            String startHour = startDateStr.substring(11, 13);  // 2018-04-10T10:00:00
+            String startMin = startDateStr.substring(14, 16);
+
+            if (Integer.parseInt(startHour) > 12) {
+                this.startHour = Integer.parseInt(startHour) - 12;
+                this.startAM = false;
+                onAmClick(btnStartTimePM);
+
+                this.txtStartMinute.setText(String.valueOf(Integer.parseInt(startMin)));
+            } else {
+                this.startHour = Integer.parseInt(startHour);
+                this.startAM = true;
+                onAmClick(btnStartTimeAM);
+
+                this.txtStartMinute.setText(String.valueOf(Integer.parseInt(startMin)));
+            }
+
+            String endHour = endDateStr.substring(11, 13);
+            String endMin = endDateStr.substring(14, 16);
+
+            if (Integer.parseInt(endHour) > 12) {
+                this.endHour = Integer.parseInt(endHour) - 12;
+                this.endAM = false;
+                onAmClick(btnEndTimePM);
+                this.txtEndMinute.setText(String.valueOf(Integer.parseInt(endMin)));
+            } else {
+                this.endHour = Integer.parseInt(endHour);
+                this.endAM = true;
+                onAmClick(btnEndTimeAM);
+                this.txtEndMinute.setText(String.valueOf(Integer.parseInt(endMin)));
+            }
+        }
+
         this.setView(view);
     }
 
