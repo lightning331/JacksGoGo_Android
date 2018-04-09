@@ -77,7 +77,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         ADD_BILLABLE_ITEM,
         POST_PROPOSAL,
         JOB_DETAILS,
-        EDIT_JOB
+        EDIT_JOB,
+        JOINED_GO_CLUB
     }
 
     public JGGActionbarView(Context context) {
@@ -403,19 +404,19 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
     }
 
-    private void setPurpleBackButton(int title, int backButtonTitle) {
+    public void setPurpleBackButton(int title, int backButtonTitle) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backButtonTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_purple);
     }
 
-    private void setGreenBackButton(String backTitle, int title) {
+    public void setGreenBackButton(String backTitle, int title) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
     }
 
-    private void setCyanBackButton(String backTitle, int title) {
+    public void setCyanBackButton(String backTitle, int title) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_cyan);

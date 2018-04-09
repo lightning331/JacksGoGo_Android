@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.R;
@@ -59,17 +60,16 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
         adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (mType == GOCLUB) {
-
-                } else if (mType == EVENT) {
-
+                if (mCategories != null) {
+                    selectedCategory = mCategories.get(position);
+                }
+                if (mType == GOCLUB || mType == EVENT) {
+                    Intent intent = new Intent(mContext, AllGoClubsActivity.class);
+                    intent.putExtra("is_category", true);
+                    mContext.startActivity(intent);
                 } else {
                     Intent intent = new Intent(mContext, ActiveServiceActivity.class);
-                    if (mType == SERVICES) {
-                        if (mCategories != null) {
-                            selectedCategory = mCategories.get(position);
-                        }
-                    } else if (mType == JOBS) {
+                    if (mType == JOBS) {
                         if (mCategories != null) {
                             String name = "";
                             if (position == 0) {

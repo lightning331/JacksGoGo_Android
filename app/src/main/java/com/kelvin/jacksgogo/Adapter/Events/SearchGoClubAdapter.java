@@ -18,7 +18,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
 
-public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<JGGCategoryModel> mCategories;
@@ -34,7 +34,12 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.GOCLUB, mContext);
-            headerView.setOnClickListener(this);
+            headerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goClubListener.onItemClick(view);
+                }
+            });
             return headerView;
         } else if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
@@ -62,7 +67,12 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (viewType == 5) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.EVENT, mContext);
-            headerView.setOnClickListener(this);
+            headerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    eventListener.onItemClick(view);
+                }
+            });
             return headerView;
         } else if (viewType == 6) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
@@ -102,8 +112,25 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return 15;
     }
 
-    @Override
-    public void onClick(View view) {
+    // GoClub Header View item click listener
+    private OnGoClubHeaderViewClickListener goClubListener;
 
+    public interface OnGoClubHeaderViewClickListener {
+        void onItemClick(View view);
+    }
+
+    public void setOnGoClubClickListener(OnGoClubHeaderViewClickListener listener) {
+        this.goClubListener = listener;
+    }
+
+    // Event Header View item click listener
+    private OnEventHeaderViewClickListener eventListener;
+
+    public interface OnEventHeaderViewClickListener {
+        void onItemClick(View view);
+    }
+
+    public void setOnEventClickListener(OnEventHeaderViewClickListener listener) {
+        this.eventListener = listener;
     }
 }

@@ -23,6 +23,7 @@
             android:background="@color/JGGGrey5"
             android:src="@mipmap/button_tick_round_green"/>
         <TextView
+            android:id="@+id/lbl_title"
             android:text="Show Only Services With The Keywords"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/list_title_font_size"
@@ -44,45 +45,51 @@
             android:textSize="@dimen/body_font_size"
             android:background="@drawable/grey_border_background">
         </EditText>
-        <TextView
-            android:text="Location"
-            android:fontFamily="@font/mulibold"
-            android:textSize="@dimen/list_title_font_size"
-            android:textColor="@color/JGGBlack"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/txt_filter_location"
-            android:text="2 Jurong West Avenue 5"
+        <LinearLayout
+            android:id="@+id/location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:padding="@dimen/edit_text_padding_size"
-            android:fontFamily="@font/muliregular"
-            android:textSize="@dimen/body_font_size"
-            android:background="@drawable/grey_border_background">
-        </EditText>
+            android:orientation="vertical">
+            <TextView
+                android:text="Location"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/list_title_font_size"
+                android:textColor="@color/JGGBlack"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/txt_filter_location"
+                android:text="2 Jurong West Avenue 5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="@dimen/edit_text_padding_size"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/body_font_size"
+                android:background="@drawable/grey_border_background">
+            </EditText>
+            <TextView
+                android:id="@+id/btn_current_location"
+                android:text="Use Your Current Location"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/button_font_size"
+                android:textColor="@color/JGGWhite"
+                android:background="@drawable/green_background">
+            </TextView>
+        </LinearLayout>
         <TextView
-            android:id="@+id/btn_current_location"
-            android:text="Use Your Current Location"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textAlignment="center"
-            android:fontFamily="@font/mulibold"
-            android:textSize="@dimen/button_font_size"
-            android:textColor="@color/JGGWhite"
-            android:background="@drawable/green_background">
-        </TextView>
-        <TextView
-            android:text="Category"
+            android:text="All Categories"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/list_title_font_size"
             android:textColor="@color/JGGBlack"

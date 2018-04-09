@@ -159,7 +159,9 @@
         <activity
             android:name=".Activities.Profile.EditProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Jobs.JobReportActivity"></activity>
+        <activity android:name=".Activities.Jobs.JobReportActivity" />
+        <activity android:name=".Activities.GoClub_Event.JoinedGoClubsActivity" />
+        <activity android:name=".Activities.GoClub_Event.AllGoClubsActivity"></activity>
     </application>
 
 </manifest>

@@ -36,7 +36,7 @@ public class GoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return 10;
     }
 
-    public class GoClubListViewHolder extends RecyclerView.ViewHolder {
+    public static class GoClubListViewHolder extends RecyclerView.ViewHolder {
 
         private Context mContext;
         private ImageView imgGoClub;

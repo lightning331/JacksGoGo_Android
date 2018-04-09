@@ -33,7 +33,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
     private ActiveServiceMainFragment activeFrag;
-    private BottomNavigationView mbtmView;;
+    private BottomNavigationView mbtmView;
     private TextView btnPost;
 
     public String appType;

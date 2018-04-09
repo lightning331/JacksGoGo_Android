@@ -23,6 +23,7 @@
     <string name="pending_search_placeholder">Search through Pending list</string>
     <string name="confirmed_search_placeholder">Search through Confirmed list</string>
     <string name="history_search_placeholder">Search through History list</string>
+    <string name="joined_go_club_search_placeholder">Search through Joined GoClubs</string>
     <string name="title_empty"></string>
 
     <!-- TODO: Search -->
@@ -212,5 +213,16 @@
 
     <!-- TODO: Profile -->
     <string name="edit_profile_actionbar_title">Edit Profile</string>
+
+    <!-- TODO: GoClub -->
+    <string name="title_joined_go_club">Joined GoClubs</string>
+    <string name="title_all_go_club">All GoClubs</string>
+    <string name="title_post_go_club">Create A New GoClub</string>
+
+    <!-- TODO: Filter -->
+    <string name="title_show_services">Show Only Services With The Keywords</string>
+    <string name="title_show_jobs">Show Only Jobs With The Keywords</string>
+    <string name="title_show_go_club">Show Only GoClubs With The Keywords</string>
+    <string name="title_show_event">Show Only Events With The Keywords</string>
 
 </resources>
