@@ -43,12 +43,12 @@ public class JGGTimeSlotModel {
         Peoples = peoples;
     }
 
-    public Boolean isSpecific() {
-        return IsSpecific;
-    }
-
     public void setSpecific(Boolean specific) {
         IsSpecific = specific;
+    }
+
+    public Boolean getSpecific() {
+        return IsSpecific;
     }
 
     public boolean isEqualSlotDate (Date date) {

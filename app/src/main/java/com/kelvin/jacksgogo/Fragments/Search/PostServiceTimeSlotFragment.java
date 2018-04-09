@@ -288,6 +288,23 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         });
         recyclerView.setAdapter(adapter);
     }
+    private boolean isVaildEndTime(Date seletedDate, Date endDate) {
+        ArrayList<JGGTimeSlotModel> slotModels = getSeletedDateTimeSlot(seletedDate);
+        String yearMonthDay = convertCalendarDate(seletedDate);
+        String dateStr = yearMonthDay + "T" + getTimeString(endDate);
+        Date newDate = appointmentMonthDate(dateStr);
+        if (slotModels.size() > 0) {
+            for (int i=0;i<slotModels.size(); i++) {
+                JGGTimeSlotModel slotModel = slotModels.get(i);
+                Date endSlotDate = appointmentMonthDate(slotModel.getEndOn());
+                if (endSlotDate.after(newDate) || endSlotDate.equals(newDate)) {
+                    return false;
+                }
+            }
+
+        }
+        return true;
+    }
 
     private void onAddTimeClick() {
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, AppointmentType.SERVICES);
@@ -301,34 +318,35 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                 if (view.getId() == R.id.btn_add_time_cancel) {
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
-                    alertDialog.dismiss();
-
-                    String yearMonthDay = convertCalendarDate(calendarView.getSelectedDate().getDate());
 
                     Date selectedDate = calendarView.getSelectedDate().getDate();
-                    if (selectedDate.before(new Date())) {
-                        Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    String yearMonthDay = convertCalendarDate(selectedDate);
+                    // TODO - decide if exist selected time period in mTimeSlots array
+                    if (isVaildEndTime(selectedDate, end)) {
+                        alertDialog.dismiss();
+                        JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
+                        timeSlotModel.setStartOn(yearMonthDay + "T" + getTimeString(start));
+                        timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
+                        if (peopleType == 1) {       // One person
+                            timeSlotModel.setPeoples(1);
+                        } else if (peopleType > 1) {   // Multi person
+                            timeSlotModel.setPeoples(number);
+                        }
 
-                    JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
-                    timeSlotModel.setStartOn(yearMonthDay + "T" + getTimeString(start));
-                    timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
-                    if (peopleType == 1) {       // One person
-                        timeSlotModel.setPeoples(1);
-                    } else if (peopleType > 1) {   // Multi person
-                        timeSlotModel.setPeoples(number);
-                    }
+                        mSelectedTimeSlot = timeSlotModel;
 
-                    mSelectedTimeSlot = timeSlotModel;
+                        if (isEditTimeSlot) {
+                            mTimeSlots.set(editingTimeSlot, timeSlotModel);
+                            isEditTimeSlot = false;
+                        } else {
+                            mTimeSlots.add(timeSlotModel);
+                        }
 
-                    if (isEditTimeSlot) {
-                        mTimeSlots.set(editingTimeSlot, timeSlotModel);
-                        isEditTimeSlot = false;
+                        ArrayList<JGGTimeSlotModel> seletedSlotModels = getSeletedDateTimeSlot(selectedDate);
+                        updateRecyclerView(seletedSlotModels);
                     } else {
-                        mTimeSlots.add(timeSlotModel);
+                        Toast.makeText(mContext, "Time could not overlap", Toast.LENGTH_SHORT).show();
                     }
-                    updateRecyclerView(mTimeSlots);
                 }
             }
         });
@@ -364,11 +382,13 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                             calendarView.setDateSelected(calendar, true);
 
                             // add selected timeSlot for n times
-                            JGGTimeSlotModel tmpTimeSlot = mSelectedTimeSlot;
-                            String ymdStart = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(tmpTimeSlot.getStartOn()));
-                            String ymdEnd = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(tmpTimeSlot.getEndOn()));
+                            JGGTimeSlotModel tmpTimeSlot = new JGGTimeSlotModel();
+                            String ymdStart = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getStartOn()));
+                            String ymdEnd = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getEndOn()));
                             tmpTimeSlot.setStartOn(ymdStart);
                             tmpTimeSlot.setEndOn(ymdEnd);
+                            tmpTimeSlot.setPeoples(mSelectedTimeSlot.getPeoples());
+                            tmpTimeSlot.setSpecific(mSelectedTimeSlot.getSpecific());
 
                             mTimeSlots.add(tmpTimeSlot);
                         }
@@ -401,11 +421,11 @@ public class PostServiceTimeSlotFragment extends Fragment implements
 
     private ArrayList<JGGTimeSlotModel> getSeletedDateTimeSlot(Date seletedDate) {
         ArrayList<JGGTimeSlotModel> slotModels = new ArrayList<JGGTimeSlotModel>();
-        for (JGGTimeSlotModel slotModel : mTimeSlots) {
+        for (int i=0;i<mTimeSlots.size(); i++) {
+            JGGTimeSlotModel slotModel = mTimeSlots.get(i);
             if (slotModel.isEqualSlotDate(seletedDate)) {
                 slotModels.add(slotModel);
             }
-            return slotModels;
         }
         return slotModels;
     }
@@ -450,6 +470,11 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         else if (view.getId() == R.id.btn_post_time_slot_title) {
             onEditTitleClick();
         } else if (view.getId() == R.id.btn_post_timeslot_add) {
+            Date selectedDate = calendarView.getSelectedDate().getDate();
+            if (selectedDate.before(new Date())) {
+                Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             onAddTimeClick();
         } else if (view.getId() == R.id.btn_post_timeslot_done) {
             mService.setTimeSlotType(TimeSlotSelectionStatus.done);

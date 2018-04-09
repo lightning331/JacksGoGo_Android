@@ -306,10 +306,9 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     }
 
     private void onDoneButtonClick(View view) {
-        if (Integer.parseInt(txtStartTime.getText().toString()) >= Integer.parseInt(txtEndTime.getText().toString())
-                && endAM
-                || Integer.parseInt(txtEndTime.getText().toString()) == 12
-                && endAM) {
+        if ((Integer.parseInt(txtStartTime.getText().toString()) >= Integer.parseInt(txtEndTime.getText().toString()) && endAM)
+                || (!startAM && endAM)
+                || (Integer.parseInt(txtEndTime.getText().toString()) == 12 && endAM)) {
             Toast.makeText(mContext, "Please set end time later than start time.", Toast.LENGTH_SHORT).show();
             return;
         }

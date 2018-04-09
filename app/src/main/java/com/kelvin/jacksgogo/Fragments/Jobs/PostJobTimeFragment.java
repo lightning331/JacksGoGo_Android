@@ -145,7 +145,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         }
         if (mJob.getSessions() != null
                 && mJob.getSessions().size() > 0) {
-            isSpecific = mJob.getSessions().get(0).isSpecific();
+            isSpecific = mJob.getSessions().get(0).getSpecific();
             if (mJob.getSessions().get(0).getStartOn() == null) {
 
             } else {
