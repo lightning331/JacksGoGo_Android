@@ -16,8 +16,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:src="@mipmap/carousel05"
-                    android:id="@+id/img_service_detail_photo"
+                    android:src="@mipmap/appointment_placeholder"
+                    android:id="@+id/img_event_detail_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
@@ -56,7 +56,7 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="center">
                 <ImageView
-                    android:id="@+id/img_service_detail_category"
+                    android:id="@+id/img_event_detail_category"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@mipmap/icon_cat_social"
@@ -89,7 +89,7 @@
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:text="18 Dec, 2017 10:00AM - 12:00PM"
-                    android:id="@+id/lbl_job_detail_end_time"
+                    android:id="@+id/lbl_event_detail_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -105,7 +105,7 @@
                 android:layout_marginTop="4dp">
                 <com.makeramen.roundedimageview.RoundedImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/img_avatar"
+                    android:id="@+id/img_event_group"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginTop="1dp"
@@ -118,7 +118,7 @@
                     app:riv_oval="true"/>
                 <TextView
                     android:text="Happy Garden, Jurong West"
-                    android:id="@+id/lbl_service_detail_price"
+                    android:id="@+id/lbl_event_group_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -137,11 +137,11 @@
                 android:gravity="center_vertical">
                 <TextView
                     android:text="10"
-                    android:id="@+id/service_detail_booked_count"
+                    android:id="@+id/lbl_event_detail_joined_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    android:textColor="@color/JGGOrange"
+                    android:textColor="@color/JGGPurple"
                     android:fontFamily="@font/mulibold"
                     android:textSize="@dimen/caption_font_size" />
                 <TextView
@@ -149,7 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:textColor="@color/JGGOrange"
+                    android:textColor="@color/JGGPurple"
                     android:fontFamily="@font/muliregular"
                     android:textSize="@dimen/caption_font_size" />
             </LinearLayout>
@@ -160,7 +160,7 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/btn_service_detail_next"
+            android:id="@+id/btn_event_detail_next"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:gravity="center">

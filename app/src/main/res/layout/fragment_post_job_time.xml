@@ -51,7 +51,6 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/lbl_post_job_done"
                 android:text="When do you need the job done?"
                 android:fontFamily="@font/mulibold"
@@ -62,7 +61,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:visibility="gone"
                 android:text="On a specific date and time."
                 android:id="@+id/btn_post_job_specific"
                 android:layout_width="match_parent"
@@ -76,7 +74,6 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <TextView
-                android:visibility="gone"
                 android:text="Any day."
                 android:id="@+id/btn_post_job_any_day"
                 android:layout_width="match_parent"
@@ -90,7 +87,6 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/lbl_post_job_certain_date"
                 android:text="Need it done before a certain date and time(optional):"
                 android:fontFamily="@font/muliregular"
@@ -102,7 +98,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_job_date_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -147,7 +142,6 @@
                 </LinearLayout>
             </LinearLayout>
             <TextView
-                android:visibility="gone"
                 android:text="Every weekly."
                 android:id="@+id/btn_post_job_weekly"
                 android:layout_width="match_parent"
@@ -161,7 +155,6 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <TextView
-                android:visibility="gone"
                 android:text="Every monthly."
                 android:id="@+id/btn_post_job_monthly"
                 android:layout_width="match_parent"
@@ -175,14 +168,12 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <android.support.v7.widget.RecyclerView
-                android:visibility="gone"
                 android:id="@+id/post_job_selected_day_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
             </android.support.v7.widget.RecyclerView>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/btn_post_job_add_another_day"
                 android:text="Add Another Day"
                 android:fontFamily="@font/mulibold"
@@ -193,7 +184,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp" />
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/btn_post_job_time_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

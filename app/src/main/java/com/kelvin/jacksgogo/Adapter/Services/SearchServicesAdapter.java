@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
@@ -48,9 +48,10 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext);
-            categoryListView.setOnClickListener(this);
-            return categoryListView;
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext);
+            headerView.totalServiceCount.setText(String.valueOf(mServices.size()));
+            headerView.setOnClickListener(this);
+            return headerView;
         } else if (viewType == CATEGORY_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
@@ -58,8 +59,8 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else if (viewType == CATEGORY_SECTION_TYPE) {
-            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, AppointmentType.SERVICES, mCategories);
+            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
+            CategoryRecyclerView categoryListView = new CategoryRecyclerView(listView, mContext, AppointmentType.SERVICES, mCategories);
             return categoryListView;
         } else if (viewType == RECOMMEND_SECTION_TITLE_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);

@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -33,7 +33,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
     private TextView btnCurrentLocation;
     private RecyclerView recyclerView;
 
-    private CategoryCellAdapter adapter;
+    private CategoryAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
     private AppointmentType mType;
 
@@ -83,8 +83,8 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        adapter = new CategoryCellAdapter(this, mCategories, mType);
-        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
+        adapter = new CategoryAdapter(this, mCategories, mType);
+        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 if (mType == AppointmentType.SERVICES) {

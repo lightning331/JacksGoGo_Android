@@ -65,7 +65,7 @@
                 android:layout_marginRight="10dp">
 
                 <ImageView
-                    android:id="@+id/img_describe"
+                    android:id="@+id/img_my_services"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@mipmap/counter_greytick"

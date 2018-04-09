@@ -122,7 +122,7 @@ public class FavouriteFragment extends Fragment {
             recyclerView.setAdapter(jobAdapter);
             searchJobs();
         } else if (type.equals(EVENTS)) {
-            EventsListingAdapter adapter = new EventsListingAdapter();
+            EventsListingAdapter adapter = new EventsListingAdapter(mContext);
             adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {

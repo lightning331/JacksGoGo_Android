@@ -15,7 +15,7 @@
             android:background="@color/JGGGrey5"
             android:orientation="vertical">
             <TextView
-                android:text="Do you have a budget?"
+                android:text="Do you have a budget for each session?"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"
@@ -28,7 +28,7 @@
                 android:id="@+id/btn_post_job_no_limit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:padding="@dimen/edit_text_padding_size"
@@ -50,7 +50,6 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_job_fixed_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -116,7 +115,6 @@
                 android:textColor="@color/JGGCyan"
                 android:background="@drawable/cyan_border_background"/>
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_job_min_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -169,7 +167,6 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_job_max_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -234,7 +231,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/btn_post_job_budget_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

@@ -20,6 +20,7 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
+import com.kelvin.jacksgogo.Adapter.Events.SearchGoClubAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
@@ -40,6 +41,7 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -142,15 +144,8 @@ public class SearchFragment extends Fragment {
             searchJobs();
         } else if (appType.equals(GOCLUB)) {
             progressDialog.dismiss();
-        }
-    }
-
-    private boolean isLoggedIn() {
-        if (currentUser == null) {
-            showAlertDialog();
-            return false;
-        } else {
-            return true;
+            SearchGoClubAdapter goClubAdapter = new SearchGoClubAdapter(mContext, mCategories);
+            recyclerView.setAdapter(goClubAdapter);
         }
     }
 

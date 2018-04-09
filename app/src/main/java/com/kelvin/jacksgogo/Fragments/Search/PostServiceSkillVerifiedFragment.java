@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
-import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -43,7 +43,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     private Context mContext;
     private TextView btnVerify;
     private RecyclerView recyclerView;
-    private CategoryCellAdapter adapter;
+    private CategoryAdapter adapter;
     private ProgressDialog progressDialog;
 
     private ArrayList<JGGCategoryModel> mCategories;
@@ -94,8 +94,8 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, mCategories, AppointmentType.SERVICES);
-        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
+        adapter = new CategoryAdapter(mContext, mCategories, AppointmentType.SERVICES);
+        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);

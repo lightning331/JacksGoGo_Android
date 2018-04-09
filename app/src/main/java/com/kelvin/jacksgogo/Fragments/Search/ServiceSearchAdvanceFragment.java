@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.CustomView.Views.SelectAreaDialog;
@@ -55,7 +55,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
     private EditText txtAdditionalTag;
     private TextView btnSearch;
     private RecyclerView recyclerView;
-    private CategoryCellAdapter adapter;
+    private CategoryAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
     private AppointmentType mType;
@@ -141,8 +141,8 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, mCategories, mType);
-        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
+        adapter = new CategoryAdapter(mContext, mCategories, mType);
+        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 if (mType == AppointmentType.SERVICES) {

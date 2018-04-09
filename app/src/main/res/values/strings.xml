@@ -44,8 +44,10 @@
     <string name="title_active_service_around">Active Services Around</string>
     <string name="title_active_job_around">Active Jobs Around</string>
     <string name="title_active_goclub_around">Active GoClub Around</string>
+    <string name="title_active_event_around">Active Event Around</string>
     <string name="title_post_service">Post A Service</string>
     <string name="title_post_job">Post A Job</string>
+    <string name="title_post_event">Post A Event</string>
     <string name="title_post_goclub">Post A GoClub</string>
     <string name="title_invite_service_provider">Invite Service Providers</string>
     <string name="title_time_slots">Time Slots</string>

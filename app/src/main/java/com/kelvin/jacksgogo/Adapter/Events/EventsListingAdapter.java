@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Events.EventListDetailCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.EventListDetailCell;
 import com.kelvin.jacksgogo.R;
 
 /**
@@ -14,6 +14,12 @@ import com.kelvin.jacksgogo.R;
  */
 
 public class EventsListingAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+
+    private Context mContext;
+
+    public EventsListingAdapter(Context context) {
+        mContext = context;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -23,7 +29,7 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        return new EventListDetailCell(view);
+        return new EventListDetailCell(view, mContext);
     }
 
     @Override

@@ -69,7 +69,7 @@ public class CategoryGridAdapter extends BaseAdapter implements View.OnClickList
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            gridViewItem = inflater.inflate(R.layout.cell_search_category, null);
+            gridViewItem = inflater.inflate(R.layout.cell_category, null);
         }
         gridViewItem.setLayoutParams(new GridView.LayoutParams(320, 315));
 

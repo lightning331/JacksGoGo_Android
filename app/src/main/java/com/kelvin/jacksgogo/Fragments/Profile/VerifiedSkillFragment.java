@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -27,7 +27,7 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
     private Context mContext;
 
     private RecyclerView recyclerView;
-    private CategoryCellAdapter adapter;
+    private CategoryAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
     public VerifiedSkillFragment() {
@@ -61,8 +61,8 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, mCategories, AppointmentType.SERVICES);
-        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
+        adapter = new CategoryAdapter(mContext, mCategories, AppointmentType.SERVICES);
+        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String name = mCategories.get(position).getName();

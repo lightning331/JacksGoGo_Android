@@ -59,7 +59,7 @@ public class PostServiceTabbarView extends RelativeLayout implements View.OnClic
         mTimeButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_time);
         mAddressButton      = (LinearLayout) mTabbarView.findViewById(R.id.btn_address);
         mReportButton       = (LinearLayout) mTabbarView.findViewById(R.id.btn_report);
-        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_describe);
+        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_my_services);
         mTimeImage          = (ImageView) mTabbarView.findViewById(R.id.img_time);
         mAddressImage       = (ImageView) mTabbarView.findViewById(R.id.img_address);
         mReportImage        = (ImageView) mTabbarView.findViewById(R.id.img_report);
