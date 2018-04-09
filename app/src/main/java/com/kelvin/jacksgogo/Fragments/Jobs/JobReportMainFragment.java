@@ -237,7 +237,7 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     }
 
     private void selectImage(final boolean isStartJob) {
-        ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
+        ArrayList<AlbumFile> mAlbumFiles;
         if (isStartJob) mAlbumFiles = beforePhotoAlbums;
         else mAlbumFiles = afterPhotoAlbums;
         Album.image(this)
