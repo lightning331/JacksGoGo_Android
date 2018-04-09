@@ -72,7 +72,7 @@ dependencies {
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
     compile 'co.lujun:androidtagview:1.1.4'
     compile 'com.google.android.gms:play-services:11.4.2'
-    compile 'com.prolificinteractive:material-calendarview:1.4.3'
+//    compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.yanzhenjie:album:2.0.2'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
     compile 'com.jakewharton:butterknife:8.8.1'

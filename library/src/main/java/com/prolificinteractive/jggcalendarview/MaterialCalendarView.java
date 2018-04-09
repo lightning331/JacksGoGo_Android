@@ -75,7 +75,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE, SELECTION_MODE_EDIT})
     public @interface SelectionMode {
     }
 
@@ -101,6 +101,11 @@ public class MaterialCalendarView extends ViewGroup {
      * Selection mode which allows selection of a range between two dates
      */
     public static final int SELECTION_MODE_RANGE = 3;
+
+    /**
+     * Selection mode which allows editing mode
+     */
+    public static final int SELECTION_MODE_EDIT = 4;
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
@@ -451,12 +456,19 @@ public class MaterialCalendarView extends ViewGroup {
             case SELECTION_MODE_MULTIPLE:
                 break;
             case SELECTION_MODE_SINGLE:
-                if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE) {
+                if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE || oldMode == SELECTION_MODE_EDIT) {
                     //We should only have one selection now, so we should pick one
                     List<CalendarDay> dates = getSelectedDates();
                     if (!dates.isEmpty()) {
                         setSelectedDate(getSelectedDate());
                     }
+                }
+                break;
+            case SELECTION_MODE_EDIT:
+                this.selectionMode = SELECTION_MODE_EDIT;
+                if (oldMode != SELECTION_MODE_EDIT) {
+                    // No selection! Clear out!
+                    clearSelection();
                 }
                 break;
             default:
@@ -1450,6 +1462,9 @@ public class MaterialCalendarView extends ViewGroup {
                 }
             }
             break;
+            case SELECTION_MODE_EDIT:  // TODO - edit by storm
+                dispatchOnDateSelected(date, true);
+                break;
             default:
             case SELECTION_MODE_SINGLE: {
                 adapter.clearSelections();

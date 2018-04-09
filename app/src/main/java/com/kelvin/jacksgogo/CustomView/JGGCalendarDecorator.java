@@ -6,9 +6,9 @@ import android.support.v4.content.ContextCompat;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.jggcalendarview.CalendarDay;
+import com.prolificinteractive.jggcalendarview.DayViewDecorator;
+import com.prolificinteractive.jggcalendarview.DayViewFacade;
 
 import java.util.Collection;
 import java.util.HashSet;

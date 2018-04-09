@@ -25,7 +25,7 @@
         android:padding="5dp"
         android:background="@color/JGGWhite">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        <com.prolificinteractive.jggcalendarview.MaterialCalendarView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/add_time_duplicate_calendar"
             android:layout_width="wrap_content"

@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.kelvin.jacksgogo.R;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.jggcalendarview.MaterialCalendarView;
 
 /**
  * Created by PUMA on 11/13/2017.
