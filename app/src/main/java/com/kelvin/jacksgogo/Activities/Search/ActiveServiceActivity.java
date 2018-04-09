@@ -22,7 +22,7 @@ import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -33,7 +33,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     private Toolbar mToolbar;
     private JGGActionbarView actionbarView;
     private ActiveServiceMainFragment activeFrag;
-    private BottomNavigationView mbtmView;;
+    private BottomNavigationView mbtmView;
     private TextView btnPost;
 
     public String appType;
@@ -82,12 +82,12 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
                 actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.JOBS);
             btnPost.setText(R.string.title_post_job);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan));
-        } else if (appType.equals(GOCLUB)) {
+        } else if (appType.equals(EVENTS)) {
             if (isActive)
-                actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.GOCLUB);
+                actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.EVENT);
             else
-                actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.GOCLUB);
-            btnPost.setText(R.string.title_post_goclub);
+                actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.EVENT);
+            btnPost.setText(R.string.title_post_event);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGPurple));
         }
         if (editStatus.equals(EDIT))

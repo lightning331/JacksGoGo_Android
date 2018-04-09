@@ -16,10 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
+import com.kelvin.jacksgogo.Activities.GoClub_Event.JoinedGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
+import com.kelvin.jacksgogo.Adapter.Events.SearchGoClubAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.R;
@@ -45,7 +48,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class SearchFragment extends Fragment {
@@ -142,15 +144,34 @@ public class SearchFragment extends Fragment {
             searchJobs();
         } else if (appType.equals(GOCLUB)) {
             progressDialog.dismiss();
-        }
-    }
+            SearchGoClubAdapter goClubAdapter = new SearchGoClubAdapter(mContext, mCategories);
+            goClubAdapter.setOnGoClubClickListener(new SearchGoClubAdapter.OnGoClubHeaderViewClickListener() {
+                @Override
+                public void onItemClick(View view) {
+                    if (view.getId() == R.id.btn_view_my_service) {
+                        mIntent = new Intent(mContext, JoinedGoClubsActivity.class);
+                    } else if (view.getId() == R.id.btn_view_all) {
+                        mIntent = new Intent(mContext, AllGoClubsActivity.class);
+                        mIntent.putExtra("is_category", false);
+                    } else if (view.getId() == R.id.btn_post_new) {
 
-    private boolean isLoggedIn() {
-        if (currentUser == null) {
-            showAlertDialog();
-            return false;
-        } else {
-            return true;
+                    }
+                    mContext.startActivity(mIntent);
+                }
+            });
+            goClubAdapter.setOnEventClickListener(new SearchGoClubAdapter.OnEventHeaderViewClickListener() {
+                @Override
+                public void onItemClick(View view) {
+                    if (view.getId() == R.id.btn_view_my_service) {
+
+                    } else if (view.getId() == R.id.btn_view_all) {
+
+                    } else if (view.getId() == R.id.btn_post_new) {
+
+                    }
+                }
+            });
+            recyclerView.setAdapter(goClubAdapter);
         }
     }
 
@@ -252,13 +273,13 @@ public class SearchFragment extends Fragment {
     private void onViewHolderItemClick(View view) {
 
         if (view.getId() == R.id.btn_view_my_service) {
-            mIntent = new Intent(mContext.getApplicationContext(), ServiceListingActivity.class);
+            mIntent = new Intent(mContext, ServiceListingActivity.class);
         } else if (view.getId() == R.id.btn_view_all) {
             selectedCategory = null;
-            mIntent = new Intent(mContext.getApplicationContext(), ActiveServiceActivity.class);
+            mIntent = new Intent(mContext, ActiveServiceActivity.class);
         } else if (view.getId() == R.id.btn_post_new) {
             if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
-                mIntent = new Intent(mContext.getApplicationContext(), PostServiceActivity.class);
+                mIntent = new Intent(mContext, PostServiceActivity.class);
             } else {
                 showAlertDialog();
                 return;

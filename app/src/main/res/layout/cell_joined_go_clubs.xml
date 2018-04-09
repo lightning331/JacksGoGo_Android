@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/JGGGrey5"
+    android:gravity="center"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/img_category"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_cat_householdchores"
+            android:background="@color/transparent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:text="Help With Gardening"
+            android:id="@+id/lbl_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/JGGGrey2"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/list_title_font_size"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/joined_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/JGGGrey5"
+        android:orientation="vertical">
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

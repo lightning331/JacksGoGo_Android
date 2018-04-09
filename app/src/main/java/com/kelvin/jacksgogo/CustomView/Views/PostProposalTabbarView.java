@@ -59,7 +59,7 @@ public class PostProposalTabbarView extends RelativeLayout implements View.OnCli
         mBidButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_bid);
         mReschedulingButton      = (LinearLayout) mTabbarView.findViewById(R.id.btn_rescheduling);
         mCancellationButton = (LinearLayout) mTabbarView.findViewById(R.id.btn_cancellation);
-        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_describe);
+        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_my_services);
         mBidImage          = (ImageView) mTabbarView.findViewById(R.id.img_bid);
         mReschedulingImage       = (ImageView) mTabbarView.findViewById(R.id.img_rescheduling);
         mCancellationImage = (ImageView) mTabbarView.findViewById(R.id.img_cancellation);

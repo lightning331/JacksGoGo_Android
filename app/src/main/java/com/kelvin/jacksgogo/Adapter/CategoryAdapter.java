@@ -19,13 +19,13 @@ import java.util.ArrayList;
  * Created by PUMA on 1/17/2018.
  */
 
-public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<JGGCategoryModel> mCategories;
     private AppointmentType mType;
 
-    public CategoryCellAdapter(Context context, ArrayList<JGGCategoryModel> data, AppointmentType type) {
+    public CategoryAdapter(Context context, ArrayList<JGGCategoryModel> data, AppointmentType type) {
         mContext = context;
         mCategories = data;
         mType = type;
@@ -33,7 +33,7 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_search_category, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_category, parent, false);
         CategoryViewHolder categoryView = new CategoryViewHolder(mContext, view);
         return categoryView;
     }
@@ -41,7 +41,9 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         CategoryViewHolder categoryView = (CategoryViewHolder) holder;
-        if (mType == AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES
+                || mType == AppointmentType.GOCLUB
+                || mType == AppointmentType.EVENT) {
             if (mCategories != null) {
                 String categoryName = mCategories.get(position).getName();
                 String url = mCategories.get(position).getImage();
@@ -69,7 +71,9 @@ public class CategoryCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (mType == AppointmentType.SERVICES) {
+        if (mType == AppointmentType.SERVICES
+                || mType == AppointmentType.GOCLUB
+                || mType == AppointmentType.EVENT) {
             if (mCategories != null)
                 return mCategories.size();
         }

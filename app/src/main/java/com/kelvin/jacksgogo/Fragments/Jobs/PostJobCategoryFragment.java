@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.CategoryCellAdapter;
+import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -40,7 +40,7 @@ public class PostJobCategoryFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView recyclerView;
-    private CategoryCellAdapter adapter;
+    private CategoryAdapter adapter;
     private View view;
     private ArrayList<JGGCategoryModel> mCategories = new ArrayList<>();
 
@@ -89,8 +89,8 @@ public class PostJobCategoryFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        adapter = new CategoryCellAdapter(mContext, mCategories, AppointmentType.JOBS);
-        adapter.setOnItemClickListener(new CategoryCellAdapter.OnItemClickListener() {
+        adapter = new CategoryAdapter(mContext, mCategories, AppointmentType.JOBS);
+        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 if (position == 0) {

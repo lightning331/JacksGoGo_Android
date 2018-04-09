@@ -77,7 +77,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         ADD_BILLABLE_ITEM,
         POST_PROPOSAL,
         JOB_DETAILS,
-        EDIT_JOB
+        EDIT_JOB,
+        JOINED_GO_CLUB
     }
 
     public JGGActionbarView(Context context) {
@@ -207,6 +208,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     setCyanBackButton("", R.string.title_active_job_around);
                 } else if (type == AppointmentType.GOCLUB) {
                     setPurpleBackButton(R.string.title_search, R.string.title_active_goclub_around);
+                } else if (type == AppointmentType.EVENT) {
+                    setPurpleBackButton(R.string.title_search, R.string.title_active_event_around);
                 }
                 break;
             case POST:
@@ -215,7 +218,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 } else if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_post_job);
                 } else if (type == AppointmentType.GOCLUB) {
-                    setPurpleBackButton(R.string.title_post_goclub, R.string.title_empty);
+                    setPurpleBackButton(R.string.title_post_event, R.string.title_empty);
                 }
                 break;
             case SERVICE_TIME_SLOTS:
@@ -401,19 +404,19 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
     }
 
-    private void setPurpleBackButton(int title, int backButtonTitle) {
+    public void setPurpleBackButton(int title, int backButtonTitle) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backButtonTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_purple);
     }
 
-    private void setGreenBackButton(String backTitle, int title) {
+    public void setGreenBackButton(String backTitle, int title) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_green);
     }
 
-    private void setCyanBackButton(String backTitle, int title) {
+    public void setCyanBackButton(String backTitle, int title) {
         mTitleTextView.setText(title);
         mBackButtonTitleTextView.setText(backTitle);
         mBackButtonImage.setImageResource(R.mipmap.button_backarrow_cyan);

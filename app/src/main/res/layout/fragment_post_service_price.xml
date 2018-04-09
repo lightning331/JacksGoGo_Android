@@ -38,7 +38,6 @@
                 android:textColor="@color/JGGGreen"
                 android:background="@drawable/green_border_background"/>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/lbl_post_service_price_range"
                 android:text="Set your service price range."
                 android:fontFamily="@font/mulibold"
@@ -49,7 +48,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:visibility="gone"
                 android:text="Fixed amount."
                 android:id="@+id/btn_post_service_fixed_amount"
                 android:layout_width="match_parent"
@@ -63,7 +61,6 @@
                 android:textColor="@color/JGGGreen"
                 android:background="@drawable/green_border_background"/>
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_service_fixed_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -116,7 +113,6 @@
                 </LinearLayout>
             </LinearLayout>
             <TextView
-                android:visibility="gone"
                 android:text="From $... to $..."
                 android:id="@+id/btn_post_service_From"
                 android:layout_width="match_parent"
@@ -130,7 +126,6 @@
                 android:textColor="@color/JGGGreen"
                 android:background="@drawable/green_border_background"/>
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_service_min_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -183,7 +178,6 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_service_max_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -249,7 +243,6 @@
                 android:textColor="@color/JGGGreen"
                 android:background="@drawable/green_border_background"/>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/lbl_post_service_package_num"
                 android:text="How many services is included in your package?"
                 android:fontFamily="@font/mulibold"
@@ -260,7 +253,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
-                android:visibility="gone"
                 android:hint="No. of Services 2"
                 android:id="@+id/txt_post_service_package_num"
                 android:inputType="number"
@@ -275,9 +267,8 @@
                 android:background="@drawable/grey_border_background">
             </EditText>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/lbl_post_service_package_amount"
-                android:text="How many services is included in your package?"
+                android:text="What is the total price of the package?"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"
@@ -286,7 +277,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/post_service_package_amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -339,7 +329,6 @@
                 </LinearLayout>
             </LinearLayout>
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/btn_post_service_price_next"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

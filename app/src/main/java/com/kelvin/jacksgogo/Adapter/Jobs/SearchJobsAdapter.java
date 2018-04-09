@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobListDetailCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchCategoryCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
@@ -35,13 +35,19 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mCategories = data;
     }
 
+    public void notifyDataChanged(ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> jobs) {
+        mCategories = data;
+        mJobs = jobs;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView categoryListView = new SearchHomeHeaderView(view, AppointmentType.JOBS, mContext);
-            categoryListView.setOnClickListener(this);
-            return categoryListView;
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.JOBS, mContext);
+            headerView.totalServiceCount.setText(String.valueOf(mJobs.size()));
+            headerView.setOnClickListener(this);
+            return headerView;
         } else if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
             SectionTitleView sectionView = new SectionTitleView(view);
@@ -49,8 +55,8 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionView;
         } else if (viewType == 2) {
-            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_category_list, parent, false);
-            SearchCategoryCell categoryListView = new SearchCategoryCell(listView, mContext, AppointmentType.JOBS, mCategories);
+            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
+            CategoryRecyclerView categoryListView = new CategoryRecyclerView(listView, mContext, AppointmentType.JOBS, mCategories);
             //categoryListView.setOnClickListener(this);
             return categoryListView;
         } else if (viewType == 3) {
@@ -99,11 +105,6 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
             listener.onItemClick(view);
         }
-    }
-
-    public void notifyDataChanged(ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> jobs) {
-        mCategories = data;
-        mJobs = jobs;
     }
 
     private OnItemClickListener listener;

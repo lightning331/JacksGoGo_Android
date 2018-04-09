@@ -65,7 +65,7 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
         mAddressButton      = (LinearLayout) mTabbarView.findViewById(R.id.btn_address);
         mBudgetButton       = (LinearLayout) mTabbarView.findViewById(R.id.btn_budget);
         mReportButton       = (LinearLayout) mTabbarView.findViewById(R.id.btn_report);
-        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_describe);
+        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_my_services);
         mTimeImage          = (ImageView) mTabbarView.findViewById(R.id.img_time);
         mAddressImage       = (ImageView) mTabbarView.findViewById(R.id.img_address);
         mBudgetImage        = (ImageView) mTabbarView.findViewById(R.id.img_budget);
