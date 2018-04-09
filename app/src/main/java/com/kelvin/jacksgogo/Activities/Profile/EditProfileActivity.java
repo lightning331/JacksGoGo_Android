@@ -19,6 +19,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
+import com.squareup.picasso.Picasso;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -59,6 +61,7 @@ public class EditProfileActivity extends AppCompatActivity implements
         TextWatcher {
 
     @BindView(R.id.edit_profile_actionbar) Toolbar mToolbar;
+    @BindView(R.id.btn_take_photo) LinearLayout btnTakePhoto;
     @BindView(R.id.edit_profile_photo_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.btn_location) TextView btnLocation;
     @BindView(R.id.txt_unit) EditText txtUnit;
@@ -122,6 +125,7 @@ public class EditProfileActivity extends AppCompatActivity implements
 
     private void initView() {
         btnLocation.setOnClickListener(this);
+        btnTakePhoto.setOnClickListener(this);
         txtUnit.addTextChangedListener(this); txtStreet.addTextChangedListener(this);
         txtPostCode.addTextChangedListener(this); txtMobile.addTextChangedListener(this);
         txtEmail.addTextChangedListener(this); txtDescription.addTextChangedListener(this);
@@ -129,7 +133,13 @@ public class EditProfileActivity extends AppCompatActivity implements
         txtTags.addTextChangedListener(this);
 
         // Cover Photo
-
+        if (mUser.getPhotoURL() == null) {
+            btnTakePhoto.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            btnTakePhoto.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
         // Unit
         txtUnit.setText(mUserProfile.getResidentialAddress_Unit());
         // Street
@@ -230,7 +240,7 @@ public class EditProfileActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(View view, int position) {
                 if (position < mAlbumFiles.size()) {
-                    String name = (String)mAlbumFiles.get(position).getPath();
+                    String name = mAlbumFiles.get(position).getPath();
                     Uri imageUri = Uri.parse(new File(name).toString());
                     Intent intent = new Intent(EditProfileActivity.this, JGGImageCropActivity.class);
                     intent.putExtra("imageUri", name);
@@ -271,6 +281,7 @@ public class EditProfileActivity extends AppCompatActivity implements
                     @Override
                     public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
+                        btnTakePhoto.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         mAdapter.notifyDataChanged(mAlbumFiles);
                     }
@@ -290,6 +301,8 @@ public class EditProfileActivity extends AppCompatActivity implements
             Intent intent = new Intent(this, JGGMapViewActivity.class);
             intent.putExtra(APPOINTMENT_TYPE, USERS);
             startActivityForResult(intent, REQUEST_CODE);
+        } else if (view.getId() == R.id.btn_take_photo) {
+            selectImage();
         }
     }
 

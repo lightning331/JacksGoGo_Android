@@ -38,10 +38,10 @@ import java.util.Date;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_BILLABLE_ITEM;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_TOOLS;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -267,13 +267,20 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                     public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         if (isStartJob) {
                             beforePhotoAlbums = result;
+                            if (beforePhotoAlbums.size() > 0)
+                                btnTakeBeforePhoto.setVisibility(View.GONE);
+                            else
+                                btnTakeBeforePhoto.setVisibility(View.VISIBLE);
                             initRecyclerView(true);
                             beforePhotoAdapter.notifyDataChanged(beforePhotoAlbums);
                         } else {
                             afterPhotoAlbums = result;
+                            if (afterPhotoAlbums.size() > 0)
+                                btnTakeAfterPhoto.setVisibility(View.GONE);
+                            else
+                                btnTakeAfterPhoto.setVisibility(View.VISIBLE);
                             initRecyclerView(false);
                             afterPhotoAdapter.notifyDataChanged(afterPhotoAlbums);
-                            afterRecyclerView.setAdapter(afterPhotoAdapter);
                         }
                     }
                 })
@@ -302,7 +309,6 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                     .commit();
         } else if (view.getId() == R.id.btn_take_before_photo) {
             selectImage(true);
-            btnTakeBeforePhoto.setVisibility(View.GONE);
         } else if (view.getId() == R.id.btn_take_after_photo) {
             selectImage(false);
             btnTakeAfterPhoto.setVisibility(View.GONE);
@@ -321,15 +327,13 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtPin.length() > 0) {
             txtPinDesc.setVisibility(View.VISIBLE);
-        } else if (txtPin.getText().toString().equals(""))
-            txtPinDesc.setVisibility(View.GONE);
-        if (txtPinDesc.length() > 0) {
             readyForSubmit = true;
             afterLayout.setVisibility(View.VISIBLE);
             toolsLayout.setVisibility(View.VISIBLE);
             btnSubmit.setVisibility(View.VISIBLE);
             btnSubmit.setText("Submit Report");
-        } else if (txtPinDesc.getText().toString().equals("")) {
+        } else if (txtPin.getText().toString().equals("")) {
+            txtPinDesc.setVisibility(View.GONE);
             readyForSubmit = false;
             afterLayout.setVisibility(View.GONE);
             toolsLayout.setVisibility(View.GONE);
