@@ -64,6 +64,7 @@
     <string name="menu_option_report_service">Report Service</string>
     <string name="menu_option_report_job">Report Job</string>
     <string name="menu_option_report_event">Report Event</string>
+    <string name="menu_option_report_go_club">Report GoClub</string>
     <string name="setup_credit_card">Set Up Credit Card</string>
     <string name="jacks_wallet">Top Up Jacks Wallet - balance $10.00</string>
     <string name="posted_service_duplicate">Duplicate</string>
@@ -158,7 +159,7 @@
     <string name="proposal_title">Proposal</string>
     <string name="edit_proposal_title">Edit Proposal</string>
     <string name="proposal_save">Save</string>
-    <string name="make_proposal">Make A Proposal</string>
+    <string name="title_make_proposal">Make A Proposal</string>
     <string name="people_viewed_job">people have viewed this job recently!</string>
     <string name="viewing_now">viewing now</string>
     <string name="alert_quit_post_proposal_title">Quit Making A Proposal?</string>
@@ -224,5 +225,9 @@
     <string name="title_show_jobs">Show Only Jobs With The Keywords</string>
     <string name="title_show_go_club">Show Only GoClubs With The Keywords</string>
     <string name="title_show_event">Show Only Events With The Keywords</string>
+    <string name="title_request_join_go_club">Request To Join GoClub</string>
+    <string name="people_joined_go_club">people have joined this GoClub recently!</string>
+    <string name="alert_report_go_club_title">Report GoClub</string>
+    <string name="alert_report_go_club_desc">Mark this GoClub as inappropriate or offensive.</string>
 
 </resources>

@@ -58,9 +58,9 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
     @BindView(R.id.lbl_booked_title) TextView lblViewedCountDesc;
 
     private JGGActionbarView actionbarView;
+    private BottomNavigationView mbtmView;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
-    private BottomNavigationView mbtmView;
 
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private boolean reportFlag = false;
@@ -173,7 +173,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.share_menu_cyan);
+        popupMenu.inflate(R.menu.job_share_menu);
 
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());

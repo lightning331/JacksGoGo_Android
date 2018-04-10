@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
-public class GoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class GoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     private Context mContext;
 
@@ -26,14 +26,34 @@ public class GoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         GoClubListViewHolder viewHolder = (GoClubListViewHolder) holder;
-
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return 10;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     public static class GoClubListViewHolder extends RecyclerView.ViewHolder {

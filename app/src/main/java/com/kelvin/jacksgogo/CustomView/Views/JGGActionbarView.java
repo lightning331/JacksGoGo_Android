@@ -176,7 +176,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgLike = R.mipmap.button_favourite_cyan;
                     imgMore = R.mipmap.button_more_active_cyan;
                     setLikeButton(R.mipmap.button_backarrow_cyan, imgLikeOutLine, imgMoreOutLine);
-                } else if (type == AppointmentType.GOCLUB) {
+                } else if (type == AppointmentType.GOCLUB
+                        || type == AppointmentType.EVENT) {
                     imgLikeOutLine = R.mipmap.button_favourite_outline_purple;
                     imgMoreOutLine = R.mipmap.button_more_purple;
                     imgLike = R.mipmap.button_favourite_purple;
@@ -228,7 +229,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mMoreButtonImage.setImageResource(R.mipmap.button_today_green);
                 break;
             case POST_PROPOSAL:
-                setCyanBackButton("", R.string.make_proposal);
+                setCyanBackButton("", R.string.title_make_proposal);
                 break;
             case SERVICE_REVIEWS:
                 setGreenBackButton("", R.string.title_review);

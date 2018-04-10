@@ -1,77 +1,57 @@
-package com.kelvin.jacksgogo.Activities.Search;
+package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
 import android.app.AlertDialog;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
-import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
-import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Global;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+public class GoClubDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class ServiceDetailActivity extends AppCompatActivity implements View.OnClickListener {
-
-    @BindView(R.id.service_detail_actionbar) Toolbar mToolbar;
-    @BindView(R.id.lbl_booked_count) TextView lblViewedCount;
+    @BindView(R.id.go_club_detail_actionbar) Toolbar mToolbar;
+    @BindView(R.id.go_club_detail_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.btn_join_go_club) TextView btnJoinGoClub;
+    @BindView(R.id.lbl_joined_count) TextView lblJoinedCount;
     @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
-    @BindView(R.id.service_detail_bottom_title) TextView bottomTitle;
-    @BindView(R.id.lbl_booked_title) TextView lblViewedCountDesc;
 
     private JGGActionbarView actionbarView;
+    private BottomNavigationView mbtmView;
     private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
 
     private boolean reportFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_detail);
+        setContentView(R.layout.activity_go_club_detail);
         ButterKnife.bind(this);
 
-        Bundle bundle = getIntent().getExtras();
-
         // Hide Bottom NavigationView and ToolBar
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
-        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
-
-        /*
-         *  Service BudgetType
-         *  If Fixed Budget, Can buy Service
-         *  If Package Budget, Can Request to Service
-         */
-        if (selectedAppointment.getBudgetFrom() == null)
-            bottomTitle.setText("Buy Service");
-        else
-            bottomTitle.setText(R.string.title_request_quotation);
-        bottomTitle.setOnClickListener(new View.OnClickListener() {
+        mbtmView = findViewById(R.id.go_club_detail_bottom);
+        btnJoinGoClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedAppointment.getBudget() == null) {
-                    startActivity(new Intent(ServiceDetailActivity.this, PostQuotationActivity.class));
-                } else {
-                    startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
-                }
+
             }
         });
 
@@ -79,23 +59,35 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, AppointmentType.SERVICES);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, Global.AppointmentType.GOCLUB);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
-                actionbarViewItemClick(view);
+                actionbarItemClick(view);
             }
         });
 
-        // Main Fragment
-        ServiceDetailFragment frag = new ServiceDetailFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_original_container, frag)
-                .commit();
+        if (mRecyclerView != null) {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
+        }
     }
 
-    private void actionbarViewItemClick(View view) {
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_alert_cancel) {
+            alertDialog.dismiss();
+        } else if (view.getId() == R.id.btn_alert_ok) {
+            if (!reportFlag) {
+                alertDialog.dismiss();
+                showReportDialog(true);
+            } else {
+                alertDialog.dismiss();
+            }
+            reportFlag = !reportFlag;
+        }
+    }
+
+    private void actionbarItemClick(View view) {
         if (view.getId() == R.id.btn_like_original) {
             actionbarView.setLikeButtonClicked(actionbarView.mLikeButtonSelected);
         } else if (view.getId() == R.id.btn_more) {
@@ -109,7 +101,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.service_share_menu);
+        popupMenu.inflate(R.menu.go_club_share_menu);
 
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
@@ -129,21 +121,6 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         }
         popupMenu.show();
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            if (!reportFlag) {
-                alertDialog.dismiss();
-                showReportDialog(true);
-            } else {
-                alertDialog.dismiss();
-            }
-            reportFlag = !reportFlag;
-        }
     }
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {
@@ -173,17 +150,17 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(alertView);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView reportButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView description = (TextView) alertView.findViewById(R.id.lbl_alert_description);
+        TextView cancelButton = alertView.findViewById(R.id.btn_alert_cancel);
+        TextView reportButton = alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = alertView.findViewById(R.id.lbl_alert_titile);
+        TextView description = alertView.findViewById(R.id.lbl_alert_description);
 
-        title.setText(R.string.alert_report_service_title);
-        description.setText(R.string.alert_report_service_desc);
+        title.setText(R.string.alert_report_go_club_title);
+        description.setText(R.string.alert_report_go_club_desc);
         reportButton.setText(R.string.alert_report_service_ok);
-        reportButton.setBackgroundColor(getResources().getColor(R.color.JGGGreen));
-        cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGGreen10Percent));
-        cancelButton.setTextColor(getResources().getColor(R.color.JGGGreen));
+        reportButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple));
+        cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple10Percent));
+        cancelButton.setTextColor(getResources().getColor(R.color.JGGPurple));
         if (reportFlag) {
             alertDialog.setCanceledOnTouchOutside(false);
             cancelButton.setVisibility(View.GONE);
