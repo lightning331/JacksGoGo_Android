@@ -18,6 +18,7 @@ public class JobDetailLocationCell extends RecyclerView.ViewHolder {
     public LinearLayout location;
     public TextView address;
     public ImageView imgLocation;
+    public ImageView imgLocationRight;
     public TextView lblQuotePrice;
 
     public JobDetailLocationCell(View itemView) {
@@ -27,6 +28,7 @@ public class JobDetailLocationCell extends RecyclerView.ViewHolder {
         location = itemView.findViewById(R.id.btn_location);
         address = itemView.findViewById(R.id.lbl_job_detail_address);
         imgLocation = itemView.findViewById(R.id.img_location);
+        imgLocationRight = itemView.findViewById(R.id.img_location_right);
         lblQuotePrice = itemView.findViewById(R.id.lbl_quote_price);
     }
 }

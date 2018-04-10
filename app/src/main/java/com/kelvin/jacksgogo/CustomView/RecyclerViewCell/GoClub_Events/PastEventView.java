@@ -1,23 +1,25 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Events.EventsListingAdapter;
 import com.kelvin.jacksgogo.R;
 
-public class PastEventRecyclerView extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class PastEventView extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private Context mContext;
 
     private RecyclerView recyclerView;
     private TextView btnViewPastEvents;
 
-    public PastEventRecyclerView(View itemView, Context context) {
+    public PastEventView(View itemView, Context context) {
         super(itemView);
         mContext = context;
 
@@ -31,7 +33,7 @@ public class PastEventRecyclerView extends RecyclerView.ViewHolder implements Vi
         adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick() {
-
+                mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
             }
         });
         recyclerView.setAdapter(adapter);

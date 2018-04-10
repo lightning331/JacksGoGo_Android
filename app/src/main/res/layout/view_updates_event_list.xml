@@ -5,6 +5,17 @@
     android:background="@color/JGGGrey5"
     android:gravity="center"
     android:orientation="vertical">
+    <SeekBar
+        android:id="@+id/search_radius_seekbar"
+        android:progressTint="@color/JGGGreen"
+        android:thumbTint="@color/JGGWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:max="10000"
+        android:progress="2300" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -13,7 +24,7 @@
         android:background="@color/JGGGrey4">
     </LinearLayout>
     <TextView
-        android:text="Events"
+        android:text="Updates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -25,32 +36,12 @@
         android:fontFamily="@font/mulibold"
         android:textSize="@dimen/list_title_font_size"/>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/past_event_recycler_view"
+        android:id="@+id/updates_event_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/JGGGrey5"
         android:orientation="vertical">
     </android.support.v7.widget.RecyclerView>
-    <TextView
-        android:text="View Past Events"
-        android:id="@+id/btn_past_event"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:fontFamily="@font/mulibold"
-        android:textSize="@dimen/list_title_font_size"
-        android:textColor="@color/JGGPurple"
-        android:background="@drawable/purple_border_background"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        android:background="@color/JGGGrey4">
-    </LinearLayout>
 </LinearLayout>

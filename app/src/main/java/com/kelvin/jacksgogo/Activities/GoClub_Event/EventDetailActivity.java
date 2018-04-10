@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
+import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventDetailAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
@@ -48,6 +52,9 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.event_detail_bottom);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         btnJoinGoClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +77,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
+        EventDetailAdapter adapter = new EventDetailAdapter(this);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
