@@ -31,11 +31,11 @@ import com.kelvin.jacksgogo.R;
 
 import io.fabric.sdk.android.Fabric;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {
 

@@ -159,9 +159,17 @@
         <activity
             android:name=".Activities.Profile.EditProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Jobs.JobReportActivity" />
-        <activity android:name=".Activities.GoClub_Event.JoinedGoClubsActivity" />
-        <activity android:name=".Activities.GoClub_Event.AllGoClubsActivity"></activity>
-    </application>
+        <activity
+            android:name=".Activities.Jobs.JobReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.JoinedGoClubsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.AllGoClubsActivity"
+            android:screenOrientation="portrait">
 
+        </activity>
+    </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
