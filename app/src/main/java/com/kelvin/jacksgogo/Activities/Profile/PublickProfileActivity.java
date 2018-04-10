@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
-import com.kelvin.jacksgogo.Activities.Search.ServiceReviewsActivity;
+import com.kelvin.jacksgogo.Activities.Search.ProviderReviewsActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
@@ -132,7 +132,7 @@ public class PublickProfileActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_see_all_reviews) {
-            startActivity(new Intent(this, ServiceReviewsActivity.class));
+            startActivity(new Intent(this, ProviderReviewsActivity.class));
         } else if (view.getId() == R.id.btn_public_profile) {
             Intent mIntent = new Intent(this, ActiveServiceActivity.class);
             mIntent.putExtra(APPOINTMENT_TYPE, SERVICES);

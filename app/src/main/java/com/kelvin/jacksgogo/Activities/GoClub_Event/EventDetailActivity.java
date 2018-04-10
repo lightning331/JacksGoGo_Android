@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
-import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubDetailAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
@@ -29,17 +25,16 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GoClubDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.go_club_detail_actionbar) Toolbar mToolbar;
-    @BindView(R.id.go_club_detail_recycler_view) RecyclerView mRecyclerView;
-    @BindView(R.id.btn_join_go_club) TextView btnJoinGoClub;
+    @BindView(R.id.event_detail_actionbar) Toolbar mToolbar;
+    @BindView(R.id.event_detail_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.btn_join_event) TextView btnJoinGoClub;
     @BindView(R.id.lbl_joined_count) TextView lblJoinedCount;
     @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
 
     private JGGActionbarView actionbarView;
     private BottomNavigationView mbtmView;
-    private GoClubDetailAdapter adapter;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
@@ -48,14 +43,11 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_go_club_detail);
+        setContentView(R.layout.activity_event_detail);
         ButterKnife.bind(this);
 
         // Hide Bottom NavigationView and ToolBar
-        mbtmView = findViewById(R.id.go_club_detail_bottom);
-        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        mbtmView = findViewById(R.id.event_detail_bottom);
         btnJoinGoClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +59,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, Global.AppointmentType.GOCLUB);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, Global.AppointmentType.EVENT);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -78,8 +70,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
-        adapter = new GoClubDetailAdapter(this);
-        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -111,7 +101,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.go_club_share_menu);
+        popupMenu.inflate(R.menu.event_share_menu);
 
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
@@ -165,8 +155,8 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         TextView title = alertView.findViewById(R.id.lbl_alert_titile);
         TextView description = alertView.findViewById(R.id.lbl_alert_description);
 
-        title.setText(R.string.alert_report_go_club_title);
-        description.setText(R.string.alert_report_go_club_desc);
+        title.setText(R.string.alert_report_event_title);
+        description.setText(R.string.alert_report_event_desc);
         reportButton.setText(R.string.alert_report_service_ok);
         reportButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple));
         cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple10Percent));

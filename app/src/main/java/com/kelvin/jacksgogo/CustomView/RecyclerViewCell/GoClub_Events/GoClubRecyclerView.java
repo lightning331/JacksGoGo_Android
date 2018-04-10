@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
-import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
 import com.kelvin.jacksgogo.R;
 
 public class GoClubRecyclerView extends RecyclerView.ViewHolder {
@@ -25,8 +25,8 @@ public class GoClubRecyclerView extends RecyclerView.ViewHolder {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
         }
-        GoClubAdapter adapter = new GoClubAdapter(context);
-        adapter.setOnItemClickListener(new GoClubAdapter.OnItemClickListener() {
+        GoClubMainAdapter adapter = new GoClubMainAdapter(context);
+        adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 mContext.startActivity(new Intent(mContext, GoClubDetailActivity.class));

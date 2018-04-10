@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".Activities.GoClub_Event.EventDetailActivity">
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.design.widget.AppBarLayout
@@ -17,7 +17,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/service_detail_actionbar"
+                android:id="@+id/event_detail_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -28,14 +28,24 @@
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
         <FrameLayout
-            android:id="@+id/app_original_container"
+            android:id="@+id/event_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/JGGGrey5"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/event_detail_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
         </FrameLayout>
         <android.support.design.widget.BottomNavigationView
-            android:id="@+id/service_detail_bottom"
+            android:id="@+id/event_detail_bottom"
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_gravity="bottom"
@@ -50,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:orientation="horizontal"
-                    android:background="@color/JGGGreen10Percent">
+                    android:background="@color/JGGPurple10Percent">
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -58,16 +68,15 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
                         <TextView
-                            android:id="@+id/lbl_booked_count"
+                            android:id="@+id/lbl_joined_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:textColor="@color/JGGBlack"
                             android:textSize="@dimen/caption_font_size"
                             android:fontFamily="@font/mulibold"
-                            android:text="21k"/>
+                            android:text="21"/>
                         <TextView
-                            android:id="@+id/lbl_booked_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -76,7 +85,7 @@
                             android:textColor="@color/JGGBlack"
                             android:textSize="@dimen/caption_font_size"
                             android:fontFamily="@font/muliregular"
-                            android:text="people have booked this service!"/>
+                            android:text="@string/people_joined_event"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -104,16 +113,16 @@
                             android:layout_marginRight="16dp"
                             android:textSize="@dimen/caption_font_size"
                             android:fontFamily="@font/muliregular"
-                            android:text="viewing now "/>
+                            android:text="@string/viewing_now"/>
                     </LinearLayout>
                 </LinearLayout>
                 <TextView
-                    android:id="@+id/service_detail_bottom_title"
+                    android:id="@+id/btn_join_event"
+                    android:text="@string/title_request_join_event"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="@string/buy_service"
                     android:textAlignment="center"
-                    android:background="@color/JGGGreen"
+                    android:background="@color/JGGPurple"
                     android:textColor="@color/JGGWhite"
                     android:fontFamily="@font/mulibold"
                     android:textSize="@dimen/button_font_size"
@@ -121,4 +130,5 @@
             </LinearLayout>
         </android.support.design.widget.BottomNavigationView>
     </android.support.design.widget.CoordinatorLayout>
+
 </android.support.constraint.ConstraintLayout>

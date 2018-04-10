@@ -40,7 +40,7 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 3;
     }
 
     @Override

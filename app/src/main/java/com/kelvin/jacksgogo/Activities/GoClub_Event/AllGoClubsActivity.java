@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
@@ -72,7 +72,7 @@ public class AllGoClubsActivity extends AppCompatActivity implements View.OnClic
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        GoClubAdapter adapter = new GoClubAdapter(this);
+        GoClubMainAdapter adapter = new GoClubMainAdapter(this);
         recyclerView.setAdapter(adapter);
 
         mbtmView.setOnClickListener(this);

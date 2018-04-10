@@ -183,6 +183,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgLike = R.mipmap.button_favourite_purple;
                     imgMore = R.mipmap.button_more_active_purple;
                     setLikeButton(R.mipmap.button_backarrow_purple, imgLikeOutLine, imgMoreOutLine);
+                    if (type == AppointmentType.GOCLUB) {
+                        mLikeButton.setVisibility(GONE);
+                    }
                 }
                 break;
             case JOB_DETAILS:

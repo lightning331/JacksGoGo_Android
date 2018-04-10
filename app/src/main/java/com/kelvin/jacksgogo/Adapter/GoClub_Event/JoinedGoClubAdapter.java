@@ -53,7 +53,7 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (mRecyclerView != null) {
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
             }
-            GoClubAdapter adapter = new GoClubAdapter(mContext);
+            GoClubMainAdapter adapter = new GoClubMainAdapter(mContext);
             mRecyclerView.setAdapter(adapter);
         }
     }

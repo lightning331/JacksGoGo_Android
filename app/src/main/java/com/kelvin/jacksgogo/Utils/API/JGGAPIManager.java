@@ -161,8 +161,8 @@ public interface JGGAPIManager {
                                                       @Query("pageIndex") Integer pageIndex,
                                                       @Query("pageSize") Integer pageSize);
 
-    @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("UserProfileID") String userProfileID,
+    @GET("api/Appointment/GetWastedAppointments")
+    Call<JGGGetAppsResponse> getWastedAppointments(@Query("UserProfileID") String userProfileID,
                                                    @Query("pageIndex") Integer pageIndex,
                                                    @Query("pageSize") Integer pageSize);
 

@@ -32,7 +32,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private JGGAppointmentModel mJob = new JGGAppointmentModel();
+    private JGGAppointmentModel mJob;
 
     public JobDetailsAdapter (Context context) {
         this.mContext = context;

@@ -230,4 +230,10 @@
     <string name="alert_report_go_club_title">Report GoClub</string>
     <string name="alert_report_go_club_desc">Mark this GoClub as inappropriate or offensive.</string>
 
+    <!-- TODO: Event-->
+    <string name="title_request_join_event">Join Event</string>
+    <string name="people_joined_event">people have joined this Event recently!</string>
+    <string name="alert_report_event_title">Report Event</string>
+    <string name="alert_report_event_desc">Mark this Event as inappropriate or offensive.</string>
+
 </resources>

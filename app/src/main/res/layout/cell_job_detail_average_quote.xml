@@ -45,6 +45,7 @@
                 android:text="Latest response: 10 min ago"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/budget_layout"
             android:layout_width="160dp"
             android:layout_height="match_parent"
             android:gravity="end|center"

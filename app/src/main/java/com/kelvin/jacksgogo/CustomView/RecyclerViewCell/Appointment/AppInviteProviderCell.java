@@ -23,6 +23,7 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
     private Context mContext;
 
     public RoundedImageView avatarImage;
+    public TextView lblUserType;
     public TextView userName;
     public MaterialRatingBar ratingBar;
     public LinearLayout btnInvite;
@@ -33,10 +34,13 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
         mContext = context;
 
         avatarImage = itemView.findViewById(R.id.img_invite_provider_avatar);
+        lblUserType = itemView.findViewById(R.id.lbl_user_type);
         userName = itemView.findViewById(R.id.lbl_invite_provider_username);
         ratingBar = itemView.findViewById(R.id.invite_provider_ratingBar);
         btnInvite = itemView.findViewById(R.id.btn_invite);
         lblInvite = itemView.findViewById(R.id.lbl_invite);
+
+        lblUserType.setVisibility(View.GONE);
     }
 
     public void setUser(JGGUserProfileModel user) {

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
-import com.kelvin.jacksgogo.Activities.Search.ServiceReviewsActivity;
+import com.kelvin.jacksgogo.Activities.Search.ProviderReviewsActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceTimeSlotsActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
@@ -270,7 +270,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         } else if (view.getId() == R.id.btn_time_slots) {
             mContext.startActivity(new Intent(mContext, ServiceTimeSlotsActivity.class));
         } else if (view.getId() == R.id.btn_see_all_reviews) {
-            mContext.startActivity(new Intent(mContext, ServiceReviewsActivity.class));
+            mContext.startActivity(new Intent(mContext, ProviderReviewsActivity.class));
         } else if (view.getId() == R.id.btn_view_all_services) {
             Intent mIntent = new Intent(mContext, ActiveServiceActivity.class);
             mIntent.putExtra(APPOINTMENT_TYPE, SERVICES);

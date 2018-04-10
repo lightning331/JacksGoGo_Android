@@ -43,6 +43,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/lbl_user_type"
+                    android:text="Owner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/JGGGrey2"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/caption_font_size"/>
+                <TextView
                     android:id="@+id/lbl_invite_provider_username"
                     android:text="Alan.Tam"
                     android:layout_width="match_parent"

@@ -212,7 +212,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (isLoggedIn("History")) {
             progressDialog = createProgressDialog(mContext);
             JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getAppointmentHistory(userID, 0, 50);
+            retrofit2.Call<JGGGetAppsResponse> call = apiManager.getWastedAppointments(userID, 0, 50);
             call.enqueue(new Callback<JGGGetAppsResponse>() {
                 @Override
                 public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {

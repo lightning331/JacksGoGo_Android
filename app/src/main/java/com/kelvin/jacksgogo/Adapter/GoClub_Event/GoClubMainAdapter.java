@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
-public class GoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     private Context mContext;
 
-    public GoClubAdapter(Context context) {
+    public GoClubMainAdapter(Context context) {
         mContext = context;
     }
 

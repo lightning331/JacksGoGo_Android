@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-public class ServiceReviewsActivity extends AppCompatActivity {
+public class ProviderReviewsActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     JGGActionbarView actionbarView;
@@ -34,7 +34,7 @@ public class ServiceReviewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_reviews);
+        setContentView(R.layout.activity_provider_reviews);
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_reviews_actionbar);
@@ -90,34 +90,34 @@ public class ServiceReviewsActivity extends AppCompatActivity {
             onBackPressed();
         }
     }
-}
 
-class ServiceTotalReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public class ServiceTotalReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    ArrayList<Float> totalRatingCount = new ArrayList<>();
-    ArrayList<String> desc = new ArrayList<>();
+        ArrayList<Float> totalRatingCount = new ArrayList<>();
+        ArrayList<String> desc = new ArrayList<>();
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_total_review, parent, false);
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_total_review, parent, false);
 
-        return new ServiceReviewCell(view);
-    }
+            return new ServiceReviewCell(view);
+        }
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ServiceReviewCell cell = (ServiceReviewCell)holder;
-        cell.lblReviewDesc.setText(desc.get(position));
-        cell.ratingBar.setRating(totalRatingCount.get(position));
-    }
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ServiceReviewCell cell = (ServiceReviewCell)holder;
+            cell.lblReviewDesc.setText(desc.get(position));
+            cell.ratingBar.setRating(totalRatingCount.get(position));
+        }
 
-    @Override
-    public int getItemCount() {
-        return totalRatingCount.size();
-    }
+        @Override
+        public int getItemCount() {
+            return totalRatingCount.size();
+        }
 
-    public void setData(ArrayList<String> desc, ArrayList<Float> rating) {
-        this.totalRatingCount = rating;
-        this.desc = desc;
+        public void setData(ArrayList<String> desc, ArrayList<Float> rating) {
+            this.totalRatingCount = rating;
+            this.desc = desc;
+        }
     }
 }

@@ -87,7 +87,7 @@
             android:name=".Activities.Search.ServiceTimeSlotsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Search.ServiceReviewsActivity"
+            android:name=".Activities.Search.ProviderReviewsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Search.BuyServiceActivity"
@@ -173,6 +173,7 @@
         <activity
             android:name=".Activities.GoClub_Event.GoClubDetailActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activities.GoClub_Event.EventDetailActivity"></activity>
     </application>
 
 </manifest>
