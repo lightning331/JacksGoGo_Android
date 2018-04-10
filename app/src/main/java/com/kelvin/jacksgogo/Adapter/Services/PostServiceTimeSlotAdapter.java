@@ -25,6 +25,17 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<JGGTimeSlotModel> mList;
 
+    private OnPostServiceTimeSlotItemClickListener listener;
+
+    public interface OnPostServiceTimeSlotItemClickListener {
+        void onPostServiceTimeSlotItemClick(boolean isDelete, int position);
+    }
+
+    public void setOnItemClickListener(OnPostServiceTimeSlotItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
     public PostServiceTimeSlotAdapter(Context context, List<JGGTimeSlotModel> list) {
         mContext = context;
         mList = list;
@@ -58,16 +69,6 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mList.size();
-    }
-
-    private OnPostServiceTimeSlotItemClickListener listener;
-
-    public interface OnPostServiceTimeSlotItemClickListener {
-        void onPostServiceTimeSlotItemClick(boolean isDelete, int position);
-    }
-
-    public void setOnItemClickListener(OnPostServiceTimeSlotItemClickListener listener) {
-        this.listener = listener;
     }
 
     class PostServiceTimeSlotViewHolder extends RecyclerView.ViewHolder {
