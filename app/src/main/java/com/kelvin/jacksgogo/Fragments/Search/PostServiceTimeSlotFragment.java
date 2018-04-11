@@ -184,6 +184,10 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         calendarView.setSelectedDate(new Date());
         this.onDateSelected(calendarView, calendarView.getSelectedDate(), true);
 
+    }
+
+    private void updateView() {
+
         btnNoTimeSlots.setVisibility(View.VISIBLE);
         btnOnePerson.setVisibility(View.VISIBLE);
         btnMultiPeople.setVisibility(View.VISIBLE);
@@ -201,9 +205,6 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         btnDone.setVisibility(View.GONE);
         btnViewTime.setVisibility(View.GONE);
         btnNext.setVisibility(View.GONE);
-    }
-
-    private void updateView() {
 
         if (peopleType == null)
             return;
@@ -306,9 +307,10 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         });
         recyclerView.setAdapter(adapter);
     }
-    private boolean isVaildEndTime(Date seletedDate, Date endDate) {
-        ArrayList<JGGTimeSlotModel> slotModels = getSeletedDateTimeSlot(seletedDate);
-        String yearMonthDay = convertCalendarDate(seletedDate);
+
+    private boolean isValidEndTime(Date selectedDate, Date endDate) {
+        ArrayList<JGGTimeSlotModel> slotModels = getSeletedDateTimeSlot(selectedDate);
+        String yearMonthDay = convertCalendarDate(selectedDate);
         String dateStr = yearMonthDay + "T" + getTimeString(endDate);
         Date newDate = appointmentMonthDate(dateStr);
         if (slotModels.size() > 0) {
@@ -323,6 +325,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         }
         return true;
     }
+
     private boolean isVaildEndTimeForEditing(Date seletedDate, Date endDate) {
         ArrayList<JGGTimeSlotModel> slotModels = getSeletedDateTimeSlot(seletedDate);
         // remove mEditingTimeSlot object from slotModel - to avoid time overlap of mEditingTimeSlot
@@ -385,7 +388,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements
                         }
                         isEditTimeSlot = false;
                     } else {
-                        if (isVaildEndTime(selectedDate, end)) {
+                        if (isValidEndTime(selectedDate, end)) {
                             alertDialog.dismiss();
                             JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
                             timeSlotModel.setStartOn(yearMonthDay + "T" + getTimeString(start));

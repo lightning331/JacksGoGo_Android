@@ -193,45 +193,14 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
     private void onPostButtonClicked() {
         if (attachmentURLs.size() == 0) {
+            progressDialog = Global.createProgressDialog(mContext);
             uploadImage(0);
         } else {
-            progressDialog = Global.createProgressDialog(mContext);
             onPostService();
         }
     }
 
-    private void onPostService() {
-        selectedAppointment.setAttachmentURLs(attachmentURLs);
-        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.postNewService(selectedAppointment);
-        call.enqueue(new Callback<JGGPostAppResponse>() {
-            @Override
-            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        postedServiceID = response.body().getValue();
-                        selectedAppointment.setID(postedServiceID);
-                        showAlertDialog();
-                    } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-    }
-
     private void uploadImage(final int index) {
-        progressDialog = Global.createProgressDialog(mContext);
         if (mAlbumFiles == null) {
             if (editStatus == POST)
                 onPostService();
@@ -259,9 +228,11 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                                 attachmentURLs.add(url);
                                 uploadImage(index + 1);
                             } else {
+                                progressDialog.dismiss();
                                 Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            progressDialog.dismiss();
                             int statusCode = response.code();
                             Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                         }
@@ -269,11 +240,12 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
                     @Override
                     public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
-                        Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
+                        Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
+                progressDialog.dismiss();
                 if (editStatus == POST)
                     onPostService();
                 else if (editStatus == EDIT)
@@ -282,23 +254,49 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         }
     }
 
+    private void onPostService() {
+        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = manager.postNewService(selectedAppointment);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        postedServiceID = response.body().getValue();
+                        selectedAppointment.setID(postedServiceID);
+                        showAlertDialog();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void onEditButtonClicked() {
         if (attachmentURLs.size() == 0) {
+            progressDialog = Global.createProgressDialog(mContext);
             uploadImage(0);
         } else {
-            progressDialog = Global.createProgressDialog(mContext);
             onEditService();
         }
     }
 
     private void onEditService() {
-        progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostAppResponse> call = manager.editService(selectedAppointment);
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedServiceID = response.body().getValue();
@@ -316,7 +314,6 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
             @Override
             public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
         });
     }

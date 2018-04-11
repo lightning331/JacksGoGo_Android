@@ -275,6 +275,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             Intent mIntent = new Intent(mContext, ActiveServiceActivity.class);
             mIntent.putExtra(APPOINTMENT_TYPE, SERVICES);
             mIntent.putExtra(EDIT_STATUS, POST);
+            mIntent.putExtra("active_status", 1);
             mContext.startActivity(mIntent);
         }
     }
