@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -58,25 +59,21 @@ public class ActiveServiceTabView extends RelativeLayout implements View.OnClick
         lblDistance = (TextView) tabView.findViewById(R.id.lbl_active_service_distance);
         lblRating = (TextView) tabView.findViewById(R.id.lbl_active_service_rating);
 
-        switch (appType) {
-            case SERVICES:
-                mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
-                lblDistance.setTextColor(mColor);
-                imgMapView.setImageResource(R.mipmap.button_mapview_green);
-                imgFilter.setImageResource(R.mipmap.button_filter_green);
-                break;
-            case JOBS:
-                mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
-                lblDistance.setTextColor(mColor);
-                imgMapView.setImageResource(R.mipmap.button_mapview_cyan);
-                imgFilter.setImageResource(R.mipmap.button_filter_cyan);
-                break;
-            case GOCLUB:
-                mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
-                lblDistance.setTextColor(mColor);
-                imgMapView.setImageResource(R.mipmap.button_mapview_purple);
-                imgFilter.setImageResource(R.mipmap.button_filter_purple);
-                break;
+        if (appType.equals(SERVICES)) {
+            mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
+            lblDistance.setTextColor(mColor);
+            imgMapView.setImageResource(R.mipmap.button_mapview_green);
+            imgFilter.setImageResource(R.mipmap.button_filter_green);
+        } else if (appType.equals(JOBS)) {
+            mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
+            lblDistance.setTextColor(mColor);
+            imgMapView.setImageResource(R.mipmap.button_mapview_cyan);
+            imgFilter.setImageResource(R.mipmap.button_filter_cyan);
+        } else if (appType.equals(GOCLUB) || appType.equals(EVENTS)) {
+            mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
+            lblDistance.setTextColor(mColor);
+            imgMapView.setImageResource(R.mipmap.button_mapview_purple);
+            imgFilter.setImageResource(R.mipmap.button_filter_purple);
         }
 
         distanceButton.setOnClickListener(this);

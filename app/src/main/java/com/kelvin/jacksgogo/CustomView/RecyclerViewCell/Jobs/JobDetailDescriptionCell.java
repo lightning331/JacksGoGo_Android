@@ -21,6 +21,7 @@ public class JobDetailDescriptionCell extends RecyclerView.ViewHolder {
     public ImageView descriptionImage;
     public TextView description;
     public TextView title;
+    public TextView btnViewAllMemebers;
     public LinearLayout titleLayout;
 
     public JobDetailDescriptionCell(View itemView) {
@@ -30,6 +31,9 @@ public class JobDetailDescriptionCell extends RecyclerView.ViewHolder {
         description = itemView.findViewById(R.id.lbl_description);
         title = itemView.findViewById(R.id.lbl_job_detail_title);
         titleLayout = itemView.findViewById(R.id.job_detail_title_layout);
+        btnViewAllMemebers = itemView.findViewById(R.id.btn_view_all_members);
+
+        btnViewAllMemebers.setVisibility(View.GONE);
     }
 
     public void setTitle(String title, boolean bold) {

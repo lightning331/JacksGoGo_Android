@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Adapter.GoClub_Event;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
 import com.kelvin.jacksgogo.R;
 
 public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -54,6 +56,12 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
             }
             GoClubMainAdapter adapter = new GoClubMainAdapter(mContext);
+            adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    mContext.startActivity(new Intent(mContext, GoClubDetailActivity.class));
+                }
+            });
             mRecyclerView.setAdapter(adapter);
         }
     }

@@ -208,6 +208,33 @@ public class Global {
         }
     }
 
+    public static enum ActiveAppointmentStatus {
+        category(0),
+        active(1),
+        joined(2);
+
+        private int value;
+        private static Map map = new HashMap<>();
+
+        ActiveAppointmentStatus(final int value) {
+            this.value = value;
+        }
+
+        static {
+            for (ActiveAppointmentStatus status : ActiveAppointmentStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static ActiveAppointmentStatus valueOf(int status) {
+            return (ActiveAppointmentStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     public static String getProposalStatus(JGGProposalStatus status) {
         switch (status) {
             case rejected:

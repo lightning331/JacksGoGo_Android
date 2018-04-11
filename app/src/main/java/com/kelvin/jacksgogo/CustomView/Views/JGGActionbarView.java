@@ -211,9 +211,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 } else if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_active_job_around);
                 } else if (type == AppointmentType.GOCLUB) {
-                    setPurpleBackButton(R.string.title_search, R.string.title_active_goclub_around);
-                } else if (type == AppointmentType.EVENT) {
-                    setPurpleBackButton(R.string.title_search, R.string.title_active_event_around);
+                    setPurpleBackButton(R.string.title_empty, R.string.title_active_goclub_around);
                 }
                 break;
             case POST:

@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.GoClub_Event.PastEventsActivity">
+    tools:context=".Activities.GoClub_Event.GoClubMembersActivity">
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/past_event_actionbar"
+                android:id="@+id/go_club_members_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -28,7 +29,6 @@
                 app:popupTheme="@style/AppTheme"/>
         </android.support.design.widget.AppBarLayout>
         <FrameLayout
-            android:id="@+id/past_event_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/JGGGrey5"
@@ -37,59 +37,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <LinearLayout
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/search_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:background="@color/JGGWhite"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/btn_by_latest"
-                        android:text="By Date: Latest"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="20dp"
-                        android:textColor="@color/JGGPurple"
-                        android:fontFamily="@font/mulibold"
-                        android:textSize="@dimen/list_title_font_size"/>
-                    <TextView
-                        android:id="@+id/btn_by_earliest"
-                        android:text="By Date: Earliest"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/JGGGrey2"
-                        android:fontFamily="@font/mulibold"
-                        android:textSize="@dimen/list_title_font_size"/>
-                    <LinearLayout
-                        android:id="@+id/btn_go_club_filter"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                    </LinearLayout>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/JGGGrey4">
-                </LinearLayout>
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    app:queryHint="@string/go_club_members_search_placeholder">
+                </android.support.v7.widget.SearchView>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/past_event_recycler_view"
+                        android:id="@+id/go_club_members_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="16dp"
                         android:background="@color/JGGGrey5"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior">
                     </android.support.v7.widget.RecyclerView>
                 </RelativeLayout>
-
             </LinearLayout>
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>

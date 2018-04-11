@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobFragment;
-import com.kelvin.jacksgogo.Fragments.Jobs.ProgressProposalFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobClientFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobProviderFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -66,7 +66,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     private EditText reason;
 
     public JGGActionbarView actionbarView;
-    private ProgressJobFragment frag;
+    private ProgressJobClientFragment frag;
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
@@ -114,43 +114,21 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         lblTime.setText(getAppointmentTime(mJob));
     }
 
-    private void actionbarViewItemClick(View view) {
-        if (view.getId() == R.id.btn_more) {
-            /* ---------    More button pressed     --------- */
-            switch (actionbarView.getEditStatus()) {
-                case NONE:
-                    onShowEditPopUpMenu(view);
-                    break;
-                case APPOINTMENT:
-                    onShowEditPopUpMenu(view);
-                    break;
-                case EDIT_MAIN:
-                    //showJobStatusSummaryFragment();
-                    break;
-                case EDIT_DETAIL:
-                    //backToEditJobMainFragment();
-                    break;
-                default:
-                    break;
-            }
-        } else if (view.getId() == R.id.btn_back) {
-            if (actionbarView.getEditStatus() == null) {
-                FragmentManager manager = getSupportFragmentManager();
-                if (manager.getBackStackEntryCount() == 0)
-                    onBackPressed();
-                else
-                    manager.popBackStack();
-            } else {
-                if (actionbarView.getEditStatus() == JOB_DETAILS) {
-                    if (mJob.getUserProfileID().equals(currentUser.getID()))
-                        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                    else
-                        actionbarView.setDeleteJobStatus();
-                    onBackPressed();
-                } else if (actionbarView.getEditStatus() == APPOINTMENT)
-                    finish();
-            }
-        }
+    private void onProgressJobFragment() {
+        frag = new ProgressJobClientFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.app_detail_container, frag)
+                .commit();
+    }
+
+    private void onProgressProposalFragment() {
+        ProgressJobProviderFragment frag = new ProgressJobProviderFragment();
+        frag.setProposal(mProposal);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.app_detail_container, frag)
+                .commit();
     }
 
     public void getProposalsByJob() {
@@ -244,47 +222,6 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         });
     }
 
-    private void onProgressJobFragment() {
-        frag = new ProgressJobFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_detail_container, frag)
-                .commit();
-    }
-
-    private void onProgressProposalFragment() {
-        ProgressProposalFragment frag = new ProgressProposalFragment();
-        frag.setProposal(mProposal);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_detail_container, frag)
-                .commit();
-    }
-
-    private void onShowEditPopUpMenu(View view) {
-        actionbarView.setEditMoreButtonClicked(true);
-
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.edit_menu);
-        popupMenu.setOnDismissListener(new OnDismissListener());
-        popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
-
-        // Force icons to show in Custom Overflow Menu
-        Object menuHelper;
-        Class[] argTypes;
-        try {
-            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-            fMenuHelper.setAccessible(true);
-            menuHelper = fMenuHelper.get(popupMenu);
-            argTypes = new Class[] { boolean.class };
-            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
-        } catch (Exception e) {
-            popupMenu.show();
-            return;
-        }
-        popupMenu.show();
-    }
-
     public void setStatus(JGGActionbarView.EditStatus status) {
         actionbarView.setStatus(status, AppointmentType.UNKNOWN);
     }
@@ -294,6 +231,45 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         intent.putExtra(EDIT_STATUS, EDIT);
         intent.putExtra(APPOINTMENT_TYPE, JOBS);
         startActivity(intent);
+    }
+
+    private void actionbarViewItemClick(View view) {
+        if (view.getId() == R.id.btn_more) {
+            /* ---------    More button pressed     --------- */
+            switch (actionbarView.getEditStatus()) {
+                case NONE:
+                    onShowEditPopUpMenu(view);
+                    break;
+                case APPOINTMENT:
+                    onShowEditPopUpMenu(view);
+                    break;
+                case EDIT_MAIN:
+                    //showJobStatusSummaryFragment();
+                    break;
+                case EDIT_DETAIL:
+                    //backToEditJobMainFragment();
+                    break;
+                default:
+                    break;
+            }
+        } else if (view.getId() == R.id.btn_back) {
+            if (actionbarView.getEditStatus() == null) {
+                FragmentManager manager = getSupportFragmentManager();
+                if (manager.getBackStackEntryCount() == 0)
+                    onBackPressed();
+                else
+                    manager.popBackStack();
+            } else {
+                if (actionbarView.getEditStatus() == JOB_DETAILS) {
+                    if (mJob.getUserProfileID().equals(currentUser.getID()))
+                        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
+                    else
+                        actionbarView.setDeleteJobStatus();
+                    onBackPressed();
+                } else if (actionbarView.getEditStatus() == APPOINTMENT)
+                    finish();
+            }
+        }
     }
 
     private void showDeleteJobDialog() {
@@ -330,6 +306,30 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     public void deleteJobFinished() {
         lblCancel.setVisibility(View.VISIBLE);
         actionbarView.setDeleteJobStatus();
+    }
+
+    private void onShowEditPopUpMenu(View view) {
+        actionbarView.setEditMoreButtonClicked(true);
+
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.inflate(R.menu.edit_menu);
+        popupMenu.setOnDismissListener(new OnDismissListener());
+        popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
+
+        // Force icons to show in Custom Overflow Menu
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[] { boolean.class };
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+            popupMenu.show();
+            return;
+        }
+        popupMenu.show();
     }
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {

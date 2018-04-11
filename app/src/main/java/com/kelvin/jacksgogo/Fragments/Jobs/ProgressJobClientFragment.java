@@ -62,7 +62,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class ProgressJobFragment extends Fragment implements View.OnClickListener {
+public class ProgressJobClientFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -102,12 +102,12 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
     private String providerName;
     private boolean isDeleted;
 
-    public ProgressJobFragment() {
+    public ProgressJobClientFragment() {
         // Required empty public constructor
     }
 
-    public static ProgressJobFragment newInstance(String param1, String param2) {
-        ProgressJobFragment fragment = new ProgressJobFragment();
+    public static ProgressJobClientFragment newInstance(String param1, String param2) {
+        ProgressJobClientFragment fragment = new ProgressJobClientFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -134,7 +134,7 @@ public class ProgressJobFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_progress_job, container, false);
+        view = inflater.inflate(R.layout.fragment_progress_job_client, container, false);
 
         mProposal = selectedProposal;
         mJob = selectedAppointment;

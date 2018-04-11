@@ -42,7 +42,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -95,6 +97,8 @@ public class SearchFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
+        refreshFragment(SERVICES);
+
         return view;
     }
 
@@ -104,7 +108,6 @@ public class SearchFragment extends Fragment {
         if (!getUserVisibleHint()) {
             return;
         }
-        refreshFragment(SERVICES);
     }
 
     public void refreshFragment(String textView) {
@@ -163,12 +166,21 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onItemClick(View view) {
                     if (view.getId() == R.id.btn_view_my_service) {
+                        mIntent = new Intent(mContext, ActiveServiceActivity.class);
+                        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                        mIntent.putExtra(EDIT_STATUS, EDIT);
+                        mIntent.putExtra("active_status", 2);
 
                     } else if (view.getId() == R.id.btn_view_all) {
+                        mIntent = new Intent(mContext, ActiveServiceActivity.class);
+                        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                        mIntent.putExtra(EDIT_STATUS, POST);
+                        mIntent.putExtra("active_status", 1);
 
                     } else if (view.getId() == R.id.btn_post_new) {
 
                     }
+                    mContext.startActivity(mIntent);
                 }
             });
             recyclerView.setAdapter(goClubAdapter);
@@ -277,6 +289,7 @@ public class SearchFragment extends Fragment {
         } else if (view.getId() == R.id.btn_view_all) {
             selectedCategory = null;
             mIntent = new Intent(mContext, ActiveServiceActivity.class);
+            mIntent.putExtra("active_status", 1);
         } else if (view.getId() == R.id.btn_post_new) {
             if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
                 mIntent = new Intent(mContext, PostServiceActivity.class);

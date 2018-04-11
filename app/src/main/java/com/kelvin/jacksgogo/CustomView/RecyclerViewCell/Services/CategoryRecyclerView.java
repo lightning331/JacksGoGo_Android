@@ -24,6 +24,7 @@ import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
@@ -63,15 +64,21 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
                 if (mCategories != null) {
                     selectedCategory = mCategories.get(position);
                 }
-                if (mType == GOCLUB || mType == EVENT) {
+                if (mType == GOCLUB) {
                     Intent intent = new Intent(mContext, AllGoClubsActivity.class);
                     intent.putExtra("is_category", true);
                     mContext.startActivity(intent);
+                } else if (mType == EVENT) {
+                    Intent mIntent = new Intent(mContext, ActiveServiceActivity.class);
+                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                    mIntent.putExtra(EDIT_STATUS, POST);
+                    mIntent.putExtra("active_status", 0);
+                    mContext.startActivity(mIntent);
                 } else {
                     Intent intent = new Intent(mContext, ActiveServiceActivity.class);
                     if (mType == JOBS) {
                         if (mCategories != null) {
-                            String name = "";
+                            String name;
                             if (position == 0) {
                                 name = "Quick Jobs";
                                 Toast.makeText(mContext, name,
@@ -83,7 +90,7 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
                     }
                     intent.putExtra(APPOINTMENT_TYPE, mType.toString());
                     intent.putExtra(EDIT_STATUS, POST);
-                    intent.putExtra("is_active", false);
+                    intent.putExtra("active_status", 0);
                     mContext.startActivity(intent);
                 }
             }

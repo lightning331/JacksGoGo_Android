@@ -24,6 +24,7 @@
     <string name="confirmed_search_placeholder">Search through Confirmed list</string>
     <string name="history_search_placeholder">Search through History list</string>
     <string name="joined_go_club_search_placeholder">Search through Joined GoClubs</string>
+    <string name="go_club_members_search_placeholder">Search through All Memebers</string>
     <string name="title_empty"></string>
 
     <!-- TODO: Search -->
@@ -45,7 +46,7 @@
     <string name="title_active_service_around">Active Services Around</string>
     <string name="title_active_job_around">Active Jobs Around</string>
     <string name="title_active_goclub_around">Active GoClub Around</string>
-    <string name="title_active_event_around">Active Event Around</string>
+    <string name="title_active_event_around">Active Events Around</string>
     <string name="title_post_service">Post A Service</string>
     <string name="title_post_job">Post A Job</string>
     <string name="title_post_event">Post A Event</string>
@@ -219,6 +220,7 @@
     <string name="title_joined_go_club">Joined GoClubs</string>
     <string name="title_all_go_club">All GoClubs</string>
     <string name="title_post_go_club">Create A New GoClub</string>
+    <string name="title_view_members">View All Members</string>
 
     <!-- TODO: Filter -->
     <string name="title_show_services">Show Only Services With The Keywords</string>
@@ -228,6 +230,10 @@
     <string name="title_request_join_go_club">Request To Join GoClub</string>
     <string name="people_joined_go_club">people have joined this GoClub recently!</string>
     <string name="alert_report_go_club_title">Report GoClub</string>
+    <string name="alert_join_go_club_title">Join This GoClub?</string>
+    <string name="alert_join">Join</string>
+    <string name="alert_join_request_title">Request Sent!</string>
+    <string name="alert_join_request_desc">The admins have been notified of your request.</string>
     <string name="alert_report_go_club_desc">Mark this GoClub as inappropriate or offensive.</string>
 
     <!-- TODO: Event-->
@@ -235,5 +241,7 @@
     <string name="people_joined_event">people have joined this Event recently!</string>
     <string name="alert_report_event_title">Report Event</string>
     <string name="alert_report_event_desc">Mark this Event as inappropriate or offensive.</string>
+    <string name="title_joined_event">Joined Events</string>
+    <string name="title_past_event">Past Events</string>
 
 </resources>

@@ -44,6 +44,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     private ProgressDialog progressDialog;
 
     private boolean reportFlag = false;
+    private boolean joinFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         btnJoinGoClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onRequestJoinDialog(false);
             }
         });
 
@@ -82,19 +83,14 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         mRecyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            if (!reportFlag) {
-                alertDialog.dismiss();
-                showReportDialog(true);
-            } else {
-                alertDialog.dismiss();
-            }
-            reportFlag = !reportFlag;
-        }
+    private void onSendReport() {
+        alertDialog.dismiss();
+        showReportDialog(true);
+    }
+
+    private void onSendJoinRequest() {
+        alertDialog.dismiss();
+        onRequestJoinDialog(true);
     }
 
     private void actionbarItemClick(View view) {
@@ -169,17 +165,80 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         description.setText(R.string.alert_report_go_club_desc);
         reportButton.setText(R.string.alert_report_service_ok);
         reportButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple));
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSendReport();
+            }
+        });
         cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple10Percent));
         cancelButton.setTextColor(getResources().getColor(R.color.JGGPurple));
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
         if (reportFlag) {
             alertDialog.setCanceledOnTouchOutside(false);
             cancelButton.setVisibility(View.GONE);
             title.setText(R.string.alert_report_service_thanks_title);
             description.setText(R.string.alert_report_service_thanks_desc);
             reportButton.setText(R.string.alert_done);
+            reportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
         }
-        cancelButton.setOnClickListener(this);
-        reportButton.setOnClickListener(this);
+        alertDialog.show();
+    }
+
+    private void onRequestJoinDialog(final boolean reportFlag) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (this).getLayoutInflater();
+
+        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        builder.setView(alertView);
+        alertDialog = builder.create();
+        TextView cancelButton = alertView.findViewById(R.id.btn_alert_cancel);
+        TextView joinButton = alertView.findViewById(R.id.btn_alert_ok);
+        TextView title = alertView.findViewById(R.id.lbl_alert_titile);
+        TextView description = alertView.findViewById(R.id.lbl_alert_description);
+
+        title.setText(R.string.alert_join_go_club_title);
+        description.setVisibility(View.GONE);
+        joinButton.setText(R.string.alert_join);
+        joinButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple));
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSendJoinRequest();
+            }
+        });
+        cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple10Percent));
+        cancelButton.setTextColor(getResources().getColor(R.color.JGGPurple));
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        if (reportFlag) {
+            alertDialog.setCanceledOnTouchOutside(false);
+            description.setVisibility(View.VISIBLE);
+            title.setText(R.string.alert_join_request_title);
+            description.setText(R.string.alert_join_request_desc);
+            cancelButton.setVisibility(View.GONE);
+            joinButton.setText(R.string.alert_done);
+            joinButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+        }
         alertDialog.show();
     }
 
@@ -189,5 +248,10 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                 .setShareLink(null)
                 .build();
         shareDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

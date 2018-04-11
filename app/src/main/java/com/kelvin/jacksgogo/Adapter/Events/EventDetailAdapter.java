@@ -1,12 +1,14 @@
-package com.kelvin.jacksgogo.Adapter.GoClub_Event;
+package com.kelvin.jacksgogo.Adapter.Events;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppInviteProviderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.UpdatesEventView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailAverageQuoteCell;
@@ -92,8 +94,8 @@ public class EventDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return posterViewHolder;
         } else if (viewType == 7) {
             // Updates event view
-            View pastEventView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_updates_event_list, parent, false);
-            UpdatesEventView eventViewHolder = new UpdatesEventView(pastEventView, mContext);
+            View eventView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_updates_event_list, parent, false);
+            UpdatesEventView eventViewHolder = new UpdatesEventView(eventView, mContext);
             return eventViewHolder;
         } else if (viewType == 8) {
             // Tag list view
@@ -136,6 +138,8 @@ public class EventDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onClick(View view) {
-
+        if (view.getId() == R.id.btn_location) {
+            mContext.startActivity(new Intent(mContext, AppMapViewActivity.class));
+        }
     }
 }

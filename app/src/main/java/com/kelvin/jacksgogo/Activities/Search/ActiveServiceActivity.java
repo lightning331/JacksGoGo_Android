@@ -38,7 +38,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
 
     public String appType;
     public String editStatus;
-    public boolean isActive;
+    public int status;      // 0: Category, 1: Active, 2: Joined
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
 
         appType = getIntent().getStringExtra(APPOINTMENT_TYPE);
         editStatus = getIntent().getStringExtra(EDIT_STATUS);
-        isActive = getIntent().getBooleanExtra("is_active", true);
+        status = getIntent().getIntExtra("active_status", 0);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = (BottomNavigationView) findViewById(R.id.active_service_navigation);
@@ -62,31 +62,34 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
         mbtmView.setOnClickListener(this);
 
-        // Top Navigationbar View
+        // Top NavigationBar View
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.active_service_actionbar);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
         if (appType.equals(SERVICES)) {
-            if (isActive)
+            if (status == 1)
                 actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.SERVICES);
-            else
+            else if (status == 0)
                 actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.SERVICES);
             btnPost.setText(R.string.title_post_service);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGGreen));
         } else if (appType.equals(JOBS)) {
-            if (isActive)
+            if (status == 1)
                 actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.JOBS);
-            else
+            else if (status == 0)
                 actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.JOBS);
             btnPost.setText(R.string.title_post_job);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan));
         } else if (appType.equals(EVENTS)) {
-            if (isActive)
-                actionbarView.setStatus(JGGActionbarView.EditStatus.ACTIVE_AROUND, AppointmentType.EVENT);
-            else
+            if (status == 0)
                 actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.EVENT);
+            else if (status == 1)
+                actionbarView.setPurpleBackButton(R.string.title_active_event_around, R.string.title_empty);
+            else if (status == 2)
+                actionbarView.setPurpleBackButton(R.string.title_joined_event, R.string.title_empty);
+
             btnPost.setText(R.string.title_post_event);
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGPurple));
         }
@@ -131,10 +134,14 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.active_service_navigation) {
-            Intent intent = new Intent(this, PostServiceActivity.class);
-            intent.putExtra(EDIT_STATUS, POST);
-            intent.putExtra(APPOINTMENT_TYPE, appType);
-            startActivity(intent);
+            if (appType.equals(SERVICES) || appType.equals(JOBS)) {
+                Intent intent = new Intent(this, PostServiceActivity.class);
+                intent.putExtra(EDIT_STATUS, POST);
+                intent.putExtra(APPOINTMENT_TYPE, appType);
+                startActivity(intent);
+            } else if (appType.equals(EVENTS)) {
+
+            }
         }
     }
 }
