@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.Adapter.Events.EventsListingAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 

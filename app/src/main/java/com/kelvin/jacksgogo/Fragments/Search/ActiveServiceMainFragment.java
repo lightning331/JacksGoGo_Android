@@ -18,7 +18,7 @@ import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
-import com.kelvin.jacksgogo.Adapter.Events.EventsListingAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;

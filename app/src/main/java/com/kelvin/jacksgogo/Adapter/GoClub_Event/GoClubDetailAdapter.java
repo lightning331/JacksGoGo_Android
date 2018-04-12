@@ -74,20 +74,12 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
             return eventViewHolder;
         } else if (viewType == 5) {
-            // GoClub Poster view
-            View posterView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_invite_provider, parent, false);
-            AppInviteProviderCell posterViewHolder = new AppInviteProviderCell(mContext, posterView);
-            posterViewHolder.lblUserType.setVisibility(View.VISIBLE);
-            posterViewHolder.btnInvite.setVisibility(View.GONE);
-            posterViewHolder.ratingBar.setVisibility(View.GONE);
-            return posterViewHolder;
-        } else if (viewType == 6) {
             // Tag list view
             View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
             ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
             tagListViewHolder.setTagList("football, discussion, Ole");
             return tagListViewHolder;
-        } else if (viewType == 7) {
+        } else if (viewType == 6) {
             // Active Group view
             View activeGroupView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
             JobDetailAverageQuoteCell activeGroup = new JobDetailAverageQuoteCell(activeGroupView);
@@ -117,6 +109,6 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return 9;
+        return 8;
     }
 }

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -63,7 +62,6 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     @BindView(R.id.lbl_title) TextView lblCategory;
     @BindView(R.id.lbl_date) TextView lblTime;
     @BindView(R.id.lblStatus) TextView lblCancel;
-    private EditText reason;
 
     public JGGActionbarView actionbarView;
     private ProgressJobClientFragment frag;
@@ -273,7 +271,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     }
 
     private void showDeleteJobDialog() {
-        JGGAlertView builder = new JGGAlertView(this,
+        final JGGAlertView builder = new JGGAlertView(this,
                 "Delete Job?",
                 getResources().getString(R.string.alert_edit_job_delete_desc),
                 true,
@@ -291,7 +289,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                     alertDialog.dismiss();
                 else {
                     alertDialog.dismiss();
-                    deleteJob(reason.getText().toString());
+                    deleteJob(builder.txtReason.getText().toString());
                 }
             }
         });
@@ -366,9 +364,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (reason.getText().length() > 0) {
 
-        }
     }
 
     @Override

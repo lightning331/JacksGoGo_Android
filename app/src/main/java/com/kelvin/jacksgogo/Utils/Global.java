@@ -239,14 +239,15 @@ public class Global {
     }
 
     public static enum JobReportStatus {
+        NONE(null),
         PENDING(0),
         APPROVED(1),
         REJECTED(2);
 
-        private int value;
+        private Integer value;
         private static Map map = new HashMap<>();
 
-        JobReportStatus(final int value) {
+        JobReportStatus(final Integer value) {
             this.value = value;
         }
 
@@ -256,8 +257,37 @@ public class Global {
             }
         }
 
-        public static JobReportStatus valueOf(int status) {
+        public static JobReportStatus valueOf(Integer status) {
             return (JobReportStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum JoinGoClubStatus {
+        NONE(null),
+        PENDING(0),
+        APPROVED(1),
+        WITHDRAW(2),
+        REJECTED(3);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        JoinGoClubStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (JoinGoClubStatus status : JoinGoClubStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static JoinGoClubStatus valueOf(Integer status) {
+            return (JoinGoClubStatus) map.get(status);
         }
 
         public int getValue() {

@@ -1,12 +1,10 @@
 package com.kelvin.jacksgogo.Fragments.Search;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
@@ -25,14 +21,13 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
-import com.kelvin.jacksgogo.Adapter.Events.SearchGoClubAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.SearchGoClubAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -56,6 +51,7 @@ import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
+
 
 public class SearchFragment extends Fragment {
 

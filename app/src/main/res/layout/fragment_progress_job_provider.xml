@@ -178,8 +178,8 @@
                 <com.makeramen.roundedimageview.RoundedImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/img_avatar"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:src="@mipmap/nurse"
