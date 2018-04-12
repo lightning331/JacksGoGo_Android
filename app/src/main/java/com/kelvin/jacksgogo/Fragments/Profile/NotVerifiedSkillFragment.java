@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 
 public class NotVerifiedSkillFragment extends Fragment implements View.OnClickListener {
@@ -56,24 +58,27 @@ public class NotVerifiedSkillFragment extends Fragment implements View.OnClickLi
     }
 
     private void showAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_verify_skill_title),
+                mContext.getResources().getString(R.string.alert_verify_skill_desc),
+                false,
+                "",
+                R.color.JGGGreen,
+                R.color.JGGGreen10Percent,
+                mContext.getResources().getString(R.string.alert_verify_skill_button),
+                R.color.JGGGreen);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_verify_skill_title);
-        desc.setText(R.string.alert_verify_skill_desc);
-        okButton.setText(R.string.alert_verify_skill_button);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        cancelButton.setVisibility(View.GONE);
-
-        okButton.setOnClickListener(this);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    startActivity(new Intent(mContext, ServiceListingActivity.class));
+                }
+            }
+        });
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
     }
@@ -104,10 +109,7 @@ public class NotVerifiedSkillFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
-            startActivity(new Intent(mContext, ServiceListingActivity.class));
-        } else if (view.getId() == R.id.btn_submit) {
+        if (view.getId() == R.id.btn_submit) {
             showAlertDialog();
         }
     }

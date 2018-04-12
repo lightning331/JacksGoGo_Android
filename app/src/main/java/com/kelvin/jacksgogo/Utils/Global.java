@@ -69,7 +69,7 @@ public class Global {
         closed(1),      // Client rejected provider's proposal
         confirmed(2),   // Client accepted provider's proposal
         finished(3),    //
-        flaged(4),      // Provider declined Client's invite
+        flagged(4),     // Provider declined Client's invite
         deleted(5),     // Provider declined Client's invite
         started(6);     // Provider started the work
 
@@ -127,7 +127,7 @@ public class Global {
 
     public static enum JGGBudgetType {
         none(null),
-        nolimit(1),
+        no_limit(1),
         fixed(2),
         from(3);
 
@@ -208,26 +208,133 @@ public class Global {
         }
     }
 
-    public static enum ActiveAppointmentStatus {
-        category(0),
-        active(1),
-        joined(2);
+    public static enum ContractStatus {
+        OPEN(0),
+        STARTED(1),
+        PAUSED(2),
+        HOLD(3),
+        END(4),
+        FLAGGED(5);
 
         private int value;
         private static Map map = new HashMap<>();
 
-        ActiveAppointmentStatus(final int value) {
+        ContractStatus(final int value) {
             this.value = value;
         }
 
         static {
-            for (ActiveAppointmentStatus status : ActiveAppointmentStatus.values()) {
+            for (ContractStatus status : ContractStatus.values()) {
                 map.put(status.value, status);
             }
         }
 
-        public static ActiveAppointmentStatus valueOf(int status) {
-            return (ActiveAppointmentStatus) map.get(status);
+        public static ContractStatus valueOf(int status) {
+            return (ContractStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum JobReportStatus {
+        PENDING(0),
+        APPROVED(1),
+        REJECTED(2);
+
+        private int value;
+        private static Map map = new HashMap<>();
+
+        JobReportStatus(final int value) {
+            this.value = value;
+        }
+
+        static {
+            for (JobReportStatus status : JobReportStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static JobReportStatus valueOf(int status) {
+            return (JobReportStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum AppointmentHistoryStatus {
+        JOB_CREATED(100),
+        JOB_EDITED(101),
+        JOB_CLOSED(102),
+        JOB_CONFIRMED(103),
+        JOB_FLAGGED(104),
+        JOB_DELETED(105),
+        JOB_REPORTED(106),
+
+        SERVICE_CREATED(200),
+        SERVICE_EDITED(201),
+        SERVICE_CLOSED(202),
+        SERVICE_CONFIRMED(203),
+        SERVICE_FLAGGED(204),
+        SERVICE_DELETED(205),
+        SERVICE_REPORTED(206),
+        SERVICE_RESCHEDULE_REQUESTED(207),
+        SERVICE_RESCHEDULE_DECLINED(208),
+        SERVICE_RESCHEDULE_AGREED(208),
+        SERVICE_RESCHEDULED(210),
+
+        QUOTATION_CREATED(300),
+        QUOTATION_EDITED(301),
+        QUOTATION_CLOSED(302),
+        QUOTATION_CONFIRMED(303),
+        QUOTATION_FLAGGED(304),
+        QUOTATION_DELETED(305),
+        QUOTATION_REPORTED(306),
+
+        PROPOSAL_SENT(400),
+        PROPOSAL_EDITED(401),
+        PROPOSAL_REJECTED(402),
+        PROPOSAL_WITHDRAW(403),
+        PROPOSAL_APPROVED(404),
+        PROPOSAL_FLAGGED(405),
+        PROPOSAL_DELETED(406),
+        INVITE_SENT(407),
+        INVITE_ACCEPTED(408),
+        INVITE_REJECTED(409),
+
+        CONTRACT_CREATED(500),
+        CONTRACT_STARTED(501),
+        CONTRACT_PAUSED(502),
+        CONTRACT_HOLD(503),
+        CONTRACT_END(504),
+        CONTRACT_FLAGGED(505),
+
+        RESULT_REPORTED(600),
+        RESULT_ACCEPTED(601),
+        RESULT_REJECTED(602),
+        INVOICE_SENT(603),
+        INVOICE_APPROVED(604),
+        CLIENT_FEEDBACK(620),
+        PROVIDER_FEEDBACK(621);
+
+        private int value;
+        private static Map map = new HashMap<>();
+
+        AppointmentHistoryStatus(final int value) {
+            this.value = value;
+        }
+
+        static {
+            for (AppointmentHistoryStatus status : AppointmentHistoryStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static AppointmentHistoryStatus valueOf(int status) {
+            return (AppointmentHistoryStatus) map.get(status);
         }
 
         public int getValue() {

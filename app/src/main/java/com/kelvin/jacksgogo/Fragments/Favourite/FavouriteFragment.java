@@ -104,7 +104,6 @@ public class FavouriteFragment extends Fragment {
                 public void onItemClick(int position) {
                     selectedAppointment = mServices.get(position);
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    intent.putExtra("is_service", true);
                     mContext.startActivity(intent);
                 }
             });

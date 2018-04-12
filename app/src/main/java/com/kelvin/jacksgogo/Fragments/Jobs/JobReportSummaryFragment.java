@@ -1,11 +1,11 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.yanzhenjie.album.AlbumFile;
 
@@ -113,25 +114,28 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
     }
 
     private void onShowVerifyJobDialog() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_verify_job_completed_title),
+                mContext.getResources().getString(R.string.alert_verify_job_completed_desc),
+                false,
+                "",
+                R.color.JGGGreen,
+                R.color.JGGGreen10Percent,
+                mContext.getResources().getString(R.string.alert_verify_job_completed_ok),
+                R.color.JGGGreen);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_verify_job_completed_title);
-        desc.setText(R.string.alert_verify_job_completed_desc);
-        okButton.setText(R.string.alert_verify_job_completed_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        okButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-        cancelButton.setOnClickListener(this);
-        okButton.setOnClickListener(this);
-        alertDialog.setCanceledOnTouchOutside(true);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    mActivity.finish();
+                }
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
@@ -141,11 +145,6 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
             onShowVerifyJobDialog();
         } else if (view.getId() == R.id.btn_dispute) {
 
-        } else if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
-            mActivity.finish();
         }
     }
 

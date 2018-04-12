@@ -25,6 +25,7 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.Adapter.Events.SearchGoClubAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -304,33 +305,23 @@ public class SearchFragment extends Fragment {
     }
 
     private void showAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                "Information",
+                mContext.getResources().getString(R.string.alert_post_failed_desc),
+                false,
+                mContext.getResources().getString(R.string.alert_cancel),
+                R.color.JGGOrange,
+                R.color.JGGOrange10Percent,
+                mContext.getResources().getString(R.string.alert_ok),
+                R.color.JGGOrange);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText("Information");
-        desc.setText(R.string.alert_post_failed_desc);
-        okButton.setText(R.string.alert_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
-        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else
+                    alertDialog.dismiss();
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobClientFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobProviderFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
@@ -44,9 +44,6 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.APPOINTMENT;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_DETAILS;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
@@ -54,6 +51,9 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class ProgressJobSummaryActivity extends AppCompatActivity implements TextWatcher {
@@ -273,33 +273,29 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     }
 
     private void showDeleteJobDialog() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = (this).getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(dialogView);
-        TextView desc = (TextView) dialogView.findViewById(R.id.lbl_alert_description);
-        desc.setText(R.string.alert_edit_job_delete_desc);
-        TextView cancelButton = (TextView) dialogView.findViewById(R.id.btn_alert_cancel);
-        TextView deleteButton = (TextView) dialogView.findViewById(R.id.btn_alert_ok);
-        reason = dialogView.findViewById(R.id.txt_alert_reason);
-        reason.addTextChangedListener(this);
-        reason.setVisibility(View.VISIBLE);
-        final AlertDialog alertDialog = builder.create();
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        JGGAlertView builder = new JGGAlertView(this,
+                "Delete Job?",
+                getResources().getString(R.string.alert_edit_job_delete_desc),
+                true,
+                getResources().getString(R.string.alert_cancel),
+                R.color.JGGGreen,
+                R.color.JGGGreen10Percent,
+                getResources().getString(R.string.alert_ok),
+                R.color.JGGRed);
+        final android.app.AlertDialog alertDialog = builder.create();
+        builder.txtReason.addTextChangedListener(this);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                alertDialog.dismiss();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    deleteJob(reason.getText().toString());
+                }
             }
         });
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-                deleteJob(reason.getText().toString());
-            }
-        });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 

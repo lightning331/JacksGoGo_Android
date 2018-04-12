@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Profile.SignUpPhoneActivity;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
@@ -231,34 +232,26 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
     }
 
     private void onShowPhoneVerifyDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = (this).getLayoutInflater();
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                "Warning",
+                "You have not verified account. Would you verify with your phone number?",
+                false,
+                mContext.getResources().getString(R.string.alert_cancel),
+                R.color.JGGOrange,
+                R.color.JGGOrange10Percent,
+                mContext.getResources().getString(R.string.alert_ok),
+                R.color.JGGOrange);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText("Warning");
-        desc.setText("You have not verified account. Would you verify with your phone number?");
-        okButton.setText(R.string.alert_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
-        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        okButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-                Intent intent = new Intent(mContext, SignUpPhoneActivity.class);
-                startActivity(intent);
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    Intent intent = new Intent(mContext, SignUpPhoneActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);
@@ -266,29 +259,26 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
     }
 
     private void onShowAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_email_sent_title),
+                mContext.getResources().getString(R.string.alert_email_sent_desc),
+                false,
+                "",
+                R.color.JGGOrange,
+                R.color.JGGOrange10Percent,
+                mContext.getResources().getString(R.string.alert_ok),
+                R.color.JGGOrange);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_email_sent_title);
-        desc.setText(R.string.alert_email_sent_desc);
-        okButton.setText(R.string.alert_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        cancelButton.setVisibility(View.GONE);
-
-        okButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else
+                    alertDialog.dismiss();
             }
         });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 

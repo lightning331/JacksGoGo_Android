@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.closed;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.flaged;
+import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.flagged;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
@@ -110,7 +110,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             if (appointment.getStatus() == closed) {
                 cellView.lbl_Status.setText("Cancelled");
-            } else if (appointment.getStatus() == flaged) {
+            } else if (appointment.getStatus() == flagged) {
                 cellView.lbl_Status.setText("Withdrawn");
             } else {
                 cellView.lbl_Status.setVisibility(View.GONE);

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -221,25 +222,26 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
     }
 
     private void showAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_job_posted_title),
+                "Job reference no: " + postedQuotationID,
+                false,
+                "",
+                R.color.JGGGreen,
+                R.color.JGGGreen10Percent,
+                mContext.getResources().getString(R.string.alert_view_job_button),
+                R.color.JGGGreen);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_job_posted_title);
-        desc.setText("Job reference no: " + postedQuotationID);
-        okButton.setText(R.string.alert_view_job_button);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        cancelButton.setVisibility(View.GONE);
-
-        okButton.setOnClickListener(this);
-        alertDialog.setCanceledOnTouchOutside(true);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else
+                    alertDialog.dismiss();
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -344,12 +345,6 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                     break;
             }
             return;
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
-            Intent intent = new Intent(mContext, PostedServiceActivity.class);
-            intent.putExtra("is_post", true);
-            mContext.startActivity(intent);
-            return;
         } else if (view.getId() == R.id.btn_post_main_describe) {
             fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
             getActivity().getSupportFragmentManager()
@@ -383,30 +378,35 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     }
 
     private void showAlertDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
-        alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_service_posted_title);
         String message = "Service reference no: "
                 + '\n'
                 + postedServiceID
                 + '\n'
                 + '\n'
                 + "Our team will verify your submission and get back to you soon! ";
-        desc.setText(message);
-        okButton.setText(R.string.alert_view_service_button);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen));
-        cancelButton.setVisibility(View.GONE);
-
-        okButton.setOnClickListener(this);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_service_posted_title),
+                message,
+                false,
+                "",
+                R.color.JGGGreen,
+                R.color.JGGGreen10Percent,
+                mContext.getResources().getString(R.string.alert_view_service_button),
+                R.color.JGGGreen);
+        alertDialog = builder.create();
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    Intent intent = new Intent(mContext, PostedServiceActivity.class);
+                    intent.putExtra("is_post", true);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }

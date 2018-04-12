@@ -257,7 +257,6 @@ public class ActiveServiceMapFragment extends Fragment implements
                     selectedAppointment = mAppointments.get(index);
                     if (appType.equals(SERVICES)) {
                         Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                        intent.putExtra("is_service", true);
                         mContext.startActivity(intent);
                     } else if (appType.equals(JOBS)) {
                         mContext.startActivity(new Intent(getContext(), JobDetailActivity.class));
