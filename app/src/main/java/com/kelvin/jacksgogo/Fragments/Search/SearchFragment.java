@@ -40,6 +40,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -50,6 +51,7 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 
@@ -63,13 +65,14 @@ public class SearchFragment extends Fragment {
     private ArrayList<JGGCategoryModel> mCategories;
     private SearchJobsAdapter jobAdapter;
     private SearchServicesAdapter serviceAdapter;
-//    private ProgressDialog progressDialog;
     private android.app.AlertDialog alertDialog;
 
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType = SERVICES;
     private Intent mIntent;
+
+    private String token;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -93,6 +96,8 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        token = JGGAppManager.getInstance(mContext).getToken();
+
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeSearchContainer);
         // Setup refresh listener which triggers new data loading
@@ -106,11 +111,10 @@ public class SearchFragment extends Fragment {
             }
         });
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
+        swipeContainer.setColorSchemeResources(R.color.JGGOrange,
+                R.color.JGGOrange,
+                R.color.JGGOrange,
+                R.color.JGGOrange);
 
         recyclerView = view.findViewById(R.id.search_main_recycler_view);
         if (recyclerView != null) {
@@ -133,48 +137,52 @@ public class SearchFragment extends Fragment {
         this.refreshFragment(this.appType);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!getUserVisibleHint()) {
-            return;
-        }
-    }
-
     public void refreshFragment(final String textView) {
 
-//        progressDialog = Global.createProgressDialog(mContext);
         swipeContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeContainer.setRefreshing(true);
+                @Override
+                public void run() {
+                    swipeContainer.setRefreshing(true);
 
-                fetchData(textView);
+                    fetchData(textView);
+                }
             }
-        }
         );
-
     }
 
     private void fetchData(String type) {
+
         if (categories == null)
             loadCategories();
         else {
             if (categories.size() == 0)
                 loadCategories();
-            else
+            else {
                 mCategories = categories;
+                swipeContainer.setRefreshing(false);
+            }
         }
+
         appType = type;
         if (appType.equals(SERVICES)) {
-            serviceAdapter = new SearchServicesAdapter(mContext, mCategories, mServices);
-            serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view) {
-                    onViewHolderItemClick(view);
-                }
-            });
+            updateServiceAdapter();
+        } else if (appType.equals(JOBS)) {
+            updateJobAdapter();
+        } else if (appType.equals(GOCLUB)) {
+            updateGoClubAdapter();
+        }
+    }
 
+    private void updateServiceAdapter() {
+        serviceAdapter = new SearchServicesAdapter(mContext, mCategories, mServices);
+        serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                onViewHolderItemClick(view);
+            }
+        });
+
+        if (!token.equals("")){
             serviceAdapter.setLoadMoreListener(new SearchServicesAdapter.OnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
@@ -183,31 +191,30 @@ public class SearchFragment extends Fragment {
                         @Override
                         public void run() {
                             int index = mServices.size() - 1;
-                            loadSericeMore(index);
+                            onLoadServiceMore(index);
                         }
                     });
-                    //Calling loadMore function in Runnable to fix the
-                    // java.lang.IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling error
                 }
             });
+            onLoadServices(0);
+        }
+    }
 
-            recyclerView.setAdapter(serviceAdapter);
-
-            searchServices(0);
-        } else if (appType.equals(JOBS)) {
-            jobAdapter = new SearchJobsAdapter(mContext, mCategories, mJobs);
-            jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view) {
-                    if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
-                        onViewHolderItemClick(view);
-                    } else if (view.getId() == R.id.btn_background) {
-                        Intent intent = new Intent(mContext, JobDetailActivity.class);
-                        mContext.startActivity(intent);
-                    }
+    private void updateJobAdapter() {
+        jobAdapter = new SearchJobsAdapter(mContext, mCategories, mJobs);
+        jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
+                    onViewHolderItemClick(view);
+                } else if (view.getId() == R.id.btn_background) {
+                    Intent intent = new Intent(mContext, JobDetailActivity.class);
+                    mContext.startActivity(intent);
                 }
-            });
+            }
+        });
 
+        if (!token.equals("")){
             jobAdapter.setLoadMoreListener(new SearchJobsAdapter.OnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
@@ -216,69 +223,66 @@ public class SearchFragment extends Fragment {
                         @Override
                         public void run() {
                             int index = mServices.size() - 1;
-                            loadJobsMore(index);
+                            onLoadJobsMore(index);
                         }
                     });
-                    //Calling loadMore function in Runnable to fix the
-                    // java.lang.IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling error
                 }
             });
-
-            recyclerView.setAdapter(jobAdapter);
-
-            searchJobs(0);
-        } else if (appType.equals(GOCLUB)) {
-//            progressDialog.dismiss();
-            SearchGoClubAdapter goClubAdapter = new SearchGoClubAdapter(mContext, mCategories);
-            goClubAdapter.setOnGoClubClickListener(new SearchGoClubAdapter.OnGoClubHeaderViewClickListener() {
-                @Override
-                public void onItemClick(View view) {
-                    if (view.getId() == R.id.btn_view_my_service) {
-                        mIntent = new Intent(mContext, JoinedGoClubsActivity.class);
-                    } else if (view.getId() == R.id.btn_view_all) {
-                        mIntent = new Intent(mContext, AllGoClubsActivity.class);
-                        mIntent.putExtra("is_category", false);
-                    } else if (view.getId() == R.id.btn_post_new) {
-
-                    }
-                    mContext.startActivity(mIntent);
-                }
-            });
-            goClubAdapter.setOnEventClickListener(new SearchGoClubAdapter.OnEventHeaderViewClickListener() {
-                @Override
-                public void onItemClick(View view) {
-                    if (view.getId() == R.id.btn_view_my_service) {
-                        mIntent = new Intent(mContext, ActiveServiceActivity.class);
-                        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                        mIntent.putExtra(EDIT_STATUS, EDIT);
-                        mIntent.putExtra("active_status", 2);
-
-                    } else if (view.getId() == R.id.btn_view_all) {
-                        mIntent = new Intent(mContext, ActiveServiceActivity.class);
-                        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                        mIntent.putExtra(EDIT_STATUS, POST);
-                        mIntent.putExtra("active_status", 1);
-
-                    } else if (view.getId() == R.id.btn_post_new) {
-
-                    }
-                    mContext.startActivity(mIntent);
-                }
-            });
-            recyclerView.setAdapter(goClubAdapter);
-            swipeContainer.setRefreshing(false);
+            onLoadJobs(0);
         }
     }
 
-    private void searchServices(int index) {
-        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+    private void updateGoClubAdapter() {
+        SearchGoClubAdapter goClubAdapter = new SearchGoClubAdapter(mContext, mCategories);
+        goClubAdapter.setOnGoClubClickListener(new SearchGoClubAdapter.OnGoClubHeaderViewClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                if (view.getId() == R.id.btn_view_my_service) {
+                    mIntent = new Intent(mContext, JoinedGoClubsActivity.class);
+                } else if (view.getId() == R.id.btn_view_all) {
+                    mIntent = new Intent(mContext, AllGoClubsActivity.class);
+                    mIntent.putExtra("is_category", false);
+                } else if (view.getId() == R.id.btn_post_new) {
+
+                }
+                mContext.startActivity(mIntent);
+            }
+        });
+        goClubAdapter.setOnEventClickListener(new SearchGoClubAdapter.OnEventHeaderViewClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                if (view.getId() == R.id.btn_view_my_service) {
+                    mIntent = new Intent(mContext, ActiveServiceActivity.class);
+                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                    mIntent.putExtra(EDIT_STATUS, EDIT);
+                    mIntent.putExtra("active_status", 2);
+
+                } else if (view.getId() == R.id.btn_view_all) {
+                    mIntent = new Intent(mContext, ActiveServiceActivity.class);
+                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                    mIntent.putExtra(EDIT_STATUS, POST);
+                    mIntent.putExtra("active_status", 1);
+
+                } else if (view.getId() == R.id.btn_post_new) {
+
+                }
+                mContext.startActivity(mIntent);
+            }
+        });
+        recyclerView.setAdapter(goClubAdapter);
+        swipeContainer.setRefreshing(false);
+    }
+
+    private void onLoadServices(int index) {
+        Retrofit retrofit = JGGURLManager.getClient();
+        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
+        //final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
                 null, null, null, null, null,
-                null, null, 0, 10);
+                null, null, null, 0, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-//                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mServices = response.body().getValue();
@@ -299,13 +303,12 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadSericeMore(int index){
+    private void onLoadServiceMore(int index){
 
         //add loading progress view
         mServices.add(new JGGAppointmentModel());
@@ -316,11 +319,10 @@ public class SearchFragment extends Fragment {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
                 null, null, null, null, null,
-                null, null, pageIndex, 10);
+                null, null, null, pageIndex, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-//                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
@@ -347,21 +349,19 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void searchJobs(int index) {
+    private void onLoadJobs(int index) {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
                 null, null, null, null, null, null,
-                null, 0, 10);
+                null, null, 0, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-//                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mJobs = response.body().getValue();
@@ -383,13 +383,12 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadJobsMore(int index) {
+    private void onLoadJobsMore(int index) {
         //add loading progress view
         mJobs.add(new JGGAppointmentModel());
         jobAdapter.notifyItemInserted(mJobs.size()-1);
@@ -399,14 +398,13 @@ public class SearchFragment extends Fragment {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
                 null, null, null, null, null, null,
-                null, pageIndex, 10);
+                null, null, pageIndex, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-//                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        //remove loading view
+
                         mJobs.remove(mJobs.size()-1);
 
                         List<JGGAppointmentModel> result = response.body().getValue();
@@ -429,7 +427,6 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -441,13 +438,19 @@ public class SearchFragment extends Fragment {
         call.enqueue(new Callback<JGGCategoryResponse>() {
             @Override
             public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
-                //progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mCategories = response.body().getValue();
                         categories = mCategories;
+                        if (appType.equals(SERVICES)) {
+                            serviceAdapter.notifyDataChanged(mCategories, mServices);
+                            recyclerView.setAdapter(serviceAdapter);
+                        } else if (appType.equals(JOBS)) {
+                            jobAdapter.notifyDataChanged(mCategories, mJobs);
+                            recyclerView.setAdapter(jobAdapter);
+                        }
+                        swipeContainer.setRefreshing(false);
                     } else {
-//                        progressDialog.dismiss();
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -458,7 +461,6 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
-//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });

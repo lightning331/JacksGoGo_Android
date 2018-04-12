@@ -108,6 +108,7 @@ public interface JGGAPIManager {
                                            @Field("Lat") String lat,
                                            @Field("Lon") String lon,
                                            @Field("Distance") String distance,
+                                           @Field("IsNearBy") String isNearBy,
                                            @Field("PageIndex") Integer pageIndex,
                                            @Field("PageSize") Integer pageSize);
 
@@ -139,6 +140,7 @@ public interface JGGAPIManager {
                                            @Field("Lat") String lat,
                                            @Field("Lon") String lon,
                                            @Field("Distance") String distance,
+                                           @Field("IsNearBy") String isNearBy,
                                            @Field("PageIndex") Integer pageIndex,
                                            @Field("PageSize") Integer pageSize);
 

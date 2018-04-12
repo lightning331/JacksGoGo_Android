@@ -141,7 +141,7 @@ public class FavouriteFragment extends Fragment {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
                 null, null, null, null, null,
-                null, null, 0, 50);
+                null, null, null, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -175,7 +175,7 @@ public class FavouriteFragment extends Fragment {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
                 null, null, null, null, null, null,
-                null, 0, 50);
+                null, null, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {

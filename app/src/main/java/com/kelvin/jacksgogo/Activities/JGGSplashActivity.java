@@ -85,7 +85,7 @@ public class JGGSplashActivity extends AppCompatActivity {
 
     private void autoAuthorize() {
         String token = JGGAppManager.getInstance(this).getToken();
-        if (strEmail.equals("") || strPassword.equals("")) {
+        if (strEmail.equals("") && strPassword.equals("")) {
             onShowMainActivity();
         } else {
             SPLASH_DISPLAY_DURATION = 100;
