@@ -42,10 +42,6 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
 
     // setionTitleView
     private SectionTitleView titleView;
-    // category recyclerview
-    private CategoryRecyclerView categoryRecyclerView;
-    // recommedn title view
-    private SectionTitleView recommendTitleView;
 
 
     public SearchHomeHeaderView(View itemView, AppointmentType t, Context context, ArrayList<JGGCategoryModel> data) {
@@ -69,14 +65,9 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
         lblPostNew = itemView.findViewById(R.id.lbl_post_new);
 
         titleView = (SectionTitleView) itemView.findViewById(R.id.sectionTitleView);
-//        categoryRecyclerView = (CategoryRecyclerView) itemView.findViewById(R.id.category_recycler_view);
-        recommendTitleView = (SectionTitleView)itemView.findViewById(R.id.recommendTitleView);
-
 
         initHeaderView();
         initSectionView();
-//        initCategoryRecyclerView(data);
-        initRecommendView();
     }
 
     private void initHeaderView() {
@@ -110,13 +101,6 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
     private void initSectionView() {
         titleView.txtTitle.setText("All Categories");
         titleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-    }
-    private void initCategoryRecyclerView(ArrayList<JGGCategoryModel> data) {
-        categoryRecyclerView.setCatogoryData(type, data);
-    }
-    private void initRecommendView() {
-        recommendTitleView.txtTitle.setText("Recommended For You");
-        recommendTitleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
     }
 
     private void setViewColor(int color, String title) {

@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
+import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -25,6 +29,7 @@ import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.EVENT;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.SERVICES;
+import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.UNKNOWN;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -34,7 +39,7 @@ import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
  * Created by PUMA on 11/14/2017.
  */
 
-public class CategoryRecyclerView extends LinearLayout {
+public class CategoryRecyclerView extends RecyclerView.ViewHolder {
 
     private Context mContext;
     private AppointmentType mType;
@@ -43,33 +48,18 @@ public class CategoryRecyclerView extends LinearLayout {
     private CategoryAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
-    public CategoryRecyclerView(Context context) {
-        super(context);
-        this.mContext = context;
-        init();
-    }
+    // recommedn title view
+    private SectionTitleView recommendTitleView;
 
-    public CategoryRecyclerView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        this.mContext = context;
-        init();
-    }
-
-    public CategoryRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        this.mContext = context;
-        init();
-    }
-
-    private void init() {
-        inflate(getContext(), R.layout.view_category_list, this);
-        recyclerView = findViewById(R.id.category_recycler_view);
-    }
-
-    public void setCatogoryData(AppointmentType type, ArrayList<JGGCategoryModel> data) {
+    public CategoryRecyclerView(View itemView, Context context, AppointmentType type, ArrayList<JGGCategoryModel> data) {
+        super(itemView);
+        mContext = context;
         mType = type;
         mCategories = data;
 
+        recommendTitleView = (SectionTitleView)itemView.findViewById(R.id.recommendTitleView);
+
+        recyclerView = itemView.findViewById(R.id.category_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
@@ -118,5 +108,12 @@ public class CategoryRecyclerView extends LinearLayout {
             }
         });
         recyclerView.setAdapter(adapter);
+
+        initRecommendView();
+    }
+
+    private void initRecommendView() {
+        recommendTitleView.txtTitle.setText("Recommended For You");
+        recommendTitleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
     }
 }

@@ -15,4 +15,9 @@
         android:background="@color/JGGGrey5"
         android:orientation="vertical">
     </android.support.v7.widget.RecyclerView>
+    <com.kelvin.jacksgogo.CustomView.Views.SectionTitleView
+        android:id="@+id/recommendTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.kelvin.jacksgogo.CustomView.Views.SectionTitleView>
 </LinearLayout>

@@ -371,7 +371,6 @@ public class SearchFragment extends Fragment {
                         mJobs = response.body().getValue();
 
                         jobAdapter.notifyDataChanged(mCategories, mJobs);
-                        jobAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(jobAdapter);
 
                         // Now we call setRefreshing(false) to signal refresh has finished

@@ -177,15 +177,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </com.kelvin.jacksgogo.CustomView.Views.SectionTitleView>
-    <!--<com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView-->
-        <!--android:id="@+id/category_recycler_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-    <!--</com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView>-->
-    <com.kelvin.jacksgogo.CustomView.Views.SectionTitleView
-        android:id="@+id/recommendTitleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.kelvin.jacksgogo.CustomView.Views.SectionTitleView>
 
 </LinearLayout>

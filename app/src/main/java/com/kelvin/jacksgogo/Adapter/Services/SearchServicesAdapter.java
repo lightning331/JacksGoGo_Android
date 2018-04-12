@@ -2,8 +2,6 @@ package com.kelvin.jacksgogo.Adapter.Services;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.GoClubRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.LoadingViewHolder;
-import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
-import com.kelvin.jacksgogo.Listeners.OnLoadMoreListener;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -37,8 +34,9 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<JGGAppointmentModel> mServices;
 
     private final int HEADER_TYPE = 0;
-    private final int VIEW_TYPE_ITEM = 1;
-    private final int VIEW_TYPE_LOADING = 2;
+    private final int VIEW_TYPE_CATEGORY = 1;
+    private final int VIEW_TYPE_ITEM = 2;
+    private final int VIEW_TYPE_LOADING = 3;
 
     OnLoadMoreListener loadMoreListener;
     // TODO - load more
@@ -60,10 +58,14 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext, mCategories);
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext, new ArrayList<JGGCategoryModel>());
             headerView.totalServiceCount.setText(String.valueOf(mServices.size()));
             headerView.setOnClickListener(this);
             return headerView;
+        } else if (viewType == VIEW_TYPE_CATEGORY) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
+            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.SERVICES, mCategories);
+            return categoryCell;
         } else if (viewType == VIEW_TYPE_ITEM){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_list_detail, parent, false);
             ServiceListDetailCell cell = new ServiceListDetailCell(view, mContext);
@@ -80,21 +82,21 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+        if(position>=getItemCount()-2 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
             isLoading = true;
             loadMoreListener.onLoadMore();
         }
 
         if (getItemViewType(position)==VIEW_TYPE_ITEM) {
             ServiceListDetailCell cell = (ServiceListDetailCell) holder;
-            JGGAppointmentModel service = mServices.get(position - 1);
+            JGGAppointmentModel service = mServices.get(position - 2);
 
             cell.setService(service);
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     selectedAppointment = null;
-                    selectedAppointment = mServices.get(position - 1);
+                    selectedAppointment = mServices.get(position - 2);
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     mContext.startActivity(intent);
                 }
@@ -104,15 +106,17 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return mServices.size() + 1;
+        return mServices.size() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return HEADER_TYPE;
+        } else if (position == 1) {
+            return VIEW_TYPE_CATEGORY;
         } else  {
-            if(mServices.get(position-1).getID() != null){
+            if(mServices.get(position-2).getID() != null){
                 return VIEW_TYPE_ITEM;
             }else{
                 return VIEW_TYPE_LOADING;
