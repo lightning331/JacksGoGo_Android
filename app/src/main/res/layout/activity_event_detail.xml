@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_gravity="bottom"
-            app:itemTextColor="@color/JGGWhite"
+            android:background="@color/JGGWhite"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:itemTextAppearance="@style/NavigationViewOwnStyle">
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -116,17 +116,91 @@
                             android:text="@string/viewing_now"/>
                     </LinearLayout>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/btn_join_event"
-                    android:text="@string/title_request_join_event"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:textAlignment="center"
-                    android:background="@color/JGGPurple"
-                    android:textColor="@color/JGGWhite"
-                    android:fontFamily="@font/mulibold"
-                    android:textSize="@dimen/button_font_size"
-                    android:gravity="center"/>
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/JGGGrey4">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/btn_join_event"
+                        android:text="@string/title_request_join_event"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:textAlignment="center"
+                        android:background="@color/JGGPurple"
+                        android:textColor="@color/JGGWhite"
+                        android:fontFamily="@font/mulibold"
+                        android:textSize="@dimen/button_font_size"
+                        android:gravity="center"/>
+                    <LinearLayout
+                        android:id="@+id/owner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:src="@mipmap/icon_profile"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="55"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/lbl_user_type"
+                                android:text="GoClub Owner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/JGGGrey2"
+                                android:fontFamily="@font/mulibold"
+                                android:textSize="@dimen/caption_font_size"
+                                android:gravity="center_vertical"/>
+                            <TextView
+                                android:id="@+id/lbl_user_name"
+                                android:text="Clarice.Tam"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/JGGBlack"
+                                android:fontFamily="@font/mulibold"
+                                android:textSize="@dimen/list_text_font_size"
+                                android:gravity="center_vertical"/>
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:id="@+id/btn_posted_service_chat"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="45"
+                            android:gravity="center"
+                            android:background="@color/JGGPurple">
+                            <ImageView
+                                android:id="@+id/chat_icon"
+                                android:layout_width="64dp"
+                                android:layout_height="32dp"
+                                android:background="@mipmap/button_groupchat"/>
+                            <TextView
+                                android:id="@+id/lblBadgeCount"
+                                android:text="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/badge_number_size"
+                                android:layout_gravity="top|end"
+                                android:layout_centerVertical="true"
+                                android:textAlignment="center"
+                                android:background="@drawable/badge_red"
+                                android:fontFamily="@font/muliregular"
+                                android:textColor="@color/JGGWhite"
+                                android:textSize="@dimen/badge_font_size"
+                                android:layout_alignRight="@id/chat_icon"
+                                android:layout_alignTop="@id/chat_icon"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
             </LinearLayout>
         </android.support.design.widget.BottomNavigationView>
     </android.support.design.widget.CoordinatorLayout>

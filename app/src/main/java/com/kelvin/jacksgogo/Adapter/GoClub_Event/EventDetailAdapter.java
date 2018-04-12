@@ -1,4 +1,4 @@
-package com.kelvin.jacksgogo.Adapter.Events;
+package com.kelvin.jacksgogo.Adapter.GoClub_Event;
 
 import android.content.Context;
 import android.content.Intent;

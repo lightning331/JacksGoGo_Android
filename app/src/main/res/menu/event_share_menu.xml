@@ -5,7 +5,7 @@
         android:icon="@mipmap/icon_share_purple"
         android:title="@string/menu_option_share" />
     <item
-        android:id="@+id/menu_option_report_service"
+        android:id="@+id/menu_option_report_event"
         android:icon="@mipmap/icon_flag_purple"
         android:title="@string/menu_option_report_event" />
 </menu>
