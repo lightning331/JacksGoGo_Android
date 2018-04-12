@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
+import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
 import com.kelvin.jacksgogo.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -46,7 +46,7 @@ public class AppointmentFilterAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            return new SectionTitleView(view);
+            return new HeaderTitleView(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_filter_option, parent, false);
             return new AppointmentFilterListView(view);
@@ -59,7 +59,7 @@ public class AppointmentFilterAdapter extends RecyclerView.Adapter<RecyclerView.
         Object itemData = getItem(position);
 
         if (position == 0) {
-            SectionTitleView sectionView = (SectionTitleView) holder;
+            HeaderTitleView sectionView = (HeaderTitleView) holder;
             sectionView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle((String)itemData);

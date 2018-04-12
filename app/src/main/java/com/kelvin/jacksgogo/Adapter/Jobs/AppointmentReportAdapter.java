@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOptionCell;
+import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
@@ -50,7 +51,7 @@ public class AppointmentReportAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
             View sectionTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            SectionTitleView sectionTitleViewHolder = new SectionTitleView(sectionTitle);
+            HeaderTitleView sectionTitleViewHolder = new HeaderTitleView(sectionTitle);
             sectionTitleViewHolder.txtTitle.setText(R.string.edit_job_report_title);
             sectionTitleViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             return sectionTitleViewHolder;

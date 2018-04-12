@@ -2,9 +2,11 @@ package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -31,7 +33,7 @@ import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
  * Created by PUMA on 11/14/2017.
  */
 
-public class CategoryRecyclerView extends RecyclerView.ViewHolder {
+public class CategoryRecyclerView extends LinearLayout {
 
     private Context mContext;
     private AppointmentType mType;
@@ -40,13 +42,33 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
     private CategoryAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
-    public CategoryRecyclerView(View itemView, Context context, AppointmentType type, ArrayList<JGGCategoryModel> data) {
-        super(itemView);
-        mContext = context;
+    public CategoryRecyclerView(Context context) {
+        super(context);
+        this.mContext = context;
+        init();
+    }
+
+    public CategoryRecyclerView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        this.mContext = context;
+        init();
+    }
+
+    public CategoryRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.mContext = context;
+        init();
+    }
+
+    private void init() {
+        inflate(getContext(), R.layout.view_category_list, this);
+        recyclerView = findViewById(R.id.category_recycler_view);
+    }
+
+    public void setCatogoryData(AppointmentType type, ArrayList<JGGCategoryModel> data) {
         mType = type;
         mCategories = data;
 
-        recyclerView = itemView.findViewById(R.id.category_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }

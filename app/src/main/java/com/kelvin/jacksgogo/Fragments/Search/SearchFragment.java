@@ -7,12 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.Adapter.Events.SearchGoClubAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.SearchJobsAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.SearchServicesAdapter;
+import com.kelvin.jacksgogo.Listeners.OnLoadMoreListener;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -36,6 +40,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,11 +60,12 @@ public class SearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
+    private SwipeRefreshLayout swipeContainer;
     private RecyclerView recyclerView;
     private ArrayList<JGGCategoryModel> mCategories;
     private SearchJobsAdapter jobAdapter;
     private SearchServicesAdapter serviceAdapter;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     private android.app.AlertDialog alertDialog;
 
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
@@ -88,6 +94,26 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeSearchContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchTimelineAsync(0);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
         recyclerView = view.findViewById(R.id.search_main_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -95,7 +121,18 @@ public class SearchFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
+        refreshFragment(SERVICES);
+
         return view;
+    }
+
+    public void fetchTimelineAsync(int page) {
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint.
+
+        Log.d("Type", this.appType);
+        this.refreshFragment(this.appType);
     }
 
     @Override
@@ -104,12 +141,24 @@ public class SearchFragment extends Fragment {
         if (!getUserVisibleHint()) {
             return;
         }
-        refreshFragment(SERVICES);
     }
 
-    public void refreshFragment(String textView) {
+    public void refreshFragment(final String textView) {
 
-        progressDialog = Global.createProgressDialog(mContext);
+//        progressDialog = Global.createProgressDialog(mContext);
+        swipeContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeContainer.setRefreshing(true);
+
+                fetchData(textView);
+            }
+        }
+        );
+
+    }
+
+    private void fetchData(String type) {
         if (categories == null)
             loadCategories();
         else {
@@ -118,7 +167,7 @@ public class SearchFragment extends Fragment {
             else
                 mCategories = categories;
         }
-        appType = textView;
+        appType = type;
         if (appType.equals(SERVICES)) {
             serviceAdapter = new SearchServicesAdapter(mContext, mCategories, mServices);
             serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
@@ -127,9 +176,28 @@ public class SearchFragment extends Fragment {
                     onViewHolderItemClick(view);
                 }
             });
-            searchServices();
+
+            serviceAdapter.setLoadMoreListener(new SearchServicesAdapter.OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int index = mServices.size() - 1;
+                            loadSericeMore(index);
+                        }
+                    });
+                    //Calling loadMore function in Runnable to fix the
+                    // java.lang.IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling error
+                }
+            });
+
+            recyclerView.setAdapter(serviceAdapter);
+
+            searchServices(0);
         } else if (appType.equals(JOBS)) {
-            jobAdapter = new SearchJobsAdapter(mContext, mCategories);
+            jobAdapter = new SearchJobsAdapter(mContext, mCategories, mJobs);
             jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
@@ -141,9 +209,28 @@ public class SearchFragment extends Fragment {
                     }
                 }
             });
-            searchJobs();
+
+            jobAdapter.setLoadMoreListener(new SearchJobsAdapter.OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int index = mServices.size() - 1;
+                            loadJobsMore(index);
+                        }
+                    });
+                    //Calling loadMore function in Runnable to fix the
+                    // java.lang.IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling error
+                }
+            });
+
+            recyclerView.setAdapter(jobAdapter);
+
+            searchJobs(0);
         } else if (appType.equals(GOCLUB)) {
-            progressDialog.dismiss();
+//            progressDialog.dismiss();
             SearchGoClubAdapter goClubAdapter = new SearchGoClubAdapter(mContext, mCategories);
             goClubAdapter.setOnGoClubClickListener(new SearchGoClubAdapter.OnGoClubHeaderViewClickListener() {
                 @Override
@@ -172,25 +259,28 @@ public class SearchFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(goClubAdapter);
+            swipeContainer.setRefreshing(false);
         }
     }
 
-    private void searchServices() {
+    private void searchServices(int index) {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
                 null, null, null, null, null,
-                null, null, 0, 50);
+                null, null, 0, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mServices = response.body().getValue();
 
                         serviceAdapter.notifyDataChanged(mCategories, mServices);
-                        serviceAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(serviceAdapter);
+
+                        // Now we call setRefreshing(false) to signal refresh has finished
+                        swipeContainer.setRefreshing(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -202,21 +292,69 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void searchJobs() {
+    private void loadSericeMore(int index){
+
+        //add loading progress view
+        mServices.add(new JGGAppointmentModel());
+        serviceAdapter.notifyItemInserted(mServices.size()-1);
+
+        int pageIndex = (int)(index/10);
+
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
-                null, null, null, null, null, null,
-                null, 0, 50);
+        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+                null, null, null, null, null,
+                null, null, pageIndex, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                        //remove loading view
+                        mServices.remove(mServices.size()-1);
+
+                        List<JGGAppointmentModel> result = response.body().getValue();
+                        if (result.size() > 0) {
+                            mServices.addAll(result);
+                        } else { //result size 0 means there is no more data available at server
+                            serviceAdapter.setMoreDataAvailable(false);
+                            //telling adapter to stop calling load more as no more server data available
+                            Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
+                        }
+                        serviceAdapter.notifyDataChanged(mCategories, mServices);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+//                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchJobs(int index) {
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+                null, null, null, null, null, null,
+                null, 0, 10);
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+//                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mJobs = response.body().getValue();
@@ -224,6 +362,10 @@ public class SearchFragment extends Fragment {
                         jobAdapter.notifyDataChanged(mCategories, mJobs);
                         jobAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(jobAdapter);
+
+                        // Now we call setRefreshing(false) to signal refresh has finished
+                        swipeContainer.setRefreshing(false);
+
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -235,7 +377,53 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadJobsMore(int index) {
+        //add loading progress view
+        mJobs.add(new JGGAppointmentModel());
+        jobAdapter.notifyItemInserted(mJobs.size()-1);
+
+        int pageIndex = (int)(index/10);
+
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+                null, null, null, null, null, null,
+                null, pageIndex, 10);
+        call.enqueue(new Callback<JGGGetAppsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
+//                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        //remove loading view
+                        mJobs.remove(mJobs.size()-1);
+
+                        List<JGGAppointmentModel> result = response.body().getValue();
+                        if (result.size() > 0) {
+                            mJobs.addAll(result);
+                        } else { //result size 0 means there is no more data available at server
+                            jobAdapter.setMoreDataAvailable(false);
+                            //telling adapter to stop calling load more as no more server data available
+                            Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
+                        }
+                        jobAdapter.notifyDataChanged(mCategories, mJobs);
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
+//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -253,7 +441,7 @@ public class SearchFragment extends Fragment {
                         mCategories = response.body().getValue();
                         categories = mCategories;
                     } else {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -264,7 +452,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });

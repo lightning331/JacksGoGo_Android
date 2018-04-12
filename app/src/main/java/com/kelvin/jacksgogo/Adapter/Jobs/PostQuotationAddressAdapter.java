@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppFilterOpt
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobAddressCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailInviteButtonCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.QuotationCoordinateCell;
-import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
+import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
@@ -53,13 +53,13 @@ public class PostQuotationAddressAdapter extends RecyclerView.Adapter<RecyclerVi
         switch (viewType) {
             case 0:
                 View sectionTitle1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-                SectionTitleView sectionTitleView = new SectionTitleView(sectionTitle1);
+                HeaderTitleView sectionTitleView = new HeaderTitleView(sectionTitle1);
                 sectionTitleView.txtTitle.setText(R.string.edit_job_address_title);
                 sectionTitleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
                 return sectionTitleView;
             case 1:
                 View descTitleView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-                SectionTitleView descTitleViewHolder = new SectionTitleView(descTitleView);
+                HeaderTitleView descTitleViewHolder = new HeaderTitleView(descTitleView);
                 descTitleViewHolder.txtTitle.setText(R.string.edit_job_address_desc);
                 return descTitleViewHolder;
             case 2:     // Select Address button

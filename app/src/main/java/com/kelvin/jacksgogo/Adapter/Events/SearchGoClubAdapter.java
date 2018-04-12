@@ -33,7 +33,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         // GoClub
         if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.GOCLUB, mContext);
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.GOCLUB, mContext, mCategories);
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -41,32 +41,16 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             return headerView;
-        } else if (viewType == 1) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            SectionTitleView sectionView = new SectionTitleView(view);
-            sectionView.txtTitle.setText("All Categories");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            return sectionView;
-        } else if (viewType == 2) {
-            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
-            CategoryRecyclerView categoryListView = new CategoryRecyclerView(listView, mContext, AppointmentType.GOCLUB, mCategories);
-            return categoryListView;
-        } else if (viewType == 3) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            SectionTitleView sectionView = new SectionTitleView(view);
-            sectionView.txtTitle.setText("Recommended For You");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            return sectionView;
-        } else if (viewType == 4) {
+        }  else if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_goclub_recyclerview, parent, false);
             GoClubRecyclerView goClubCell = new GoClubRecyclerView(view, mContext);
             return goClubCell;
         }
 
         // Event
-        else if (viewType == 5) {
+        else if (viewType == 2) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.EVENT, mContext);
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.EVENT, mContext, mCategories);
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,23 +58,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             return headerView;
-        } else if (viewType == 6) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            SectionTitleView sectionView = new SectionTitleView(view);
-            sectionView.txtTitle.setText("All Categories");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            return sectionView;
-        } else if (viewType == 7) {
-            View listView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
-            CategoryRecyclerView categoryListView = new CategoryRecyclerView(listView, mContext, AppointmentType.EVENT, mCategories);
-            return categoryListView;
-        } else if (viewType == 8) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            SectionTitleView sectionView = new SectionTitleView(view);
-            sectionView.txtTitle.setText("Recommended For You");
-            sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-            return sectionView;
-        } else{
+        }  else{
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_event_list_detail, parent, false);
             EventListDetailCell eventCell = new EventListDetailCell(view, mContext);
             return eventCell;
@@ -109,7 +77,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return 15;
+        return 9;
     }
 
     // GoClub Header View item click listener

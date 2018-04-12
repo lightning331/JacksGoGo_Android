@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,8 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -35,7 +40,15 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
     private Context mContext;
     private AppointmentType type;
 
-    public SearchHomeHeaderView(View itemView, AppointmentType t, Context context) {
+    // setionTitleView
+    private SectionTitleView titleView;
+    // category recyclerview
+    private CategoryRecyclerView categoryRecyclerView;
+    // recommedn title view
+    private SectionTitleView recommendTitleView;
+
+
+    public SearchHomeHeaderView(View itemView, AppointmentType t, Context context, ArrayList<JGGCategoryModel> data) {
         super(itemView);
         mContext = context;
         type = t;
@@ -55,10 +68,18 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
         imgPostNew = itemView.findViewById(R.id.img_post_new);
         lblPostNew = itemView.findViewById(R.id.lbl_post_new);
 
-        initView();
+        titleView = (SectionTitleView) itemView.findViewById(R.id.sectionTitleView);
+//        categoryRecyclerView = (CategoryRecyclerView) itemView.findViewById(R.id.category_recycler_view);
+        recommendTitleView = (SectionTitleView)itemView.findViewById(R.id.recommendTitleView);
+
+
+        initHeaderView();
+        initSectionView();
+//        initCategoryRecyclerView(data);
+        initRecommendView();
     }
 
-    private void initView() {
+    private void initHeaderView() {
 
         viewMyServiceButton.setVisibility(View.GONE);
 
@@ -84,6 +105,18 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
             else if (type == AppointmentType.EVENT)
                 setViewColor(ContextCompat.getColor(mContext, R.color.JGGPurple), "Events");
         }
+    }
+
+    private void initSectionView() {
+        titleView.txtTitle.setText("All Categories");
+        titleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+    }
+    private void initCategoryRecyclerView(ArrayList<JGGCategoryModel> data) {
+        categoryRecyclerView.setCatogoryData(type, data);
+    }
+    private void initRecommendView() {
+        recommendTitleView.txtTitle.setText("Recommended For You");
+        recommendTitleView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
     }
 
     private void setViewColor(int color, String title) {

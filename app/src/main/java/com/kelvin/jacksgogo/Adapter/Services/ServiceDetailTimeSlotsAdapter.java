@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobTimeSlotsCell;
+import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
@@ -44,7 +45,7 @@ public class ServiceDetailTimeSlotsAdapter extends RecyclerView.Adapter<Recycler
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 0) {
             View timeSlotsTitle = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            SectionTitleView timeViewHolder = new SectionTitleView(timeSlotsTitle);
+            HeaderTitleView timeViewHolder = new HeaderTitleView(timeSlotsTitle);
             timeViewHolder.txtTitle.setText("Time Slots");
             timeViewHolder.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             timeViewHolder.background.setBackgroundResource(R.color.JGGWhite);

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
+import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -66,7 +67,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_SECTION_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section_title, parent, false);
-            return new SectionTitleView(view);
+            return new HeaderTitleView(view);
         } else if (viewType == TYPE_JOB) {
             View jobView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_job_history, parent, false);
             return new ApptHistoryListCell(jobView);
@@ -84,7 +85,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (itemData instanceof String) {
             // RecyclerView Header
-            SectionTitleView sectionView = (SectionTitleView) holder;
+            HeaderTitleView sectionView = (HeaderTitleView) holder;
             sectionView.txtTitle.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
             sectionView.setTitle((String) itemData);
         } else if (itemData instanceof JGGAppointmentModel) {

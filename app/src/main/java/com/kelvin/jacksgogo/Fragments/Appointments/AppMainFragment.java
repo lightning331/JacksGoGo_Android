@@ -86,8 +86,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (!getUserVisibleHint()) {
             return;
         }
-        // create list and custom adapter
-        refreshFragment(PENDING);
     }
 
     @Override
@@ -103,6 +101,9 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
+
+        // create list and custom adapter
+        refreshFragment(PENDING);
 
         return view;
     }

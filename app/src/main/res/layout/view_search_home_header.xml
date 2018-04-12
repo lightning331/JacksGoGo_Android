@@ -1,170 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:background="@color/JGGWhite">
-        <LinearLayout
-            android:id="@+id/left_line_layout"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@color/JGGGreen"
-            android:orientation="horizontal">
-        </LinearLayout>
+        android:layout_height="170dp"
+        android:orientation="horizontal">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:background="@color/JGGWhite">
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="45"
-                android:gravity="center_vertical"
+                android:id="@+id/left_line_layout"
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:background="@color/JGGGreen"
                 android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/lbl_total_service_count"
-                        android:text="180"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:textColor="@color/JGGGreen"
-                        android:fontFamily="@font/mulibold"
-                        android:textSize="@dimen/title1_font_size"/>
-                    <TextView
-                        android:id="@+id/count_title"
-                        android:text="Services"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/JGGBlack"
-                        android:fontFamily="@font/mulisemibold"
-                        android:textSize="@dimen/title3_font_size"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:layout_marginTop="7dp">
-                    <TextView
-                        android:id="@+id/lbl_new_service_count"
-                        android:text="30"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/JGGBlack"
-                        android:fontFamily="@font/mulibold"
-                        android:textSize="@dimen/caption_font_size"/>
-                    <TextView
-                        android:id="@+id/lbl_new_service_since_date"
-                        android:text="new since 6 hrs ago"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="@color/JGGBlack"
-                        android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/caption_font_size"/>
-                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="55"
-                android:layout_marginBottom="10dp"
-                android:gravity="center">
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="45"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/lbl_total_service_count"
+                            android:text="180"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:textColor="@color/JGGGreen"
+                            android:fontFamily="@font/mulibold"
+                            android:textSize="@dimen/title1_font_size"/>
+                        <TextView
+                            android:id="@+id/count_title"
+                            android:text="Services"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/JGGBlack"
+                            android:fontFamily="@font/mulisemibold"
+                            android:textSize="@dimen/title3_font_size"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_marginTop="7dp">
+                        <TextView
+                            android:id="@+id/lbl_new_service_count"
+                            android:text="30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/JGGBlack"
+                            android:fontFamily="@font/mulibold"
+                            android:textSize="@dimen/caption_font_size"/>
+                        <TextView
+                            android:id="@+id/lbl_new_service_since_date"
+                            android:text="new since 6 hrs ago"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/JGGBlack"
+                            android:fontFamily="@font/muliregular"
+                            android:textSize="@dimen/caption_font_size"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="55"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center">
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
-
                         <LinearLayout
-                            android:id="@+id/btn_view_my_service"
-                            android:layout_width="110dp"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
 
-                            <ImageView
-                                android:id="@+id/img_my_services"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/button_tick_round_green"
-                                android:layout_marginBottom="4dp"/>
+                            <LinearLayout
+                                android:id="@+id/btn_view_my_service"
+                                android:layout_width="110dp"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center">
 
-                            <TextView
-                                android:id="@+id/lbl_view_my_services"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="center"
-                                android:textColor="@color/JGGGreen"
-                                android:fontFamily="@font/muliregular"
-                                android:textSize="@dimen/caption_font_size"
-                                android:text="View My Services"/>
+                                <ImageView
+                                    android:id="@+id/img_my_services"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@mipmap/button_tick_round_green"
+                                    android:layout_marginBottom="4dp"/>
+
+                                <TextView
+                                    android:id="@+id/lbl_view_my_services"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/JGGGreen"
+                                    android:fontFamily="@font/muliregular"
+                                    android:textSize="@dimen/caption_font_size"
+                                    android:text="View My Services"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/btn_view_all"
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/img_view_all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@mipmap/button_viewall_round_green"
+                                    android:layout_marginBottom="4dp"/>
+
+                                <TextView
+                                    android:id="@+id/lbl_view_all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/JGGGreen"
+                                    android:fontFamily="@font/muliregular"
+                                    android:textSize="@dimen/caption_font_size"
+                                    android:text="View All"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/btn_post_new"
+                                android:layout_width="110dp"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/img_post_new"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@mipmap/button_addnew_round_green"
+                                    android:layout_marginBottom="4dp"/>
+
+                                <TextView
+                                    android:id="@+id/lbl_post_new"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/JGGGreen"
+                                    android:fontFamily="@font/muliregular"
+                                    android:textSize="@dimen/caption_font_size"
+                                    android:text="Post New"/>
+                            </LinearLayout>
+
                         </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btn_view_all"
-                            android:layout_width="100dp"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:id="@+id/img_view_all"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/button_viewall_round_green"
-                                android:layout_marginBottom="4dp"/>
-
-                            <TextView
-                                android:id="@+id/lbl_view_all"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/JGGGreen"
-                                android:fontFamily="@font/muliregular"
-                                android:textSize="@dimen/caption_font_size"
-                                android:text="View All"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btn_post_new"
-                            android:layout_width="110dp"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:id="@+id/img_post_new"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/button_addnew_round_green"
-                                android:layout_marginBottom="4dp"/>
-
-                            <TextView
-                                android:id="@+id/lbl_post_new"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/JGGGreen"
-                                android:fontFamily="@font/muliregular"
-                                android:textSize="@dimen/caption_font_size"
-                                android:text="Post New"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </FrameLayout>
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    <com.kelvin.jacksgogo.CustomView.Views.SectionTitleView
+        android:id="@+id/sectionTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.kelvin.jacksgogo.CustomView.Views.SectionTitleView>
+    <!--<com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView-->
+        <!--android:id="@+id/category_recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView>-->
+    <com.kelvin.jacksgogo.CustomView.Views.SectionTitleView
+        android:id="@+id/recommendTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.kelvin.jacksgogo.CustomView.Views.SectionTitleView>
+
 </LinearLayout>
