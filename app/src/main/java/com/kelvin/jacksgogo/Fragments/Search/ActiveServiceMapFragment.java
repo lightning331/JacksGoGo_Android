@@ -49,11 +49,11 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 
 import java.util.ArrayList;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class ActiveServiceMapFragment extends Fragment implements
         View.OnClickListener,
@@ -155,7 +155,7 @@ public class ActiveServiceMapFragment extends Fragment implements
                 imgUserLocation.setImageResource(R.mipmap.button_location_cyan);
                 lblServiceCount.setText(mAppointments.size() + " Jobs");
                 break;
-            case GOCLUB:
+            case EVENTS:
                 mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
                 imgListView.setImageResource(R.mipmap.button_listview_purple);
                 imgFilter.setImageResource(R.mipmap.button_filter_purple);
@@ -257,7 +257,6 @@ public class ActiveServiceMapFragment extends Fragment implements
                     selectedAppointment = mAppointments.get(index);
                     if (appType.equals(SERVICES)) {
                         Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                        intent.putExtra("is_service", true);
                         mContext.startActivity(intent);
                     } else if (appType.equals(JOBS)) {
                         mContext.startActivity(new Intent(getContext(), JobDetailActivity.class));

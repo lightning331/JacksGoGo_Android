@@ -49,7 +49,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
         Bundle bundle = getIntent().getExtras();
 
-        // Hide Bottom NavigationView and ToolBar
+        // TODO -   Hide Bottom NavigationView and ToolBar
         BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
@@ -75,7 +75,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        // Top ActionbarView
+        // TODO - Top ActionbarView
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
@@ -87,7 +87,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        // Main Fragment
+        // TODO -  Main Fragment
         ServiceDetailFragment frag = new ServiceDetailFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -100,7 +100,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
             actionbarView.setLikeButtonClicked(actionbarView.mLikeButtonSelected);
         } else if (view.getId() == R.id.btn_more) {
             actionbarView.setMoreButtonClicked(true);
-            // Show Edit PopUp Menu
+            // TODO -   Show Edit PopUp Menu
             showEditPopUpMenu(view);
         } else if (view.getId() == R.id.btn_back) {
             this.finish();
@@ -114,7 +114,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
 
-        // Force icons to show in Custom Overflow Menu
+        // TODO - Force icons to show in Custom Overflow Menu
         Object menuHelper;
         Class[] argTypes;
         try {
@@ -157,9 +157,11 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 
-            if (menuItem.getItemId() == R.id.menu_option_share) {  // Share the Service
+            if (menuItem.getItemId() == R.id.menu_option_share) {
+                // TODO -  Share the Service
                 openShareDialog();
-            } else if (menuItem.getItemId() == R.id.menu_option_report_service) {    // Report the Service
+            } else if (menuItem.getItemId() == R.id.menu_option_report_service) {
+                // TODO - Report the Service
                 showReportDialog(false);
             }
             return true;

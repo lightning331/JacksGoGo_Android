@@ -166,6 +166,13 @@ public interface JGGAPIManager {
                                                    @Query("pageIndex") Integer pageIndex,
                                                    @Query("pageSize") Integer pageSize);
 
+    @GET("api/Appointment/GetAppointmentHistory")
+    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("AppointmentID") String appointmentID);
+
+    @GET("api/Appointment/GetTotalAppointmentsCount")
+    Call<JGGGetAppsResponse> getTotalAppointmentsCount(@Query("IsJob") String userProfileID,
+                                                       @Query("Hours") Integer pageIndex);
+
     @GET("api/Appointment/GetJobByID")
     Call<JGGGetAppResponse> getJobByID(@Query("JobID") String jobID);
 

@@ -1,13 +1,16 @@
 package com.kelvin.jacksgogo.Adapter.GoClub_Event;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubMembersActivity;
+import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppInviteProviderCell;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.PastEventView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.GoClubDetailEventView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailAverageQuoteCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
@@ -50,12 +53,25 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             View membersView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
             JobDetailDescriptionCell membersViewHolder = new JobDetailDescriptionCell(membersView);
             membersViewHolder.descriptionImage.setImageResource(R.mipmap.icon_group);
+            membersViewHolder.btnViewAllMemebers.setVisibility(View.VISIBLE);
+            membersViewHolder.btnViewAllMemebers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(new Intent(mContext, GoClubMembersActivity.class));
+                }
+            });
             membersViewHolder.description.setText("1032");
             return membersViewHolder;
         } else if (viewType == 4){
             // Past Events list view
-            View pastEventView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_past_event_list, parent, false);
-            PastEventView eventViewHolder = new PastEventView(pastEventView, mContext);
+            View eventView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_go_club_detail_event, parent, false);
+            GoClubDetailEventView eventViewHolder = new GoClubDetailEventView(eventView, mContext);
+            eventViewHolder.btnViewPastEvents.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, PastEventsActivity.class));
+                }
+            });
             return eventViewHolder;
         } else if (viewType == 5) {
             // GoClub Poster view

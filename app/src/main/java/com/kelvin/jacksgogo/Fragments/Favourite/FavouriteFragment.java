@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Adapter.Events.EventsListingAdapter;
@@ -103,7 +104,6 @@ public class FavouriteFragment extends Fragment {
                 public void onItemClick(int position) {
                     selectedAppointment = mServices.get(position);
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    intent.putExtra("is_service", true);
                     mContext.startActivity(intent);
                 }
             });
@@ -126,7 +126,7 @@ public class FavouriteFragment extends Fragment {
             adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-
+                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
                 }
             });
             recyclerView.setAdapter(adapter);

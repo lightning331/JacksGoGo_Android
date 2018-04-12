@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +29,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryQuo
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryTipView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryWorkProgressView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -45,25 +46,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class ProgressProposalFragment extends Fragment implements View.OnClickListener {
+public class ProgressJobProviderFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -105,12 +106,12 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
     private JGGProposalModel mProposal;
     private String clientName;
 
-    public ProgressProposalFragment() {
+    public ProgressJobProviderFragment() {
         // Required empty public constructor
     }
 
-    public static ProgressProposalFragment newInstance(String param1, String param2) {
-        ProgressProposalFragment fragment = new ProgressProposalFragment();
+    public static ProgressJobProviderFragment newInstance(String param1, String param2) {
+        ProgressJobProviderFragment fragment = new ProgressJobProviderFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -144,7 +145,7 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_progress_proposal, container, false);
+        View view = inflater.inflate(R.layout.fragment_progress_job_provider, container, false);
         initView(view);
         return view;
     }
@@ -432,11 +433,6 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
             onShowAlertDialog();
         } else if (view.getId() == R.id.btn_invite_accept) {
             onAcceptInvitation();
-        } else if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            alertDialog.dismiss();
-            onRejectInvitation();
         } else if (view.getId() == R.id.btn_view_proposal) {
             Intent intent = new Intent(mContext, PostProposalActivity.class);
             intent.putExtra(EDIT_STATUS, MY_PROPOSAL);
@@ -482,25 +478,28 @@ public class ProgressProposalFragment extends Fragment implements View.OnClickLi
     }
 
     private void onShowAlertDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = (this).getLayoutInflater();
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_reject_title),
+                "",
+                false,
+                "",
+                R.color.JGGCyan,
+                R.color.JGGCyan10Percent,
+                mContext.getResources().getString(R.string.alert_reject_ok),
+                R.color.JGGCyan);
         alertDialog = builder.create();
-        TextView cancelButton = alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_reject_title);
-        okButton.setText(R.string.alert_reject_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
-        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan10Percent));
-        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
-        okButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
-        desc.setVisibility(View.GONE);
-        alertDialog.setCanceledOnTouchOutside(true);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    onRejectInvitation();
+                }
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 

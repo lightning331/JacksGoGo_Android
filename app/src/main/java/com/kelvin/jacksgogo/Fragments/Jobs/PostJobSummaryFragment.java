@@ -197,23 +197,14 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void onPostButtonClicked() {
-        if (attachmentURLs.size() == 0) {
-            uploadImage(0);
-        } else {
-            progressDialog = Global.createProgressDialog(mContext);
-            onPostJob();
-        }
-    }
-
     private void uploadImage(final int index) {
-        progressDialog = Global.createProgressDialog(mContext);
         if (mAlbumFiles == null) {
             if (jobStatus == POST)
                 onPostJob();
             else if (jobStatus == EDIT)
                 onEditJob();
         } else {
+            progressDialog = Global.createProgressDialog(mContext);
             if (index < mAlbumFiles.size()) {
                 String name = (String) mAlbumFiles.get(index).getPath();
                 Uri imageUri = Uri.parse(new File(name).toString());
@@ -235,9 +226,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                                 attachmentURLs.add(url);
                                 uploadImage(index + 1);
                             } else {
+                                progressDialog.dismiss();
                                 Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            progressDialog.dismiss();
                             int statusCode = response.code();
                             Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                         }
@@ -245,16 +238,26 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
                     @Override
                     public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
-                        Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
+                        Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
+                progressDialog.dismiss();
                 if (jobStatus == POST)
                     onPostJob();
                 else if (jobStatus == EDIT)
                     onEditJob();
             }
+        }
+    }
+
+    private void onPostButtonClicked() {
+        if (attachmentURLs.size() == 0) {
+            progressDialog = Global.createProgressDialog(mContext);
+            uploadImage(0);
+        } else {
+            onPostJob();
         }
     }
 
@@ -266,7 +269,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
@@ -284,28 +286,25 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             @Override
             public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
         });
     }
 
     private void onEditButtonClicked() {
         if (attachmentURLs.size() == 0) {
+            progressDialog = Global.createProgressDialog(mContext);
             uploadImage(0);
         } else {
-            progressDialog = Global.createProgressDialog(mContext);
             onEditJob();
         }
     }
 
     private void onEditJob() {
-        progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostAppResponse> call = manager.editJob(creatingJob);
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
@@ -323,7 +322,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             @Override
             public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
         });
     }

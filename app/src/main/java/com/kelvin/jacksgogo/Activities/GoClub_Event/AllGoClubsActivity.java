@@ -73,6 +73,12 @@ public class AllGoClubsActivity extends AppCompatActivity implements View.OnClic
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         GoClubMainAdapter adapter = new GoClubMainAdapter(this);
+        adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startActivity(new Intent(AllGoClubsActivity.this, GoClubDetailActivity.class));
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         mbtmView.setOnClickListener(this);

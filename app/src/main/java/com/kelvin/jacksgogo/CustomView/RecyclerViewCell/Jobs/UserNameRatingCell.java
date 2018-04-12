@@ -26,7 +26,10 @@ public class UserNameRatingCell extends RecyclerView.ViewHolder {
     public MaterialRatingBar ratingBar;
     public RoundedImageView avatar;
     public LinearLayout btnReviews;
+    public TextView lblReviews;
     public RelativeLayout likeButtonLayout;
+    public LinearLayout btnDecline;
+    public TextView lblDecline;
 
     public UserNameRatingCell(Context context, View itemView) {
         super(itemView);
@@ -36,7 +39,14 @@ public class UserNameRatingCell extends RecyclerView.ViewHolder {
         this.ratingBar = itemView.findViewById(R.id.user_ratingbar);
         this.avatar = itemView.findViewById(R.id.img_avatar);
         this.btnReviews = itemView.findViewById(R.id.btn_view_all_services);
+        this.lblReviews = itemView.findViewById(R.id.lbl_reviews);
         this.likeButtonLayout = itemView.findViewById(R.id.like_button_layout);
+        this.btnDecline = itemView.findViewById(R.id.btn_decline);
+        this.lblDecline = itemView.findViewById(R.id.lbl_decline);
+
+        btnReviews.setVisibility(View.INVISIBLE);
+        btnDecline.setVisibility(View.GONE);
+        likeButtonLayout.setVisibility(View.GONE);
     }
 
     public void setData(JGGUserProfileModel user) {

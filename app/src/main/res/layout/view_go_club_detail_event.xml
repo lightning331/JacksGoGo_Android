@@ -25,7 +25,7 @@
         android:fontFamily="@font/mulibold"
         android:textSize="@dimen/list_title_font_size"/>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/past_event_recycler_view"
+        android:id="@+id/go_club_detail_event_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

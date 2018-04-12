@@ -1,12 +1,14 @@
 package com.kelvin.jacksgogo.Adapter.Events;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.EventListDetailCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.GoClubRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView;
@@ -61,6 +63,12 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }  else{
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_event_list_detail, parent, false);
             EventListDetailCell eventCell = new EventListDetailCell(view, mContext);
+            eventCell.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+                }
+            });
             return eventCell;
         }
     }

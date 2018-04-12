@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
+import com.kelvin.jacksgogo.Adapter.Events.EventsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;
@@ -33,6 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -49,6 +52,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
 
     private JobsListingAdapter jobAdapter;
     private ActiveServiceAdapter serviceAdapter;
+    private EventsListingAdapter eventAdapter;
     private ProgressDialog progressDialog;
 
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
@@ -129,6 +133,15 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                 }
             });
             recyclerView.setAdapter(jobAdapter);
+        } else if (appType.equals(EVENTS)) {
+            eventAdapter = new EventsListingAdapter(mContext);
+            eventAdapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+                }
+            });
+            recyclerView.setAdapter(eventAdapter);
         }
     }
 

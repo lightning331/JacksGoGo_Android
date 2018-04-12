@@ -1,12 +1,12 @@
 package com.kelvin.jacksgogo.Fragments.Appointments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
-import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
+import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -33,13 +33,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -51,7 +51,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private SearchView searchView;
     private String mStatus;
     private ProgressDialog progressDialog;
-    private android.app.AlertDialog alertDialog;
+    private AlertDialog alertDialog;
 
     ArrayList<JGGAppointmentModel> arrayAllPendingAppointments = new ArrayList<>();
     ArrayList<JGGAppointmentModel> arrayLoadedQuickAppointments = new ArrayList<>();
@@ -356,9 +356,14 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             Intent intent = new Intent(getActivity(), ProgressJobSummaryActivity.class);
             startActivity(intent);
         } else if (!appointment.isRequest()) {
-            Intent intent = new Intent(getActivity(), ServiceDetailActivity.class);
-            intent.putExtra("is_service", false);
-            startActivity(intent);
+            if (appointment.getUserProfile().getUserID().equals(currentUser.getUserID())) {
+                Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
+                intent.putExtra("is_post", false);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
+                startActivity(intent);
+            }
         }
 
         if (mStatus.equals(PENDING)) {
@@ -371,39 +376,23 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void showAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                "Information",
+                mContext.getResources().getString(R.string.alert_post_failed_desc),
+                false,
+                mContext.getResources().getString(R.string.alert_cancel),
+                R.color.JGGOrange,
+                R.color.JGGOrange10Percent,
+                mContext.getResources().getString(R.string.alert_ok),
+                R.color.JGGOrange);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText("Information");
-        desc.setText(R.string.alert_post_failed_desc);
-        okButton.setText(R.string.alert_ok);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGOrange10Percent));
-        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGOrange));
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-//                ((MainActivity)mContext).bSmsVeryfyKey = true;
-//                ((MainActivity)mContext).initView();
-//                getActivity().getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.container, new SignInFragment())
-//                        .commit();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else
+                    alertDialog.dismiss();
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);

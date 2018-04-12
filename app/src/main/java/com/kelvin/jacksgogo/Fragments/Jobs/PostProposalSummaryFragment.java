@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -276,69 +277,56 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     }
 
     public void showPostProposalAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_proposal_posted_title),
+                "Proposal reference no: " + postedProposalID + '\n' +  '\n' + "Good luck!",
+                false,
+                "",
+                0,
+                0,
+                mContext.getResources().getString(R.string.alert_view_proposal),
+                R.color.JGGCyan);
         alertDialog = builder.create();
-
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_proposal_posted_title);
-        desc.setText("Proposal reference no: " + postedProposalID + '\n' +  '\n' + "Good luck!");
-        okButton.setText(R.string.alert_view_proposal);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
-        cancelButton.setVisibility(View.GONE);
-        okButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
 
-                mActivity.setEdit(true);
-                mActivity.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.post_proposal_container, new PostedProposalFragment())
-                        .commit();
+                    mActivity.setEdit(true);
+                    mActivity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                            .commit();
+                }
             }
         });
-
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
     private void showDeleteAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.alert_delete_proposal_title),
+                mContext.getResources().getString(R.string.alert_delete_proposal_desc),
+                false,
+                mContext.getResources().getString(R.string.alert_cancel),
+                R.color.JGGCyan,
+                R.color.JGGCyan10Percent,
+                mContext.getResources().getString(R.string.menu_option_delete),
+                R.color.JGGRed);
         alertDialog = builder.create();
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_delete_proposal_title);
-        desc.setText(R.string.alert_delete_proposal_desc);
-        okButton.setText(R.string.menu_option_delete);
-        okButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGRed));
-        cancelButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGCyan10Percent));
-        cancelButton.setTextColor(ContextCompat.getColor(mContext, R.color.JGGCyan));
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-                onDeleteProposal();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    onDeleteProposal();
+                }
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);

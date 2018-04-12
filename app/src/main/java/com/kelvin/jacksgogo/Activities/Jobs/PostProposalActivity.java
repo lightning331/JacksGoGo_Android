@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalSummaryFragment;
@@ -191,35 +194,30 @@ public class PostProposalActivity extends AppCompatActivity {
     }
 
     public void showPostProposalAlertDialog() {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
-        builder.setView(alertView);
+        JGGAlertView builder = new JGGAlertView(this,
+                getResources().getString(R.string.alert_proposal_posted_title),
+                "Proposal reference no: " + postedProposalID + '\n' +  '\n' + "Good luck!",
+                false,
+                "",
+                R.color.JGGCyan,
+                R.color.JGGCyan10Percent,
+                getResources().getString(R.string.alert_view_proposal),
+                R.color.JGGCyan);
         alertDialog = builder.create();
-
-        TextView cancelButton = (TextView) alertView.findViewById(R.id.btn_alert_cancel);
-        TextView okButton = (TextView) alertView.findViewById(R.id.btn_alert_ok);
-        TextView title = (TextView) alertView.findViewById(R.id.lbl_alert_titile);
-        TextView desc = (TextView) alertView.findViewById(R.id.lbl_alert_description);
-
-        title.setText(R.string.alert_proposal_posted_title);
-        desc.setText("Proposal reference no: " + postedProposalID + '\n' +  '\n' + "Good luck!");
-        okButton.setText(R.string.alert_view_proposal);
-        okButton.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan));
-        cancelButton.setVisibility(View.GONE);
-        okButton.setOnClickListener(new View.OnClickListener() {
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.post_proposal_container, new PostedProposalFragment())
-                        .commit();
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                            .commit();
+                }
             }
         });
-
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }

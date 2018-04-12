@@ -22,7 +22,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
-import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.nolimit;
+import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.no_limit;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.none;
 
 public class PostJobPriceFragment extends Fragment implements View.OnClickListener, TextWatcher {
@@ -98,7 +98,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
 
         mJob = selectedAppointment;
         budgetType = mJob.getBudgetType();
-        if (budgetType == nolimit) isNolimit = true;
+        if (budgetType == no_limit) isNolimit = true;
         updateData();
     }
 
@@ -118,7 +118,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
             case none:
                 btnNext.setVisibility(View.GONE);
                 break;
-            case nolimit:
+            case no_limit:
                 onYellowButtonColor(btnNoLimit);
                 btnFixed.setVisibility(View.GONE);
                 btnFrom.setVisibility(View.GONE);
@@ -166,7 +166,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
             if (isNolimit)
                 budgetType = none;
             else
-                budgetType = nolimit;
+                budgetType = no_limit;
             isNolimit = !isNolimit;
         } else if (view.getId() == R.id.btn_post_job_fixed_amount) {
             if (isFixed)
@@ -186,7 +186,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
             else if (budgetType == from) {
                 mJob.setBudgetFrom(Double.parseDouble(txtFromMin.getText().toString()));
                 mJob.setBudgetTo(Double.parseDouble(txtFromMax.getText().toString()));
-            } else if (budgetType == nolimit) {
+            } else if (budgetType == no_limit) {
                 mJob.setBudget(null);   mJob.setBudgetFrom(null);   mJob.setBudgetTo(null);
             }
             mJob.setBudgetType(budgetType);

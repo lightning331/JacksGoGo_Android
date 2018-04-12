@@ -25,7 +25,7 @@ public class UserListingAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View biderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
         UserNameRatingCell userCell = new UserNameRatingCell(mContext, biderView);
-        userCell.likeButtonLayout.setVisibility(View.VISIBLE);
+        userCell.likeButtonLayout.setVisibility(View.GONE);
         userCell.ratingBar.setRating((float)4.8);
         return userCell;
     }

@@ -96,7 +96,6 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     selectedAppointment = null;
                     selectedAppointment = mServices.get(position - 1);
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    intent.putExtra("is_service", true);
                     mContext.startActivity(intent);
                 }
             });

@@ -206,9 +206,9 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 
-            if (menuItem.getItemId() == R.id.menu_option_share) {  // Share the Service
+            if (menuItem.getItemId() == R.id.menu_option_share) {  // Share the Job
                 openShareDialog();
-            } else if (menuItem.getItemId() == R.id.menu_option_report_service) {    // Report the Service
+            } else if (menuItem.getItemId() == R.id.menu_option_report_job) {    // Report the Job
                 showReportDialog(false);
             }
             return true;
