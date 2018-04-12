@@ -66,6 +66,8 @@
     <string name="menu_option_report_job">Report Job</string>
     <string name="menu_option_report_event">Report Event</string>
     <string name="menu_option_report_go_club">Report GoClub</string>
+    <string name="menu_option_leave_go_club">Leave GoClub</string>
+    <string name="menu_option_withdraw_event">Withdraw From Event</string>
     <string name="setup_credit_card">Set Up Credit Card</string>
     <string name="jacks_wallet">Top Up Jacks Wallet - balance $10.00</string>
     <string name="posted_service_duplicate">Duplicate</string>
@@ -80,6 +82,7 @@
     <string name="alert_report_service_thanks_desc">Our team will be looking into the matter.</string>
     <string name="alert_done">Done</string>
     <string name="alert_ok">OK</string>
+    <string name="alert_withdraw">Withdraw</string>
     <string name="alert_delete">Delete</string>
     <string name="alert_report_service_ok">Report</string>
     <string name="alert_payment_setup_success">Payment Set Up Successfully!</string>

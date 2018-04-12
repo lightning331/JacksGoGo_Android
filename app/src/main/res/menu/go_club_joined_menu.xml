@@ -5,6 +5,10 @@
         android:icon="@mipmap/icon_share_purple"
         android:title="@string/menu_option_share" />
     <item
+        android:id="@+id/menu_option_leave_go_club"
+        android:icon="@mipmap/button_cross_fat_purple"
+        android:title="@string/menu_option_leave_go_club" />
+    <item
         android:id="@+id/menu_option_report_go_club"
         android:icon="@mipmap/icon_flag_purple"
         android:title="@string/menu_option_report_go_club" />

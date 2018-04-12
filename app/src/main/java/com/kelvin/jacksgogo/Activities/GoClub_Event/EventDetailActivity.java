@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,37 +20,43 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
-import com.kelvin.jacksgogo.Adapter.Events.EventDetailAdapter;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventDetailAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Global.JoinGoClubStatus;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     @BindView(R.id.event_detail_actionbar) Toolbar mToolbar;
     @BindView(R.id.event_detail_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.btn_join_event) TextView btnJoinGoClub;
     @BindView(R.id.lbl_joined_count) TextView lblJoinedCount;
     @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
+    @BindView(R.id.owner_layout) LinearLayout ownerLayout;
 
     private JGGActionbarView actionbarView;
     private BottomNavigationView mbtmView;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
-    private boolean reportFlag = false;
+    private JoinGoClubStatus joinGoClubStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
         ButterKnife.bind(this);
+
+        // Todo - Dummy Data
+        setJoinToGoClubStatus(JoinGoClubStatus.NONE);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.event_detail_bottom);
@@ -58,7 +66,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         btnJoinGoClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onShowJoinDialog();
             }
         });
 
@@ -66,7 +74,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, Global.AppointmentType.EVENT);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, AppointmentType.EVENT);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -81,19 +89,34 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         mRecyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_alert_cancel) {
-            alertDialog.dismiss();
-        } else if (view.getId() == R.id.btn_alert_ok) {
-            if (!reportFlag) {
-                alertDialog.dismiss();
-                showReportDialog(true);
-            } else {
-                alertDialog.dismiss();
-            }
-            reportFlag = !reportFlag;
+    public void setJoinToGoClubStatus(JoinGoClubStatus status) {
+        joinGoClubStatus = status;
+        btnJoinGoClub.setVisibility(View.GONE);
+        ownerLayout.setVisibility(View.GONE);
+
+        if (status == JoinGoClubStatus.NONE || status == JoinGoClubStatus.REJECTED) {
+            btnJoinGoClub.setVisibility(View.VISIBLE);
+        } else if (status == JoinGoClubStatus.APPROVED) {
+            ownerLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    // Todo - Send Report request
+    private void onSendReport() {
+        alertDialog.dismiss();
+        onShowReportDialog(true);
+    }
+
+    // Todo - Send join request to the Event
+    private void onSendJoinRequest() {
+        alertDialog.dismiss();
+        setJoinToGoClubStatus(JoinGoClubStatus.APPROVED);
+    }
+
+    // Todo - Withdraw from Event
+    private void onWithdrawFromEvent() {
+        alertDialog.dismiss();
+        setJoinToGoClubStatus(JoinGoClubStatus.NONE);
     }
 
     private void actionbarItemClick(View view) {
@@ -110,7 +133,10 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.event_share_menu);
+        if (joinGoClubStatus == JoinGoClubStatus.NONE)
+            popupMenu.inflate(R.menu.event_share_menu);
+        else if (joinGoClubStatus == JoinGoClubStatus.APPROVED)
+            popupMenu.inflate(R.menu.event_joined_menu);
 
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
@@ -143,20 +169,22 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 
-            if (menuItem.getItemId() == R.id.menu_option_share) {  // Share the Service
+            if (menuItem.getItemId() == R.id.menu_option_share) {  // Share Event
                 openShareDialog();
-            } else if (menuItem.getItemId() == R.id.menu_option_report_service) {    // Report the Service
-                showReportDialog(false);
+            } else if (menuItem.getItemId() == R.id.menu_option_leave_event) {    // Withdraw Event
+                onShowWithdrawEventDialog();
+            } else if (menuItem.getItemId() == R.id.menu_option_report_event) {    // Report Event
+                onShowReportDialog(false);
             }
             return true;
         }
     }
 
-    private void showReportDialog(final boolean reportFlag) {
+    private void onShowReportDialog(final boolean reportFlag) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = (this).getLayoutInflater();
 
-        View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
+        final View alertView = inflater.inflate(R.layout.jgg_alert_view, null);
         builder.setView(alertView);
         alertDialog = builder.create();
         TextView cancelButton = alertView.findViewById(R.id.btn_alert_cancel);
@@ -170,6 +198,15 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         reportButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple));
         cancelButton.setBackgroundColor(getResources().getColor(R.color.JGGPurple10Percent));
         cancelButton.setTextColor(getResources().getColor(R.color.JGGPurple));
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (reportFlag)
+                    alertDialog.dismiss();
+                else
+                    onSendReport();
+            }
+        });
         if (reportFlag) {
             alertDialog.setCanceledOnTouchOutside(false);
             cancelButton.setVisibility(View.GONE);
@@ -178,7 +215,57 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             reportButton.setText(R.string.alert_done);
         }
         cancelButton.setOnClickListener(this);
-        reportButton.setOnClickListener(this);
+        alertDialog.show();
+    }
+
+    private void onShowJoinDialog() {
+        final JGGAlertView builder = new JGGAlertView(this,
+                "Join This Events?",
+                "",
+                false,
+                getResources().getString(R.string.alert_cancel),
+                R.color.JGGPurple,
+                R.color.JGGPurple10Percent,
+                getResources().getString(R.string.alert_join),
+                R.color.JGGPurple);
+        alertDialog = builder.create();
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    onSendJoinRequest();
+                }
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    // Todo - Leave GoClub
+    private void onShowWithdrawEventDialog() {
+        final JGGAlertView builder = new JGGAlertView(this,
+                "Withdraw From Event?",
+                "Let Clarence.Tan know why you are withdrawing from the event.",
+                true,
+                getResources().getString(R.string.alert_cancel),
+                R.color.JGGPurple,
+                R.color.JGGPurple10Percent,
+                getResources().getString(R.string.alert_withdraw),
+                R.color.JGGRed);
+        alertDialog = builder.create();
+        builder.txtReason.addTextChangedListener(this);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else
+                    onWithdrawFromEvent();
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
 
@@ -188,5 +275,27 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 .setShareLink(null)
                 .build();
         shareDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_alert_cancel) {
+            alertDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }
