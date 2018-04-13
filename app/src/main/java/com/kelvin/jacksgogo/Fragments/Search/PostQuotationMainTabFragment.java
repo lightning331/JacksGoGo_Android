@@ -22,7 +22,7 @@ import com.kelvin.jacksgogo.Activities.Search.PostQuotationActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.AppointmentReportAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationAddressAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationTimeAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
@@ -46,7 +46,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
 
     private FrameLayout describeContainer;
     private RecyclerView recyclerView;
-    private PostServiceTabbarView tabbarView;
+    private PostServiceTabView tabbarView;
 
     private AppointmentReportAdapter reportAdapter;
     private PostQuotationAddressAdapter addressAdapter;
@@ -63,7 +63,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         // Required empty public constructor
     }
 
-    public static PostQuotationMainTabFragment newInstance(PostServiceTabbarView.PostServiceTabName status, boolean b) {
+    public static PostQuotationMainTabFragment newInstance(PostServiceTabView.PostServiceTabName status, boolean b) {
         PostQuotationMainTabFragment fragment = new PostQuotationMainTabFragment();
         Bundle args = new Bundle();
         args.putString("tabName", status.toString());
@@ -86,7 +86,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         View view = inflater.inflate(R.layout.fragment_post_quotation_main_tab, container, false);
 
         LinearLayout tabbarLayout = (LinearLayout)view.findViewById(R.id.edit_job_tabbar_view);
-        tabbarView = new PostServiceTabbarView(getContext());
+        tabbarView = new PostServiceTabView(getContext());
         tabbarLayout.addView(tabbarView);
 
         describeContainer = (FrameLayout) view.findViewById(R.id.edit_job_describe_container);
@@ -97,7 +97,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
 
         initTabbarView();
 
-        tabbarView.setTabItemClickLietener(new PostServiceTabbarView.OnTabItemClickListener() {
+        tabbarView.setTabItemClickListener(new PostServiceTabView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabbarViewClick(view);
@@ -110,13 +110,13 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     private void initTabbarView() {
 
         if (status.equals("DESCRIBE")) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.DESCRIBE, isRequest);
         } else if (status.equals("TIME")) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, isRequest);
         } else if (status.equals("ADDRESS")) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, isRequest);
         } else if (status.equals("REPORT")) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, isRequest);
         }
         refreshRecyclerView();
     }
@@ -124,13 +124,13 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     private void onTabbarViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.DESCRIBE, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.DESCRIBE, isRequest);
         } else if (view.getId() == R.id.btn_time) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, isRequest);
         } else if (view.getId() == R.id.btn_address) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, isRequest);
         } else if (view.getId() == R.id.btn_report) {
-            tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
+            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, isRequest);
         }
         refreshRecyclerView();
     }
@@ -139,7 +139,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
 
         describeContainer.setVisibility(View.GONE);
 
-        if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.DESCRIBE) {
+        if (tabbarView.getPostServiceTabName() == PostServiceTabView.PostServiceTabName.DESCRIBE) {
             describeContainer.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -147,7 +147,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             frag.setOnItemClickListener(new PostQuotationDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick(String jobTitle, String jobDesc) {
-                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.TIME, isRequest);
+                    tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, isRequest);
                     // Save Quotation Describe Data
                     mQuotation.setTitle(jobTitle);
                     mQuotation.setDescription(jobDesc);
@@ -156,13 +156,13 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
             });
             ft.replace(R.id.edit_job_describe_container, frag, frag.getTag());
             ft.commit();
-        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.TIME) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabView.PostServiceTabName.TIME) {
             recyclerView.setVisibility(View.VISIBLE);
             PostQuotationTimeAdapter mTimeAdapter = new PostQuotationTimeAdapter(mContext, mQuotation);
             mTimeAdapter.setOnItemClickListener(new PostQuotationTimeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(ArrayList<JGGTimeSlotModel> sessions) {
-                    tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.ADDRESS, isRequest);
+                    tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, isRequest);
                     // Save Quotation TimeSlot Data
                     mQuotation.setSessions(sessions);
                     mQuotation.setAppointmentType(1);
@@ -170,7 +170,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
                 }
             });
             recyclerView.setAdapter(mTimeAdapter);
-        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.ADDRESS) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabView.PostServiceTabName.ADDRESS) {
             recyclerView.setVisibility(View.VISIBLE);
             addressAdapter = new PostQuotationAddressAdapter(mContext, mAddress);
             addressAdapter.setOnItemClickListener(new PostQuotationAddressAdapter.OnItemClickListener() {
@@ -181,7 +181,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
                         intent.putExtra(APPOINTMENT_TYPE, SERVICES);
                         startActivityForResult(intent, REQUEST_CODE);
                     } else if (view.getId() == R.id.view_filter_bg) {
-                        tabbarView.setTabName(PostServiceTabbarView.PostServiceTabName.REPORT, isRequest);
+                        tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, isRequest);
                         // Save Quotation Address Data
                         mQuotation.setAddress(address);
                         refreshRecyclerView();
@@ -189,7 +189,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
                 }
             });
             recyclerView.setAdapter(addressAdapter);
-        } else if (tabbarView.getPostServiceTabName() == PostServiceTabbarView.PostServiceTabName.REPORT) {
+        } else if (tabbarView.getPostServiceTabName() == PostServiceTabView.PostServiceTabName.REPORT) {
 
             selectedIds = getReportTypeID(mQuotation.getReportType());
 

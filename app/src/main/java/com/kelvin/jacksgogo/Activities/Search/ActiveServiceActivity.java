@@ -84,7 +84,7 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
             btnPost.setBackgroundColor(ContextCompat.getColor(this, R.color.JGGCyan));
         } else if (appType.equals(EVENTS)) {
             if (status == 0)
-                actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.EVENT);
+                actionbarView.setCategoryNameToActionBar(selectedCategory.getName(), AppointmentType.EVENTS);
             else if (status == 1)
                 actionbarView.setPurpleBackButton(R.string.title_active_event_around, R.string.title_empty);
             else if (status == 2)

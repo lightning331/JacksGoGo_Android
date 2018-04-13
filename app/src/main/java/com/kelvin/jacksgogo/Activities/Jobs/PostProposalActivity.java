@@ -1,7 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -12,10 +11,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
-import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostedProposalFragment;
@@ -95,13 +93,13 @@ public class PostProposalActivity extends AppCompatActivity {
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_proposal_container, PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE,
+                    .replace(R.id.post_proposal_container, PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.DESCRIBE,
                             PostProposalSummaryFragment.ProposalStatus.POST))
                     .commit();
         } else if (status.equals(INVITE_PROPOSAL)) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.post_proposal_container, PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE,
+                    .replace(R.id.post_proposal_container, PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.DESCRIBE,
                             PostProposalSummaryFragment.ProposalStatus.INVITE))
                     .commit();
         } else if (status.equals(EDIT)) {

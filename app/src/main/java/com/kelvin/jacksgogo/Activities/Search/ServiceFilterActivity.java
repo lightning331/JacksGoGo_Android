@@ -57,7 +57,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
         } else if (appType.equals(GOCLUB)) {
             mType = AppointmentType.GOCLUB;
         } else if (appType.equals(EVENTS)) {
-            mType = AppointmentType.EVENT;
+            mType = AppointmentType.EVENTS;
         }
 
         initView();
@@ -83,7 +83,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
             lblTitle.setText(R.string.title_show_go_club);
             locationLayout.setVisibility(View.GONE);
 
-        } else if (mType == AppointmentType.EVENT) {
+        } else if (mType == AppointmentType.EVENTS) {
             closeButton.setImageResource(R.mipmap.button_tick_area_round_purple);
             btnCurrentLocation.setBackgroundResource(R.drawable.purple_background);
             lblTitle.setText(R.string.title_show_event);

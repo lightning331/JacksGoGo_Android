@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Profile.VerifyNewSkillsActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -98,7 +98,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
         adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
+                PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.DESCRIBE);
                 frag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.POST);
                 selectedCategory = mCategories.get(position);
                 selectedAppointment.setCategory(selectedCategory);

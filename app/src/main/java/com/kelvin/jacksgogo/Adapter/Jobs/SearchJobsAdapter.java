@@ -133,7 +133,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mCategories = data;
         mJobs = jobs;
 
-        notifyDataSetChanged();
+        super.notifyDataSetChanged();
         isLoading = false;
     }
 

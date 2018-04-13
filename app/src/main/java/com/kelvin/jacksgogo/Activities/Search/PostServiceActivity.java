@@ -16,21 +16,21 @@ import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillNotVerifiedFragment
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,8 +55,6 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                 appType = AppointmentType.SERVICES;
             else if (type.equals(JOBS))
                 appType = AppointmentType.JOBS;
-            else if (type.equals(GOCLUB))
-                appType = AppointmentType.GOCLUB;
         }
 
         actionbarView = new JGGActionbarView(this);
@@ -108,11 +106,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                     actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.JOBS);
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.post_service_container, new PostJobCategoryFragment())
+                            .replace(R.id.post_service_container, PostJobCategoryFragment.newInstance(JOBS))
                             .commit();
-                    break;
-                case GOCLUB:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.GOCLUB);
                     break;
                 default:
                     break;
@@ -136,16 +131,13 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                     actionbarView.setStatus(JGGActionbarView.EditStatus.EDIT_JOB, AppointmentType.UNKNOWN);
                     PostJobSummaryFragment jobFrag = new PostJobSummaryFragment();
                     if (status.equals(EDIT))
-                        jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.EDIT);
+                        jobFrag.setEditStatus(PostStatus.EDIT);
                     else if (status.equals(DUPLICATE))
-                        jobFrag.setEditStatus(PostJobSummaryFragment.PostJobStatus.DUPLICATE);
+                        jobFrag.setEditStatus(PostStatus.DUPLICATE);
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.post_service_container, jobFrag)
                             .commit();
-                    break;
-                case GOCLUB:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.GOCLUB);
                     break;
                 default:
                     break;

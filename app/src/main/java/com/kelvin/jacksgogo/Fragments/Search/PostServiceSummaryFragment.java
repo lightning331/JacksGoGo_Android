@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -346,28 +345,28 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
             }
             return;
         } else if (view.getId() == R.id.btn_post_main_describe) {
-            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.DESCRIBE);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_price) {
-            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.TIME);
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.TIME);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_time_slot) {
-            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.ADDRESS);
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.ADDRESS);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_service_container, fragment)
                     .addToBackStack("post_service")
                     .commit();
         } else if (view.getId() == R.id.btn_post_main_address) {
-            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.REPORT);
+            fragment = PostServiceMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.REPORT);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_service_container, fragment)

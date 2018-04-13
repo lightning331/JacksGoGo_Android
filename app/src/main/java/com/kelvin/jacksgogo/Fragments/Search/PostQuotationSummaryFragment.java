@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -21,7 +20,7 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Edit.EditJobMainListCell;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -123,7 +122,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
         timeView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.TIME);
+                onShowEditJobFragment(PostServiceTabView.PostServiceTabName.TIME);
             }
         });
         timeLayout.addView(timeView);
@@ -136,7 +135,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
         addressView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.ADDRESS);
+                onShowEditJobFragment(PostServiceTabView.PostServiceTabName.ADDRESS);
             }
         });
         addressLayout.addView(addressView);
@@ -149,7 +148,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
         reportView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
-                onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.REPORT);
+                onShowEditJobFragment(PostServiceTabView.PostServiceTabName.REPORT);
             }
         });
         reportLayout.addView(reportView);
@@ -176,7 +175,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName status) {
+    private void onShowEditJobFragment(PostServiceTabView.PostServiceTabName status) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (isRequest) {
@@ -248,7 +247,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_edit_job_tag) {
-            onShowEditJobFragment(PostServiceTabbarView.PostServiceTabName.DESCRIBE);
+            onShowEditJobFragment(PostServiceTabView.PostServiceTabName.DESCRIBE);
         } else if (view.getId() == R.id.btn_post_quotation) {
             onRequestQuotation();
             //showAlertDialog();

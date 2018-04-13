@@ -72,6 +72,12 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     mContext.startActivity(new Intent(mContext, PastEventsActivity.class));
                 }
             });
+            eventViewHolder.btnCreateEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
             return eventViewHolder;
         } else if (viewType == 5) {
             // Tag list view

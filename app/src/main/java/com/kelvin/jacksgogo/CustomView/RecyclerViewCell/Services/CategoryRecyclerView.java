@@ -3,20 +3,16 @@ package com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
-import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
-import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -25,11 +21,9 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import java.util.ArrayList;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.EVENT;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.SERVICES;
-import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.UNKNOWN;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -65,7 +59,7 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
         }
         if (mType == SERVICES) {
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        } else if (mType == JOBS || mType == GOCLUB || mType == EVENT) {
+        } else if (mType == JOBS || mType == GOCLUB || mType == AppointmentType.EVENTS) {
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         }
 
@@ -80,7 +74,7 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
                     Intent intent = new Intent(mContext, AllGoClubsActivity.class);
                     intent.putExtra("is_category", true);
                     mContext.startActivity(intent);
-                } else if (mType == EVENT) {
+                } else if (mType == AppointmentType.EVENTS) {
                     Intent mIntent = new Intent(mContext, ActiveServiceActivity.class);
                     mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
                     mIntent.putExtra(EDIT_STATUS, POST);

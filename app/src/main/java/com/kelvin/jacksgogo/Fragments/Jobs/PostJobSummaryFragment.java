@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
-import com.kelvin.jacksgogo.CustomView.Views.PostJobTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -43,9 +43,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment.PostJobStatus.EDIT;
-import static com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment.PostJobStatus.POST;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
@@ -76,7 +77,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
     private TextView lblPostJob;
 
     private AlertDialog alertDialog;
-    private PostJobStatus jobStatus;
+    private PostStatus jobStatus;
     private JGGCategoryModel category;
     private JGGAppointmentModel creatingJob;
     private ProgressDialog progressDialog;
@@ -86,13 +87,7 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
     private PostJobMainTabFragment fragment;
 
-    public enum PostJobStatus {
-        POST,
-        EDIT,
-        DUPLICATE
-    }
-
-    public void setEditStatus(PostJobStatus editStatus) {
+    public void setEditStatus(PostStatus editStatus) {
         this.jobStatus = editStatus;
     }
 
@@ -416,29 +411,29 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
             return;
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, POST);
             if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.DESCRIBE, EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_time) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.TIME, POST);
             if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.TIME, EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.TIME, EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_address) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.ADDRESS, POST);
             if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.ADDRESS, EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.ADDRESS, EDIT);
             }
         }  else if (view.getId() == R.id.btn_post_job_summary_budget) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.BUDGET, POST);
             if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.BUDGET, EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.BUDGET, EDIT);
             }
         } else if (view.getId() == R.id.btn_post_job_summary_report) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, POST);
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.REPORT, POST);
             if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabbarView.PostJobTabName.REPORT, EDIT);
+                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.REPORT, EDIT);
             }
         }
         getActivity().getSupportFragmentManager()

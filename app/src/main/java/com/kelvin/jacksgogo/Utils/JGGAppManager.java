@@ -131,7 +131,7 @@ public class JGGAppManager {
         editor.commit();
     }
 
-    public Date getDateCurrentTimeZone(long timestamp) {
+    private Date getDateCurrentTimeZone(long timestamp) {
         try{
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();

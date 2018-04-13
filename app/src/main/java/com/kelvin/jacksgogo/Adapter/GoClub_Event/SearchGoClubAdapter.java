@@ -2,7 +2,6 @@ package com.kelvin.jacksgogo.Adapter.GoClub_Event;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.EventListD
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.GoClubRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
-import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -45,7 +43,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return headerView;
         } else if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
-            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.JOBS, mCategories);
+            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.GOCLUB, mCategories);
             return categoryCell;
         } else if (viewType == 2) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_goclub_recyclerview, parent, false);
@@ -56,7 +54,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         // Event
         else if (viewType == 3) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.EVENT, mContext, mCategories);
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.EVENTS, mContext, mCategories);
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -66,7 +64,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return headerView;
         } else if (viewType == 4) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
-            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.JOBS, mCategories);
+            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.EVENTS, mCategories);
             return categoryCell;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_event_list_detail, parent, false);

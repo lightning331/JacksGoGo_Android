@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
-import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabView;
 import com.kelvin.jacksgogo.R;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +28,7 @@ public class PostProposalMainTabFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
-    private PostProposalTabbarView tabbarView;
+    private PostProposalTabView tabbarView;
     private LinearLayout tabbarLayout;
     private ImageView imgCategory;
     private TextView lblCategory;
@@ -43,7 +43,7 @@ public class PostProposalMainTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PostProposalMainTabFragment newInstance(PostProposalTabbarView.TabName name, PostProposalSummaryFragment.ProposalStatus status) {
+    public static PostProposalMainTabFragment newInstance(PostProposalTabView.TabName name, PostProposalSummaryFragment.ProposalStatus status) {
         PostProposalMainTabFragment fragment = new PostProposalMainTabFragment();
         Bundle args = new Bundle();
         args.putString("tabName", name.toString());
@@ -86,18 +86,18 @@ public class PostProposalMainTabFragment extends Fragment {
     private void initTabbarView(View view) {
 
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_proposal_tabbar_layout);
-        tabbarView = new PostProposalTabbarView(mContext);
+        tabbarView = new PostProposalTabView(mContext);
         tabbarLayout.addView(tabbarView);
         if (tabName == "DESCRIBE") {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.DESCRIBE);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.DESCRIBE);
         } else if (tabName == "BID") {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.BID);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.BID);
         } else if (tabName == "RESCHEDULING") {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.RESCHEDULING);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.RESCHEDULING);
         } else if (tabName == "CANCELLATION") {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.CANCELLATION);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.CANCELLATION);
         }
-        tabbarView.setTabItemClickLietener(new PostProposalTabbarView.OnTabItemClickListener() {
+        tabbarView.setTabItemClickListener(new PostProposalTabView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabbarViewClick(view);
@@ -109,51 +109,51 @@ public class PostProposalMainTabFragment extends Fragment {
     private void onTabbarViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.DESCRIBE);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.DESCRIBE);
         } else if (view.getId() == R.id.btn_bid) {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.BID);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.BID);
         } else if (view.getId() == R.id.btn_rescheduling) {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.RESCHEDULING);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.RESCHEDULING);
         } else if (view.getId() == R.id.btn_cancellation) {
-            tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.CANCELLATION);
+            tabbarView.setPostJobTabName(PostProposalTabView.TabName.CANCELLATION);
         }
         refreshFragment();
     }
 
     private void refreshFragment() {
         FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-        if (tabbarView.getPostJobTabName() == PostProposalTabbarView.TabName.DESCRIBE) {
+        if (tabbarView.getPostJobTabName() == PostProposalTabView.TabName.DESCRIBE) {
             PostProposalDescribeFragment fragment = new PostProposalDescribeFragment();
             fragment.setOnItemClickListener(new PostProposalDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.BID);
+                    tabbarView.setPostJobTabName(PostProposalTabView.TabName.BID);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_proposal_main_container, fragment);
-        } else if (tabbarView.getPostJobTabName() == PostProposalTabbarView.TabName.BID) {
+        } else if (tabbarView.getPostJobTabName() == PostProposalTabView.TabName.BID) {
             PostProposalBidFragment fragment = new PostProposalBidFragment();
             fragment.setOnItemClickListener(new PostProposalBidFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.RESCHEDULING);
+                    tabbarView.setPostJobTabName(PostProposalTabView.TabName.RESCHEDULING);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_proposal_main_container, fragment);
-        } else if (tabbarView.getPostJobTabName() == PostProposalTabbarView.TabName.RESCHEDULING) {
+        } else if (tabbarView.getPostJobTabName() == PostProposalTabView.TabName.RESCHEDULING) {
             PostProposalRescheduleFragment fragment = new PostProposalRescheduleFragment();
             fragment.setRescheduling(true);
             fragment.setOnItemClickListener(new PostProposalRescheduleFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setPostJobTabName(PostProposalTabbarView.TabName.CANCELLATION);
+                    tabbarView.setPostJobTabName(PostProposalTabView.TabName.CANCELLATION);
                     refreshFragment();
                 }
             });
             ft.replace(R.id.post_proposal_main_container, fragment);
-        } else if (tabbarView.getPostJobTabName() == PostProposalTabbarView.TabName.CANCELLATION) {
+        } else if (tabbarView.getPostJobTabName() == PostProposalTabView.TabName.CANCELLATION) {
             PostProposalRescheduleFragment fragment = new PostProposalRescheduleFragment();
             fragment.setRescheduling(false);
             fragment.setOnItemClickListener(new PostProposalRescheduleFragment.OnItemClickListener() {

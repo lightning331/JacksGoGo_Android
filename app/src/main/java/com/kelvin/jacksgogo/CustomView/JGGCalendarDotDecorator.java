@@ -29,7 +29,7 @@ public class JGGCalendarDotDecorator implements DayViewDecorator {
             mColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
         } else if (mType == AppointmentType.JOBS) {
             mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
-        } else if (mType == AppointmentType.GOCLUB || mType == AppointmentType.EVENT) {
+        } else if (mType == AppointmentType.GOCLUB || mType == AppointmentType.EVENTS) {
             mColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
         }
     }

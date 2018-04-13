@@ -52,7 +52,7 @@ public class Global {
     public enum AppointmentType {
         JOBS,
         SERVICES,
-        EVENT,
+        EVENTS,
         GOCLUB,
         USERS,
         UNKNOWN
@@ -61,6 +61,12 @@ public class Global {
     public static enum JGGUserType {
         PROVIDER,
         CLIENT
+    }
+
+    public enum PostStatus {
+        POST,
+        EDIT,
+        DUPLICATE
     }
 
     public static enum JGGJobStatus {

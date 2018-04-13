@@ -185,19 +185,20 @@ public class SearchFragment extends Fragment {
         });
 
         if (!token.equals("")){
-            serviceAdapter.setLoadMoreListener(new SearchServicesAdapter.OnLoadMoreListener() {
-                @Override
-                public void onLoadMore() {
+            if (mServices.size() > 0)
+                serviceAdapter.setLoadMoreListener(new SearchServicesAdapter.OnLoadMoreListener() {
+                    @Override
+                    public void onLoadMore() {
 
-                    recyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            int index = mServices.size() - 1;
-                            onLoadServiceMore(index);
-                        }
-                    });
-                }
-            });
+                        recyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                int index = mServices.size() - 1;
+                                onLoadServiceMore(index);
+                            }
+                        });
+                    }
+                });
             onLoadServices(0);
         }
         recyclerView.setAdapter(serviceAdapter);
@@ -218,19 +219,20 @@ public class SearchFragment extends Fragment {
         });
 
         if (!token.equals("")){
-            jobAdapter.setLoadMoreListener(new SearchJobsAdapter.OnLoadMoreListener() {
-                @Override
-                public void onLoadMore() {
+            if (mJobs.size() > 0)
+                jobAdapter.setLoadMoreListener(new SearchJobsAdapter.OnLoadMoreListener() {
+                    @Override
+                    public void onLoadMore() {
 
-                    recyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            int index = mServices.size() - 1;
-                            onLoadJobsMore(index);
-                        }
-                    });
-                }
-            });
+                        recyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                int index = mServices.size() - 1;
+                                onLoadJobsMore(index);
+                            }
+                        });
+                    }
+                });
             onLoadJobs(0);
         }
         recyclerView.setAdapter(jobAdapter);
@@ -247,8 +249,14 @@ public class SearchFragment extends Fragment {
                     mIntent = new Intent(mContext, AllGoClubsActivity.class);
                     mIntent.putExtra("is_category", false);
                 } else if (view.getId() == R.id.btn_post_new) {
-                    showAlertDialog();
-                    return;
+                    if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
+                        mIntent.putExtra(EDIT_STATUS, POST);
+                        mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
+                    } else {
+                        showAlertDialog();
+                        return;
+                    }
                 }
                 mContext.startActivity(mIntent);
             }
@@ -271,6 +279,8 @@ public class SearchFragment extends Fragment {
                 } else if (view.getId() == R.id.btn_post_new) {
                     if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
                         mIntent = new Intent(mContext, CreateGoClubActivity.class);
+                        mIntent.putExtra(EDIT_STATUS, POST);
+                        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
                     } else {
                         showAlertDialog();
                         return;
@@ -308,7 +318,7 @@ public class SearchFragment extends Fragment {
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -355,7 +365,7 @@ public class SearchFragment extends Fragment {
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -390,7 +400,7 @@ public class SearchFragment extends Fragment {
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -429,12 +439,13 @@ public class SearchFragment extends Fragment {
                             Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
                         jobAdapter.notifyDataChanged(mCategories, mJobs);
+                        jobAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -455,15 +466,6 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         mCategories = response.body().getValue();
                         categories = mCategories;
-                        if (appType.equals(SERVICES)) {
-                            serviceAdapter.notifyDataChanged(mCategories, mServices);
-                            serviceAdapter.notifyDataSetChanged();
-                            recyclerView.setAdapter(serviceAdapter);
-                        } else if (appType.equals(JOBS)) {
-                            jobAdapter.notifyDataChanged(mCategories, mJobs);
-                            jobAdapter.notifyDataSetChanged();
-                            recyclerView.setAdapter(jobAdapter);
-                        }
                         swipeContainer.setRefreshing(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -471,7 +473,7 @@ public class SearchFragment extends Fragment {
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                     swipeContainer.setRefreshing(false);
                 }
             }

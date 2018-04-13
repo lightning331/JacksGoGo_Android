@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 3/10/2018.
  */
 
-public class PostProposalTabbarView extends RelativeLayout implements View.OnClickListener {
+public class PostProposalTabView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
 
@@ -43,7 +43,7 @@ public class PostProposalTabbarView extends RelativeLayout implements View.OnCli
         CANCELLATION
     }
 
-    public PostProposalTabbarView(Context context) {
+    public PostProposalTabView(Context context) {
         super(context);
         this.mContext = context;
 
@@ -53,23 +53,23 @@ public class PostProposalTabbarView extends RelativeLayout implements View.OnCli
     private void initView() {
 
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mTabbarView                    = mLayoutInflater.inflate(R.layout.view_post_proposal_tabbar, this);
+        View mTabView                    = mLayoutInflater.inflate(R.layout.view_post_proposal_tab, this);
 
-        mDescribeButton     = (LinearLayout) mTabbarView.findViewById(R.id.btn_describe);
-        mBidButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_bid);
-        mReschedulingButton      = (LinearLayout) mTabbarView.findViewById(R.id.btn_rescheduling);
-        mCancellationButton = (LinearLayout) mTabbarView.findViewById(R.id.btn_cancellation);
-        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_my_services);
-        mBidImage          = (ImageView) mTabbarView.findViewById(R.id.img_bid);
-        mReschedulingImage       = (ImageView) mTabbarView.findViewById(R.id.img_rescheduling);
-        mCancellationImage = (ImageView) mTabbarView.findViewById(R.id.img_cancellation);
-        mDescribeText       = (TextView) mTabbarView.findViewById(R.id.lbl_describe);
-        mBidText           = (TextView) mTabbarView.findViewById(R.id.lbl_bid);
-        mReschedulingText        = (TextView) mTabbarView.findViewById(R.id.lbl_rescheduling);
-        mCancellationText = (TextView) mTabbarView.findViewById(R.id.lbl_cancellation);
-        imgBidLine         = (ImageView) mTabbarView.findViewById(R.id.img_bid_line);
-        imgReschedulingLine      = (ImageView) mTabbarView.findViewById(R.id.img_rescheduling_line);
-        imgCancellationLine = (ImageView) mTabbarView.findViewById(R.id.img_cancellation_line);
+        mDescribeButton     = (LinearLayout) mTabView.findViewById(R.id.btn_describe);
+        mBidButton         = (LinearLayout) mTabView.findViewById(R.id.btn_bid);
+        mReschedulingButton      = (LinearLayout) mTabView.findViewById(R.id.btn_rescheduling);
+        mCancellationButton = (LinearLayout) mTabView.findViewById(R.id.btn_cancellation);
+        mDescribeImage      = (ImageView) mTabView.findViewById(R.id.img_my_services);
+        mBidImage          = (ImageView) mTabView.findViewById(R.id.img_bid);
+        mReschedulingImage       = (ImageView) mTabView.findViewById(R.id.img_rescheduling);
+        mCancellationImage = (ImageView) mTabView.findViewById(R.id.img_cancellation);
+        mDescribeText       = (TextView) mTabView.findViewById(R.id.lbl_describe);
+        mBidText           = (TextView) mTabView.findViewById(R.id.lbl_bid);
+        mReschedulingText        = (TextView) mTabView.findViewById(R.id.lbl_rescheduling);
+        mCancellationText = (TextView) mTabView.findViewById(R.id.lbl_cancellation);
+        imgBidLine         = (ImageView) mTabView.findViewById(R.id.img_bid_line);
+        imgReschedulingLine      = (ImageView) mTabView.findViewById(R.id.img_rescheduling_line);
+        imgCancellationLine = (ImageView) mTabView.findViewById(R.id.img_cancellation_line);
 
         //mAddressButton.setOnClickListener(this);
     }
@@ -151,7 +151,7 @@ public class PostProposalTabbarView extends RelativeLayout implements View.OnCli
         void onTabItemClick(View view);
     }
 
-    public void setTabItemClickLietener(OnTabItemClickListener listener) {
+    public void setTabItemClickListener(OnTabItemClickListener listener) {
         this.listener = listener;
     }
 }

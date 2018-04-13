@@ -74,7 +74,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, AppointmentType.EVENT);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.DETAILS, AppointmentType.EVENTS);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

@@ -37,6 +37,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+
 public class SignInFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private OnFragmentInteractionListener mListener;
@@ -146,7 +148,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
 
                                 if (response.body().getSuccess()) {
                                     JGGUserProfileModel user = response.body().getValue();
-                                    JGGAppManager.getInstance(mContext).currentUser = user;
+                                    currentUser = user;
 
                                     if (user.getUser().getPhoneNumberConfirmed()) {
                                         JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);

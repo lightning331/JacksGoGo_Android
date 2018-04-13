@@ -36,7 +36,7 @@ public class JGGCalendarDecorator implements DayViewDecorator {
             drawable = ContextCompat.getDrawable(mContext, R.drawable.calendar_selector_green);
         } else if (mType == AppointmentType.JOBS) {
             drawable = ContextCompat.getDrawable(mContext, R.drawable.calendar_selector_cyan);
-        } else if (mType == AppointmentType.GOCLUB || mType == AppointmentType.EVENT) {
+        } else if (mType == AppointmentType.GOCLUB || mType == AppointmentType.EVENTS) {
             drawable = ContextCompat.getDrawable(mContext, R.drawable.calendar_selector_purple);
         } else if (mType == AppointmentType.USERS) {
             drawable = ContextCompat.getDrawable(mContext, R.drawable.calendar_selector_orange);

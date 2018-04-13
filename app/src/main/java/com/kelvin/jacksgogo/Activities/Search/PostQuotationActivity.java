@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
-import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationMainTabFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -69,7 +69,7 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
         selectedQuotation.setCurrencyCode(selectedAppointment.getCurrencyCode());
 
         // Main Tab Fragment
-        PostQuotationMainTabFragment frag = PostQuotationMainTabFragment.newInstance(PostServiceTabbarView.PostServiceTabName.DESCRIBE, true);
+        PostQuotationMainTabFragment frag = PostQuotationMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.DESCRIBE, true);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.request_quotation_container, frag, frag.getTag())
                 .commit();

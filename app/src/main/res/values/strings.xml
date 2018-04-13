@@ -89,6 +89,8 @@
     <string name="alert_quit_quotation_title">Quit Requesting A Quotation?</string>
     <string name="alert_quit_post_service_title">Quit Posting A New Service?</string>
     <string name="alert_quit_post_job_title">Quit Posting A New Job?</string>
+    <string name="alert_quit_post_go_club_title">Quit Creating A New GoClub?</string>
+    <string name="alert_quit_post_event_title">Quit Creating A New Event?</string>
     <string name="alert_quit_quotation_desc">All info will be lost.</string>
     <string name="alert_post_failed_desc">You can\'t perform this action because didn\'t login. Would you login to proceed this?</string>
     <string name="alert_quit_button">Quit</string>
@@ -219,17 +221,17 @@
     <!-- TODO: Profile -->
     <string name="edit_profile_actionbar_title">Edit Profile</string>
 
-    <!-- TODO: GoClub -->
-    <string name="title_joined_go_club">Joined GoClubs</string>
-    <string name="title_all_go_club">All GoClubs</string>
-    <string name="title_post_go_club">Create A New GoClub</string>
-    <string name="title_view_members">View All Members</string>
-
     <!-- TODO: Filter -->
     <string name="title_show_services">Show Only Services With The Keywords</string>
     <string name="title_show_jobs">Show Only Jobs With The Keywords</string>
     <string name="title_show_go_club">Show Only GoClubs With The Keywords</string>
     <string name="title_show_event">Show Only Events With The Keywords</string>
+
+    <!-- TODO: GoClub -->
+    <string name="title_joined_go_club">Joined GoClubs</string>
+    <string name="title_all_go_club">All GoClubs</string>
+    <string name="title_post_go_club">Create A New GoClub</string>
+    <string name="title_view_members">View All Members</string>
     <string name="title_request_join_go_club">Request To Join GoClub</string>
     <string name="people_joined_go_club">people have joined this GoClub recently!</string>
     <string name="alert_report_go_club_title">Report GoClub</string>
@@ -238,6 +240,10 @@
     <string name="alert_join_request_title">Request Sent!</string>
     <string name="alert_join_request_desc">The admins have been notified of your request.</string>
     <string name="alert_report_go_club_desc">Mark this GoClub as inappropriate or offensive.</string>
+    <string name="title_create_go_club">Create New GoClub</string>
+    <string name="post_go_club_desc_title">Give your GoClub name.</string>
+    <string name="post_go_club_desc_description">Give a description for your GoClub.</string>
+    <string name="post_go_club_desc_tag">Add tags to your GoClub(optional).</string>
 
     <!-- TODO: Event-->
     <string name="title_request_join_event">Join Event</string>
@@ -246,5 +252,6 @@
     <string name="alert_report_event_desc">Mark this Event as inappropriate or offensive.</string>
     <string name="title_joined_event">Joined Events</string>
     <string name="title_past_event">Past Events</string>
+    <string name="title_create_event">Create New Event</string>
 
 </resources>

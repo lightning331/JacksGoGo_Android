@@ -69,8 +69,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_list_detail, parent, false);
             ServiceListDetailCell cell = new ServiceListDetailCell(view, mContext);
             return cell;
-        }
-        else if (viewType == VIEW_TYPE_LOADING) {
+        } else if (viewType == VIEW_TYPE_LOADING) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.load_more_view, parent, false);
             LoadingViewHolder viewHolder = new LoadingViewHolder(view);
             return viewHolder;
@@ -141,7 +140,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mCategories = data;
         mServices = services;
 
-        notifyDataSetChanged();
+        super.notifyDataSetChanged();
         isLoading = false;
     }
 

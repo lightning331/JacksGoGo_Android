@@ -83,7 +83,7 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
             imgAllService.setImageResource(R.mipmap.button_viewall_cyan);
             imgPostNew.setImageResource(R.mipmap.button_addnew_round_cyan);
             setViewColor(ContextCompat.getColor(mContext, R.color.JGGCyan), "Jobs");
-        } else if (type == AppointmentType.EVENT
+        } else if (type == AppointmentType.EVENTS
                 || type == AppointmentType.GOCLUB) {
             viewMyServiceButton.setVisibility(View.VISIBLE);
             imgMyService.setImageResource(R.mipmap.button_tick_round_purple);
@@ -93,7 +93,7 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
             lblPostNew.setText("Create New");
             if (type == AppointmentType.GOCLUB)
                 setViewColor(ContextCompat.getColor(mContext, R.color.JGGPurple), "GoClubs");
-            else if (type == AppointmentType.EVENT)
+            else if (type == AppointmentType.EVENTS)
                 setViewColor(ContextCompat.getColor(mContext, R.color.JGGPurple), "Events");
         }
     }

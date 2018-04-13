@@ -153,6 +153,7 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
     }
 
     private void selectImage() {
+        int mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
         Album.image(this)
                 .multipleChoice()
                 .requestCode(200)
@@ -165,12 +166,12 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
                                 .title("Include Photos") // Title.
                                 .statusBarColor(ContextCompat.getColor(mContext, R.color.JGGGrey1)) // StatusBar color.
                                 .toolBarColor(Color.WHITE) // Toolbar color.
-                                .navigationBarColor(Color.CYAN) // Virtual NavigationBar color of Android5.0+.
-                                .mediaItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGCyan), Color.CYAN) // Image or video selection box.
-                                .bucketItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGCyan), ContextCompat.getColor(mContext, R.color.JGGCyan)) // Select the folder selection box.
+                                .navigationBarColor(mColor) // Virtual NavigationBar color of Android5.0+.
+                                .mediaItemCheckSelector(mColor, mColor) // Image or video selection box.
+                                .bucketItemCheckSelector(mColor, mColor) // Select the folder selection box.
                                 .buttonStyle( // Used to configure the style of button when the image/video is not found.
                                         Widget.ButtonStyle.newLightBuilder(mContext) // With Widget's Builder model.
-                                                .setButtonSelector(ContextCompat.getColor(mContext, R.color.JGGCyan), Color.WHITE) // Button selector.
+                                                .setButtonSelector(mColor, Color.WHITE) // Button selector.
                                                 .build()
                                 )
                                 .build()

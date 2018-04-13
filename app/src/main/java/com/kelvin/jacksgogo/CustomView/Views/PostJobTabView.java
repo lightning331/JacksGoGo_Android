@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 1/11/2018.
  */
 
-public class PostJobTabbarView extends RelativeLayout implements View.OnClickListener {
+public class PostJobTabView extends RelativeLayout implements View.OnClickListener {
 
     Context mContext;
 
@@ -48,7 +48,7 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
         REPORT
     }
 
-    public PostJobTabbarView(Context context) {
+    public PostJobTabView(Context context) {
         super(context);        this.mContext = context;
 
         initView();
@@ -58,27 +58,27 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
     private void initView() {
 
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mTabbarView                    = mLayoutInflater.inflate(R.layout.view_post_job_tabbar, this);
+        View mTabView                    = mLayoutInflater.inflate(R.layout.view_post_job_tab, this);
 
-        mDescribeButton     = (LinearLayout) mTabbarView.findViewById(R.id.btn_describe);
-        mTimeButton         = (LinearLayout) mTabbarView.findViewById(R.id.btn_time);
-        mAddressButton      = (LinearLayout) mTabbarView.findViewById(R.id.btn_address);
-        mBudgetButton       = (LinearLayout) mTabbarView.findViewById(R.id.btn_budget);
-        mReportButton       = (LinearLayout) mTabbarView.findViewById(R.id.btn_report);
-        mDescribeImage      = (ImageView) mTabbarView.findViewById(R.id.img_my_services);
-        mTimeImage          = (ImageView) mTabbarView.findViewById(R.id.img_time);
-        mAddressImage       = (ImageView) mTabbarView.findViewById(R.id.img_address);
-        mBudgetImage        = (ImageView) mTabbarView.findViewById(R.id.img_budget);
-        mReportImage        = (ImageView) mTabbarView.findViewById(R.id.img_report);
-        mDescribeText       = (TextView) mTabbarView.findViewById(R.id.lbl_describe);
-        mTimeText           = (TextView) mTabbarView.findViewById(R.id.lbl_time);
-        mAddressText        = (TextView) mTabbarView.findViewById(R.id.lbl_address);
-        mBudgetText         = (TextView) mTabbarView.findViewById(R.id.lbl_budget);
-        mReportText         = (TextView) mTabbarView.findViewById(R.id.lbl_report);
-        imgTimeLine         = (ImageView) mTabbarView.findViewById(R.id.img_time_line);
-        imgAddressLine      = (ImageView) mTabbarView.findViewById(R.id.img_address_line);
-        imgBudgetLine       = (ImageView) mTabbarView.findViewById(R.id.img_budget_line);
-        imgReportLine       = (ImageView) mTabbarView.findViewById(R.id.img_report_line);
+        mDescribeButton     = (LinearLayout) mTabView.findViewById(R.id.btn_describe);
+        mTimeButton         = (LinearLayout) mTabView.findViewById(R.id.btn_time);
+        mAddressButton      = (LinearLayout) mTabView.findViewById(R.id.btn_address);
+        mBudgetButton       = (LinearLayout) mTabView.findViewById(R.id.btn_budget);
+        mReportButton       = (LinearLayout) mTabView.findViewById(R.id.btn_report);
+        mDescribeImage      = (ImageView) mTabView.findViewById(R.id.img_my_services);
+        mTimeImage          = (ImageView) mTabView.findViewById(R.id.img_time);
+        mAddressImage       = (ImageView) mTabView.findViewById(R.id.img_address);
+        mBudgetImage        = (ImageView) mTabView.findViewById(R.id.img_budget);
+        mReportImage        = (ImageView) mTabView.findViewById(R.id.img_report);
+        mDescribeText       = (TextView) mTabView.findViewById(R.id.lbl_describe);
+        mTimeText           = (TextView) mTabView.findViewById(R.id.lbl_time);
+        mAddressText        = (TextView) mTabView.findViewById(R.id.lbl_address);
+        mBudgetText         = (TextView) mTabView.findViewById(R.id.lbl_budget);
+        mReportText         = (TextView) mTabView.findViewById(R.id.lbl_report);
+        imgTimeLine         = (ImageView) mTabView.findViewById(R.id.img_time_line);
+        imgAddressLine      = (ImageView) mTabView.findViewById(R.id.img_address_line);
+        imgBudgetLine       = (ImageView) mTabView.findViewById(R.id.img_budget_line);
+        imgReportLine       = (ImageView) mTabView.findViewById(R.id.img_report_line);
 
         //mAddressButton.setOnClickListener(this);
     }
@@ -199,7 +199,7 @@ public class PostJobTabbarView extends RelativeLayout implements View.OnClickLis
         void onTabItemClick(View view);
     }
 
-    public void setTabItemClickLietener(OnTabItemClickListener listener) {
+    public void setTabItemClickListener(OnTabItemClickListener listener) {
         this.listener = listener;
     }
 }

@@ -153,7 +153,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 if (type == AppointmentType.JOBS) {
                     setCyanBackButton("", R.string.title_location);
                     mMoreButtonImage.setImageResource(R.mipmap.button_tick_cyan);
-                } else if (type == AppointmentType.EVENT) {
+                } else if (type == AppointmentType.EVENTS) {
                     setOrangeBackButton(R.string.title_location, "");
                     mMoreButtonImage.setImageResource(R.mipmap.button_tick_purple);
                 } else if (type == AppointmentType.USERS) {
@@ -177,7 +177,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgMore = R.mipmap.button_more_active_cyan;
                     setLikeButton(R.mipmap.button_backarrow_cyan, imgLikeOutLine, imgMoreOutLine);
                 } else if (type == AppointmentType.GOCLUB
-                        || type == AppointmentType.EVENT) {
+                        || type == AppointmentType.EVENTS) {
                     imgLikeOutLine = R.mipmap.button_favourite_outline_purple;
                     imgMoreOutLine = R.mipmap.button_more_purple;
                     imgLike = R.mipmap.button_favourite_purple;
@@ -348,7 +348,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         else if (type == AppointmentType.JOBS)
             mBackButtonImage.setImageResource(R.mipmap.button_backarrow_cyan);
         else if (type == AppointmentType.GOCLUB
-                || type == AppointmentType.EVENT)
+                || type == AppointmentType.EVENTS)
             mBackButtonImage.setImageResource(R.mipmap.button_backarrow_purple);
     }
 

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
-import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabbarView;
+import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -346,24 +345,24 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             showDeleteAlertDialog();
             return;
         } else if (view.getId() == R.id.btn_proposal_describe) {
-            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE, ProposalStatus.POST);
+            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.DESCRIBE, ProposalStatus.POST);
             if (proposalStatus == ProposalStatus.EDIT) {
-                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.DESCRIBE, ProposalStatus.EDIT);
+                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.DESCRIBE, ProposalStatus.EDIT);
             }
         } else if (view.getId() == R.id.btn_proposal_price) {
-            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.BID, ProposalStatus.POST);
+            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.BID, ProposalStatus.POST);
             if (proposalStatus == ProposalStatus.EDIT) {
-                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.BID, ProposalStatus.EDIT);
+                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.BID, ProposalStatus.EDIT);
             }
         } else if (view.getId() == R.id.btn_proposal_rescheduling) {
-            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.RESCHEDULING, ProposalStatus.POST);
+            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.RESCHEDULING, ProposalStatus.POST);
             if (proposalStatus == ProposalStatus.EDIT) {
-                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.RESCHEDULING, ProposalStatus.EDIT);
+                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.RESCHEDULING, ProposalStatus.EDIT);
             }
         }  else if (view.getId() == R.id.btn_proposal_cancellation) {
-            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.CANCELLATION, ProposalStatus.POST);
+            fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.CANCELLATION, ProposalStatus.POST);
             if (proposalStatus == ProposalStatus.EDIT) {
-                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabbarView.TabName.CANCELLATION, ProposalStatus.EDIT);
+                fragment = PostProposalMainTabFragment.newInstance(PostProposalTabView.TabName.CANCELLATION, ProposalStatus.EDIT);
             }
         }
         mActivity.getSupportFragmentManager()

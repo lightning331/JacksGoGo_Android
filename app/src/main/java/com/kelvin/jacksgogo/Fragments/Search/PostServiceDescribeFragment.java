@@ -35,6 +35,8 @@ import com.yanzhenjie.album.api.widget.Widget;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -68,6 +70,8 @@ public class PostServiceDescribeFragment extends Fragment
 
     private String appType;
     private JGGAppointmentModel creatingApp;
+    private int nextButton;
+    private int imageSelectionColor;
 
     public PostServiceDescribeFragment() {
         // Required empty public constructor
@@ -121,6 +125,7 @@ public class PostServiceDescribeFragment extends Fragment
         txtTakePhoto = view.findViewById(R.id.lbl_take_photo);
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
+        imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
         if (appType.equals(JOBS)) {
             lblTitle.setText(R.string.post_job_desc_title);
             lblDescription.setText(R.string.post_job_desc_description);
@@ -128,11 +133,37 @@ public class PostServiceDescribeFragment extends Fragment
             btnTakePhoto.setBackgroundResource(R.drawable.cyan_border_background);
             imgTakePhoto.setImageResource(R.mipmap.icon_photo_cyan);
             txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGCyan));
+            nextButton = R.drawable.cyan_background;
+            imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
+        } else if (appType.equals(GOCLUB)) {
+            lblTitle.setText(R.string.post_go_club_desc_title);
+            lblDescription.setText(R.string.post_go_club_desc_description);
+            lblTags.setText(R.string.post_go_club_desc_tag);
+            txtServiceTitle.setHint("e.g. We Love JacksGoGo");
+            txtServiceDesc.setHint("e.g. Everything about JacksGoGo");
+            btnTakePhoto.setBackgroundResource(R.drawable.purple_border_background);
+            imgTakePhoto.setImageResource(R.mipmap.icon_photo_purple);
+            txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGPurple));
+            nextButton = R.drawable.purple_background;
+            imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
+        } else if (appType.equals(GOCLUB)) {
+            lblTitle.setText("Give your event a short title.");
+            lblDescription.setText("Give a description for your event.");
+            lblTags.setText("Add tags to your event (optional.");
+            txtServiceTitle.setHint("e.g. Neighbourhood Football Match");
+            txtServiceDesc.setHint("e.g. Friendly neighbourhood match.");
+            btnTakePhoto.setBackgroundResource(R.drawable.purple_border_background);
+            imgTakePhoto.setImageResource(R.mipmap.icon_photo_purple);
+            txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGPurple));
+            nextButton = R.drawable.purple_background;
+            imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
         }
-        // Set Job Describe Data
-        txtServiceTitle.setText(creatingApp.getTitle());
-        txtServiceDesc.setText(creatingApp.getDescription());
-        txtServiceTag.setText(creatingApp.getTags());
+        if (appType.equals(SERVICES) || appType.equals(JOBS)) {
+            // Set Job Describe Data
+            txtServiceTitle.setText(creatingApp.getTitle());
+            txtServiceDesc.setText(creatingApp.getDescription());
+            txtServiceTag.setText(creatingApp.getTags());
+        }
     }
 
     private void initRecyclerView() {
@@ -158,14 +189,18 @@ public class PostServiceDescribeFragment extends Fragment
                 }
             }
         });
-        if (creatingApp.getAlbumFiles() == null) {
+        if (appType.equals(SERVICES) || appType.equals(JOBS)) {
+            if (creatingApp.getAlbumFiles() == null) {
 
-        } else {
-            if (creatingApp.getAlbumFiles().size() != 0) {
-                recyclerView.setVisibility(View.VISIBLE);
-                mAlbumFiles = creatingApp.getAlbumFiles();
-                mAdapter.notifyDataChanged(mAlbumFiles);
+            } else {
+                if (creatingApp.getAlbumFiles().size() != 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    mAlbumFiles = creatingApp.getAlbumFiles();
+                    mAdapter.notifyDataChanged(mAlbumFiles);
+                }
             }
+        } else if (appType.equals(GOCLUB)) {
+
         }
         recyclerView.setAdapter(mAdapter);
     }
@@ -184,11 +219,11 @@ public class PostServiceDescribeFragment extends Fragment
                                 .statusBarColor(ContextCompat.getColor(mContext, R.color.JGGGrey1)) // StatusBar color.
                                 .toolBarColor(Color.WHITE) // Toolbar color.
                                 .navigationBarColor(Color.GREEN) // Virtual NavigationBar color of Android5.0+.
-                                .mediaItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), Color.GREEN) // Image or video selection box.
-                                .bucketItemCheckSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), ContextCompat.getColor(mContext, R.color.JGGGreen)) // Select the folder selection box.
+                                .mediaItemCheckSelector(imageSelectionColor, imageSelectionColor) // Image or video selection box.
+                                .bucketItemCheckSelector(imageSelectionColor, imageSelectionColor) // Select the folder selection box.
                                 .buttonStyle( // Used to configure the style of button when the image/video is not found.
                                         Widget.ButtonStyle.newLightBuilder(mContext) // With Widget's Builder model.
-                                                .setButtonSelector(ContextCompat.getColor(mContext, R.color.JGGGreen), Color.WHITE) // Button selector.
+                                                .setButtonSelector(imageSelectionColor, Color.WHITE) // Button selector.
                                                 .build()
                                 )
                                 .build()
@@ -214,7 +249,12 @@ public class PostServiceDescribeFragment extends Fragment
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_service_next) {
-            setAppointmentData();
+            if (appType.equals(SERVICES) || appType.equals(JOBS))
+                setAppointmentData();
+            else if (appType.equals(GOCLUB))
+                setGoClubData();
+            else if (appType.equals(EVENTS))
+                setEventData();
         } else if (view.getId() == R.id.btn_post_service_take_photo) {
             selectImage();
         }
@@ -232,6 +272,14 @@ public class PostServiceDescribeFragment extends Fragment
         listener.onNextButtonClick();
     }
 
+    private void setGoClubData() {
+
+    }
+
+    private void setEventData() {
+
+    }
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -243,7 +291,7 @@ public class PostServiceDescribeFragment extends Fragment
                 && txtServiceDesc.length() > 0) {
 
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            btnNext.setBackgroundResource(R.drawable.green_background);
+            btnNext.setBackgroundResource(nextButton);
             if (appType.equals(JOBS)) btnNext.setBackgroundResource(R.drawable.cyan_background);
             btnNext.setOnClickListener(this);
         } else {

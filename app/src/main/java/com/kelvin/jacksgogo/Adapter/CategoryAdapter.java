@@ -43,7 +43,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         CategoryViewHolder categoryView = (CategoryViewHolder) holder;
         if (mType == AppointmentType.SERVICES
                 || mType == AppointmentType.GOCLUB
-                || mType == AppointmentType.EVENT) {
+                || mType == AppointmentType.EVENTS) {
             if (mCategories != null) {
                 String categoryName = mCategories.get(position).getName();
                 String url = mCategories.get(position).getImage();
@@ -73,7 +73,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         if (mType == AppointmentType.SERVICES
                 || mType == AppointmentType.GOCLUB
-                || mType == AppointmentType.EVENT) {
+                || mType == AppointmentType.EVENTS) {
             if (mCategories != null)
                 return mCategories.size();
         }
