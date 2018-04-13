@@ -158,31 +158,21 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-            <LinearLayout
-                android:visibility="visible"
+            <TextView
                 android:id="@+id/btn_sign_up"
+                android:text="Sign Me Up!"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/orange_background">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="100"
-                    android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/JGGWhite"
-                        android:textSize="@dimen/list_text_font_size"
-                        android:fontFamily="@font/mulibold"
-                        android:text="Sign Me Up!"/>
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/orange_background"
+                android:textColor="@color/JGGWhite"
+                android:fontFamily="@font/mulibold"
+                android:textSize="@dimen/button_font_size"
+                android:textAlignment="center"
+                android:gravity="center"/>
         </LinearLayout>
     </ScrollView>
 

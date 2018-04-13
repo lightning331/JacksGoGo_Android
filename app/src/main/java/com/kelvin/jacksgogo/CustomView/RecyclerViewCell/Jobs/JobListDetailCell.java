@@ -53,13 +53,18 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
     }
 
     public void setJob(JGGAppointmentModel job) {
-        // Category
-        if (job.getAttachmentURLs().size() != 0) {
+        // Jobs Image
+        if (job.getAttachmentURLs().size() > 0)
             Picasso.with(mContext)
                     .load(job.getAttachmentURLs().get(0))
                     .placeholder(R.mipmap.appointment_placeholder)
                     .into(carouselView);
-        }
+        else
+            Picasso.with(mContext)
+                    .load(R.mipmap.appointment_placeholder)
+                    .placeholder(null)
+                    .into(carouselView);
+        // Category
         Picasso.with(mContext)
                 .load(job.getCategory().getImage())
                 .placeholder(null)

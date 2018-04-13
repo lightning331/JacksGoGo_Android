@@ -17,14 +17,14 @@
             <LinearLayout
                 android:id="@+id/login_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
                 <com.makeramen.roundedimageview.RoundedImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:src="@mipmap/jacks_gogo_logo"
                     android:background="@color/transparent"
                     android:adjustViewBounds="true"
@@ -50,7 +50,7 @@
                     android:text="Sign In"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/orange_background"
@@ -63,6 +63,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/recycler_view_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

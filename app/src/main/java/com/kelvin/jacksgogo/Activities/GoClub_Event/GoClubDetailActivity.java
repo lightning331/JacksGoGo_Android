@@ -58,7 +58,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         ButterKnife.bind(this);
 
         // Todo - Dummy Data
-        setJoinToGoClubStatus(JoinGoClubStatus.NONE);
+        setJoinToGoClubStatus(JoinGoClubStatus.none);
 
         // Todo - Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.go_club_detail_bottom);
@@ -97,11 +97,11 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         pendingLayout.setVisibility(View.GONE);
         ownerLayout.setVisibility(View.GONE);
 
-        if (status == JoinGoClubStatus.NONE || status == JoinGoClubStatus.REJECTED) {
+        if (status == JoinGoClubStatus.none || status == JoinGoClubStatus.rejected) {
             btnJoinGoClub.setVisibility(View.VISIBLE);
-        } else if (status == JoinGoClubStatus.PENDING) {
+        } else if (status == JoinGoClubStatus.pending) {
             pendingLayout.setVisibility(View.VISIBLE);
-        } else if (status == JoinGoClubStatus.APPROVED) {
+        } else if (status == JoinGoClubStatus.approved) {
             ownerLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -121,7 +121,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     // Todo - Withdraw GoClub
     private void onWithdrawGoClub() {
         alertDialog.dismiss();
-        setJoinToGoClubStatus(JoinGoClubStatus.NONE);
+        setJoinToGoClubStatus(JoinGoClubStatus.none);
     }
 
     private void actionbarItemClick(View view) {
@@ -142,9 +142,9 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         //if (selectedAppointment.getUserProfileID().equals(currentUser.getUserID()))     // Owner popup menu
         //    popupMenu.inflate(R.menu.go_club_owner_share_menu);
         //else{                                                                           // personal user popup menu
-            if (joinGoClubStatus == JoinGoClubStatus.NONE)
+            if (joinGoClubStatus == JoinGoClubStatus.none)
                 popupMenu.inflate(R.menu.go_club_share_menu);
-            else if (joinGoClubStatus == JoinGoClubStatus.APPROVED || joinGoClubStatus == JoinGoClubStatus.PENDING)
+            else if (joinGoClubStatus == JoinGoClubStatus.approved || joinGoClubStatus == JoinGoClubStatus.pending)
                 popupMenu.inflate(R.menu.go_club_owner_share_menu);//go_club_joined_menu);
         //}
 
@@ -282,7 +282,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(View v) {
                     alertDialog.dismiss();
-                    setJoinToGoClubStatus(JoinGoClubStatus.APPROVED);
+                    setJoinToGoClubStatus(JoinGoClubStatus.approved);
                 }
             });
         }

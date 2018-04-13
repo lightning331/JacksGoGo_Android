@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout lblQuickJobTitle;
     private LinearLayout signUpTitle;
     private LinearLayout btnQuickJob;
-    private LinearLayout btnSignUp;
+    private TextView btnSignUp;
 
     private LinearLayout userInfoLayout;
     private HomeMainUserInfo userInfoView;
@@ -94,6 +94,12 @@ public class HomeFragment extends Fragment {
         signUpTitle = view.findViewById(R.id.sign_up_title);
         btnQuickJob = view.findViewById(R.id.btn_quick_job);
         btnSignUp = view.findViewById(R.id.btn_sign_up);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)mContext).setProfilePage();
+            }
+        });
 
         userInfoLayout = view.findViewById(R.id.user_info_layout);
         detailsLayout = view.findViewById(R.id.details_layout);

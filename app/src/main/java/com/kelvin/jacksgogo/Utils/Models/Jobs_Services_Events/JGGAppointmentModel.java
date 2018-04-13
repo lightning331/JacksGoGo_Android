@@ -36,7 +36,7 @@ public class JGGAppointmentModel extends JGGAppointmentBaseModel {
     private int ViewCount = 0;
     private JGGCategoryModel Category = new JGGCategoryModel();
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
-    private ArrayList<String> AttachmentURLs;
+    private ArrayList<String> AttachmentURLs = new ArrayList<>();
 
     // Dump Data
     private ArrayList<Image> attachmentImages = new ArrayList<>();

@@ -209,12 +209,12 @@ public class Global {
     }
 
     public static enum ContractStatus {
-        OPEN(0),
-        STARTED(1),
-        PAUSED(2),
-        HOLD(3),
-        END(4),
-        FLAGGED(5);
+        open(0),
+        started(1),
+        paused(2),
+        held(3),
+        end(4),
+        flagged(5);
 
         private int value;
         private static Map map = new HashMap<>();
@@ -239,10 +239,10 @@ public class Global {
     }
 
     public static enum JobReportStatus {
-        NONE(null),
-        PENDING(0),
-        APPROVED(1),
-        REJECTED(2);
+        none(null),
+        pending(0),
+        approved(1),
+        rejected(2);
 
         private Integer value;
         private static Map map = new HashMap<>();
@@ -267,11 +267,11 @@ public class Global {
     }
 
     public static enum JoinGoClubStatus {
-        NONE(null),
-        PENDING(0),
-        APPROVED(1),
-        WITHDRAW(2),
-        REJECTED(3);
+        none(null),
+        pending(0),
+        approved(1),
+        withdraw(2),
+        rejected(3);
 
         private Integer value;
         private static Map map = new HashMap<>();
@@ -296,59 +296,62 @@ public class Global {
     }
 
     public static enum AppointmentHistoryStatus {
-        JOB_CREATED(100),
-        JOB_EDITED(101),
-        JOB_CLOSED(102),
-        JOB_CONFIRMED(103),
-        JOB_FLAGGED(104),
-        JOB_DELETED(105),
-        JOB_REPORTED(106),
+        job_created(100),
+        job_edited(101),
+        job_closed(102),
+        job_confirmed(103),
+        job_flagged(104),
+        job_deleted(105),
+        job_reported(106),
 
-        SERVICE_CREATED(200),
-        SERVICE_EDITED(201),
-        SERVICE_CLOSED(202),
-        SERVICE_CONFIRMED(203),
-        SERVICE_FLAGGED(204),
-        SERVICE_DELETED(205),
-        SERVICE_REPORTED(206),
-        SERVICE_RESCHEDULE_REQUESTED(207),
-        SERVICE_RESCHEDULE_DECLINED(208),
-        SERVICE_RESCHEDULE_AGREED(208),
-        SERVICE_RESCHEDULED(210),
+        service_created(200),
+        service_edited(201),
+        service_closed(202),
+        service_confirmed(203),
+        service_flagged(204),
+        service_deleted(205),
+        service_reported(206),
+        service_reschedule_requested(207),
+        service_reschedule_declined(208),
+        service_reschedule_agreed(208),
+        service_rescheduled(210),
 
-        QUOTATION_CREATED(300),
-        QUOTATION_EDITED(301),
-        QUOTATION_CLOSED(302),
-        QUOTATION_CONFIRMED(303),
-        QUOTATION_FLAGGED(304),
-        QUOTATION_DELETED(305),
-        QUOTATION_REPORTED(306),
+        quotation_created(300),
+        quotation_edited(301),
+        quotation_closed(302),
+        quotation_confirmed(303),
+        quotation_flagged(304),
+        quotation_deleted(305),
+        quotation_reported(306),
 
-        PROPOSAL_SENT(400),
-        PROPOSAL_EDITED(401),
-        PROPOSAL_REJECTED(402),
-        PROPOSAL_WITHDRAW(403),
-        PROPOSAL_APPROVED(404),
-        PROPOSAL_FLAGGED(405),
-        PROPOSAL_DELETED(406),
-        INVITE_SENT(407),
-        INVITE_ACCEPTED(408),
-        INVITE_REJECTED(409),
+        proposal_sent(400),
+        proposal_edited(401),
+        proposal_rejected(402),
+        proposal_withdraw(403),
+        proposal_approved(404),
+        proposal_flagged(405),
+        proposal_deleted(406),
 
-        CONTRACT_CREATED(500),
-        CONTRACT_STARTED(501),
-        CONTRACT_PAUSED(502),
-        CONTRACT_HOLD(503),
-        CONTRACT_END(504),
-        CONTRACT_FLAGGED(505),
+        invite_sent(407),
+        invite_accepted(408),
+        invite_rejected(409),
 
-        RESULT_REPORTED(600),
-        RESULT_ACCEPTED(601),
-        RESULT_REJECTED(602),
-        INVOICE_SENT(603),
-        INVOICE_APPROVED(604),
-        CLIENT_FEEDBACK(620),
-        PROVIDER_FEEDBACK(621);
+        contract_created(500),
+        contract_started(501),
+        contract_paused(502),
+        contract_held(503),
+        contract_end(504),
+        contract_flagged(505),
+
+        result_reported(600),
+        result_accepted(601),
+        result_rejected(602),
+
+        invoice_sent(603),
+        invoice_approved(604),
+
+        client_feedback(620),
+        provider_feedback(621);
 
         private int value;
         private static Map map = new HashMap<>();

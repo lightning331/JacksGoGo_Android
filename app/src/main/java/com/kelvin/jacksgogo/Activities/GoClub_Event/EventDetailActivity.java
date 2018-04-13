@@ -56,7 +56,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         ButterKnife.bind(this);
 
         // Todo - Dummy Data
-        setJoinToGoClubStatus(JoinGoClubStatus.NONE);
+        setJoinToGoClubStatus(JoinGoClubStatus.none);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.event_detail_bottom);
@@ -94,9 +94,9 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         btnJoinGoClub.setVisibility(View.GONE);
         ownerLayout.setVisibility(View.GONE);
 
-        if (status == JoinGoClubStatus.NONE || status == JoinGoClubStatus.REJECTED) {
+        if (status == JoinGoClubStatus.none || status == JoinGoClubStatus.rejected) {
             btnJoinGoClub.setVisibility(View.VISIBLE);
-        } else if (status == JoinGoClubStatus.APPROVED) {
+        } else if (status == JoinGoClubStatus.approved) {
             ownerLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -110,13 +110,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     // Todo - Send join request to the Event
     private void onSendJoinRequest() {
         alertDialog.dismiss();
-        setJoinToGoClubStatus(JoinGoClubStatus.APPROVED);
+        setJoinToGoClubStatus(JoinGoClubStatus.approved);
     }
 
     // Todo - Withdraw from Event
     private void onWithdrawFromEvent() {
         alertDialog.dismiss();
-        setJoinToGoClubStatus(JoinGoClubStatus.NONE);
+        setJoinToGoClubStatus(JoinGoClubStatus.none);
     }
 
     private void actionbarItemClick(View view) {
@@ -133,9 +133,9 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        if (joinGoClubStatus == JoinGoClubStatus.NONE)
+        if (joinGoClubStatus == JoinGoClubStatus.none)
             popupMenu.inflate(R.menu.event_share_menu);
-        else if (joinGoClubStatus == JoinGoClubStatus.APPROVED)
+        else if (joinGoClubStatus == JoinGoClubStatus.approved)
             popupMenu.inflate(R.menu.event_joined_menu);
 
         popupMenu.setOnDismissListener(new OnDismissListener());

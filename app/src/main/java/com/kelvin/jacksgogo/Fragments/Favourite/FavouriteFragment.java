@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
@@ -34,18 +36,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.USERS;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class FavouriteFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
+    private LinearLayout loginLayout;
+    private TextView btnLogin;
     private RecyclerView recyclerView;
+
     private ProgressDialog progressDialog;
     private android.app.AlertDialog alertDialog;
     private ActiveServiceAdapter serviceAdapter;
@@ -81,6 +87,15 @@ public class FavouriteFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
 
+        loginLayout = view.findViewById(R.id.login_layout);
+        btnLogin = view.findViewById(R.id.btn_login);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) mContext).setProfilePage();
+            }
+        });
+
         recyclerView = (RecyclerView) view.findViewById(R.id.favourite_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -96,44 +111,73 @@ public class FavouriteFragment extends Fragment {
     public void refreshFragment(String type) {
 
         appType = type;
+        if (currentUser == null) {
+            if (type.equals(USERS)) {
+                updateUsersAdapter();
+                loginLayout.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                loginLayout.setVisibility(View.VISIBLE);
+            }
+        } else {
+            loginLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
 
-        if (type.equals(SERVICES)) {
-            serviceAdapter = new ActiveServiceAdapter(mContext);
-            serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    selectedAppointment = mServices.get(position);
-                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    mContext.startActivity(intent);
-                }
-            });
-            recyclerView.setAdapter(serviceAdapter);
-            searchServices();
-        } else if (type.equals(JOBS)) {
-            jobAdapter = new JobsListingAdapter(mContext);
-            jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    selectedAppointment = mJobs.get(position);
-                    Intent intent = new Intent(mContext, JobDetailActivity.class);
-                    mContext.startActivity(intent);
-                }
-            });
-            recyclerView.setAdapter(jobAdapter);
-            searchJobs();
-        } else if (type.equals(EVENTS)) {
-            EventsListingAdapter adapter = new EventsListingAdapter(mContext);
-            adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick() {
-                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
-                }
-            });
-            recyclerView.setAdapter(adapter);
-        } else if (type.equals(USERS)) {
-            UserListingAdapter adapter = new UserListingAdapter(mContext);
-            recyclerView.setAdapter(adapter);
+            if (type.equals(SERVICES)) {
+                updateServicesAdapter();
+            } else if (type.equals(JOBS)) {
+                updateJobsAdapter();
+            } else if (type.equals(EVENTS)) {
+                updateEventsAdapter();
+            } else if (type.equals(USERS)) {
+                updateUsersAdapter();
+            }
         }
+    }
+
+    private void updateServicesAdapter() {
+        serviceAdapter = new ActiveServiceAdapter(mContext);
+        serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                selectedAppointment = mServices.get(position);
+                Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+        recyclerView.setAdapter(serviceAdapter);
+        searchServices();
+    }
+
+    private void updateJobsAdapter() {
+        jobAdapter = new JobsListingAdapter(mContext);
+        jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                selectedAppointment = mJobs.get(position);
+                Intent intent = new Intent(mContext, JobDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+        recyclerView.setAdapter(jobAdapter);
+        searchJobs();
+    }
+
+    private void updateEventsAdapter() {
+        EventsListingAdapter adapter = new EventsListingAdapter(mContext);
+        adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick() {
+                mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void updateUsersAdapter() {
+        UserListingAdapter adapter = new UserListingAdapter(mContext);
+        recyclerView.setAdapter(adapter);
     }
 
     private void searchServices() {

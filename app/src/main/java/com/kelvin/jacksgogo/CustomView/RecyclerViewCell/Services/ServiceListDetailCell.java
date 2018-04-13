@@ -64,15 +64,16 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
 
     public void setService(JGGAppointmentModel service) {
         // Service Image
-        if (service.getAttachmentURLs().size() != 0) {
+        if (service.getAttachmentURLs().size() > 0)
             Picasso.with(mContext)
                     .load(service.getAttachmentURLs().get(0))
                     .placeholder(R.mipmap.appointment_placeholder)
                     .into(carouselView);
-        }
-        //imageArray = service.getAttachmentURLs();
-        //carouselView.setPageCount(service.getAttachmentURLs().size());
-        //carouselView.setImageListener(imageListener);
+        else
+            Picasso.with(mContext)
+                    .load(R.mipmap.appointment_placeholder)
+                    .placeholder(null)
+                    .into(carouselView);
 
         // Category
         Picasso.with(mContext)
@@ -109,15 +110,4 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         // Budget
         price.setText(getAppointmentBudget(service));
     }
-
-
-    public ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            Picasso.with(mContext)
-                    .load(imageArray.get(position))
-                    .placeholder(R.mipmap.appointment_placeholder)
-                    .into(imageView);
-        }
-    };
 }

@@ -8,9 +8,10 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
@@ -21,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.regions;
 
 public class JGGSplashActivity extends AppCompatActivity {
@@ -66,6 +69,33 @@ public class JGGSplashActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         regions = response.body().getValue();
+                        loadCategories();
+                    } else {
+                        Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(JGGSplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    onShowMainActivity();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGRegionResponse> call, Throwable t) {
+                Toast.makeText(JGGSplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadCategories() {
+        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGCategoryResponse> call = apiManager.getCategory();
+        call.enqueue(new Callback<JGGCategoryResponse>() {
+            @Override
+            public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        categories = response.body().getValue();
                         autoAuthorize();
                     } else {
                         Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -77,7 +107,7 @@ public class JGGSplashActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<JGGRegionResponse> call, Throwable t) {
+            public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
                 Toast.makeText(JGGSplashActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -134,7 +164,7 @@ public class JGGSplashActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     JGGUserProfileModel user = response.body().getValue();
-                    JGGAppManager.getInstance(JGGSplashActivity.this).currentUser = user;
+                    currentUser = user;
                     onShowMainActivity();
 
                 } else {

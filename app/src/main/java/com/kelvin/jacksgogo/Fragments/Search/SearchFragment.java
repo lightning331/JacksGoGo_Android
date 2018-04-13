@@ -16,8 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
+import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.JoinedGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
+import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
@@ -51,7 +53,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 
@@ -152,6 +153,8 @@ public class SearchFragment extends Fragment {
 
     private void fetchData(String type) {
 
+        appType = type;
+
         if (categories == null)
             loadCategories();
         else {
@@ -163,7 +166,6 @@ public class SearchFragment extends Fragment {
             }
         }
 
-        appType = type;
         if (appType.equals(SERVICES)) {
             updateServiceAdapter();
         } else if (appType.equals(JOBS)) {
@@ -245,7 +247,8 @@ public class SearchFragment extends Fragment {
                     mIntent = new Intent(mContext, AllGoClubsActivity.class);
                     mIntent.putExtra("is_category", false);
                 } else if (view.getId() == R.id.btn_post_new) {
-
+                    showAlertDialog();
+                    return;
                 }
                 mContext.startActivity(mIntent);
             }
@@ -266,7 +269,12 @@ public class SearchFragment extends Fragment {
                     mIntent.putExtra("active_status", 1);
 
                 } else if (view.getId() == R.id.btn_post_new) {
-
+                    if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
+                    } else {
+                        showAlertDialog();
+                        return;
+                    }
                 }
                 mContext.startActivity(mIntent);
             }
@@ -459,16 +467,19 @@ public class SearchFragment extends Fragment {
                         swipeContainer.setRefreshing(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        swipeContainer.setRefreshing(false);
                     }
                 } else {
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    swipeContainer.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<JGGCategoryResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                swipeContainer.setRefreshing(false);
             }
         });
     }
@@ -510,8 +521,10 @@ public class SearchFragment extends Fragment {
             public void onDoneButtonClick(View view) {
                 if (view.getId() == R.id.btn_alert_cancel)
                     alertDialog.dismiss();
-                else
+                else {
                     alertDialog.dismiss();
+                    ((MainActivity)mContext).setProfilePage();
+                }
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);
