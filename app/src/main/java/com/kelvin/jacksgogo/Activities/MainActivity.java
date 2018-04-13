@@ -144,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         setSupportActionBar(mToolbar);
     }
 
+    public void setProfilePage() {
+        mbtmView.setSelectedItemId(R.id.navigation_profile);
+    }
+
     private void initTopNavigation(Fragment frag) {
         if (frag != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
