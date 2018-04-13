@@ -198,6 +198,7 @@ public class SearchFragment extends Fragment {
             });
             onLoadServices(0);
         }
+        recyclerView.setAdapter(serviceAdapter);
     }
 
     private void updateJobAdapter() {
@@ -230,6 +231,7 @@ public class SearchFragment extends Fragment {
             });
             onLoadJobs(0);
         }
+        recyclerView.setAdapter(jobAdapter);
     }
 
     private void updateGoClubAdapter() {
@@ -288,7 +290,8 @@ public class SearchFragment extends Fragment {
                         mServices = response.body().getValue();
 
                         serviceAdapter.notifyDataChanged(mCategories, mServices);
-                        recyclerView.setAdapter(serviceAdapter);
+                        serviceAdapter.notifyDataSetChanged();
+                        //recyclerView.setAdapter(serviceAdapter);
 
                         // Now we call setRefreshing(false) to signal refresh has finished
                         swipeContainer.setRefreshing(false);
@@ -338,6 +341,7 @@ public class SearchFragment extends Fragment {
                             Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
                         serviceAdapter.notifyDataChanged(mCategories, mServices);
+                        serviceAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -367,7 +371,8 @@ public class SearchFragment extends Fragment {
                         mJobs = response.body().getValue();
 
                         jobAdapter.notifyDataChanged(mCategories, mJobs);
-                        recyclerView.setAdapter(jobAdapter);
+                        jobAdapter.notifyDataSetChanged();
+                        //recyclerView.setAdapter(jobAdapter);
 
                         // Now we call setRefreshing(false) to signal refresh has finished
                         swipeContainer.setRefreshing(false);
@@ -444,10 +449,12 @@ public class SearchFragment extends Fragment {
                         categories = mCategories;
                         if (appType.equals(SERVICES)) {
                             serviceAdapter.notifyDataChanged(mCategories, mServices);
-                            recyclerView.setAdapter(serviceAdapter);
+                            serviceAdapter.notifyDataSetChanged();
+                            //recyclerView.setAdapter(serviceAdapter);
                         } else if (appType.equals(JOBS)) {
                             jobAdapter.notifyDataChanged(mCategories, mJobs);
-                            recyclerView.setAdapter(jobAdapter);
+                            jobAdapter.notifyDataSetChanged();
+                            //recyclerView.setAdapter(jobAdapter);
                         }
                         swipeContainer.setRefreshing(false);
                     } else {
