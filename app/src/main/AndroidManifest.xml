@@ -179,7 +179,12 @@
         <activity
             android:name=".Activities.GoClub_Event.PastEventsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.GoClub_Event.GoClubMembersActivity"></activity>
+        <activity
+            android:name=".Activities.GoClub_Event.GoClubMembersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.CreateGoClubActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

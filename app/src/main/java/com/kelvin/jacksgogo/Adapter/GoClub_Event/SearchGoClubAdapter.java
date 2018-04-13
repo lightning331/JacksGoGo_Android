@@ -43,14 +43,18 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             return headerView;
-        }  else if (viewType == 1) {
+        } else if (viewType == 1) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
+            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.JOBS, mCategories);
+            return categoryCell;
+        } else if (viewType == 2) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_goclub_recyclerview, parent, false);
             GoClubRecyclerView goClubCell = new GoClubRecyclerView(view, mContext);
             return goClubCell;
         }
 
         // Event
-        else if (viewType == 2) {
+        else if (viewType == 3) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.EVENT, mContext, mCategories);
             headerView.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +64,11 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
             return headerView;
-        }  else{
+        } else if (viewType == 4) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category_list, parent, false);
+            CategoryRecyclerView categoryCell = new CategoryRecyclerView(view, mContext, AppointmentType.JOBS, mCategories);
+            return categoryCell;
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_event_list_detail, parent, false);
             EventListDetailCell eventCell = new EventListDetailCell(view, mContext);
             eventCell.itemView.setOnClickListener(new View.OnClickListener() {

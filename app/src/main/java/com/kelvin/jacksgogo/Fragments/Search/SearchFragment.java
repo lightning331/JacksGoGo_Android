@@ -450,11 +450,11 @@ public class SearchFragment extends Fragment {
                         if (appType.equals(SERVICES)) {
                             serviceAdapter.notifyDataChanged(mCategories, mServices);
                             serviceAdapter.notifyDataSetChanged();
-                            //recyclerView.setAdapter(serviceAdapter);
+                            recyclerView.setAdapter(serviceAdapter);
                         } else if (appType.equals(JOBS)) {
                             jobAdapter.notifyDataChanged(mCategories, mJobs);
                             jobAdapter.notifyDataSetChanged();
-                            //recyclerView.setAdapter(jobAdapter);
+                            recyclerView.setAdapter(jobAdapter);
                         }
                         swipeContainer.setRefreshing(false);
                     } else {

@@ -6,6 +6,7 @@
     tools:context="com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment">
 
     <TextView
+        android:id="@+id/lbl_title"
         android:text="Choose a category for your job:"
         android:fontFamily="@font/muliregular"
         android:textSize="@dimen/list_title_font_size"
