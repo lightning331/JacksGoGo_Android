@@ -253,5 +253,6 @@
     <string name="title_joined_event">Joined Events</string>
     <string name="title_past_event">Past Events</string>
     <string name="title_create_event">Create New Event</string>
+    <string name="title_create_event_desc_title">This will create an event that is not associated with any GoClub. To create a GoClub event, please create from the associated GoClub page.</string>
 
 </resources>

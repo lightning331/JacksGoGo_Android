@@ -8,32 +8,38 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView;
 import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
+import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
-public class PostGoClubMainTabFragment extends Fragment {
+public class CreateGoClubMainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
     private PostGoClubTabView tabView;
+    private ImageView imgCategory;
+    private TextView lblCategory;
 
     private String tabName;
     private String postStatus;
 
-    public PostGoClubMainTabFragment() {
+    public CreateGoClubMainFragment() {
         // Required empty public constructor
     }
 
-    public static PostGoClubMainTabFragment newInstance(GoClubTabName name, PostStatus status) {
-        PostGoClubMainTabFragment fragment = new PostGoClubMainTabFragment();
+    public static CreateGoClubMainFragment newInstance(GoClubTabName name, PostStatus status) {
+        CreateGoClubMainFragment fragment = new CreateGoClubMainFragment();
         Bundle args = new Bundle();
         args.putString("tabName", name.toString());
         args.putString("postStatus", status.toString());
@@ -54,7 +60,15 @@ public class PostGoClubMainTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_post_go_club_main_tab, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_go_club_main, container, false);
+
+        imgCategory = (ImageView) view.findViewById(R.id.img_category);
+        lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
+        Picasso.with(mContext)
+                .load(selectedCategory.getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory.setText(selectedCategory.getName());
 
         initTabView(view);
 

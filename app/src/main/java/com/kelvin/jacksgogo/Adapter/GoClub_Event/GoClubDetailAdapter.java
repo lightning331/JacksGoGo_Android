@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubMembersActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppInviteProviderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.GoClubDetailEventView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailAverageQuoteCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
@@ -18,6 +18,11 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.R;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 
 public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -75,7 +80,10 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             eventViewHolder.btnCreateEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent mIntent = new Intent(mContext, CreateGoClubActivity.class);
+                    mIntent.putExtra(EDIT_STATUS, POST);
+                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                    mContext.startActivity(mIntent);
                 }
             });
             return eventViewHolder;

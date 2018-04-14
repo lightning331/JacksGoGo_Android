@@ -44,7 +44,7 @@ public class PostGoClubTabView extends RelativeLayout implements View.OnClickLis
     private void initView() {
 
         LayoutInflater mLayoutInflater      = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mTabView                 = mLayoutInflater.inflate(R.layout.view_post_go_club_tab, this);
+        View mTabView                 = mLayoutInflater.inflate(R.layout.view_create_go_club_tab, this);
 
         mDescribeButton     = (LinearLayout) mTabView.findViewById(R.id.btn_describe);
         mTimeButton         = (LinearLayout) mTabView.findViewById(R.id.btn_time);

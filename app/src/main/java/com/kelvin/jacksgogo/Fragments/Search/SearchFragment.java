@@ -111,11 +111,6 @@ public class SearchFragment extends Fragment {
                 fetchTimelineAsync(0);
             }
         });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(R.color.JGGOrange,
-                R.color.JGGOrange,
-                R.color.JGGOrange,
-                R.color.JGGOrange);
 
         recyclerView = view.findViewById(R.id.search_main_recycler_view);
         if (recyclerView != null) {
@@ -167,10 +162,25 @@ public class SearchFragment extends Fragment {
         }
 
         if (appType.equals(SERVICES)) {
+            // Configure the refreshing colors
+            swipeContainer.setColorSchemeResources(R.color.JGGGreen,
+                    R.color.JGGGreen,
+                    R.color.JGGGreen,
+                    R.color.JGGGreen);
             updateServiceAdapter();
         } else if (appType.equals(JOBS)) {
+            // Configure the refreshing colors
+            swipeContainer.setColorSchemeResources(R.color.JGGCyan,
+                    R.color.JGGCyan,
+                    R.color.JGGCyan,
+                    R.color.JGGCyan);
             updateJobAdapter();
         } else if (appType.equals(GOCLUB)) {
+            // Configure the refreshing colors
+            swipeContainer.setColorSchemeResources(R.color.JGGPurple,
+                    R.color.JGGPurple,
+                    R.color.JGGPurple,
+                    R.color.JGGPurple);
             updateGoClubAdapter();
         }
     }
@@ -309,7 +319,7 @@ public class SearchFragment extends Fragment {
 
                         serviceAdapter.notifyDataChanged(mCategories, mServices);
                         serviceAdapter.notifyDataSetChanged();
-                        //recyclerView.setAdapter(serviceAdapter);
+                        recyclerView.setAdapter(serviceAdapter);
 
                         // Now we call setRefreshing(false) to signal refresh has finished
                         swipeContainer.setRefreshing(false);
@@ -390,7 +400,7 @@ public class SearchFragment extends Fragment {
 
                         jobAdapter.notifyDataChanged(mCategories, mJobs);
                         jobAdapter.notifyDataSetChanged();
-                        //recyclerView.setAdapter(jobAdapter);
+                        recyclerView.setAdapter(jobAdapter);
 
                         // Now we call setRefreshing(false) to signal refresh has finished
                         swipeContainer.setRefreshing(false);

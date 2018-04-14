@@ -122,6 +122,7 @@
                                 android:id="@+id/btn_view_all"
                                 android:layout_width="100dp"
                                 android:layout_height="match_parent"
+                                android:layout_marginRight="4dp"
                                 android:orientation="vertical"
                                 android:gravity="center">
 

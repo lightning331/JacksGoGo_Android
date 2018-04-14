@@ -8,11 +8,8 @@ import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
-import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
-import com.kelvin.jacksgogo.Fragments.GoClub_Event.PostGoClubMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 
 import butterknife.BindView;

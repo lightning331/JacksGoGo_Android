@@ -16,9 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
+import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
 import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
 import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView.PostJobTabName;
-import com.kelvin.jacksgogo.Fragments.GoClub_Event.PostGoClubMainTabFragment;
+import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateEventMainFragment;
+import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateGoClubMainFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -122,9 +124,8 @@ public class PostJobCategoryFragment extends Fragment {
         adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (position == 0) {
-
-                } else {
+                if (position > 0) {
+                    selectedCategory = mCategories.get(position);
                     if (appType == AppointmentType.JOBS) {
                         PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabName.DESCRIBE, PostStatus.POST);
                         selectedCategory = mCategories.get(position - 1);
@@ -138,11 +139,15 @@ public class PostJobCategoryFragment extends Fragment {
                     } else if (appType == AppointmentType.GOCLUB) {
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.post_go_club_container, PostGoClubMainTabFragment.newInstance(GoClubTabName.DESCRIBE, PostStatus.POST))
+                                .replace(R.id.post_go_club_container, CreateGoClubMainFragment.newInstance(GoClubTabName.DESCRIBE, PostStatus.POST))
                                 .addToBackStack("post_go_club")
                                 .commit();
                     } else if (appType == AppointmentType.EVENTS) {
-
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(EventTabName.DESCRIBE, PostStatus.POST))
+                                .addToBackStack("post_event")
+                                .commit();
                     }
                 }
             }

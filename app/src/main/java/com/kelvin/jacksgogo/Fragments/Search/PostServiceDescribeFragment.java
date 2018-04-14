@@ -53,6 +53,7 @@ public class PostServiceDescribeFragment extends Fragment
     private ArrayList<AlbumFile> mAlbumFiles;
 
     private TextView lblTitle;
+    private TextView lblDescTitle;
     private TextView lblDescription;
     private TextView lblTags;
     private EditText txtServiceTitle;
@@ -110,6 +111,7 @@ public class PostServiceDescribeFragment extends Fragment
     private void initView(View view) {
 
         recyclerView = view.findViewById(R.id.describe_photo_recycler_view);
+        lblDescTitle = view.findViewById(R.id.lbl_event_title);
         lblTitle = view.findViewById(R.id.lbl_title);
         lblDescription = view.findViewById(R.id.lbl_description);
         lblTags = view.findViewById(R.id.lbl_tags);
@@ -125,7 +127,9 @@ public class PostServiceDescribeFragment extends Fragment
         txtTakePhoto = view.findViewById(R.id.lbl_take_photo);
         btnNext = view.findViewById(R.id.btn_post_service_next);
         lblNext = view.findViewById(R.id.lbl_post_service_next);
+
         imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
+        lblDescTitle.setVisibility(View.GONE);
         if (appType.equals(JOBS)) {
             lblTitle.setText(R.string.post_job_desc_title);
             lblDescription.setText(R.string.post_job_desc_description);
@@ -146,7 +150,8 @@ public class PostServiceDescribeFragment extends Fragment
             txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGPurple));
             nextButton = R.drawable.purple_background;
             imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
-        } else if (appType.equals(GOCLUB)) {
+        } else if (appType.equals(EVENTS)) {
+            lblDescTitle.setVisibility(View.VISIBLE);
             lblTitle.setText("Give your event a short title.");
             lblDescription.setText("Give a description for your event.");
             lblTags.setText("Add tags to your event (optional.");
@@ -156,7 +161,7 @@ public class PostServiceDescribeFragment extends Fragment
             imgTakePhoto.setImageResource(R.mipmap.icon_photo_purple);
             txtTakePhoto.setTextColor(getResources().getColor(R.color.JGGPurple));
             nextButton = R.drawable.purple_background;
-            imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
+            imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGPurple);
         }
         if (appType.equals(SERVICES) || appType.equals(JOBS)) {
             // Set Job Describe Data
@@ -218,7 +223,7 @@ public class PostServiceDescribeFragment extends Fragment
                                 .title("Include Photos") // Title.
                                 .statusBarColor(ContextCompat.getColor(mContext, R.color.JGGGrey1)) // StatusBar color.
                                 .toolBarColor(Color.WHITE) // Toolbar color.
-                                .navigationBarColor(Color.GREEN) // Virtual NavigationBar color of Android5.0+.
+                                .navigationBarColor(imageSelectionColor) // Virtual NavigationBar color of Android5.0+.
                                 .mediaItemCheckSelector(imageSelectionColor, imageSelectionColor) // Image or video selection box.
                                 .bucketItemCheckSelector(imageSelectionColor, imageSelectionColor) // Select the folder selection box.
                                 .buttonStyle( // Used to configure the style of button when the image/video is not found.
@@ -281,11 +286,6 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (txtServiceTitle.length() > 0
                 && txtServiceDesc.length() > 0) {
@@ -299,6 +299,11 @@ public class PostServiceDescribeFragment extends Fragment
             btnNext.setBackgroundResource(R.drawable.grey_background);
             btnNext.setClickable(false);
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
     }
 
     @Override
