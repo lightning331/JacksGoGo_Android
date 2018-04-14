@@ -26,6 +26,7 @@ public class JGGAppManager {
     private static final String TOKEN = "token";
     private static final String EXPIRE_IN = "expire_in";
     private static final String USERNAME_KEY = "username";
+    private static final String EMAIL_KEY = "email";
     private static final String PASSWORD_KEY = "password";
     private static final String REGION_KEY = "region";
 
@@ -112,16 +113,18 @@ public class JGGAppManager {
         return null;
     }
 
-    public void saveUser(String username, String password) {
-        editor.putString(USERNAME_KEY, username);
+    public void saveUser(String username, String email, String password) {
+        editor.putString(EMAIL_KEY, email);
         editor.putString(PASSWORD_KEY, password);
+        editor.putString(USERNAME_KEY, username);
         editor.commit();
     }
 
     public String[] getUsernamePassword() {
-        String[] v = new String[2];
-        v[0] = sharedPreferences.getString(USERNAME_KEY, "");
+        String[] v = new String[3];
+        v[0] = sharedPreferences.getString(EMAIL_KEY, "");
         v[1] = sharedPreferences.getString(PASSWORD_KEY, "");
+        v[2] = sharedPreferences.getString(USERNAME_KEY, "");
         return v;
     }
 
@@ -132,7 +135,7 @@ public class JGGAppManager {
     }
 
     private Date getDateCurrentTimeZone(long timestamp) {
-        try{
+        try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timestamp * 1000);
@@ -140,7 +143,7 @@ public class JGGAppManager {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date currenTimeZone = (Date) calendar.getTime();
             return currenTimeZone;
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
         return null;
     }

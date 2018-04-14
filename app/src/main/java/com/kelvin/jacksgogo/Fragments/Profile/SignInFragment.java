@@ -29,13 +29,11 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
@@ -125,63 +123,42 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
     private void SignIn() {
         progressDialog = Global.createProgressDialog(mContext);
 
-        Retrofit retrofit = JGGURLManager.getClient();
-        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
-        Call<JGGTokenResponse> call = apiManager.authTocken(strEmail, strPassword, "password");
-        call.enqueue(new Callback<JGGTokenResponse>() {
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
+        loginCall.enqueue(new Callback<JGGUserProfileResponse>() {
             @Override
-            public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
+            public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
 
-                    String access_token = response.body().getAccess_token();
-                    Long expire_in = response.body().getExpires_in();
+                    if (response.body().getSuccess()) {
 
-                    JGGAppManager.getInstance(mContext).saveToken(access_token, expire_in);
+                        // Save Current User
+                        JGGUserProfileModel user = response.body().getValue();
+                        JGGAppManager.getInstance(mContext).saveUser(user.getUser().getUserName(), user.getUser().getEmail(), strPassword);
+                        currentUser = user;
+                        // Save Access Token
+                        String access_token = response.body().getToken().getAccess_token();
+                        Long expire_in = response.body().getToken().getExpires_in();
+                        JGGAppManager.getInstance(mContext).saveToken(access_token, expire_in);
 
-                    JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-                    Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
-                    loginCall.enqueue(new Callback<JGGUserProfileResponse>() {
-                        @Override
-                        public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
-                            progressDialog.dismiss();
-                            if (response.isSuccessful()) {
-
-                                if (response.body().getSuccess()) {
-                                    JGGUserProfileModel user = response.body().getValue();
-                                    currentUser = user;
-
-                                    if (user.getUser().getPhoneNumberConfirmed()) {
-                                        JGGAppManager.getInstance(mContext).saveUser(strEmail, strPassword);
-                                        loggedIn();
-                                    } else {
-                                        onShowPhoneVerifyDialog();
-                                    }
-                                } else {
-                                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-
-                            } else {
-                                int statusCode  = response.code();
-                                Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                            }
+                        if (user.getUser().getPhoneNumberConfirmed()) {
+                            loggedIn();
+                        } else {
+                            onShowPhoneVerifyDialog();
                         }
-
-                        @Override
-                        public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
-                            Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                        }
-                    });
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
-                    progressDialog.dismiss();
                     int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<JGGTokenResponse> call, Throwable t) {
+            public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }

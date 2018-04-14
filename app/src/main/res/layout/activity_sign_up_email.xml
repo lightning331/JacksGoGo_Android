@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:text="Please enter your email and password"
+                android:text="Please enter your name, email and password"
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"
@@ -83,8 +83,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/txt_sign_up_user_name"
+                        android:hint="Username  6-15 alphanumerical only"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:background="@color/JGGWhite">
+                    </EditText>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@drawable/grey_border_background">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
                         android:id="@+id/txt_sign_up_email"
-                        android:hint="Email"
+                        android:hint="Email          name@email.com"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -114,7 +144,7 @@
                     android:layout_height="wrap_content">
                     <EditText
                         android:id="@+id/txt_sign_up_password"
-                        android:hint="Password"
+                        android:hint="Password  6-15 characters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -144,7 +174,7 @@
                     android:layout_height="wrap_content">
                     <EditText
                         android:id="@+id/txt_sign_up_confirm_password"
-                        android:hint="Confirm Password"
+                        android:hint="Confirm Password  6-15 characters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -204,6 +234,7 @@
                 android:layout_height="48dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/facebook_button">
                 <LinearLayout
                     android:layout_width="0dp"

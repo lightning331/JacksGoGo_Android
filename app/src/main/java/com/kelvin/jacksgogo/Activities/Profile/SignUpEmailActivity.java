@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,25 +19,26 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    private LinearLayout btnBack;
-    private EditText txtEmail;
-    private EditText txtPassword;
-    private EditText txtConfirmPassword;
-    private LinearLayout btnSignUp;
-    private TextView lblSignUp;
-    private LinearLayout btnSignUpFacebook;
+    @BindView(R.id.btn_sign_up_email_back) LinearLayout btnBack;
+    @BindView(R.id.txt_sign_up_user_name) EditText txtUserName;
+    @BindView(R.id.txt_sign_up_email) EditText txtEmail;
+    @BindView(R.id.txt_sign_up_password) EditText txtPassword;
+    @BindView(R.id.txt_sign_up_confirm_password) EditText txtConfirmPassword;
+    @BindView(R.id.btn_sign_up) LinearLayout btnSignUp;
+    @BindView(R.id.lbl_sign_up) TextView lblSignUp;
+    @BindView(R.id.btn_sign_up_facebook) LinearLayout btnSignUpFacebook;
 
     private ProgressDialog progressDialog;
     private String strEmail;
@@ -49,6 +49,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_email);
+        ButterKnife.bind(this);
+
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
             regionID = extra.getString("SELECTED_REGION_ID");
@@ -57,17 +59,11 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-        this.txtEmail = findViewById(R.id.txt_sign_up_email);
         this.txtEmail.addTextChangedListener(this);
-        this.txtPassword = findViewById(R.id.txt_sign_up_password);
         this.txtPassword.addTextChangedListener(this);
-        this.txtConfirmPassword = findViewById(R.id.txt_sign_up_confirm_password);
         this.txtConfirmPassword.addTextChangedListener(this);
-        this.btnSignUp = findViewById(R.id.btn_sign_up);
-        this.lblSignUp = findViewById(R.id.lbl_sign_up);
         this.btnSignUpFacebook = findViewById(R.id.btn_sign_up_facebook);
         this.btnSignUpFacebook.setOnClickListener(this);
-        this.btnBack = findViewById(R.id.btn_sign_up_email_back);
         this.btnBack.setOnClickListener(this);
     }
 
@@ -93,7 +89,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         progressDialog = Global.createProgressDialog(this);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGBaseResponse> signUpCall = signInManager.accountSignUp(strEmail, strPassword, regionID);
+        Call<JGGBaseResponse> signUpCall = signInManager.accountSignUp(txtUserName.getText().toString(), strEmail, strPassword, regionID);
         signUpCall.enqueue(new Callback<JGGBaseResponse>() {
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
@@ -101,34 +97,10 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
-                        Retrofit retrofit = JGGURLManager.getClient();
-                        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
-                        Call<JGGTokenResponse> tokenCall = apiManager.authTocken(strEmail, strPassword, "password");
-                        tokenCall.enqueue(new Callback<JGGTokenResponse>() {
-                            @Override
-                            public void onResponse(Call<JGGTokenResponse> call, Response<JGGTokenResponse> response) {
-                                if (response.isSuccessful()) {
-                                    
-                                    String access_token = response.body().getAccess_token();
-                                    Long expire_in = response.body().getExpires_in();
+                        JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(txtUserName.getText().toString(), strEmail, strPassword);
 
-                                    JGGAppManager.getInstance(SignUpEmailActivity.this).saveToken(access_token, expire_in);
-                                    JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(strEmail, strPassword);
+                        onShowPhoneVerify();
 
-                                    onShowPhoneVerify();
-                                } else {
-                                    progressDialog.dismiss();
-                                    int statusCode  = response.code();
-                                    Toast.makeText(SignUpEmailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<JGGTokenResponse> call, Throwable t) {
-                                Toast.makeText(SignUpEmailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-                            }
-                        });
                     } else {
                         Toast.makeText(SignUpEmailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -141,7 +113,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Log.d("SignUpEmailActivity", t.getMessage());
                 Toast.makeText(SignUpEmailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }

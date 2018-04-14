@@ -13,7 +13,6 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGTokenResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import okhttp3.MultipartBody;
@@ -37,14 +36,8 @@ public interface JGGAPIManager {
      *  ACCOUNT
      */
     @FormUrlEncoded
-    @POST("oauth/Token")
-    Call<JGGTokenResponse> authTocken(@Field("username") String email,
-                                      @Field("password") String password,
-                                      @Field("grant_type") String grant_type);
-
-    @FormUrlEncoded
     @POST("api/Account/Login")
-    Call<JGGUserProfileResponse> accountLogin(@Field("Email") String email,
+    Call<JGGUserProfileResponse> accountLogin(@Field("Username") String username,
                                               @Field("Password") String password);
 
     @POST("api/Account/Logout")
@@ -55,17 +48,21 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("api/Account/Register")
-    Call<JGGBaseResponse> accountSignUp(@Field("Email") String email,
+    Call<JGGBaseResponse> accountSignUp(@Field("Username") String username,
+                                        @Field("Email") String email,
                                         @Field("Password") String password,
                                         @Field("RegionID") String regionID);
 
     @FormUrlEncoded
     @POST("api/Account/AddPhoneNumber")
-    Call<JGGBaseResponse> accountAddPhone(@Field("Number") String phoneNumber);
+    Call<JGGBaseResponse> accountAddPhone(@Field("Username") String username,
+                                          @Field("Number") String phoneNumber);
 
     @FormUrlEncoded
     @POST("api/Account/VerifyCode")
-    Call<JGGUserProfileResponse> verifyPhoneNumber(@Field("Provider") String phoneNumber,
+    Call<JGGUserProfileResponse> verifyPhoneNumber(@Field("Username") String username,
+                                                   @Field("Password") String password,
+                                                   @Field("Provider") String provider,
                                                    @Field("Code") String code);
 
     /*
@@ -100,17 +97,17 @@ public interface JGGAPIManager {
     @FormUrlEncoded
     @POST("api/Appointment/SearchJob")
     Call<JGGGetAppsResponse> searchJob(@Field("RegionID") String regionID,
-                                           @Field("UserProfileID") String userProfileID,
-                                           @Field("Query") String query,
-                                           @Field("CategoryID") String categoryID,
-                                           @Field("Tag") Integer tag,
-                                           @Field("PostedOn") Integer postedOn,
-                                           @Field("Lat") String lat,
-                                           @Field("Lon") String lon,
-                                           @Field("Distance") String distance,
-                                           @Field("IsNearBy") String isNearBy,
-                                           @Field("PageIndex") Integer pageIndex,
-                                           @Field("PageSize") Integer pageSize);
+                                       @Field("UserProfileID") String userProfileID,
+                                       @Field("Query") String query,
+                                       @Field("CategoryID") String categoryID,
+                                       @Field("Tag") Integer tag,
+                                       @Field("PostedOn") Integer postedOn,
+                                       @Field("Lat") String lat,
+                                       @Field("Lon") String lon,
+                                       @Field("Distance") String distance,
+                                       @Field("IsNearBy") String isNearBy,
+                                       @Field("PageIndex") Integer pageIndex,
+                                       @Field("PageSize") Integer pageSize);
 
     /*
      *  Appointment Service

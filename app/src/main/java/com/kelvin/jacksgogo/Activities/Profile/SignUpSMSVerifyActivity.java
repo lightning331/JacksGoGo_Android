@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
@@ -30,6 +30,7 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -77,11 +78,54 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
         this.btnBack.setOnClickListener(this);
     }
 
+    private void submit() {
+        progressDialog = createProgressDialog(this);
+
+        String password = JGGAppManager.getInstance(this).getUsernamePassword()[1];
+        String username = JGGAppManager.getInstance(this).getUsernamePassword()[2];
+
+        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGUserProfileResponse> signUpCall = signInManager.verifyPhoneNumber(username, password, strPhoneNumber, strOTP);
+        signUpCall.enqueue(new Callback<JGGUserProfileResponse>() {
+            @Override
+            public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                        // Save Current User
+                        JGGUserProfileModel user = response.body().getValue();
+                        currentUser = user;
+                        // Save Access Token
+                        String access_token = response.body().getToken().getAccess_token();
+                        Long expire_in = response.body().getToken().getExpires_in();
+                        JGGAppManager.getInstance(SignUpSMSVerifyActivity.this).saveToken(access_token, expire_in);
+
+                        onShowMainActivity();
+                    } else {
+                        Toast.makeText(SignUpSMSVerifyActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(SignUpSMSVerifyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
+                Toast.makeText(SignUpSMSVerifyActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     private void reSendOTP() {
         progressDialog = createProgressDialog(this);
 
+        String username = JGGAppManager.getInstance(this).getUsernamePassword()[2];
+
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(strPhoneNumber);
+        Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(username, strPhoneNumber);
         signUpCall.enqueue(new Callback<JGGBaseResponse>() {
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
@@ -100,39 +144,6 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
 
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Log.d("SignUpEmailActivity", t.getMessage());
-                Toast.makeText(SignUpSMSVerifyActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-    }
-
-    private void submit() {
-        progressDialog = createProgressDialog(this);
-
-        JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGUserProfileResponse> signUpCall = signInManager.verifyPhoneNumber(strPhoneNumber, strOTP);
-        signUpCall.enqueue(new Callback<JGGUserProfileResponse>() {
-            @Override
-            public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        JGGUserProfileModel user = response.body().getValue();
-                        JGGAppManager.getInstance(SignUpSMSVerifyActivity.this).currentUser = user;
-                        onShowMainActivity();
-                    } else {
-                        Toast.makeText(SignUpSMSVerifyActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(SignUpSMSVerifyActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGUserProfileResponse> call, Throwable t) {
-                Log.d("SignUpSMSVerifyActivity", t.getMessage());
                 Toast.makeText(SignUpSMSVerifyActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
