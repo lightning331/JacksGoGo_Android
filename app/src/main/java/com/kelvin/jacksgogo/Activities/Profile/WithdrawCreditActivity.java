@@ -3,6 +3,8 @@ package com.kelvin.jacksgogo.Activities.Profile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.kelvin.jacksgogo.R;
+
 public class WithdrawCreditActivity extends AppCompatActivity {
 
     @Override
