@@ -54,7 +54,6 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.JOBS, mContext, new ArrayList<JGGCategoryModel>());
-            headerView.totalServiceCount.setText(String.valueOf(mJobs.size()));
             headerView.setOnClickListener(this);
             return headerView;
         } else if (viewType == VIEW_TYPE_CATEGORY) {

@@ -4,6 +4,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppHistoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
@@ -13,6 +14,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import okhttp3.MultipartBody;
@@ -166,11 +168,10 @@ public interface JGGAPIManager {
                                                    @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGGetAppsResponse> getAppointmentHistory(@Query("AppointmentID") String appointmentID);
+    Call<JGGAppHistoryResponse> getAppointmentHistory(@Query("AppointmentID") String appointmentID);
 
     @GET("api/Appointment/GetTotalAppointmentsCount")
-    Call<JGGGetAppsResponse> getTotalAppointmentsCount(@Query("IsJob") String userProfileID,
-                                                       @Query("Hours") Integer pageIndex);
+    Call<JGGAppTotalCountResponse> getTotalAppointmentsCount(@Query("Hours") Integer hours);
 
     @GET("api/Appointment/GetJobByID")
     Call<JGGGetAppResponse> getJobByID(@Query("JobID") String jobID);
