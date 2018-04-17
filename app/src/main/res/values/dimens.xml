@@ -31,4 +31,9 @@
     <dimen name="text_margin">15dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="input_height">48dp</dimen>
+    <dimen name="credit_header_height">152dp</dimen>
+
+
 </resources>

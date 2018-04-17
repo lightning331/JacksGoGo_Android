@@ -185,6 +185,9 @@
         <activity
             android:name=".Activities.GoClub_Event.CreateGoClubActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Profile.CreditActivity" />
+        <activity android:name=".Activities.Profile.SetupPaymentActivity" />
+        <activity android:name=".Activities.Profile.WithdrawCreditActivity"></activity>
     </application>
 
 </manifest>
