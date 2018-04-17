@@ -430,6 +430,12 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         mMoreButtonImage.setImageResource(R.mipmap.button_edit_orange);
     }
 
+    public void setCreditActionBar(String title) {
+        mTitleTextView.setText(title);
+        mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+        mMoreButtonImage.setVisibility(View.GONE);
+    }
+
     public void setEditMoreButtonClicked(boolean isSelected) {
         if (isSelected) {
             mMoreButtonImage.setImageResource(R.mipmap.button_more_active_orange);

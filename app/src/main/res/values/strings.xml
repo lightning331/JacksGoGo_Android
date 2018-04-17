@@ -221,6 +221,22 @@
     <!-- TODO: Profile -->
     <string name="edit_profile_actionbar_title">Edit Profile</string>
 
+    <!--TODO: Credit-->
+    <string name="setup_payment">Setup Payment Methood</string>
+    <string name="credit">Credit</string>
+    <string name="details">Details</string>
+    <string name="added">Added ($)</string>
+    <string name="used">Used ($)</string>
+    <string name="active_payment">Let`s set up your payments. It might take up to 3 dyas to activate your payment method. \n\nPlease enter your back SWIFT code below:</string>
+    <string name="credit_name">CITIBANK SINGAPORE PTE LTD 83, Punggol Central, waterway Point, #01-07, Singarpare 828661</string>
+    <string name="bank_term">I attest that I am the owner and have full authoisation to this bank account.</string>
+    <string name="double_check">Please double-check your account info!</string>
+    <string name="delay_fees">Incorrect or mismatched account name and number can result in withdrawal delays and fees.</string>
+    <string name="withdraw_credit">Withdraw Credit</string>
+    <string name="payment_alert_title">Payment Method Setup!</string>
+    <string name="pay_desc">It might take up to 3 days to activate.</string>
+    <string name="back_credit">Back To Credit</string>
+
     <!-- TODO: Filter -->
     <string name="title_show_services">Show Only Services With The Keywords</string>
     <string name="title_show_jobs">Show Only Jobs With The Keywords</string>

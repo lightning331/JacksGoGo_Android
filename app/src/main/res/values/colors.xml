@@ -25,5 +25,6 @@
     <color name="JGGFacebook">#4267B2</color>
     <color name="JGGLogoBackground">#FED4BA</color>
     <color name="transparent">#00000000</color>
+    <color name="orange_gradient">#ff8629</color>
 
 </resources>
