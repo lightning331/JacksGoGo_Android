@@ -35,5 +35,7 @@
     <dimen name="input_height">48dp</dimen>
     <dimen name="credit_header_height">152dp</dimen>
 
+    <dimen name="flag_width">64dp</dimen>
+
 
 </resources>

@@ -11,19 +11,17 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.CreditCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.CreditHeaderCell;
 import com.kelvin.jacksgogo.R;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-
 /**
  * Created by storm2 on 4/16/2018.
  */
 
-public class CreditAdapter extends RecyclerView.Adapter {
+public class JacksAdapter extends RecyclerView.Adapter {
     private Context mContext;
 
     public static final int HEADER_TYPE = 0;
     public static final int ITEM_TYPE = 1;
 
-    public CreditAdapter(Context context) {
+    public JacksAdapter(Context context) {
         mContext = context;
     }
 
@@ -44,8 +42,8 @@ public class CreditAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder instanceof CreditHeaderCell) {
-            ((CreditHeaderCell) holder).txtAdded.setText(mContext.getString(R.string.credit_added));
-            ((CreditHeaderCell) holder).txtUsed.setText(mContext.getString(R.string.credit_used));
+            ((CreditHeaderCell) holder).txtAdded.setText(mContext.getString(R.string.jacks_added));
+            ((CreditHeaderCell) holder).txtUsed.setText(mContext.getString(R.string.jacks_used));
         }
         if (holder instanceof CreditCell) {}
     }
@@ -66,7 +64,7 @@ public class CreditAdapter extends RecyclerView.Adapter {
     private ProfileHomeAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(RecyclerView.ViewHolder holder, int position);
+        void onItemClick(ViewHolder holder, int position);
     }
 
     public void setOnItemClickListener(ProfileHomeAdapter.OnItemClickListener listener) {

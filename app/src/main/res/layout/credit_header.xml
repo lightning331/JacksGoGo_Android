@@ -31,12 +31,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="20">
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txt_added"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/caption_font_size"
-                android:text="@string/added"
+                android:text="@string/credit_added"
                 android:textColor="@android:color/black" />
         </LinearLayout>
         <LinearLayout
@@ -44,12 +44,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="20">
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txt_used"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/caption_font_size"
-                android:text="@string/used"
+                android:text="@string/credit_used"
                 android:textColor="@android:color/black" />
         </LinearLayout>
     </LinearLayout>
