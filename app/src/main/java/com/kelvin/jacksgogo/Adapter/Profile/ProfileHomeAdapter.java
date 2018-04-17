@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Profile.BusinessProfileActivity;
+import com.kelvin.jacksgogo.Activities.Profile.ChangeRegionActivity;
 import com.kelvin.jacksgogo.Activities.Profile.CreditActivity;
 import com.kelvin.jacksgogo.Activities.Profile.JacksActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
@@ -82,6 +83,13 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, JacksActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+            header.btnChangeRegion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ChangeRegionActivity.class);
                     mContext.startActivity(intent);
                 }
             });

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
     tools:context="com.kelvin.jacksgogo.Activities.Profile.ChangeRegionActivity"
     android:orientation="vertical"
     android:gravity="center_horizontal">
@@ -29,68 +28,29 @@
             app:popupTheme="@style/AppTheme" />
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:fontFamily="@font/mulibold"
-        android:textSize="@dimen/title2_font_size"
-        android:textAlignment="center"
-        android:text="@string/current_region"
-        android:textColor="@android:color/black"/>
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/title2_font_size"
+            android:textAlignment="center"
+            android:text="@string/current_region"
+            android:textColor="@android:color/black"/>
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/img_avatar"
-        android:layout_width="@dimen/flag_width"
-        android:layout_height="@dimen/flag_width"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:src="@mipmap/nurse"
-        android:background="@color/transparent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:riv_corner_radius="@dimen/circle_image_radius"
-        app:riv_mutate_background="true"
-        app:riv_border_width="1dp"
-        app:riv_border_color="@android:color/darker_gray"
-        app:riv_oval="true"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:fontFamily="@font/mulibold"
-        android:textSize="@dimen/list_title_font_size"
-        android:textAlignment="center"
-        android:text="Singapore"
-        android:textColor="@android:color/black"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:fontFamily="@font/muliregular"
-        android:textSize="@dimen/list_text_font_size"
-        android:textAlignment="center"
-        android:text="@string/region_desc"
-        android:textColor="@android:color/black"/>
-
-    <RelativeLayout
-        android:id="@+id/rl_activate"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:background="@color/JGGOrange"
-        android:gravity="center_vertical">
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/img_flag"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_centerVertical="true"
+            android:id="@+id/img_avatar"
+            android:layout_width="@dimen/flag_width"
+            android:layout_height="@dimen/flag_width"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:src="@mipmap/nurse"
             android:background="@color/transparent"
             android:adjustViewBounds="true"
@@ -100,15 +60,61 @@
             app:riv_border_width="1dp"
             app:riv_border_color="@android:color/darker_gray"
             app:riv_oval="true"/>
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:fontFamily="@font/mulibold"
+            android:textSize="@dimen/list_title_font_size"
             android:textAlignment="center"
-            android:gravity="center"
+            android:text="Singapore"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:fontFamily="@font/muliregular"
-            android:text="@string/activte_title"
-            android:textColor="@color/JGGWhite"
-            android:textAllCaps="false"/>
-    </RelativeLayout>
+            android:textSize="@dimen/list_text_font_size"
+            android:textAlignment="center"
+            android:text="@string/region_desc"
+            android:textColor="@android:color/black"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_activate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:background="@color/JGGOrange"
+            android:gravity="center_vertical">
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_flag"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/nurse"
+                android:background="@color/transparent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="@dimen/circle_image_radius"
+                app:riv_mutate_background="true"
+                app:riv_border_width="1dp"
+                app:riv_border_color="@android:color/darker_gray"
+                app:riv_oval="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:fontFamily="@font/muliregular"
+                android:text="@string/activte_title"
+                android:textColor="@color/JGGWhite"
+                android:textAllCaps="false"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
