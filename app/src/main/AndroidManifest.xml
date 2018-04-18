@@ -187,7 +187,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".Activities.Profile.CreditActivity" />
         <activity android:name=".Activities.Profile.SetupPaymentActivity" />
-        <activity android:name=".Activities.Profile.WithdrawCreditActivity"></activity>
+        <activity android:name=".Activities.Profile.WithdrawCreditActivity" />
+        <activity android:name=".Activities.Profile.JacksActivity" />
+        <activity android:name=".Activities.Profile.ChangeRegionActivity"></activity>
     </application>
 
 </manifest>

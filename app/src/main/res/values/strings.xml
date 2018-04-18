@@ -225,8 +225,8 @@
     <string name="setup_payment">Setup Payment Methood</string>
     <string name="credit">Credit</string>
     <string name="details">Details</string>
-    <string name="added">Added ($)</string>
-    <string name="used">Used ($)</string>
+    <string name="credit_added">Added ($)</string>
+    <string name="credit_used">Used ($)</string>
     <string name="active_payment">Let`s set up your payments. It might take up to 3 dyas to activate your payment method. \n\nPlease enter your back SWIFT code below:</string>
     <string name="credit_name">CITIBANK SINGAPORE PTE LTD 83, Punggol Central, waterway Point, #01-07, Singarpare 828661</string>
     <string name="bank_term">I attest that I am the owner and have full authoisation to this bank account.</string>
@@ -236,6 +236,15 @@
     <string name="payment_alert_title">Payment Method Setup!</string>
     <string name="pay_desc">It might take up to 3 days to activate.</string>
     <string name="back_credit">Back To Credit</string>
+    <string name="jacks_added">Added (J$)</string>
+    <string name="jacks_used">Used (J$)</string>
+    <string name="jacks_doallars">Jacks Dollars</string>
+
+    <!--TODO : change region-->
+    <string name="change_region">Change Region</string>
+    <string name="current_region">Your current active region is</string>
+    <string name="region_desc">You can only view content from %s. To view content from other countries, activate your other regional account.</string>
+    <string name="activte_title">Activate %s Account</string>
 
     <!-- TODO: Filter -->
     <string name="title_show_services">Show Only Services With The Keywords</string>
