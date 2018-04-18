@@ -4,7 +4,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGAppHistoryResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
@@ -168,7 +168,7 @@ public interface JGGAPIManager {
                                                    @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGAppHistoryResponse> getAppointmentHistory(@Query("AppointmentID") String appointmentID);
+    Call<JGGAppointmentActivityResponse> getAppointmentActivity(@Query("AppointmentID") String appointmentID);
 
     @GET("api/Appointment/GetTotalAppointmentsCount")
     Call<JGGAppTotalCountResponse> getTotalAppointmentsCount(@Query("Hours") Integer hours);

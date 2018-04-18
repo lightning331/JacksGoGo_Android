@@ -1,8 +1,8 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
-import com.kelvin.jacksgogo.Utils.Global.AppointmentHistoryStatus;
+import com.kelvin.jacksgogo.Utils.Global.AppointmentActivityStatus;
 
-public class JGGAppointmentHistory {
+public class JGGAppointmentActivityModel {
 
     private String ID;
     private String AppointmentID;
@@ -52,11 +52,11 @@ public class JGGAppointmentHistory {
         Reference = reference;
     }
 
-    public AppointmentHistoryStatus getStatus() {
-        return AppointmentHistoryStatus.valueOf(Status);
+    public AppointmentActivityStatus getStatus() {
+        return AppointmentActivityStatus.valueOf(Status);
     }
 
-    public void setStatus(AppointmentHistoryStatus status) {
+    public void setStatus(AppointmentActivityStatus status) {
         Status = status.getValue();
     }
 

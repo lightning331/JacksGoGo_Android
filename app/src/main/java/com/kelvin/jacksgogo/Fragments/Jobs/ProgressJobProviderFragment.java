@@ -37,9 +37,11 @@ import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -58,6 +60,7 @@ import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -117,20 +120,13 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         return fragment;
     }
 
-    public void setProposal(JGGProposalModel proposal) {
-        mProposal = proposal;
-        selectedProposal = mProposal;
-        mJob = selectedAppointment;
-        //mJob = mProposal.getAppointment();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         if (!getUserVisibleHint()) {
             return;
         }
-        onRefreshView();
+        getProposedStatus();
     }
 
     @Override
@@ -427,10 +423,45 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         clientDetailLayout.setVisibility(View.VISIBLE);
     }
 
+    private void getProposedStatus() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
+        call.enqueue(new Callback<JGGProposalResponse>() {
+            @Override
+            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        ArrayList<JGGProposalModel> mProposals = response.body().getValue();
+                        for (JGGProposalModel p : mProposals) {
+                            if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
+                                mProposal = p;
+                                mJob = mProposal.getAppointment();
+                            }
+                        }
+                        onRefreshView();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_invite_reject) {
-            onShowAlertDialog();
+            onShowRejectAlertDialog();
         } else if (view.getId() == R.id.btn_invite_accept) {
             onAcceptInvitation();
         } else if (view.getId() == R.id.btn_view_proposal) {
@@ -477,7 +508,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         });
     }
 
-    private void onShowAlertDialog() {
+    private void onShowRejectAlertDialog() {
         JGGAlertView builder = new JGGAlertView(mContext,
                 mContext.getResources().getString(R.string.alert_reject_title),
                 "",
