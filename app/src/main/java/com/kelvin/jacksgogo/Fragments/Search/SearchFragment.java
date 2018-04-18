@@ -35,6 +35,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class SearchFragment extends Fragment {
     private Intent mIntent;
 
     private String token;
+    private static final Integer hours = 0;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -167,6 +169,7 @@ public class SearchFragment extends Fragment {
                     R.color.JGGGreen,
                     R.color.JGGGreen,
                     R.color.JGGGreen);
+            getTotalAppointmentsCount(false);
             updateServiceAdapter();
         } else if (appType.equals(JOBS)) {
             // Configure the refreshing colors
@@ -174,6 +177,7 @@ public class SearchFragment extends Fragment {
                     R.color.JGGCyan,
                     R.color.JGGCyan,
                     R.color.JGGCyan);
+            getTotalAppointmentsCount(true);
             updateJobAdapter();
         } else if (appType.equals(GOCLUB)) {
             // Configure the refreshing colors
@@ -303,10 +307,34 @@ public class SearchFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
+    private void getTotalAppointmentsCount(boolean isJob) {
+        Retrofit retrofit = JGGURLManager.getClient();
+        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
+        Call<JGGAppTotalCountResponse> call = apiManager.getTotalAppointmentsCount(hours);
+        call.enqueue(new Callback<JGGAppTotalCountResponse>() {
+            @Override
+            public void onResponse(Call<JGGAppTotalCountResponse> call, Response<JGGAppTotalCountResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGAppTotalCountResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void onLoadServices(int index) {
         Retrofit retrofit = JGGURLManager.getClient();
         JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
-        //final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
                 null, null, null, null, null,
                 null, null, null, 0, 10);

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hbb20.CountryCodePicker;
@@ -12,6 +13,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by PUMA on 1/27/2018.
@@ -29,6 +32,9 @@ public class ProfileHomeHeaderCell extends RecyclerView.ViewHolder {
     public CountryCodePicker picker;
     public LinearLayout btnChangeRegion;
     public ImageView imgBackground;
+    public RelativeLayout rlCredit;
+    public RelativeLayout rlPoint;
+    public TextView txtPoint;
 
     public ProfileHomeHeaderCell(View itemView, Context context) {
         super(itemView);
@@ -42,6 +48,10 @@ public class ProfileHomeHeaderCell extends RecyclerView.ViewHolder {
         picker = (CountryCodePicker) itemView.findViewById(R.id.ccp);
         btnChangeRegion = (LinearLayout) itemView.findViewById(R.id.btn_change_region);
         imgBackground = (ImageView) itemView.findViewById(R.id.img_background);
+
+        rlCredit = (RelativeLayout) itemView.findViewById(R.id.rl_credit);
+        rlPoint = (RelativeLayout) itemView.findViewById(R.id.rl_point);
+        txtPoint = (TextView) itemView.findViewById(R.id.txtPoint);
     }
 
     public void setData(JGGUserProfileModel user) {

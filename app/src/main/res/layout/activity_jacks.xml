@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kelvin.jacksgogo.Activities.Profile.CreditActivity">
-
+    tools:context="com.kelvin.jacksgogo.Activities.Profile.JacksActivity">
     <RelativeLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
@@ -41,37 +40,41 @@
                 android:textSize="@dimen/list_text_font_size"
                 android:fontFamily="@font/mulibold"
                 android:textColor="@android:color/black"
-                android:text="@string/credit"/>
-            <TextView
+                android:text="@string/jacks_doallars"/>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/title1_font_size"
-                android:fontFamily="@font/mulibold"
-                android:textColor="@android:color/black"
-                android:text="$ 150.00" />
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/orange_circle"
+                    android:text="J$"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/title3_font_size"
+                    android:fontFamily="@font/mulibold"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/title1_font_size"
+                    android:fontFamily="@font/mulibold"
+                    android:textColor="@android:color/black"
+                    android:text="150" />
+            </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/credit_recycler_view"
+        android:id="@+id/jacks_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_payment"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"></android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/btn_payment"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:background="@color/JGGOrange"
-        android:fontFamily="@font/muliregular"
-        android:text="@string/setup_payment"
-        android:textAllCaps="false"
-        android:textColor="@color/JGGWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

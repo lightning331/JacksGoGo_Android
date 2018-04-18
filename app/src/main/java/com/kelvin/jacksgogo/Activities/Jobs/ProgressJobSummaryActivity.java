@@ -87,10 +87,10 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         setCategory();
         if (mJob.getUserProfileID().equals(currentUser.getID())) {
             actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-            getProposalsByJob();
+            onProgressJobFragment();
         } else {
             actionbarView.setDeleteJobStatus();
-            getProposedStatus();
+            onProgressProposalFragment();
         }
 
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
@@ -122,78 +122,21 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
 
     private void onProgressProposalFragment() {
         ProgressJobProviderFragment frag = new ProgressJobProviderFragment();
-        frag.setProposal(mProposal);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.app_detail_container, frag)
                 .commit();
     }
 
-    public void getProposalsByJob() {
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 50);
-        call.enqueue(new Callback<JGGProposalResponse>() {
-            @Override
-            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        mProposals = response.body().getValue();
-                        for (JGGProposalModel p : mProposals) {
-                            if (p.getStatus() == confirmed)
-                                selectedProposal = p;
-                        }
-                        onProgressJobFragment();
-                    } else {
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void getProposedStatus() {
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
-        call.enqueue(new Callback<JGGProposalResponse>() {
-            @Override
-            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        mProposals = response.body().getValue();
-                        mProposal = mProposals.get(0);
-                        onProgressProposalFragment();
-                    } else {
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     public void deleteJob(String reason) {
         selectedAppointment.setStatus(deleted);
         selectedAppointment.setReason(reason);
         mJob = selectedAppointment;
+        String jobID = mJob.getID();
+
         progressDialog = createProgressDialog(this);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        String jobID = mJob.getID();
         Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override

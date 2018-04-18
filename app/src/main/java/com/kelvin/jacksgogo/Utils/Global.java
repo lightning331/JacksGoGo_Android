@@ -301,7 +301,10 @@ public class Global {
         }
     }
 
-    public static enum AppointmentHistoryStatus {
+    public static enum AppointmentActivityStatus {
+        none(0),
+        unknown(99999),
+
         job_created(100),
         job_edited(101),
         job_closed(102),
@@ -362,18 +365,18 @@ public class Global {
         private int value;
         private static Map map = new HashMap<>();
 
-        AppointmentHistoryStatus(final int value) {
+        AppointmentActivityStatus(final int value) {
             this.value = value;
         }
 
         static {
-            for (AppointmentHistoryStatus status : AppointmentHistoryStatus.values()) {
+            for (AppointmentActivityStatus status : AppointmentActivityStatus.values()) {
                 map.put(status.value, status);
             }
         }
 
-        public static AppointmentHistoryStatus valueOf(int status) {
-            return (AppointmentHistoryStatus) map.get(status);
+        public static AppointmentActivityStatus valueOf(int status) {
+            return (AppointmentActivityStatus) map.get(status);
         }
 
         public int getValue() {

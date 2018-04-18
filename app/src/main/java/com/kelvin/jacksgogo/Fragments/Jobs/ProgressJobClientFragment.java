@@ -31,6 +31,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -136,10 +137,7 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_progress_job_client, container, false);
 
-        mProposal = selectedProposal;
         mJob = selectedAppointment;
-        if (mProposal != null)
-            providerName = mProposal.getUserProfile().getUser().getFullName();
 
         initView();
         return view;
@@ -383,7 +381,12 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
-
+                        for (JGGProposalModel p : mProposals) {
+                            if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
+                                mProposal = p;
+                                providerName = mProposal.getUserProfile().getUser().getFullName();
+                            }
+                        }
                         onRefreshView();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
