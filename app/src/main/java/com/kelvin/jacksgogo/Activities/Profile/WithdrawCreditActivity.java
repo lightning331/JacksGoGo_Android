@@ -15,6 +15,8 @@ import butterknife.OnClick;
 
 import com.kelvin.jacksgogo.R;
 
+import com.kelvin.jacksgogo.R;
+
 public class WithdrawCreditActivity extends AppCompatActivity {
     @BindView(R.id.payment_actionbar)
     Toolbar mToolbar;

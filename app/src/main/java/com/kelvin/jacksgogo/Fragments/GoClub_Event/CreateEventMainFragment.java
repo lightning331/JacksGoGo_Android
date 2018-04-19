@@ -20,6 +20,7 @@ import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class CreateEventMainFragment extends Fragment {
@@ -130,13 +131,38 @@ public class CreateEventMainFragment extends Fragment {
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == EventTabName.TIME) {
-
+            GcTimeFragment frag = new GcTimeFragment();
+            frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick() {
+                    tabView.setTabName(EventTabName.ADDRESS);
+                    refreshFragment();
+                }
+            });
+            ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == EventTabName.ADDRESS) {
-
+            GcAddressFragment frag = GcAddressFragment.newInstance(GOCLUB);;
+            frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick() {
+                    tabView.setTabName(EventTabName.LIMIT);
+                    refreshFragment();
+                }
+            });
+            ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == EventTabName.LIMIT) {
-
+            GcLimitFragment frag = new GcLimitFragment();
+            frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick() {
+                    tabView.setTabName(EventTabName.COST);
+                    refreshFragment();
+                }
+            });
+            ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == EventTabName.COST) {
-
+            GcCostFragment frag = new GcCostFragment();
+            ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         }
         ft.commit();
     }

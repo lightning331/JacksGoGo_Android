@@ -22,6 +22,8 @@ import butterknife.OnClick;
 
 import com.kelvin.jacksgogo.R;
 
+import com.kelvin.jacksgogo.R;
+
 public class CreditActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
     ImageView btn_back;

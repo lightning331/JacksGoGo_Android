@@ -270,6 +270,26 @@
     <string name="post_go_club_desc_description">Give a description for your GoClub.</string>
     <string name="post_go_club_desc_tag">Add tags to your GoClub(optional).</string>
 
+    <!--TODO: GoClub Create New Event-->
+    <string name="event_kind">What kind of event will it be?</string>
+    <string name="one_time_event">One-time event.</string>
+    <string name="repeating_event">Repeating event.</string>
+    <string name="event_when">When is the event?</string>
+    <string name="time_later">Do you want to set time slots now or later?</string>
+    <string name="now">Now.</string>
+    <string name="later">Later.</string>
+    <string name="next">Next</string>
+    <string name="schedule">Schedule</string>
+    <string name="set_time">Set Time</string>
+    <string name="duplicate_time">Duplicate Time</string>
+    <string name="done">Done</string>
+    <string name="view_time_slots">View Time Slots</string>
+    <string name="date_alert">Please set Date later than current time.</string>
+    <string name="gc_address_desc">Where is the event going to be at?</string>
+    <string name="share_location">Share your current location.</string>
+    <string name="select_location">Select Location From Map</string>
+    <string name="type_address">Type in an address.</string>
+
     <!-- TODO: Event-->
     <string name="title_request_join_event">Join Event</string>
     <string name="people_joined_event">people have joined this Event recently!</string>
