@@ -282,7 +282,7 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     private void setEventData() {
-
+        listener.onNextButtonClick();
     }
 
     @Override

@@ -32,6 +32,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.jggcalendarview.CalendarDay;
@@ -44,7 +45,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
@@ -162,8 +162,9 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         btnViewTime.setOnClickListener(this);
         btnNext.setOnClickListener(this);
 
-        mService = selectedAppointment;
-        if (mService.getSessions() != null
+        mService = JGGAppManager.getSelectedAppointment();
+        if (mService != null
+                && mService.getSessions() != null
                 && mService.getSessions().size() > 0) {
             mTimeSlots = mService.getSessions();
             mSelectedTimeSlot = mService.getSessions().get(0);
@@ -576,7 +577,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements
         } else if (view.getId() == R.id.btn_post_timeslot_add) {
             Date selectedDate = calendarView.getSelectedDate().getDate();
             if (selectedDate.before(new Date())) {
-                Toast.makeText(mContext, "Please set Date later than current time.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.date_alert), Toast.LENGTH_SHORT).show();
                 return;
             }
             onAddTimeClick(null, null);
@@ -608,7 +609,7 @@ public class PostServiceTimeSlotFragment extends Fragment implements
             listener.onNextButtonClick();
         }
         mService.setSessions(mTimeSlots);
-        selectedAppointment = mService;
+        JGGAppManager.setSelectedAppointment(mService);
     }
 
     private void onEditTitleClick() {
