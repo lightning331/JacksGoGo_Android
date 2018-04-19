@@ -34,8 +34,10 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -105,6 +107,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
+    private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private JGGAppointmentModel mJob;
     private JGGProposalModel mProposal;
     private String clientName;
@@ -126,7 +129,6 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         if (!getUserVisibleHint()) {
             return;
         }
-        getProposedStatus();
     }
 
     @Override
@@ -144,6 +146,18 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         View view = inflater.inflate(R.layout.fragment_progress_job_provider, container, false);
         initView(view);
         return view;
+    }
+
+    public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities, ArrayList<JGGProposalModel> proposals) {
+        mActivities = activities;
+        for (JGGProposalModel p : proposals) {
+            if (p.getUserProfileID().equals(currentUser.getID())) {
+                mProposal = p;
+                selectedProposal = mProposal;
+                mJob = mProposal.getAppointment();
+                onRefreshView();
+            }
+        }
     }
 
     private void initView(View view) {
@@ -223,10 +237,16 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
             } else {
                 // Waiting for Client's decision
                 setWaitingClientDecision();
+
+                // Client Info view
+                onShowClientInfoView();
             }
         } else if (mProposal.getStatus() == JGGProposalStatus.rejected) {
             // Client rejected provider's proposal
             setDeclineProposalStatus();
+
+            // Client Info view
+            onShowClientInfoView();
         } else if (mProposal.getStatus() == JGGProposalStatus.confirmed) {
 
             // Waiting for Client's decision
@@ -240,8 +260,11 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
                 setJobConfirmedStatus();
 
                 // Client set Job time
-                if (!getAppointmentTime(mJob).equals(""))
+                if (mJob.getSessions() == null) {
+
+                } else {
                     setJobStartedStatus();
+                }
             }
             if (mJob.getStatus() == deleted) {
 
@@ -384,7 +407,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     private void setDeclineProposalStatus() {
         lblPostedJob.setText(R.string.sent_proposal_title);
         quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
-        quotationView.btnViewQuotation.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationView.btnViewQuotation.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
         quotationView.btnViewQuotation.setText(R.string.edit_your_title);
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.lblTitle.setText(R.string.proposal_declined);
@@ -397,6 +420,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
                 startActivity(intent);
             }
         });
+        quotationLayout.addView(quotationView);
     }
 
     private void setDeletedJobStatus() {
@@ -423,41 +447,6 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         clientDetailLayout.setVisibility(View.VISIBLE);
     }
 
-    private void getProposedStatus() {
-        progressDialog = createProgressDialog(mContext);
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
-        call.enqueue(new Callback<JGGProposalResponse>() {
-            @Override
-            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        ArrayList<JGGProposalModel> mProposals = response.body().getValue();
-                        for (JGGProposalModel p : mProposals) {
-                            if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
-                                mProposal = p;
-                                mJob = mProposal.getAppointment();
-                            }
-                        }
-                        onRefreshView();
-                    } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_invite_reject) {
@@ -474,7 +463,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     }
 
     private void onAcceptInvitation() {
-        selectedProposal.setStatus(JGGProposalStatus.confirmed);
+        mProposal.setStatus(JGGProposalStatus.confirmed);
         Intent intent = new Intent(mContext, PostProposalActivity.class);
         intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
         startActivity(intent);
@@ -513,7 +502,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
                 mContext.getResources().getString(R.string.alert_reject_title),
                 "",
                 false,
-                "",
+                mContext.getResources().getString(R.string.alert_cancel),
                 R.color.JGGCyan,
                 R.color.JGGCyan10Percent,
                 mContext.getResources().getString(R.string.alert_reject_ok),
@@ -530,7 +519,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
                 }
             }
         });
-        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
     }
 

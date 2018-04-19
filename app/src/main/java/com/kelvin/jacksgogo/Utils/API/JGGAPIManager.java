@@ -168,7 +168,7 @@ public interface JGGAPIManager {
                                                    @Query("pageSize") Integer pageSize);
 
     @GET("api/Appointment/GetAppointmentHistory")
-    Call<JGGAppointmentActivityResponse> getAppointmentActivity(@Query("AppointmentID") String appointmentID);
+    Call<JGGAppointmentActivityResponse> getAppointmentActivities(@Query("AppointmentID") String appointmentID);
 
     @GET("api/Appointment/GetTotalAppointmentsCount")
     Call<JGGAppTotalCountResponse> getTotalAppointmentsCount(@Query("Hours") Integer hours);

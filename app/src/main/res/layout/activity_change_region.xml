@@ -87,7 +87,7 @@
             android:id="@+id/rl_activate"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
-            android:background="@color/JGGOrange"
+            android:background="@drawable/orange_background"
             android:gravity="center_vertical">
             <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"

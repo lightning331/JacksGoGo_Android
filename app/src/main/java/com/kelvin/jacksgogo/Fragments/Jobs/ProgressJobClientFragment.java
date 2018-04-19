@@ -33,8 +33,10 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -99,6 +101,7 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
     private JGGProposalModel mProposal;
     private JGGAppointmentModel mJob;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
+    private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private String mReason;
     private String providerName;
     private boolean isDeleted;
@@ -128,7 +131,6 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
         if (!getUserVisibleHint()) {
             return;
         }
-        getProposalsByJob();
     }
 
     @Override
@@ -141,6 +143,18 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
 
         initView();
         return view;
+    }
+
+    public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities, ArrayList<JGGProposalModel> proposals) {
+        mActivities = activities;
+        mProposals = proposals;
+        for (JGGProposalModel p : proposals) {
+            if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
+                mProposal = p;
+                providerName = mProposal.getUserProfile().getUser().getFullName();
+            }
+        }
+        onRefreshView();
     }
 
     private void initView() {
@@ -219,8 +233,6 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
             setJobStartedStatus();
         }
         if (mJob.getStatus() == deleted) {
-            setJobConfirmedStatus();
-
             // Cancelled View
             Picasso.with(mContext).load(currentUser.getUser().getPhotoURL())
                     .placeholder(R.mipmap.icon_profile)
@@ -368,41 +380,6 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
             Intent intent = new Intent(mContext, ServiceProviderActivity.class);
             startActivity(intent);
         }
-    }
-
-    private void getProposalsByJob() {
-        progressDialog = createProgressDialog(mContext);
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 50);
-        call.enqueue(new Callback<JGGProposalResponse>() {
-            @Override
-            public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        mProposals = response.body().getValue();
-                        for (JGGProposalModel p : mProposals) {
-                            if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
-                                mProposal = p;
-                                providerName = mProposal.getUserProfile().getUser().getFullName();
-                            }
-                        }
-                        onRefreshView();
-                    } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    int statusCode  = response.code();
-                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

@@ -139,7 +139,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     // Todo - Edit Popup Menu
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        //if (selectedAppointment.getUserProfileID().equals(currentUser.getUserID()))     // Owner popup menu
+        //if (selectedAppointment.getUserProfileID().equals(currentUser.getID()))     // Owner popup menu
         //    popupMenu.inflate(R.menu.go_club_owner_share_menu);
         //else{                                                                           // personal user popup menu
             if (joinGoClubStatus == JoinGoClubStatus.none)

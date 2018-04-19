@@ -125,7 +125,7 @@ public class PostProposalActivity extends AppCompatActivity {
     private void onShowPostedProposalFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                .replace(R.id.post_proposal_container, PostedProposalFragment.newInstance(status))
                 .commit();
     }
 
@@ -211,7 +211,7 @@ public class PostProposalActivity extends AppCompatActivity {
                     alertDialog.dismiss();
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                            .replace(R.id.post_proposal_container, PostedProposalFragment.newInstance(EDIT))
                             .commit();
                 }
             }

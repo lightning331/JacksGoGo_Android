@@ -358,6 +358,7 @@ public class Global {
 
         invoice_sent(603),
         invoice_approved(604),
+        give_tip(605),
 
         client_feedback(620),
         provider_feedback(621);

@@ -129,6 +129,7 @@ public class PostServiceDescribeFragment extends Fragment
         lblNext = view.findViewById(R.id.lbl_post_service_next);
 
         imageSelectionColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
+        nextButton = R.drawable.green_background;
         lblDescTitle.setVisibility(View.GONE);
         if (appType.equals(JOBS)) {
             lblTitle.setText(R.string.post_job_desc_title);
@@ -292,7 +293,6 @@ public class PostServiceDescribeFragment extends Fragment
 
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
             btnNext.setBackgroundResource(nextButton);
-            if (appType.equals(JOBS)) btnNext.setBackgroundResource(R.drawable.cyan_background);
             btnNext.setOnClickListener(this);
         } else {
             lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));

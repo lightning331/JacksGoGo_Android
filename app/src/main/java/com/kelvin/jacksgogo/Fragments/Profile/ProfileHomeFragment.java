@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Adapter.Profile.ProfileHomeAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
@@ -36,6 +37,7 @@ public class ProfileHomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private MainActivity mActivity;
 
     private RecyclerView recyclerView;
     private ProfileHomeAdapter adapter;
@@ -104,7 +106,7 @@ public class ProfileHomeFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         JGGAppManager.clearAll();
-                        getActivity().getSupportFragmentManager()
+                        mActivity.getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.container, SignInFragment.newInstance())
                                 .commit();
@@ -135,6 +137,7 @@ public class ProfileHomeFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((MainActivity) context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

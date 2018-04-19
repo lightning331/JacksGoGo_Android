@@ -318,7 +318,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
 
                     } else {
-                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     int statusCode  = response.code();

@@ -367,7 +367,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
             Intent intent = new Intent(getActivity(), ProgressJobSummaryActivity.class);
             startActivity(intent);
         } else if (!appointment.isRequest()) {
-            if (appointment.getUserProfile().getUserID().equals(currentUser.getUserID())) {
+            if (appointment.getUserProfileID().equals(currentUser.getID())) {
                 Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
                 intent.putExtra("is_post", false);
                 startActivity(intent);

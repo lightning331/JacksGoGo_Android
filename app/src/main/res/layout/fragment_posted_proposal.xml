@@ -397,7 +397,6 @@
 
                 </LinearLayout>
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/btn_delete_proposal"
                     android:text="@string/btn_delete_proposal"
                     android:layout_width="match_parent"

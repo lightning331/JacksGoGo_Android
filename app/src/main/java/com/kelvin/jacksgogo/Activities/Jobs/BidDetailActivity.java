@@ -39,6 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
@@ -88,7 +89,8 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         btnAcceptBid.setOnClickListener(this);
         if (mProposal.getStatus() == rejected) {      // Rejected
             btnRejectBid.setVisibility(View.GONE);
-        }
+        } else if (mProposal.getStatus() == confirmed)      // Accepted
+            btnAcceptBid.setVisibility(View.GONE);
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);

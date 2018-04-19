@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.getProposalStatus;
@@ -69,7 +70,12 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
 //        if (status == newproposal) {
 //            cellBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
 //        }
-        if (status == declined) {
+        if (status == confirmed) {
+            lblStatus.setVisibility(View.VISIBLE);
+            imgProposal.setVisibility(View.VISIBLE);
+            lblPrice.setVisibility(View.VISIBLE);
+            lblStatus.setText("Confirmed");
+        } else if (status == declined) {
             lblStatus.setVisibility(View.VISIBLE);
             imgProposal.setVisibility(View.GONE);
             lblPrice.setVisibility(View.GONE);

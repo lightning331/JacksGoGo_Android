@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment {
         if (!getUserVisibleHint()) {
             return;
         }
-        updateView();
     }
 
     @Override
@@ -85,6 +84,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initView(view);
+        updateView();
         return view;
     }
 

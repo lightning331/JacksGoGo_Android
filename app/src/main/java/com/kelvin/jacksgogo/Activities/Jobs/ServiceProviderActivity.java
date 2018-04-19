@@ -33,6 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
@@ -66,7 +67,6 @@ public class ServiceProviderActivity extends AppCompatActivity {
             setCategory();
         initView();
     }
-
 
     @Override
     protected void onResume() {
@@ -111,6 +111,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
 
                         ArrayList<JGGProposalModel> openProposal = new ArrayList<>();
                         ArrayList<JGGProposalModel> invitedProposal = new ArrayList<>();
+                        ArrayList<JGGProposalModel> confirmedProposal = new ArrayList<>();
                         ArrayList<JGGProposalModel> declinedProposal = new ArrayList<>();
                         ArrayList<JGGProposalModel> rejectedProposal = new ArrayList<>();
 
@@ -121,11 +122,14 @@ public class ServiceProviderActivity extends AppCompatActivity {
                                 else
                                     openProposal.add(p);
                             }
+                            else if (p.getStatus() == confirmed)
+                                confirmedProposal.add(p);
                             else if (p.getStatus() == declined)
                                 declinedProposal.add(p);
                             else if (p.getStatus() == rejected)
                                 rejectedProposal.add(p);
                         }
+                        proposals.addAll(confirmedProposal);
                         proposals.addAll(openProposal);
                         proposals.addAll(invitedProposal);
                         proposals.addAll(declinedProposal);

@@ -1,24 +1,36 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
@@ -49,16 +61,19 @@ public class PostedProposalFragment extends Fragment {
     private TextView btnDeleteProposal;
 
     private PostProposalActivity mActivity;
+    private ProgressDialog progressDialog;
 
     private JGGProposalModel mProposal;
+    private String editStatus;
 
     public PostedProposalFragment() {
         // Required empty public constructor
     }
 
-    public static PostedProposalFragment newInstance(String param1, String param2) {
+    public static PostedProposalFragment newInstance(String status) {
         PostedProposalFragment fragment = new PostedProposalFragment();
         Bundle args = new Bundle();
+        args.putString(EDIT_STATUS, status);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +82,7 @@ public class PostedProposalFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            editStatus = getArguments().getString(EDIT_STATUS);
         }
     }
 
@@ -101,10 +116,15 @@ public class PostedProposalFragment extends Fragment {
         lblPostedTime = view.findViewById(R.id.lbl_reference_posted_date);
         btnDeleteProposal = view.findViewById(R.id.btn_delete_proposal);
 
+        if (editStatus.equals(MY_PROPOSAL))
+            btnDeleteProposal.setVisibility(View.VISIBLE);
+        else
+            btnDeleteProposal.setVisibility(View.GONE);
+
         btnDeleteProposal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onDeleteProposal();
             }
         });
     }
@@ -175,6 +195,37 @@ public class PostedProposalFragment extends Fragment {
             lblRescheduling.setText("No set");
             lblCancellation.setText("No set");
         }
+    }
+
+    private void onDeleteProposal() {
+        progressDialog = createProgressDialog(mContext);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        String proposalID = selectedProposal.getID();
+        Call<JGGBaseResponse> call = apiManager.deleteProposal(proposalID);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mActivity.finish();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                Log.d("SignUpPhoneActivity", t.getMessage());
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
     public void onButtonPressed(Uri uri) {

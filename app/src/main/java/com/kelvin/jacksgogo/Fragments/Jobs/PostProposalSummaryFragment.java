@@ -32,9 +32,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
-import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
@@ -297,7 +298,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                     mActivity.setEdit(true);
                     mActivity.getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.post_proposal_container, new PostedProposalFragment())
+                            .replace(R.id.post_proposal_container, PostedProposalFragment.newInstance(POST))
                             .commit();
                 }
             }
