@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView;
 import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.squareup.picasso.Picasso;
@@ -162,6 +163,18 @@ public class CreateEventMainFragment extends Fragment {
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == EventTabName.COST) {
             GcCostFragment frag = new GcCostFragment();
+            frag.setOnItemClickListener(new GcCostFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick() {
+                    GcSummaryFragment fragment = new GcSummaryFragment();
+//                    fragment.setEditStatus(editStatus);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.post_go_club_container, fragment, fragment.getTag())
+                            .addToBackStack("post_goclub_summary")
+                            .commit();
+                }
+            });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         }
         ft.commit();

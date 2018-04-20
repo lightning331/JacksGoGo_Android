@@ -189,7 +189,8 @@
         <activity android:name=".Activities.Profile.SetupPaymentActivity" />
         <activity android:name=".Activities.Profile.WithdrawCreditActivity" />
         <activity android:name=".Activities.Profile.JacksActivity" />
-        <activity android:name=".Activities.Profile.ChangeRegionActivity"></activity>
+        <activity android:name=".Activities.Profile.ChangeRegionActivity" />
+        <activity android:name=".Activities.GoClub_Event.GcPostedEventActivity"></activity>
     </application>
 
 </manifest>
