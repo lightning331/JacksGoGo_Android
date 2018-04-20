@@ -289,6 +289,18 @@
     <string name="share_location">Share your current location.</string>
     <string name="select_location">Select Location From Map</string>
     <string name="type_address">Type in an address.</string>
+    <string name="no_limit">No limits.</string>
+    <string name="limit_to">Limit to...</string>
+    <string name="limit_description">Do you have a limit on number of attendees?</string>
+    <string name="cost_description">Is this a paid event?</string>
+    <string name="free_event">Free event. No payment needed.</string>
+    <string name="paid_event">Paid event.</string>
+    <string name="go_summary">Go To Summary</string>
+    <string name="amount">Amount</string>
+    <string name="no_pax_limit">No pax limit</string>
+    <string name="alert_gc_posted_title">Event Posted!</string>
+    <string name="alert_view_event">View Event Details</string>
+    <string name="post_update">Post Update</string>
 
     <!-- TODO: Event-->
     <string name="title_request_join_event">Join Event</string>

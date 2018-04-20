@@ -1,6 +1,5 @@
 package com.kelvin.jacksgogo.Fragments.GoClub_Event;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -48,23 +45,27 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
 
     @BindView(R.id.btn_share_location)              Button btnShareLocation;
     @BindView(R.id.btn_type_address)                Button btnTypeAddress;
-    @BindView(R.id.lbl_post_address_title)          TextView lblTitle;
-    @BindView(R.id.txt_post_address_place_name)     EditText txtPlaceName;
-    @BindView(R.id.txt_post_address_unit)           EditText txtUnit;
-    @BindView(R.id.txt_post_address_street)         EditText txtStreet;
-    @BindView(R.id.txt_post_address_postcode)       EditText txtPostCode;
-    @BindView(R.id.show_full_address_layout)        LinearLayout checkboxLayout;
-    @BindView(R.id.btn_post_address_checkbox)       ImageView btnCheckBox;
-    @BindView(R.id.btn_post_address_next)           RelativeLayout btnNext;
-    @BindView(R.id.lbl_post_address_next)           TextView lblNext;
     @BindView(R.id.btn_location)                    TextView btnLocation;
-    @BindView(R.id.lbl_coordinate)                  TextView lblCoordinate;
 
-    private boolean isShowFullAddress = false;
+    @BindView(R.id.lbl_post_address_title)          TextView lblTitle;
+    @BindView(R.id.ll_place)                        LinearLayout ll_place;
+    @BindView(R.id.txt_post_address_place_name)     EditText txtPlaceName;
+    @BindView(R.id.ll_unit)                         LinearLayout ll_unit;
+    @BindView(R.id.txt_post_address_unit)           EditText txtUnit;
+    @BindView(R.id.ll_street)                       LinearLayout ll_street;
+    @BindView(R.id.txt_post_address_street)         EditText txtStreet;
+    @BindView(R.id.ll_postcode)                     LinearLayout ll_postcode;
+    @BindView(R.id.txt_post_address_postcode)       EditText txtPostCode;
+    @BindView(R.id.ll_coordinate)                   LinearLayout ll_coordinate;
+    @BindView(R.id.lbl_coordinate)                  TextView lblCoordinate;
+    @BindView(R.id.btn_next)                        Button btnNext;
+
     private Global.AppointmentType mType;
     private String type;
     private JGGAppointmentModel creatingJob;
     private JGGAddressModel mAddress;
+
+    private boolean isTypeAddress = false;
 
     private static final String TAG = GcAddressFragment.class.getSimpleName();
     public GcAddressFragment() {
@@ -101,29 +102,38 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         View view = inflater.inflate(R.layout.fragment_gc_address, container, false);
         ButterKnife.bind(this, view);
 
-        creatingJob = JGGAppManager.getSelectedAppointment();
-        mAddress = creatingJob.getAddress();
+//        creatingJob = JGGAppManager.getSelectedAppointment();
+//        mAddress = creatingJob.getAddress();
 
-        setData();
+        initView();
+//        setData();
 
         return view;
     }
 
-    public void setData() {
+    private void initView() {
+        btnLocation.setVisibility(View.GONE);
+
+        ll_place.setVisibility(View.GONE);
+        ll_unit.setVisibility(View.GONE);
+        ll_street.setVisibility(View.GONE);
+        ll_postcode.setVisibility(View.GONE);
+        ll_coordinate.setVisibility(View.GONE);
+
+        btnNext.setClickable(false);
+        btnNext.setVisibility(View.GONE);
+
+        txtUnit.addTextChangedListener(this);
+        txtStreet.addTextChangedListener(this);
+        txtPostCode.addTextChangedListener(this);
+    }
+
+    private void setData() {
         txtPlaceName.setText("");
         txtUnit.setText("2");
         txtStreet.setText("Jurong West Avenue 5");
         txtPostCode.setText("638657");
 
-        if (mType == Global.AppointmentType.JOBS) {
-
-            lblTitle.setText(R.string.post_job_address_title);
-            checkboxLayout.setVisibility(View.GONE);
-            lblNext.setText("Next");
-
-            btnLocation.setBackgroundResource(R.drawable.purple_border_background);
-            btnLocation.setTextColor(ContextCompat.getColor(mContext, R.color.JGGPurple));
-        }
         txtPlaceName.setText(mAddress.getFloor());
         txtUnit.setText(mAddress.getUnit());
         txtStreet.setText(mAddress.getStreet());
@@ -131,14 +141,49 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         lblCoordinate.setText(String.valueOf(mAddress.getLat()) + "° N, " + String.valueOf(mAddress.getLon()) + "° E");
     }
 
-    @OnClick(R.id.btn_post_address_checkbox)
-    public void onCickAddressCheckbox() {
-        isShowFullAddress = !isShowFullAddress;
-        if (isShowFullAddress) {
-            btnCheckBox.setImageResource(R.mipmap.checkbox_on_purple);
-        } else
-            btnCheckBox.setImageResource(R.mipmap.checkbox_off);
+    private void onYellowButtonColor(Button button) {
+        button.setBackgroundResource(R.drawable.yellow_background);
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGBlack));
     }
+
+    private void onPurpleButtonColor(Button button) {
+        button.setBackgroundResource(R.drawable.purple_border_background);
+        button.setTextColor(ContextCompat.getColor(mContext, R.color.JGGPurple));
+    }
+
+    @OnClick(R.id.btn_share_location)
+    public void onClickShareLocation() {
+        listener.onNextButtonClick();
+    }
+
+    @OnClick(R.id.btn_type_address)
+    public void onClickTypeAddress() {
+        isTypeAddress = !isTypeAddress;
+        if (isTypeAddress) {
+            this.onYellowButtonColor(btnTypeAddress);
+            btnShareLocation.setVisibility(View.GONE);
+            btnLocation.setVisibility(View.VISIBLE);
+
+            ll_place.setVisibility(View.VISIBLE);
+            ll_unit.setVisibility(View.VISIBLE);
+            ll_street.setVisibility(View.VISIBLE);
+            ll_postcode.setVisibility(View.VISIBLE);
+            ll_coordinate.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.VISIBLE);
+        } else {
+            btnShareLocation.setVisibility(View.VISIBLE);
+            this.onPurpleButtonColor(btnTypeAddress);
+            btnLocation.setVisibility(View.GONE);
+
+            ll_place.setVisibility(View.GONE);
+            ll_unit.setVisibility(View.GONE);
+            ll_street.setVisibility(View.GONE);
+            ll_postcode.setVisibility(View.GONE);
+            ll_coordinate.setVisibility(View.GONE);
+            btnNext.setVisibility(View.GONE);
+        }
+    }
+
     @OnClick(R.id.btn_location)
     public void onClickLocation() {
         Intent intent = new Intent(mContext, JGGMapViewActivity.class);
@@ -146,13 +191,12 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    @OnClick(R.id.btn_post_address_next)
+    @OnClick(R.id.btn_next)
     public void onClickNext() {
         mAddress.setFloor(txtPlaceName.getText().toString());
         mAddress.setUnit(txtUnit.getText().toString());
         mAddress.setStreet(txtStreet.getText().toString());
         mAddress.setPostalCode(txtPostCode.getText().toString());
-        mAddress.setShowFullAddress(!isShowFullAddress);
 
         creatingJob.setAddress(mAddress);
         selectedAppointment = creatingJob;
@@ -187,14 +231,12 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         if (txtUnit.length() > 0
                 && txtStreet.length() > 0
                 && txtPostCode.length() > 0) {
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
-            btnNext.setBackgroundResource(R.drawable.green_background);
-            if (mType == Global.AppointmentType.JOBS) {
-                btnNext.setBackgroundResource(R.drawable.cyan_background);
-            }
+            btnNext.setBackgroundResource(R.drawable.purple_background);
+            btnNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGWhite));
+            btnNext.setClickable(true);
         } else {
-            lblNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey2));
             btnNext.setBackgroundResource(R.drawable.grey_background);
+            btnNext.setTextColor(ContextCompat.getColor(mContext, R.color.JGGGrey3));
             btnNext.setClickable(false);
         }
     }
