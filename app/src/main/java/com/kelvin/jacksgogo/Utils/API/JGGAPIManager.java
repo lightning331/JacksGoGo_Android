@@ -4,17 +4,18 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import okhttp3.MultipartBody;
@@ -237,4 +238,7 @@ public interface JGGAPIManager {
     @FormUrlEncoded
     @POST("api/Contract/StartContract")
     Call<JGGSendInviteResponse> startContract(@Field("ID") String appointmentID);
+
+    @GET("api/Contract/GetContractByAppointment")
+    Call<JGGGetContractResponse> getContractByAppointment(@Query("AppointmentID") String appointmentID);
 }

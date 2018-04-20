@@ -27,9 +27,11 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
@@ -63,11 +65,10 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     @BindView(R.id.lblStatus) TextView lblCancel;
 
     public JGGActionbarView actionbarView;
-    private ProgressJobClientFragment frag;
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
-    private JGGProposalModel mProposal = new JGGProposalModel();
+    private JGGContractModel mContract;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
 
@@ -97,6 +98,11 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     @Override
     protected void onResume() {
         super.onResume();
+        if (mJob.getUserProfileID().equals(currentUser.getID())) {
+            actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
+        } else {
+            actionbarView.setDeleteJobStatus();
+        }
         getAppointmentActivities();
     }
 
@@ -112,21 +118,21 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     }
 
     private void onProgressJobFragment() {
-        frag = new ProgressJobClientFragment();
+        ProgressJobClientFragment clientFrag = new ProgressJobClientFragment();
+        clientFrag.setAppointmentActivities(mActivities, mProposals, mContract);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, frag)
+                .replace(R.id.app_detail_container, clientFrag)
                 .commit();
-        frag.setAppointmentActivities(mActivities, mProposals);
     }
 
     private void onProgressProposalFragment() {
-        ProgressJobProviderFragment frag = new ProgressJobProviderFragment();
+        ProgressJobProviderFragment providerFrag = new ProgressJobProviderFragment();
+        providerFrag.setAppointmentActivities(mActivities, mProposals, mContract);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_detail_container, frag)
+                .replace(R.id.app_detail_container, providerFrag)
                 .commit();
-        frag.setAppointmentActivities(mActivities, mProposals);
     }
 
     public void deleteJob(String reason) {
@@ -171,17 +177,17 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         call.enqueue(new Callback<JGGAppointmentActivityResponse>() {
             @Override
             public void onResponse(Call<JGGAppointmentActivityResponse> call, Response<JGGAppointmentActivityResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mActivities = response.body().getValue();
-
+                        String userID = currentUser.getID();
                         getProposalsByJob();
                     } else {
+                        progressDialog.dismiss();
                         Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode = response.code();
+                    progressDialog.dismiss();
                     Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -195,36 +201,61 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     }
 
     private void getProposalsByJob() {
-        progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 50);
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
 
-                        // Todo: send Appointment Status
-                        if (mJob.getUserProfileID().equals(currentUser.getID())) {
-                            actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                            onProgressJobFragment();
-                        } else {
-                            actionbarView.setDeleteJobStatus();
-                            onProgressProposalFragment();
-                        }
+                        getContractByAppointment();
                     } else {
+                        progressDialog.dismiss();
                         Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
+                    progressDialog.dismiss();
                     Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Dump API
+    private void getContractByAppointment() {
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGGetContractResponse> call = apiManager.getContractByAppointment(mJob.getID());
+        call.enqueue(new Callback<JGGGetContractResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetContractResponse> call, Response<JGGGetContractResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mContract = response.body().getValue();
+                        // Todo: send Appointment Status
+                        if (mJob.getUserProfileID().equals(currentUser.getID())) {
+                            onProgressJobFragment();
+                        } else {
+                            onProgressProposalFragment();
+                        }
+                    } else {
+                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetContractResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }

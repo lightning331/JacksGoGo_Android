@@ -206,7 +206,6 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
             else if (editStatus == EDIT)
                 onEditService();
         } else {
-            progressDialog = Global.createProgressDialog(mContext);
             if (index < mAlbumFiles.size()) {
                 String name = (String) mAlbumFiles.get(index).getPath();
                 Uri imageUri = Uri.parse(new File(name).toString());
@@ -216,6 +215,8 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
                 MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
                 RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+                progressDialog = Global.createProgressDialog(mContext);
 
                 JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
                 Call<JGGPostAppResponse> call = manager.uploadAttachmentFile(fileToUpload);

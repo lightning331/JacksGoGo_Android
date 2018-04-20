@@ -199,7 +199,6 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             else if (jobStatus == EDIT)
                 onEditJob();
         } else {
-            progressDialog = Global.createProgressDialog(mContext);
             if (index < mAlbumFiles.size()) {
                 String name = (String) mAlbumFiles.get(index).getPath();
                 Uri imageUri = Uri.parse(new File(name).toString());
@@ -209,6 +208,8 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
                 MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
                 RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+                progressDialog = Global.createProgressDialog(mContext);
 
                 JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
                 Call<JGGPostAppResponse> call = manager.uploadAttachmentFile(fileToUpload);

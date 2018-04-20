@@ -35,6 +35,7 @@ import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -98,8 +99,9 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
     private ProgressDialog progressDialog;
     private View view;
 
-    private JGGProposalModel mProposal;
     private JGGAppointmentModel mJob;
+    private JGGProposalModel mProposal;
+    private JGGContractModel mContract;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private String mReason;
@@ -142,19 +144,22 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
         mJob = selectedAppointment;
 
         initView();
+        onRefreshView();
         return view;
     }
 
-    public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities, ArrayList<JGGProposalModel> proposals) {
+    public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities,
+                                         ArrayList<JGGProposalModel> proposals,
+                                         JGGContractModel contract) {
         mActivities = activities;
         mProposals = proposals;
+        mContract = contract;
         for (JGGProposalModel p : proposals) {
             if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
                 mProposal = p;
                 providerName = mProposal.getUserProfile().getUser().getFullName();
             }
         }
-        onRefreshView();
     }
 
     private void initView() {
