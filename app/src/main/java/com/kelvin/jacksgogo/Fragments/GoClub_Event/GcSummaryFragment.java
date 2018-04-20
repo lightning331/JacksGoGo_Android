@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.GcPostedEventActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
@@ -257,7 +258,7 @@ public class GcSummaryFragment extends Fragment {
                     alertDialog.dismiss();
                 else {
                     alertDialog.dismiss();
-                    Intent intent = new Intent(mContext, PostedServiceActivity.class);
+                    Intent intent = new Intent(mContext, GcPostedEventActivity.class);
                     intent.putExtra("is_post", true);
                     mContext.startActivity(intent);
                 }

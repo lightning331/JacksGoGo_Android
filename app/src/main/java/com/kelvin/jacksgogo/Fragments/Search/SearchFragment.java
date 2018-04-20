@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
+import com.kelvin.jacksgogo.Activities.GoClub_Event.GcPostedEventActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.JoinedGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
@@ -264,9 +265,12 @@ public class SearchFragment extends Fragment {
                     mIntent.putExtra("is_category", false);
                 } else if (view.getId() == R.id.btn_post_new) {
                     if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
-                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
-                        mIntent.putExtra(EDIT_STATUS, POST);
-                        mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
+//                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
+//                        mIntent.putExtra(EDIT_STATUS, POST);
+//                        mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
+                        // storm
+                        mIntent = new Intent(mContext, GcPostedEventActivity.class);
+                        mIntent.putExtra("is_post", true);
                     } else {
                         showAlertDialog();
                         return;
