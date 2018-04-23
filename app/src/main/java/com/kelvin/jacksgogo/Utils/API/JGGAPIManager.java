@@ -237,7 +237,7 @@ public interface JGGAPIManager {
      */
     @FormUrlEncoded
     @POST("api/Contract/StartContract")
-    Call<JGGSendInviteResponse> startContract(@Field("ID") String appointmentID);
+    Call<JGGPostAppResponse> startContract(@Field("ContractID") String contractID);
 
     @GET("api/Contract/GetContractByAppointment")
     Call<JGGGetContractResponse> getContractByAppointment(@Query("AppointmentID") String appointmentID);
