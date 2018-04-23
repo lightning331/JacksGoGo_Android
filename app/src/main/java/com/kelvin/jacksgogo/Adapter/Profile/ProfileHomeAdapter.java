@@ -7,16 +7,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.JoinedGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Profile.BusinessProfileActivity;
 import com.kelvin.jacksgogo.Activities.Profile.ChangeRegionActivity;
 import com.kelvin.jacksgogo.Activities.Profile.CreditActivity;
 import com.kelvin.jacksgogo.Activities.Profile.JacksActivity;
+import com.kelvin.jacksgogo.Activities.Profile.PaymentMethodActivity;
+import com.kelvin.jacksgogo.Activities.Profile.SettingsActivity;
+import com.kelvin.jacksgogo.Activities.Search.ServiceListingActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeSignOutCell;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 /**
@@ -97,10 +105,37 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
             ProfileHomeCell cell = (ProfileHomeCell) holder;
             if (position == JOINED_GOCLUB_TYPE) {
                 cell.title1.setText("Joined GoClubs");
+                cell.button1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(new Intent(mContext, JoinedGoClubsActivity.class));
+                    }
+                });
                 cell.title2.setText("Service Listing");
+                cell.button2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent mIntent = new Intent(mContext, ServiceListingActivity.class);
+                        mIntent.putExtra(APPOINTMENT_TYPE, SERVICES);
+                        mIntent.putExtra(EDIT_STATUS, POST);
+                        mContext.startActivity(mIntent);
+                    }
+                });
             } else if (position == SETTINGS_TYPE) {
                 cell.title1.setText("Payment Method");
+                cell.button1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(new Intent(mContext, PaymentMethodActivity.class));
+                    }
+                });
                 cell.title2.setText("Settings");
+                cell.button2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(new Intent(mContext, SettingsActivity.class));
+                    }
+                });
             } else if (position == ABOUT_TYPE) {
                 cell.title1.setText("Talk To Us");
                 cell.title2.setText("About JacksGoGo");

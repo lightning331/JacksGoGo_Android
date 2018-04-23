@@ -20,7 +20,7 @@ import butterknife.OnClick;
 
 public class JacksActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
-    ImageView btn_back;
+    LinearLayout btn_back;
     @BindView(R.id.jacks_recycler_view)
     RecyclerView recyclerView;
 

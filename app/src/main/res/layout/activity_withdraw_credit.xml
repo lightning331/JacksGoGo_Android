@@ -40,6 +40,8 @@
                 android:layout_height="@dimen/input_height"
                 android:background="@drawable/grey_border_background"
                 android:hint="8 or 11-digit"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
             <TextView
@@ -85,13 +87,16 @@
                 android:layout_height="1px"
                 android:background="@android:color/darker_gray"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"></LinearLayout>
+                android:layout_marginBottom="@dimen/activity_horizontal_margin">
+            </LinearLayout>
             <EditText
                 android:id="@+id/edit_account_no"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_height"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/grey_border_background"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:hint="Account No."
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
@@ -101,6 +106,8 @@
                 android:layout_height="@dimen/input_height"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/grey_border_background"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:hint="NRIC/Passport No."
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
@@ -110,6 +117,8 @@
                 android:layout_height="@dimen/input_height"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/grey_border_background"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:hint="Name On Account"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
@@ -119,6 +128,8 @@
                 android:layout_height="@dimen/input_height"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/grey_border_background"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:hint="Address"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
@@ -128,6 +139,8 @@
                 android:layout_height="@dimen/input_height"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/grey_border_background"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:hint="City"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
@@ -137,6 +150,8 @@
                 android:layout_height="@dimen/input_height"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/grey_border_background"
+                android:fontFamily="@font/muliregular"
+                android:textSize="@dimen/list_text_font_size"
                 android:hint="State/Province"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAllCaps="true" />
@@ -150,6 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Country"
+                    android:fontFamily="@font/muliregular"
                     android:textSize="@dimen/list_text_font_size"
                     android:paddingLeft="@dimen/activity_horizontal_margin"/>
                 <LinearLayout
@@ -181,6 +197,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_height"
                         android:background="@drawable/grey_border_background"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_text_font_size"
                         android:hint="12345678"
                         android:inputType="phone"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
