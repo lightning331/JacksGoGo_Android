@@ -450,7 +450,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_alert_ok) {
                     for (int i = 0; i < days.size(); i ++) {
-                        Integer day = days.get(i) - 1;
+                        Integer day = days.get(i);
                         if (repetition == null || repetition.equals("")) repetition = day.toString();
                         else repetition = repetition + "," + day.toString();
                         repetitions.add(day);
