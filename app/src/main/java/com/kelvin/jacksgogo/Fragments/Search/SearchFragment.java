@@ -199,7 +199,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        if (!token.equals("")){
+        //if (!token.equals("")){
             if (mServices.size() > 0)
                 serviceAdapter.setLoadMoreListener(new SearchServicesAdapter.OnLoadMoreListener() {
                     @Override
@@ -214,8 +214,8 @@ public class SearchFragment extends Fragment {
                         });
                     }
                 });
-            onLoadServices(0);
-        }
+            onLoadServices();
+        //}
         recyclerView.setAdapter(serviceAdapter);
     }
 
@@ -233,7 +233,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        if (!token.equals("")){
+        //if (!token.equals("")){
             if (mJobs.size() > 0)
                 jobAdapter.setLoadMoreListener(new SearchJobsAdapter.OnLoadMoreListener() {
                     @Override
@@ -248,8 +248,8 @@ public class SearchFragment extends Fragment {
                         });
                     }
                 });
-            onLoadJobs(0);
-        }
+            onLoadJobs();
+        //}
         recyclerView.setAdapter(jobAdapter);
     }
 
@@ -333,7 +333,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void onLoadServices(int index) {
+    private void onLoadServices() {
         Retrofit retrofit = JGGURLManager.getClient();
         JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
         Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
@@ -356,8 +356,7 @@ public class SearchFragment extends Fragment {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
-                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -415,7 +414,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void onLoadJobs(int index) {
+    private void onLoadJobs() {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
                 null, null, null, null, null, null,
@@ -438,8 +437,7 @@ public class SearchFragment extends Fragment {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
-                    //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 

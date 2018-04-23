@@ -10,6 +10,9 @@ public class JGGCategoryModel {
     private String Code;
     private String Name;
     private String Image;
+    private boolean IsAbleService;
+    private boolean IsAbleJob;
+    private boolean IsAbleGoClub;
 
     public String getID() {
         return ID;
@@ -41,5 +44,29 @@ public class JGGCategoryModel {
 
     public void setImage(String image) {
         Image = image;
+    }
+
+    public boolean isAbleService() {
+        return IsAbleService;
+    }
+
+    public void setAbleService(boolean ableService) {
+        IsAbleService = ableService;
+    }
+
+    public boolean isAbleJobs() {
+        return IsAbleJob;
+    }
+
+    public void setAbleJobs(boolean ableJobs) {
+        IsAbleJob = ableJobs;
+    }
+
+    public boolean isAbleGoClub() {
+        return IsAbleGoClub;
+    }
+
+    public void setAbleGoClub(boolean ableGoClub) {
+        IsAbleGoClub = ableGoClub;
     }
 }

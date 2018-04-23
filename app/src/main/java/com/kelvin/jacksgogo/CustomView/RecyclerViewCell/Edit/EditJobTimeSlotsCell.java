@@ -18,12 +18,16 @@ public class EditJobTimeSlotsCell extends RecyclerView.ViewHolder {
 
     public TextView lblSlots;
     public TextView btnSlots;
+    public TextView lblPax;
 
     public EditJobTimeSlotsCell(View itemView) {
         super(itemView);
 
         lblSlots = (TextView) itemView.findViewById(R.id.lbl_time_slots_time);
+        lblPax = (TextView) itemView.findViewById(R.id.lbl_time_slots_pax);
         btnSlots = (TextView) itemView.findViewById(R.id.btn_time_slots_status);
+
+        lblPax.setVisibility(View.GONE);
     }
 
     public void setData(JGGTimeSlotModel slotModel) {
@@ -34,6 +38,10 @@ public class EditJobTimeSlotsCell extends RecyclerView.ViewHolder {
             lblSlots.setText(startTime + " - " + endTime);
         } else {
             lblSlots.setText(startTime);
+        }
+        if (slotModel.getPeoples() > 1) {
+            lblPax.setVisibility(View.VISIBLE);
+            lblPax.setText(slotModel.getPeoples() + " pax");
         }
     }
 }

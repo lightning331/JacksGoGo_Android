@@ -36,10 +36,10 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -63,9 +63,7 @@ import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
@@ -110,6 +108,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private JGGAppointmentModel mJob;
     private JGGProposalModel mProposal;
+    private JGGContractModel mContract;
     private String clientName;
 
     public ProgressJobProviderFragment() {
@@ -145,17 +144,20 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_progress_job_provider, container, false);
         initView(view);
+        onRefreshView();
         return view;
     }
 
-    public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities, ArrayList<JGGProposalModel> proposals) {
+    public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities,
+                                         ArrayList<JGGProposalModel> proposals,
+                                         JGGContractModel contract) {
         mActivities = activities;
+        mContract = contract;
         for (JGGProposalModel p : proposals) {
             if (p.getUserProfileID().equals(currentUser.getID())) {
                 mProposal = p;
                 selectedProposal = mProposal;
                 mJob = mProposal.getAppointment();
-                onRefreshView();
             }
         }
     }
@@ -211,6 +213,18 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     }
 
     private void onRefreshView() {
+
+        if (mActivities.size() > 0) {
+            for (JGGAppointmentActivityModel activity : mActivities) {
+                switch (activity.getStatus()) {
+                    case none:
+                        break;
+                    case unknown:
+                        break;
+                }
+            }
+        }
+
         resetViews();
         Date submitOn = mProposal.getSubmitOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
