@@ -78,7 +78,10 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         POST_PROPOSAL,
         JOB_DETAILS,
         EDIT_JOB,
-        JOINED_GO_CLUB
+        JOINED_GO_CLUB,
+        GO_CLUB_ATTENDEES,
+        GO_CLUB_POST_UPDATE,
+        GO_CLUB_SCHEDULE
     }
 
     public JGGActionbarView(Context context) {
@@ -277,12 +280,13 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             case POSTED:
                 mTitleTextView.setText("");
                 mBackButtonTitleTextView.setText("");
-                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 if (type == AppointmentType.SERVICES) {
+                    mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                     imgMoreOutLine = R.mipmap.button_more_green;
                     imgMore = R.mipmap.button_more_active_green;
                     setMoreButtonClicked(false);
                 } else if (type == AppointmentType.JOBS) {
+                    mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                     mBackButtonTitleTextView.setText(R.string.title_appointment);
                     param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3);
                     param1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4);
@@ -294,6 +298,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                     imgMore = R.mipmap.button_more_active_cyan;
                     setMoreButtonClicked(false);
                 } else if (type == AppointmentType.GOCLUB) {
+                    mBackButtonImage.setImageResource(R.mipmap.button_backarrow_purple);
                     imgMoreOutLine = R.mipmap.button_more_purple;
                     imgMore = R.mipmap.button_more_active_purple;
                     setMoreButtonClicked(false);
@@ -335,6 +340,16 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 moreButtonsLayout.setLayoutParams(param);
                 mBackButton.setLayoutParams(param);
                 centerTitleTextLayout.setLayoutParams(param1);
+                break;
+            case GO_CLUB_ATTENDEES:
+                setPurpleBackButton(R.string.all_attendees, R.string.title_empty);
+                break;
+            case GO_CLUB_POST_UPDATE:
+                setPurpleBackButton(R.string.post_update, R.string.title_empty);
+                break;
+            case GO_CLUB_SCHEDULE:
+                setPurpleBackButton(R.string.schedule, R.string.title_empty);
+                mMoreButtonImage.setImageResource(R.mipmap.add_fat_purple);
                 break;
             default:
                 break;

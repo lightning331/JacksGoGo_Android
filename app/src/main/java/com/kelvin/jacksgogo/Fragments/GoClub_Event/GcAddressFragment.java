@@ -193,13 +193,13 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_next)
     public void onClickNext() {
-        mAddress.setFloor(txtPlaceName.getText().toString());
+        /*mAddress.setFloor(txtPlaceName.getText().toString());
         mAddress.setUnit(txtUnit.getText().toString());
         mAddress.setStreet(txtStreet.getText().toString());
         mAddress.setPostalCode(txtPostCode.getText().toString());
 
         creatingJob.setAddress(mAddress);
-        selectedAppointment = creatingJob;
+        selectedAppointment = creatingJob;*/
 
         listener.onNextButtonClick();
     }

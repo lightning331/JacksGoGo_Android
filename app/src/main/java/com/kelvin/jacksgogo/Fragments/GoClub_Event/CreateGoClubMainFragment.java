@@ -122,9 +122,30 @@ public class CreateGoClubMainFragment extends Fragment {
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == GoClubTabName.LIMIT) {
-
+            GcLimitFragment frag = new GcLimitFragment();
+            frag.setOnItemClickListener(new GcLimitFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick() {
+                    tabView.setTabName(GoClubTabName.ADMIN);
+                    refreshFragment();
+                }
+            });
+            ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == GoClubTabName.ADMIN) {
+            GcAdminFragment frag = new GcAdminFragment();
+            frag.setOnItemClickListener(new GcAdminFragment.OnItemClickListener() {
+                @Override
+                public void onNextButtonClick() {
+                    GcSummaryFragment fragment = new GcSummaryFragment();
+//                    fragment.setEditStatus(editStatus);
 
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.post_go_club_container, fragment, fragment.getTag())
+                            .addToBackStack("create_goclub_summary")
+                            .commit();
+                }
+            });
+            ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         }
         ft.commit();
     }

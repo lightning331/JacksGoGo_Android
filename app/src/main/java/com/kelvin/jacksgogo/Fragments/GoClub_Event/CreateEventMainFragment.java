@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView;
 import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
-import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.squareup.picasso.Picasso;
@@ -152,7 +151,7 @@ public class CreateEventMainFragment extends Fragment {
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         } else if (tabView.getTabName() == EventTabName.LIMIT) {
-            GcLimitFragment frag = new GcLimitFragment();
+            GcEventLimitFragment frag = new GcEventLimitFragment();
             frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
@@ -166,7 +165,7 @@ public class CreateEventMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcCostFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    GcSummaryFragment fragment = new GcSummaryFragment();
+                    GcEventSummaryFragment fragment = new GcEventSummaryFragment();
 //                    fragment.setEditStatus(editStatus);
 
                     getActivity().getSupportFragmentManager().beginTransaction()

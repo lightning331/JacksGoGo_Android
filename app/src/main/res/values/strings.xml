@@ -319,6 +319,16 @@
     <string name="alert_gc_posted_title">Event Posted!</string>
     <string name="alert_view_event">View Event Details</string>
     <string name="post_update">Post Update</string>
+    <string name="all_attendees">All Attendees</string>
+    <string name="update">Update:</string>
+    <string name="admin_desc">You will be the default admin of your GoClub. Do you want to add others?</string>
+    <string name="sole_admin">I will be the sole admin.</string>
+    <string name="add_others">Add others...</string>
+    <string name="selected_users">Selected users:</string>
+    <string name="add_admin">Add As Admins</string>
+    <string name="added_as_admin">Added as admin:</string>
+    <string name="view_goclub_details">View GoClub Details</string>
+    <string name="alert_goclub_created">GoClub Created</string>
 
     <!-- TODO: Event-->
     <string name="title_request_join_event">Join Event</string>

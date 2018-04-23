@@ -1,9 +1,9 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceListingDetailActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
@@ -27,19 +29,24 @@ import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class GcPostedEventActivity extends AppCompatActivity {
 
     @BindView(R.id.posted_gc_actionbar)                         Toolbar mToolbar;
+    @BindView(R.id.btn_view_attendees)                          Button btnViewAttendees;
+    @BindView(R.id.txt_schedule)                            TextView txtSchedule;
 
     BottomNavigationView mBottomNavigationView;
     private JGGActionbarView actionbarView;
+    private AlertDialog alertDialog;
     private boolean isPost = false;
     private boolean isVerified;
 
@@ -58,7 +65,7 @@ public class GcPostedEventActivity extends AppCompatActivity {
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        actionbarView.setStatus(JGGActionbarView.EditStatus.POSTED, Global.AppointmentType.SERVICES);
+        actionbarView.setStatus(JGGActionbarView.EditStatus.POSTED, Global.AppointmentType.GOCLUB);
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {
@@ -66,6 +73,7 @@ public class GcPostedEventActivity extends AppCompatActivity {
             }
         });
 
+        // Hide bottom navigation bar
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mBottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
@@ -81,14 +89,45 @@ public class GcPostedEventActivity extends AppCompatActivity {
         }
     }
 
+    private void onWithdrawEvent() {
+
+    }
+
+    private void onShowWithdrawOneEventDialog() {
+        final JGGAlertView builder = new JGGAlertView(this,
+                "Withdraw From GoClub?"
+                        + '\n'
+                        + "30 Dec, 2017",
+                "Let Clarence.Tan know why you are withdrawing from the event.",
+                true,
+                getResources().getString(R.string.alert_cancel),
+                R.color.JGGPurple,
+                R.color.JGGPurple10Percent,
+                getResources().getString(R.string.alert_withdraw),
+                R.color.JGGRed);
+        alertDialog = builder.create();
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    onWithdrawEvent();
+                }
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
     private void onMorePopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.posted_service_menu);
+        popupMenu.inflate(R.menu.posted_goclubs_menu);
         popupMenu.setOnDismissListener(new GcPostedEventActivity.OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new GcPostedEventActivity.OnMenuItemClickListener());
         if (!isVerified) {
             Menu m = popupMenu.getMenu();
-            m.removeItem(R.id.posted_service_menu_share);
+            m.removeItem(R.id.posted_goclub_menu_share);
         }
 
         // Force icons to show in Custom Overflow Menu
@@ -160,19 +199,22 @@ public class GcPostedEventActivity extends AppCompatActivity {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 
-            if (menuItem.getItemId() == R.id.posted_service_menu_share) {  // Share the Service
+            if (menuItem.getItemId() == R.id.posted_goclub_menu_share) {  // Share the Goclub Event
                 openShareDialog();
-            } else if (menuItem.getItemId() == R.id.posted_service_menu_edit) {    // Edit Service
-                Intent intent = new Intent(GcPostedEventActivity.this, PostServiceActivity.class);
+            } else if (menuItem.getItemId() == R.id.posted_goclub_menu_edit) {    // Edit Goclub Event
+                Intent intent = new Intent(GcPostedEventActivity.this, CreateGoClubActivity.class);
                 intent.putExtra(EDIT_STATUS, EDIT);
-                intent.putExtra(APPOINTMENT_TYPE, SERVICES);
+                intent.putExtra(APPOINTMENT_TYPE, GOCLUB);
                 startActivity(intent);
-            } else if (menuItem.getItemId() == R.id.posted_service_menu_duplicate) {    // Duplicate Service
-                Intent intent = new Intent(GcPostedEventActivity.this, PostServiceActivity.class);
+            } else if (menuItem.getItemId() == R.id.posted_goclub_menu_withdraw) { // Withdraw the Goclub Event
+                onShowWithdrawOneEventDialog();
+            }
+            else if (menuItem.getItemId() == R.id.posted_goclub_menu_duplicate) {    // Duplicate the Goclub Event
+                Intent intent = new Intent(GcPostedEventActivity.this, CreateGoClubActivity.class);
                 intent.putExtra(EDIT_STATUS, DUPLICATE);
-                intent.putExtra(APPOINTMENT_TYPE, SERVICES);
+                intent.putExtra(APPOINTMENT_TYPE, GOCLUB);
                 startActivity(intent);
-            } else if (menuItem.getItemId() == R.id.posted_service_menu_delete) {    // Delete Service
+            } else if (menuItem.getItemId() == R.id.posted_goclub_menu_delete) {    // Delete the Goclub Event
                 onDeleteButtonClick();
             }
             return true;
@@ -188,5 +230,15 @@ public class GcPostedEventActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.btn_view_attendees)
+    public void onClickViewAttendees() {
+        Intent intent = new Intent(GcPostedEventActivity.this, GcAttendeesActivity.class);
+        startActivity(intent);
+    }
 
+    @OnClick(R.id.txt_schedule)
+    public void onClickSchedule() {
+        Intent intent = new Intent(GcPostedEventActivity.this, GcScheduleActivity.class);
+        startActivity(intent);
+    }
 }

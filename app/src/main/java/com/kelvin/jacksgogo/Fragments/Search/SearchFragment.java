@@ -265,12 +265,9 @@ public class SearchFragment extends Fragment {
                     mIntent.putExtra("is_category", false);
                 } else if (view.getId() == R.id.btn_post_new) {
                     if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
-//                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
-//                        mIntent.putExtra(EDIT_STATUS, POST);
-//                        mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
-                        // storm
-                        mIntent = new Intent(mContext, GcPostedEventActivity.class);
-                        mIntent.putExtra("is_post", true);
+                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
+                        mIntent.putExtra(EDIT_STATUS, POST);
+                        mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
                     } else {
                         showAlertDialog();
                         return;

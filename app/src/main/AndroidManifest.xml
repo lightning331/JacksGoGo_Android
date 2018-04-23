@@ -185,14 +185,42 @@
         <activity
             android:name=".Activities.GoClub_Event.CreateGoClubActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Profile.CreditActivity" />
-        <activity android:name=".Activities.Profile.SetupPaymentActivity" />
-        <activity android:name=".Activities.Profile.WithdrawCreditActivity" />
-        <activity android:name=".Activities.Profile.JacksActivity" />
-        <activity android:name=".Activities.Profile.ChangeRegionActivity" />
-        <activity android:name=".Activities.GoClub_Event.GcPostedEventActivity" />
-        <activity android:name=".Activities.Profile.PaymentMethodActivity" />
-        <activity android:name=".Activities.Profile.SettingsActivity"></activity>
+        <activity
+            android:name=".Activities.Profile.CreditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.SetupPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.WithdrawCreditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.JacksActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.ChangeRegionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.GcPostedEventActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.PaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Profile.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.GoClub_Event.GcAttendeesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.GcPostUpdateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.GcScheduleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.GoClub_Event.GcAddAdminActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

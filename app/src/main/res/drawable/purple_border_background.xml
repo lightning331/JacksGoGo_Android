@@ -4,7 +4,7 @@
 
     <!-- View background color -->
     <solid
-        android:color="@color/JGGWhite" >
+        android:color="@color/JGGGrey5" >
     </solid>
 
     <!-- View border color and width -->

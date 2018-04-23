@@ -22,18 +22,17 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GcLimitFragment extends Fragment implements TextWatcher {
+public class GcEventLimitFragment extends Fragment implements TextWatcher {
 
     @BindView(R.id.btn_no_limit)                    Button btnNoLimits;
     @BindView(R.id.btn_limit)                       Button btnLimitTo;
-    @BindView(R.id.edit_pax)
-    EditText editPax;
+    @BindView(R.id.edit_pax)                        EditText editPax;
     @BindView(R.id.btn_next)                        Button btnNext;
 
     private Context mContext;
     private boolean isLimit = false;
 
-    public GcLimitFragment() {
+    public GcEventLimitFragment() {
         // Required empty public constructor
     }
 
@@ -42,7 +41,7 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_gc_limit, container, false);
+        View view = inflater.inflate(R.layout.fragment_gc_event_limit, container, false);
         ButterKnife.bind(this, view);
 
         initView();
@@ -124,13 +123,13 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
     }
 
     // TODO : Next Click Listener
-    private OnItemClickListener listener;
+    private GcTimeFragment.OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onNextButtonClick();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(GcTimeFragment.OnItemClickListener listener) {
         this.listener = listener;
     }
 

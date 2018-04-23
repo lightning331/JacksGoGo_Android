@@ -91,6 +91,7 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // Tag list view
             View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
             ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
+            tagListViewHolder.tagList.setTagTextColor(R.color.JGGPurple);
             tagListViewHolder.setTagList("football, discussion, Ole");
             return tagListViewHolder;
         } else if (viewType == 6) {

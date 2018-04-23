@@ -409,6 +409,7 @@
                             android:textColor="@color/JGGBlack"
                             android:textSize="@dimen/caption_font_size"/>
                         <Button
+                            android:id="@+id/btn_view_attendees"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:background="@mipmap/button_viewall_purple"
