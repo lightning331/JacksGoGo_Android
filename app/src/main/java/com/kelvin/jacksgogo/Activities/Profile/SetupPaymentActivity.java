@@ -37,7 +37,7 @@ public class SetupPaymentActivity extends AppCompatActivity {
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
-        actionbarView.setCreditActionBar(getString(R.string.setup_payment));
+        actionbarView.setCreditActionBar(getString(R.string.payment_setup_button));
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
             @Override
             public void onActionbarItemClick(View view) {

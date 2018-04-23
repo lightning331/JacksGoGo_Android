@@ -253,10 +253,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:ccp_textSize="16dp"
-                            app:ccp_autoDetectCountry="true"
+                            app:ccp_showFullName="true"
+                            app:ccp_showPhoneCode="false"
+                            app:ccp_showNameCode="false"
                             app:ccp_clickable="false"
-                            app:ccp_defaultNameCode="SG"
-                            app:ccp_showFullName="false"/>
+                            app:ccp_defaultNameCode="SG"/>
 
                     </LinearLayout>
 

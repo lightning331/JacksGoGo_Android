@@ -226,7 +226,6 @@
     <string name="edit_profile_actionbar_title">Edit Profile</string>
 
     <!--TODO: Credit-->
-    <string name="setup_payment">Setup Payment Methood</string>
     <string name="credit">Credit</string>
     <string name="details">Details</string>
     <string name="credit_added">Added ($)</string>

@@ -71,7 +71,7 @@
         android:layout_height="@dimen/button_height"
         android:background="@color/JGGOrange"
         android:fontFamily="@font/muliregular"
-        android:text="@string/setup_payment"
+        android:text="@string/payment_setup_button"
         android:textAllCaps="false"
         android:textColor="@color/JGGWhite"
         app:layout_constraintBottom_toBottomOf="parent"
