@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
+import com.kelvin.jacksgogo.Fragments.GoClub_Event.GcEventSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
@@ -16,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
@@ -81,9 +83,19 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
                     .beginTransaction()
                     .replace(R.id.post_go_club_container, PostJobCategoryFragment.newInstance(appType.toString()))
                     .commit();
-        } else if (status.equals(EDIT)) {
+        } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case GOCLUB:
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.GOCLUB);
+                    GcEventSummaryFragment summaryFrag = new GcEventSummaryFragment();
+                    if (status.equals(EDIT))
+                        summaryFrag.setEditStatus(GcEventSummaryFragment.PostEditStatus.EDIT);
+                    else if (status.equals(DUPLICATE))
+                        summaryFrag.setEditStatus(GcEventSummaryFragment.PostEditStatus.DUPLICATE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_go_club_container, summaryFrag)
+                            .commit();
                     break;
                 case EVENTS:
                     break;

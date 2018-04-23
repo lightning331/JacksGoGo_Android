@@ -190,7 +190,11 @@
         <activity android:name=".Activities.Profile.WithdrawCreditActivity" />
         <activity android:name=".Activities.Profile.JacksActivity" />
         <activity android:name=".Activities.Profile.ChangeRegionActivity" />
-        <activity android:name=".Activities.GoClub_Event.GcPostedEventActivity"></activity>
+        <activity android:name=".Activities.GoClub_Event.GcPostedEventActivity" />
+        <activity android:name=".Activities.GoClub_Event.GcAttendeesActivity" />
+        <activity android:name=".Activities.GoClub_Event.GcPostUpdateActivity" />
+        <activity android:name=".Activities.GoClub_Event.GcScheduleActivity" />
+        <activity android:name=".Activities.GoClub_Event.GcAddAdminActivity"></activity>
     </application>
 
 </manifest>

@@ -279,7 +279,7 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     private void setGoClubData() {
-
+        listener.onNextButtonClick();
     }
 
     private void setEventData() {
