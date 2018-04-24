@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
-import com.kelvin.jacksgogo.Activities.GoClub_Event.GcPostedEventActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.JoinedGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
@@ -34,9 +33,9 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -219,7 +219,8 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         }
 
         if (mActivities.size() > 0) {
-            for (JGGAppointmentActivityModel activity : mActivities) {
+            for (int i = mActivities.size() - 1; i >= 0; i --) {
+                JGGAppointmentActivityModel activity = mActivities.get(i);
                 switch (activity.getStatus()) {
                     case job_deleted:
                         setDeletedJobStatus();
@@ -247,12 +248,10 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
                         setDeclineProposalStatus(activity);
                         break;
                     case proposal_deleted:
-
+                        break;
                     case proposal_approved:
                         // Job confirmed View
                         setJobConfirmedStatus(activity);
-                        break;
-                    case contract_created:
                         setReadyToStartStatus(activity);
                         break;
                     case contract_started:
