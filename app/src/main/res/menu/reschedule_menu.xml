@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_option_reschedule"
+        android:icon="@mipmap/button_reschedule_orange"
+        android:title="@string/menu_option_reschedule" />
+    <item
+        android:id="@+id/menu_option_withdraw"
+        android:icon="@mipmap/button_cross_fat_orange"
+        android:title="@string/menu_option_withdraw_job" />
+</menu>
+

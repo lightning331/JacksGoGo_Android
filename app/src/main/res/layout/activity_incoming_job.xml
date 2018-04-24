@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity">
+    tools:context=".Activities.Jobs.IncomingJobActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/app_detail_actionbar"
+                android:id="@+id/incoming_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -99,7 +98,7 @@
                 android:background="@color/JGGGrey4">
             </LinearLayout>
             <FrameLayout
-                android:id="@+id/app_detail_container"
+                android:id="@+id/incoming_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/JGGGrey5"
@@ -107,4 +106,5 @@
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

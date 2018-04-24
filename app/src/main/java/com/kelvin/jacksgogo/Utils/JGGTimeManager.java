@@ -303,9 +303,9 @@ public class JGGTimeManager {
                 if (job.getRepetitionType() == JGGRepetitionType.weekly) {
                     for (int i = 0; i < items.length; i ++) {
                         if (time.equals(""))
-                            time = "Every " + getWeekName(Integer.parseInt(items[i]));
+                            time = "Every " + getWeekName(Integer.parseInt(items[i]) - 1);
                         else
-                            time = time + ", " + "Every " + getWeekName(Integer.parseInt(items[i]));
+                            time = time + ", " + "Every " + getWeekName(Integer.parseInt(items[i]) - 1);
                     }
                 } else if (job.getRepetitionType() == JGGRepetitionType.monthly) {
                     for (int i = 0; i < items.length; i ++) {

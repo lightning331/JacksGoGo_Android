@@ -18,11 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.IncomingJobActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.OutgoingJobActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -364,8 +364,13 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         selectedCategory = appointment.getCategory();
         selectedAppointment = appointment;
         if (appointment.isRequest()) {
-            Intent intent = new Intent(getActivity(), ProgressJobSummaryActivity.class);
-            startActivity(intent);
+            if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+                Intent intent = new Intent(mContext, OutgoingJobActivity.class);
+                mContext.startActivity(intent);
+            } else {
+                Intent intent = new Intent(mContext, IncomingJobActivity.class);
+                mContext.startActivity(intent);
+            }
         } else if (!appointment.isRequest()) {
             if (appointment.getUserProfileID().equals(currentUser.getID())) {
                 Intent intent = new Intent(getActivity(), PostedServiceActivity.class);

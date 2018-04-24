@@ -81,7 +81,7 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
             lblQuotationCount.setText(proposalCount);
             lblQuotationCount.setOnClickListener(this);
         } else {
-            quotationLine.setBackgroundColor(mImage);
+            quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             imgQuotation.setImageResource(R.mipmap.icon_provider_green);
 
             if (count == 0) {       // Invite Service Provider

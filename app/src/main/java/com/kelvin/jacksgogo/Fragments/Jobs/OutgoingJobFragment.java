@@ -13,12 +13,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.OutgoingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
-import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.ServiceProviderActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
@@ -29,29 +28,18 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryTip
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryWorkProgressView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
@@ -59,18 +47,19 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.open;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.started;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
-import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class ProgressJobClientFragment extends Fragment implements View.OnClickListener {
+public class OutgoingJobFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private ProgressJobSummaryActivity mActivity;
+    private OutgoingJobActivity mActivity;
 
     private TextView lblPostedTime;
     private TextView lblPostedJob;
@@ -108,12 +97,12 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
     private String providerName = "";
     private boolean isDeleted;
 
-    public ProgressJobClientFragment() {
+    public OutgoingJobFragment() {
         // Required empty public constructor
     }
 
-    public static ProgressJobClientFragment newInstance(String param1, String param2) {
-        ProgressJobClientFragment fragment = new ProgressJobClientFragment();
+    public static OutgoingJobFragment newInstance(String param1, String param2) {
+        OutgoingJobFragment fragment = new OutgoingJobFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -139,7 +128,7 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_progress_job_client, container, false);
+        view = inflater.inflate(R.layout.fragment_outgoing_job, container, false);
 
         mJob = selectedAppointment;
 
@@ -427,7 +416,7 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mActivity = ((ProgressJobSummaryActivity) mContext);
+        mActivity = ((OutgoingJobActivity) mContext);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

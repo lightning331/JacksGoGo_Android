@@ -17,9 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.Jobs.IncomingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
-import com.kelvin.jacksgogo.Activities.Jobs.ProgressJobSummaryActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.ServiceProviderActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
@@ -65,11 +65,11 @@ import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class ProgressJobProviderFragment extends Fragment implements View.OnClickListener {
+public class IncomingJobFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private ProgressJobSummaryActivity mActivity;
+    private IncomingJobActivity mActivity;
 
     private TextView lblPostedTime;
     private TextView lblPostedJob;
@@ -109,12 +109,12 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     private JGGContractModel mContract;
     private String clientName;
 
-    public ProgressJobProviderFragment() {
+    public IncomingJobFragment() {
         // Required empty public constructor
     }
 
-    public static ProgressJobProviderFragment newInstance(String param1, String param2) {
-        ProgressJobProviderFragment fragment = new ProgressJobProviderFragment();
+    public static IncomingJobFragment newInstance(String param1, String param2) {
+        IncomingJobFragment fragment = new IncomingJobFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -140,7 +140,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_progress_job_provider, container, false);
+        View view = inflater.inflate(R.layout.fragment_incoming_job, container, false);
         initView(view);
         onRefreshView();
         return view;
@@ -207,56 +207,55 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         //Provider invited to Job
         if (mProposal == null) {}
         else {
-            if (mProposal.getStatus() == JGGProposalStatus.open) {
-                if (mProposal.isInvited()) {
-                    // Invited from Client
-                    imgProposal.setImageResource(R.mipmap.icon_posted_orange);
-                    lblPostedJob.setText(R.string.invited_proposal_title);
-                    bottomLayout.setVisibility(View.VISIBLE);
-                    acceptLayout.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-
-        if (mActivities.size() > 0) {
-            for (int i = mActivities.size() - 1; i >= 0; i --) {
-                JGGAppointmentActivityModel activity = mActivities.get(i);
-                switch (activity.getStatus()) {
-                    case job_deleted:
-                        setDeletedJobStatus();
-                        break;
-                    case proposal_sent:
-                        if (activity.getReferenceID().equals(mProposal.getID())) {
-                            setProposedStatus(activity);
-                            // Waiting for Client's decision
-                            setWaitingClientDecision(activity);
-                            // Client Info view
-                            onShowClientInfoView();
-                        }
-                        break;
-                    case proposal_edited:
-                        if (activity.getReferenceID().equals(mProposal.getID())) {
-                            setProposedStatus(activity);
-                            // Waiting for Client's decision
-                            setWaitingClientDecision(activity);
-                            // Client Info view
-                            onShowClientInfoView();
-                        }
-                        break;
-                    case proposal_rejected:
-                        // Client rejected provider's proposal
-                        setDeclineProposalStatus(activity);
-                        break;
-                    case proposal_deleted:
-                        break;
-                    case proposal_approved:
-                        // Job confirmed View
-                        setJobConfirmedStatus(activity);
-                        setReadyToStartStatus(activity);
-                        break;
-                    case contract_started:
-                        setJobReportStatus(activity);
-                        break;
+            if (mActivities.size() > 0) {
+                for (int i = mActivities.size() - 1; i >= 0; i --) {
+                    JGGAppointmentActivityModel activity = mActivities.get(i);
+                    switch (activity.getStatus()) {
+                        case job_deleted:
+                            setDeletedJobStatus();
+                            break;
+                        case invite_sent:
+                            setInvitedStatus(activity);
+                            break;
+                        case proposal_sent:
+                            if (activity.getReferenceID().equals(mProposal.getID())) {
+                                setProposedStatus(activity);
+                                // Waiting for Client's decision
+                                setWaitingClientDecision(activity);
+                                // Client Info view
+                                onShowClientInfoView();
+                            }
+                            break;
+                        case proposal_edited:
+                            if (activity.getReferenceID().equals(mProposal.getID())) {
+                                setProposedStatus(activity);
+                                // Waiting for Client's decision
+                                setWaitingClientDecision(activity);
+                                // Client Info view
+                                onShowClientInfoView();
+                            }
+                            break;
+                        case proposal_rejected:
+                            // Client rejected provider's proposal
+                            setDeclineProposalStatus(activity);
+                            break;
+                        case proposal_deleted:
+                            break;
+                        case proposal_withdraw:
+                            setDeletedJobStatus();
+                            mActivity.setStatus(mProposal);
+                            break;
+                        case proposal_approved:
+                            // Set More button
+                            mActivity.setStatus(mProposal);
+                            // Job confirmed View
+                            setReadyToStartStatus(activity);
+                            setJobConfirmedStatus(activity);
+                            break;
+                        case contract_started:
+                            setJobReportStatus(activity);
+                            break;
+                    }
                 }
             }
         }
@@ -310,12 +309,36 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
             public void onItemClick(View item) {
                 JobReportSummaryFragment frag = JobReportSummaryFragment.newInstance(false);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.app_detail_container, frag, frag.getTag());
+                ft.replace(R.id.incoming_container, frag, frag.getTag());
                 ft.addToBackStack("report_fragment");
                 ft.commit();
             }
         });
         paymentLayout.addView(paymentView);*/
+    }
+
+    private void onPostedJob() {
+        mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.JOB_DETAILS, Global.AppointmentType.UNKNOWN);
+        mActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.incoming_container, new NewJobDetailsFragment())
+                .addToBackStack("job_detail_fragment")
+                .commit();
+    }
+
+    private void setInvitedStatus(JGGAppointmentActivityModel activity) {
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        lblPostedTime.setText(submitTime);
+        imgProposal.setImageResource(R.mipmap.icon_posted_orange);
+        lblPostedJob.setText(R.string.invited_proposal_title);
+        bottomLayout.setVisibility(View.VISIBLE);
+        acceptLayout.setVisibility(View.VISIBLE);
+        lblPostedJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPostedJob();
+            }
+        });
     }
 
     private void setProposedStatus(JGGAppointmentActivityModel activity) {
@@ -325,11 +348,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         lblPostedJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActivity.actionbarView.setStatus(JGGActionbarView.EditStatus.JOB_DETAILS, Global.AppointmentType.UNKNOWN);
-                mActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.app_detail_container, new NewJobDetailsFragment())
-                        .addToBackStack("job_detail_fragment")
-                        .commit();
+                onPostedJob();
             }
         });
     }
@@ -615,7 +634,7 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mActivity = ((ProgressJobSummaryActivity) mContext);
+        mActivity = ((IncomingJobActivity) mContext);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

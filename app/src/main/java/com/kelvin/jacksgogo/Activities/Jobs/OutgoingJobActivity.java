@@ -18,8 +18,7 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
-import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobClientFragment;
-import com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobProviderFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.OutgoingJobFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -37,7 +36,6 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +55,7 @@ import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
-public class ProgressJobSummaryActivity extends AppCompatActivity implements TextWatcher {
+public class OutgoingJobActivity extends AppCompatActivity implements TextWatcher {
 
     @BindView(R.id.app_detail_actionbar) Toolbar mToolbar;
     @BindView(R.id.img_detail) ImageView imgCategory;
@@ -76,7 +74,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_progress_job_summary);
+        setContentView(R.layout.activity_outgoing_job);
 
         ButterKnife.bind(this);
 
@@ -99,11 +97,8 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
     @Override
     protected void onResume() {
         super.onResume();
-        if (mJob.getUserProfileID().equals(currentUser.getID())) {
-            actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-        } else {
-            actionbarView.setDeleteJobStatus();
-        }
+
+        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
         getAppointmentActivities();
     }
 
@@ -118,21 +113,12 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         lblTime.setText(getAppointmentTime(mJob));
     }
 
-    private void onProgressJobFragment() {
-        ProgressJobClientFragment clientFrag = new ProgressJobClientFragment();
+    private void onOutgoingJobFragment() {
+        OutgoingJobFragment clientFrag = new OutgoingJobFragment();
         clientFrag.setAppointmentActivities(mActivities, mProposals, mContract);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.app_detail_container, clientFrag)
-                .commit();
-    }
-
-    private void onProgressProposalFragment() {
-        ProgressJobProviderFragment providerFrag = new ProgressJobProviderFragment();
-        providerFrag.setAppointmentActivities(mActivities, mProposals, mContract);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.app_detail_container, providerFrag)
                 .commit();
     }
 
@@ -155,17 +141,17 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                         deleteJobFinished();
                         getAppointmentActivities();
                     } else {
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     int statusCode  = response.code();
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });
@@ -185,18 +171,18 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                         getProposalsByJob();
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGAppointmentActivityResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -207,25 +193,24 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
 
                         getContractByAppointment();
                     } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -241,24 +226,22 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mContract = response.body().getValue();
+
                         // Todo: send Appointment Status
-                        if (mJob.getUserProfileID().equals(currentUser.getID())) {
-                            onProgressJobFragment();
-                        } else {
-                            onProgressProposalFragment();
-                        }
+                        onOutgoingJobFragment();
+
                     } else {
-                        Toast.makeText(ProgressJobSummaryActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(ProgressJobSummaryActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGGetContractResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ProgressJobSummaryActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -283,12 +266,6 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                     break;
                 case APPOINTMENT:
                     onShowEditPopUpMenu(view);
-                    break;
-                case EDIT_MAIN:
-                    //showJobStatusSummaryFragment();
-                    break;
-                case EDIT_DETAIL:
-                    //backToEditJobMainFragment();
                     break;
                 default:
                     break;
@@ -321,7 +298,7 @@ public class ProgressJobSummaryActivity extends AppCompatActivity implements Tex
                 getResources().getString(R.string.alert_cancel),
                 R.color.JGGGreen,
                 R.color.JGGGreen10Percent,
-                getResources().getString(R.string.alert_ok),
+                getResources().getString(R.string.alert_delete),
                 R.color.JGGRed);
         final android.app.AlertDialog alertDialog = builder.create();
         builder.txtReason.addTextChangedListener(this);
