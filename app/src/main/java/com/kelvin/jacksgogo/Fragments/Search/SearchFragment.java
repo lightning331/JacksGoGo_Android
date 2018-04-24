@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.AllGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
-import com.kelvin.jacksgogo.Activities.GoClub_Event.GcPostedEventActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.JoinedGoClubsActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
@@ -31,9 +30,9 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
@@ -100,7 +99,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        token = JGGAppManager.getInstance(mContext).getToken();
+        token = JGGSharedPrefs.getInstance(mContext).getToken();
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeSearchContainer);
@@ -264,7 +263,7 @@ public class SearchFragment extends Fragment {
                     mIntent = new Intent(mContext, AllGoClubsActivity.class);
                     mIntent.putExtra("is_category", false);
                 } else if (view.getId() == R.id.btn_post_new) {
-                    if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                    if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
                         mIntent = new Intent(mContext, CreateGoClubActivity.class);
                         mIntent.putExtra(EDIT_STATUS, POST);
                         mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
@@ -292,7 +291,7 @@ public class SearchFragment extends Fragment {
                     mIntent.putExtra("active_status", 1);
 
                 } else if (view.getId() == R.id.btn_post_new) {
-                    if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                    if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
                         mIntent = new Intent(mContext, CreateGoClubActivity.class);
                         mIntent.putExtra(EDIT_STATUS, POST);
                         mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
@@ -532,7 +531,7 @@ public class SearchFragment extends Fragment {
             mIntent = new Intent(mContext, ActiveServiceActivity.class);
             mIntent.putExtra("active_status", 1);
         } else if (view.getId() == R.id.btn_post_new) {
-            if (!JGGAppManager.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+            if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
                 mIntent = new Intent(mContext, PostServiceActivity.class);
             } else {
                 showAlertDialog();
