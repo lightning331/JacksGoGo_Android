@@ -25,10 +25,10 @@ import com.kelvin.jacksgogo.Activities.Profile.SignUpPhoneActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
 import retrofit2.Call;
@@ -135,12 +135,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
 
                         // Save Current User
                         JGGUserProfileModel user = response.body().getValue();
-                        JGGAppManager.getInstance(mContext).saveUser(user.getUser().getUserName(), user.getUser().getEmail(), strPassword);
+                        JGGSharedPrefs.getInstance(mContext).saveUser(user.getUser().getUserName(), user.getUser().getEmail(), strPassword);
                         currentUser = user;
                         // Save Access Token
                         String access_token = response.body().getToken().getAccess_token();
                         Long expire_in = response.body().getToken().getExpires_in();
-                        JGGAppManager.getInstance(mContext).saveToken(access_token, expire_in);
+                        JGGSharedPrefs.getInstance(mContext).saveToken(access_token, expire_in);
 
                         if (user.getUser().getPhoneNumberConfirmed()) {
                             loggedIn();

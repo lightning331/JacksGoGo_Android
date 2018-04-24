@@ -19,8 +19,8 @@ import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
@@ -81,8 +81,8 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     private void submit() {
         progressDialog = createProgressDialog(this);
 
-        String password = JGGAppManager.getInstance(this).getUsernamePassword()[1];
-        String username = JGGAppManager.getInstance(this).getUsernamePassword()[2];
+        String password = JGGSharedPrefs.getInstance(this).getUsernamePassword()[1];
+        String username = JGGSharedPrefs.getInstance(this).getUsernamePassword()[2];
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGUserProfileResponse> signUpCall = signInManager.verifyPhoneNumber(username, password, strPhoneNumber, strOTP);
@@ -99,7 +99,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
                         // Save Access Token
                         String access_token = response.body().getToken().getAccess_token();
                         Long expire_in = response.body().getToken().getExpires_in();
-                        JGGAppManager.getInstance(SignUpSMSVerifyActivity.this).saveToken(access_token, expire_in);
+                        JGGSharedPrefs.getInstance(SignUpSMSVerifyActivity.this).saveToken(access_token, expire_in);
 
                         onShowMainActivity();
                     } else {
@@ -122,7 +122,7 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
     private void reSendOTP() {
         progressDialog = createProgressDialog(this);
 
-        String username = JGGAppManager.getInstance(this).getUsernamePassword()[2];
+        String username = JGGSharedPrefs.getInstance(this).getUsernamePassword()[2];
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(username, strPhoneNumber);
