@@ -25,11 +25,11 @@ import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
+import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class PublickProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -137,6 +137,7 @@ public class PublickProfileActivity extends AppCompatActivity implements View.On
             Intent mIntent = new Intent(this, ActiveServiceActivity.class);
             mIntent.putExtra(APPOINTMENT_TYPE, SERVICES);
             mIntent.putExtra(EDIT_STATUS, EDIT);
+            mIntent.putExtra("active_status", 1);
             startActivity(mIntent);
         }
     }

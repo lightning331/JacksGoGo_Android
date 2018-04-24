@@ -16,6 +16,8 @@
             android:id="@+id/img_avatar"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:src="@mipmap/nurse1"
             android:background="@color/transparent"
             android:adjustViewBounds="true"
@@ -59,6 +61,7 @@
                 android:id="@+id/txt_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:text="organiser"
                 android:textColor="@color/JGGBlack"
                 android:fontFamily="@font/muliregular"
@@ -74,10 +77,12 @@
                 android:id="@+id/txt_demote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:gravity="end"
                 android:text="Demote"
                 android:textColor="@color/JGGPurple"
                 android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/list_title_font_size"/>
+                android:textSize="@dimen/list_title_font_size" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

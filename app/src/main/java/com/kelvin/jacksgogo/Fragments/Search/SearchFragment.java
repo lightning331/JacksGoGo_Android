@@ -33,9 +33,9 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
+import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 
 import java.util.ArrayList;
 import java.util.List;

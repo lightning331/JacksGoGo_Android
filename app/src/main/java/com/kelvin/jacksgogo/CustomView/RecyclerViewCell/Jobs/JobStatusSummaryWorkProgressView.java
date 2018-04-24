@@ -26,6 +26,7 @@ public class JobStatusSummaryWorkProgressView extends RelativeLayout {
     public TextView lblStartTime;
     public TextView lblUserName;
     public TextView lblStartedWork;
+    public TextView lblReportDesc;
     public TextView btnStart;
     public LinearLayout billableLayout;
 
@@ -50,7 +51,12 @@ public class JobStatusSummaryWorkProgressView extends RelativeLayout {
         lblStartTime = view.findViewById(R.id.lbl_start_time);
         lblUserName = view.findViewById(R.id.lbl_confirmed_user_name);
         lblStartedWork = view.findViewById(R.id.lbl_started_work);
+        lblReportDesc = view.findViewById(R.id.lbl_report_desc);
         btnStart = view.findViewById(R.id.btn_start);
         billableLayout = view.findViewById(R.id.billable_item_layout);
+
+        billableLayout.setVisibility(GONE);
+        btnStart.setVisibility(GONE);
+        lblReportDesc.setVisibility(GONE);
     }
 }

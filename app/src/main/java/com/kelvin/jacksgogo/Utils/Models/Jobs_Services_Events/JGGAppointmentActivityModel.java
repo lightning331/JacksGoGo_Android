@@ -2,6 +2,11 @@ package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
 import com.kelvin.jacksgogo.Utils.Global.AppointmentActivityStatus;
 
+import java.util.Date;
+
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDateString;
+
 public class JGGAppointmentActivityModel {
 
     private String ID;
@@ -60,11 +65,11 @@ public class JGGAppointmentActivityModel {
         Status = status.getValue();
     }
 
-    public String getActiveOn() {
-        return ActiveOn;
+    public Date getActiveOn() {
+        return appointmentMonthDate(ActiveOn);
     }
 
-    public void setActiveOn(String activeOn) {
-        ActiveOn = activeOn;
+    public void setActiveOn(Date activeOn) {
+        ActiveOn = appointmentMonthDateString(activeOn);
     }
 }

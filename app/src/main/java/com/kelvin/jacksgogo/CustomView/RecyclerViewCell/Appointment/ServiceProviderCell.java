@@ -72,16 +72,20 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
 //        }
         if (status == confirmed) {
             lblStatus.setVisibility(View.VISIBLE);
+            lblStatus.setText("Confirmed");
             imgProposal.setVisibility(View.VISIBLE);
             lblPrice.setVisibility(View.VISIBLE);
-            lblStatus.setText("Confirmed");
         } else if (status == declined) {
             lblStatus.setVisibility(View.VISIBLE);
+            lblStatus.setText("Declined");
             imgProposal.setVisibility(View.GONE);
             lblPrice.setVisibility(View.GONE);
             itemView.setAlpha(.5f);
         } else if (status == rejected) {
             lblStatus.setVisibility(View.VISIBLE);
+            lblStatus.setText("Rejected");
+            imgProposal.setVisibility(View.VISIBLE);
+            lblPrice.setVisibility(View.VISIBLE);
             itemView.setAlpha(.5f);
         }
 

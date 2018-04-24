@@ -168,9 +168,9 @@ public class PostedJobActivity extends AppCompatActivity {
                 } else if (mJob.getRepetitionType() == JGGRepetitionType.monthly) {
                     for (int i = 0; i < items.length; i ++) {
                         if (time.equals(""))
-                            time = "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
+                            time = "Every " + getDayName(Integer.parseInt(items[i]) - 1) + " of the month";
                         else
-                            time = time + ", " + "Every " + getDayName(Integer.parseInt(items[i])) + " of the month";
+                            time = time + ", " + "Every " + getDayName(Integer.parseInt(items[i]) - 1) + " of the month";
                     }
                 }
             }

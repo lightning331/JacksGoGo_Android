@@ -116,11 +116,15 @@
     <string name="alert_email_sent_title">Email Sent!</string>
     <string name="alert_email_sent_desc">Check your email for the next steps.</string>
 
+    <string name="alert_success_title">Success!</string>
+    <string name="alert_payment_method_desc">Payment method is set up and ready to be used.</string>
+    <string name="alert_remove_card_title">Remove This Card?</string>
+    <string name="alert_remove_button">Remove</string>
+
     <!-- TODO: Forgot Password -->
     <string name="alert_forgot_pass_title">Forgot Password?</string>
     <string name="alert_forgot_pass_desc">Enter your email linked to your account below. We will send you an email with steps to reset your password.</string>
     <string name="alert_forgot_pass_send">Send</string>
-
 
     <!-- TODO: Share Dialog -->
     <string name="share_dlg_title">Share with your friend</string>
@@ -222,7 +226,6 @@
     <string name="edit_profile_actionbar_title">Edit Profile</string>
 
     <!--TODO: Credit-->
-    <string name="setup_payment">Setup Payment Methood</string>
     <string name="credit">Credit</string>
     <string name="details">Details</string>
     <string name="credit_added">Added ($)</string>
@@ -239,6 +242,20 @@
     <string name="jacks_added">Added (J$)</string>
     <string name="jacks_used">Used (J$)</string>
     <string name="jacks_doallars">Jacks Dollars</string>
+
+    <!--TODO : Settings-->
+    <string name="title_settings">Settings</string>
+    <string name="title_notification">Notifications</string>
+    <string name="title_notification_desc">Allow us to send you news and updates.</string>
+    <string name="title_sound">Sound</string>
+    <string name="title_sound_desc">Play sound on incoming notifications.</string>
+    <string name="title_version">Version</string>
+
+    <!--TODO : Payment Method-->
+    <string name="title_payment">Payment Method</string>
+    <string name="title_edit_payment">Edit Details</string>
+    <string name="title_payment_desc">You can set up a payment method for faster checkout.</string>
+    <string name="payment_setup_button">Set Up Payment Method</string>
 
     <!--TODO : change region-->
     <string name="change_region">Change Region</string>

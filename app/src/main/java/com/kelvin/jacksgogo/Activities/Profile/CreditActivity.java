@@ -2,13 +2,12 @@ package com.kelvin.jacksgogo.Activities.Profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Adapter.Profile.CreditAdapter;
@@ -20,13 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import com.kelvin.jacksgogo.R;
-
-import com.kelvin.jacksgogo.R;
-
 public class CreditActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
-    ImageView btn_back;
+    LinearLayout btn_back;
     @BindView(R.id.credit_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.btn_payment)

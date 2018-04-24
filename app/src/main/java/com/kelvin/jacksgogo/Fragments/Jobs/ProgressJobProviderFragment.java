@@ -39,7 +39,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -53,8 +53,6 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
@@ -204,29 +202,124 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         paymentView = new JobStatusSummaryPaymentView(mContext, JGGUserType.PROVIDER);
     }
 
-    private void resetViews() {
-        cancelledLayout.removeAllViews();
-        quotationLayout.removeAllViews();
-        confirmedLayout.removeAllViews();
-        progressLayout.removeAllViews();
-        footerLayout.removeAllViews();
-    }
-
     private void onRefreshView() {
 
+        //Provider invited to Job
+        if (mProposal == null) {}
+        else {
+            if (mProposal.getStatus() == JGGProposalStatus.open) {
+                if (mProposal.isInvited()) {
+                    // Invited from Client
+                    imgProposal.setImageResource(R.mipmap.icon_posted_orange);
+                    lblPostedJob.setText(R.string.invited_proposal_title);
+                    bottomLayout.setVisibility(View.VISIBLE);
+                    acceptLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
         if (mActivities.size() > 0) {
-            for (JGGAppointmentActivityModel activity : mActivities) {
+            for (int i = mActivities.size() - 1; i >= 0; i --) {
+                JGGAppointmentActivityModel activity = mActivities.get(i);
                 switch (activity.getStatus()) {
-                    case none:
+                    case job_deleted:
+                        setDeletedJobStatus();
                         break;
-                    case unknown:
+                    case proposal_sent:
+                        if (activity.getReferenceID().equals(mProposal.getID())) {
+                            setProposedStatus(activity);
+                            // Waiting for Client's decision
+                            setWaitingClientDecision(activity);
+                            // Client Info view
+                            onShowClientInfoView();
+                        }
+                        break;
+                    case proposal_edited:
+                        if (activity.getReferenceID().equals(mProposal.getID())) {
+                            setProposedStatus(activity);
+                            // Waiting for Client's decision
+                            setWaitingClientDecision(activity);
+                            // Client Info view
+                            onShowClientInfoView();
+                        }
+                        break;
+                    case proposal_rejected:
+                        // Client rejected provider's proposal
+                        setDeclineProposalStatus(activity);
+                        break;
+                    case proposal_deleted:
+                        break;
+                    case proposal_approved:
+                        // Job confirmed View
+                        setJobConfirmedStatus(activity);
+                        setReadyToStartStatus(activity);
+                        break;
+                    case contract_started:
+                        setJobReportStatus(activity);
                         break;
                 }
             }
         }
 
-        resetViews();
-        Date submitOn = mProposal.getSubmitOn();
+
+
+        /*footerView.reportLayout.setVisibility(View.VISIBLE);
+        footerView.invoiceLayout.setVisibility(View.VISIBLE);
+        footerView.setOnItemClickListener(new JobStatusSummaryFooterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                if (item.getId() == R.id.job_report_layout) {
+                    Intent intent = new Intent(mContext, JobReportActivity.class);
+                    intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                    intent.putExtra("work_start", false);
+                    mActivity.startActivity(intent);
+                } else if (item.getId() == R.id.job_invoice_layout) {
+
+                }
+            }
+        });
+        footerLayout.addView(footerView);
+        LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
+        JobStatusSummaryReview givenReviewView = new JobStatusSummaryReview(mContext);
+        givenReviewLayout.addView(givenReviewView);
+        givenReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                onShowReviewFragment();
+            }
+        });
+
+        LinearLayout getReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_get_review_layout);
+        JobStatusSummaryReview getReviewView = new JobStatusSummaryReview(mContext);
+        getReviewLayout.addView(getReviewView);
+        getReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                onShowReviewFragment();
+            }
+        });
+
+        tipLayout = view.findViewById(R.id.job_main_tip_layout);
+        tipView = new JobStatusSummaryTipView(mContext);
+        tipLayout.addView(tipView);
+
+        paymentLayout = view.findViewById(R.id.job_main_payment_layout);
+        paymentView = new JobStatusSummaryPaymentView(mContext);
+        paymentView.setOnItemClickListener(new JobStatusSummaryPaymentView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View item) {
+                JobReportSummaryFragment frag = JobReportSummaryFragment.newInstance(false);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.app_detail_container, frag, frag.getTag());
+                ft.addToBackStack("report_fragment");
+                ft.commit();
+            }
+        });
+        paymentLayout.addView(paymentView);*/
+    }
+
+    private void setProposedStatus(JGGAppointmentActivityModel activity) {
+        Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
         lblPostedTime.setText(submitTime);
         lblPostedJob.setOnClickListener(new View.OnClickListener() {
@@ -239,95 +332,16 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
                         .commit();
             }
         });
-
-        //Provider invited to Job
-        if (mProposal.getStatus() == JGGProposalStatus.open) {
-            if (mProposal.isInvited()) {
-                // Invited from Client
-                imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
-                lblPostedJob.setText(R.string.invited_proposal_title);
-                bottomLayout.setVisibility(View.VISIBLE);
-                acceptLayout.setVisibility(View.VISIBLE);
-            } else {
-                // Waiting for Client's decision
-                setWaitingClientDecision();
-
-                // Client Info view
-                onShowClientInfoView();
-            }
-        } else if (mProposal.getStatus() == JGGProposalStatus.rejected) {
-            // Client rejected provider's proposal
-            setDeclineProposalStatus();
-
-            // Client Info view
-            onShowClientInfoView();
-        } else if (mProposal.getStatus() == JGGProposalStatus.confirmed) {
-
-            // Waiting for Client's decision
-            setWaitingClientDecision();
-
-            // Client Info view
-            onShowClientInfoView();
-
-            // Job confirmed View
-            if (mJob.getStatus() == confirmed) {
-                setJobConfirmedStatus();
-
-                // Client set Job time
-                if (mJob.getSessions() == null) {
-
-                } else {
-                    setJobStartedStatus();
-                }
-            }
-            if (mJob.getStatus() == deleted) {
-
-                setDeletedJobStatus();
-            }
-        }
-
-            /*LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
-            JobStatusSummaryReview givenReviewView = new JobStatusSummaryReview(mContext);
-            givenReviewLayout.addView(givenReviewView);
-            givenReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
-                @Override
-                public void onItemClick(View item) {
-                    onShowReviewFragment();
-                }
-            });
-
-            LinearLayout getReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_get_review_layout);
-            JobStatusSummaryReview getReviewView = new JobStatusSummaryReview(mContext);
-            getReviewLayout.addView(getReviewView);
-            getReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
-                @Override
-                public void onItemClick(View item) {
-                    onShowReviewFragment();
-                }
-            });
-
-            tipLayout = view.findViewById(R.id.job_main_tip_layout);
-            tipView = new JobStatusSummaryTipView(mContext);
-            tipLayout.addView(tipView);
-
-            paymentLayout = view.findViewById(R.id.job_main_payment_layout);
-            paymentView = new JobStatusSummaryPaymentView(mContext);
-            paymentView.setOnItemClickListener(new JobStatusSummaryPaymentView.OnItemClickListener() {
-                @Override
-                public void onItemClick(View item) {
-                    JobReportSummaryFragment frag = JobReportSummaryFragment.newInstance(false);
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.app_detail_container, frag, frag.getTag());
-                    ft.addToBackStack("report_fragment");
-                    ft.commit();
-                }
-            });
-            paymentLayout.addView(paymentView);*/
     }
 
-    private void setWaitingClientDecision() {
+    private void setWaitingClientDecision(JGGAppointmentActivityModel activity) {
         bottomLayout.setVisibility(View.GONE);
         lblPostedJob.setText(R.string.sent_proposal_title);
+
+        quotationLayout.removeAllViews();
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        quotationView.lblTime.setText(submitTime);
         quotationView.btnViewQuotation.setVisibility(View.GONE);
         quotationView.lblTitle.setText(R.string.waiting_client_decision);
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
@@ -335,19 +349,19 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         quotationLayout.addView(quotationView);
     }
 
-    private void setJobConfirmedStatus() {
-        Date submitOn = mProposal.getSubmitOn();
-        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+    private void setJobConfirmedStatus(JGGAppointmentActivityModel activity) {
 
         // Confirmed View
-        confirmedLayout.addView(confirmedView);
+        confirmedLayout.removeAllViews();
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
         confirmedView.lblConfirmedTime.setText(submitTime);
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment);
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_orange);
+        confirmedLayout.addView(confirmedView);
 
         // Quotation View
         quotationLayout.removeAllViews();
-        quotationView.lblTime.setText(submitTime);
         quotationView.viewQuotationLayout.setVisibility(View.GONE);
         quotationView.awardedLayout.setVisibility(View.VISIBLE);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
@@ -369,14 +383,15 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         quotationLayout.addView(quotationView);
     }
 
-    private void setJobStartedStatus() {
-        Date submitOn = mProposal.getSubmitOn();
+    private void setReadyToStartStatus(JGGAppointmentActivityModel activity) {
+        Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
         // Progress View
-        progressLayout.addView(progressView);
+        progressLayout.removeAllViews();
+        clientName = mJob.getUserProfile().getUser().getFullName();
         progressView.lblStartTime.setText(submitTime);
-        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork);
+        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_orange);
         progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
         progressView.lblStartedWork.setText("");
         progressView.lblStartedWork.append("Take note of ");
@@ -386,40 +401,62 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
         progressView.btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, JobReportActivity.class);
-                intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
-                intent.putExtra("work_start", true);
-                mActivity.startActivity(intent);
+                onStartContract();
             }
         });
+        progressLayout.addView(progressView);
 
         // Confirmed View
+        confirmedLayout.removeAllViews();
         confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
-
-        // Footer Layout
-
-        /*footerView.reportLayout.setVisibility(View.VISIBLE);
-        footerView.invoiceLayout.setVisibility(View.VISIBLE);
-        footerView.setOnItemClickListener(new JobStatusSummaryFooterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(View item) {
-                if (item.getId() == R.id.job_report_layout) {
-                    Intent intent = new Intent(mContext, JobReportActivity.class);
-                    intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
-                    intent.putExtra("work_start", false);
-                    mActivity.startActivity(intent);
-                } else if (item.getId() == R.id.job_invoice_layout) {
-
-                }
-            }
-        });
-        footerLayout.addView(footerView);*/
+        confirmedLayout.addView(confirmedView);
     }
 
-    private void setDeclineProposalStatus() {
-        lblPostedJob.setText(R.string.sent_proposal_title);
+    private void setJobReportStatus(JGGAppointmentActivityModel activity) {
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+
+        // Progress View
+        progressLayout.removeAllViews();
+        progressView.lblStartTime.setText(submitTime);
+        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_orange);
+        progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        progressView.lblStartedWork.setVisibility(View.GONE);
+        progressView.lblReportDesc.setVisibility(View.VISIBLE);
+        progressView.lblUserName.setText("Work is in progress...");
+        progressView.btnStart.setText("Job Report...");
+        progressView.btnStart.setVisibility(View.VISIBLE);
+        progressView.btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShowReportActivity();
+            }
+        });
+        progressLayout.addView(progressView);
+
+        // Confirmed View
+        confirmedLayout.removeAllViews();
+        confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
+        confirmedLayout.addView(confirmedView);
+    }
+
+    private void onShowReportActivity() {
+        Intent intent = new Intent(mContext, JobReportActivity.class);
+        intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+        intent.putExtra("work_start", true);
+        mActivity.startActivity(intent);
+    }
+
+    private void setDeclineProposalStatus(JGGAppointmentActivityModel activity) {
+        quotationLayout.removeAllViews();
+
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        quotationView.lblTime.setText(submitTime);
         quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
         quotationView.btnViewQuotation.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
         quotationView.btnViewQuotation.setText(R.string.edit_your_title);
@@ -438,6 +475,8 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
     }
 
     private void setDeletedJobStatus() {
+
+        cancelledLayout.removeAllViews();
 
         // Cancelled View
         Picasso.with(mContext).load(mJob.getUserProfile().getUser().getPhotoURL())
@@ -505,6 +544,35 @@ public class ProgressJobProviderFragment extends Fragment implements View.OnClic
 
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onStartContract() {
+        progressDialog = createProgressDialog(mContext);
+
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        String contractID = mContract.getID();
+        Call<JGGPostAppResponse> call = apiManager.startContract(contractID);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        onShowReportActivity();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }

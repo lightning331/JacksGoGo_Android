@@ -105,7 +105,7 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private String mReason;
-    private String providerName;
+    private String providerName = "";
     private boolean isDeleted;
 
     public ProgressJobClientFragment() {
@@ -319,8 +319,11 @@ public class ProgressJobClientFragment extends Fragment implements View.OnClickL
             setAppointmentDate();
 
         // Provider Info view
+        String imgURL = null;
+        if (mProposals.size() > 0)
+            imgURL = mProposal.getUserProfile().getUser().getPhotoURL();
         Picasso.with(mContext)
-                .load(mProposal.getUserProfile().getUser().getPhotoURL())
+                .load(imgURL)
                 .placeholder(R.mipmap.icon_profile)
                 .into(imgProvider);
         lblProviderName.setText(providerName);

@@ -51,8 +51,8 @@
                         android:orientation="vertical">
                         <ImageView
                             android:id="@+id/img_category_icon"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center_horizontal"
                             android:src="@mipmap/icon_cat_cooking_baking"/>
                     </LinearLayout>
@@ -110,6 +110,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/attendess_recycler_view"
                 android:layout_marginTop="10dp"
+                android:background="@color/JGGGrey5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </android.support.v7.widget.RecyclerView>
