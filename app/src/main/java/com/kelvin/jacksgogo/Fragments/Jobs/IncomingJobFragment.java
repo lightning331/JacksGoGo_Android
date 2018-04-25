@@ -220,7 +220,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                         case invite_sent:
                             setInvitedStatus(activity);
                             break;
-                        case proposal_sent:
+                        case proposal_sent: // TODO - new proposal
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
@@ -229,7 +229,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                                 onShowClientInfoView();
                             }
                             break;
-                        case proposal_edited:
+                        case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision

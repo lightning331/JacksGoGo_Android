@@ -52,7 +52,6 @@ public class InviteProviderActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private ArrayList<JGGUserProfileModel> users = new ArrayList<>();
-    private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
     private JGGUserProfileModel user;
     private JGGAppointmentModel mJob;
     private JGGCategoryModel mCategory;
@@ -155,8 +154,8 @@ public class InviteProviderActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        invitedUsers.add(user);
                         proposalID = response.body().getValue();
+                        Toast.makeText(InviteProviderActivity.this, "Invitation sent!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(InviteProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }

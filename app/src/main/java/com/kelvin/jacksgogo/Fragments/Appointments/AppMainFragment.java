@@ -368,15 +368,17 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         JGGAppManager.getInstance().setSelectedCategory(appointment.getCategory());
         JGGAppManager.getInstance().setSelectedAppointment(appointment);
 
-        if (appointment.isRequest()) {
+        if (appointment.isRequest()) { // TODO - Job Case
             if (appointment.getUserProfileID().equals(currentUser.getID())) {
+                // TODO - The job which I posted
                 Intent intent = new Intent(mContext, OutgoingJobActivity.class);
                 mContext.startActivity(intent);
             } else {
+                // TODO - The job which I sent proposal or get invited
                 Intent intent = new Intent(mContext, IncomingJobActivity.class);
                 mContext.startActivity(intent);
             }
-        } else if (!appointment.isRequest()) {
+        } else { // TODO - Service case
             if (appointment.getUserProfileID().equals(currentUser.getID())) {
                 Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
                 intent.putExtra("is_post", false);
