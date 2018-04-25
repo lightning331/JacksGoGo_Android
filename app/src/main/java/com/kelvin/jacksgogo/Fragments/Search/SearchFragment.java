@@ -209,7 +209,7 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void run() {
                                 int index = mServices.size() - 1;
-                                onLoadServiceMore(index);
+                                //onLoadServiceMore(index);
                             }
                         });
                     }
@@ -243,7 +243,7 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void run() {
                                 int index = mServices.size() - 1;
-                                onLoadJobsMore(index);
+                                //onLoadJobsMore(index);
                             }
                         });
                     }
