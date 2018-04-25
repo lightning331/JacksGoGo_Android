@@ -12,6 +12,11 @@ import com.kelvin.jacksgogo.Fragments.GoClub_Event.GcEventSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoclubModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +40,9 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
     private AppointmentType appType;
     private int titleText;
     private int alertTitle;
+
+    private JGGUserProfileModel currentUser;
+    private JGGGoclubModel goclubModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,8 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
+
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
@@ -79,10 +89,20 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
     private void initFragment() {
 
         if (status.equals(POST)) {
+            // Create New Goclub Model
+            goclubModel = new JGGGoclubModel();
+            goclubModel.setUserProfile(currentUser);
+            goclubModel.setUserProfileID(currentUser.getID());
+            JGGRegionModel currentRegion = JGGAppManager.getInstance().getCurrentRegion();
+            goclubModel.setRegion(currentRegion);
+            goclubModel.setRegionID(currentRegion.getID());
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_go_club_container, PostJobCategoryFragment.newInstance(appType.toString()))
                     .commit();
+
+            JGGAppManager.getInstance().setGoclubModel(goclubModel);
         } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case GOCLUB:
@@ -96,8 +116,6 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
                             .beginTransaction()
                             .replace(R.id.post_go_club_container, summaryFrag)
                             .commit();
-                    break;
-                case EVENTS:
                     break;
                 default:
                     break;

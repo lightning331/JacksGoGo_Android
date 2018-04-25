@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoclubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -71,6 +72,7 @@ public class PostServiceDescribeFragment extends Fragment
 
     private String appType;
     private JGGAppointmentModel creatingApp;
+    private JGGGoclubModel goclubModel;
     private int nextButton;
     private int imageSelectionColor;
 
@@ -101,6 +103,7 @@ public class PostServiceDescribeFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
         creatingApp = JGGAppManager.getInstance().getSelectedAppointment();
+        goclubModel = JGGAppManager.getInstance().getGoclubModel();
 
         initView(view);
         initRecyclerView();
@@ -170,6 +173,11 @@ public class PostServiceDescribeFragment extends Fragment
             txtServiceDesc.setText(creatingApp.getDescription());
             txtServiceTag.setText(creatingApp.getTags());
         }
+        if (appType.equals(GOCLUB)) {
+            txtServiceTitle.setText(goclubModel.getName());
+            txtServiceDesc.setText(goclubModel.getDescription());
+            txtServiceTag.setText(goclubModel.getTags());
+        }
     }
 
     private void initRecyclerView() {
@@ -206,7 +214,15 @@ public class PostServiceDescribeFragment extends Fragment
                 }
             }
         } else if (appType.equals(GOCLUB)) {
+            if (goclubModel.getAlbumFiles() == null) {
 
+            } else {
+                if (goclubModel.getAlbumFiles().size() != 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    mAlbumFiles = goclubModel.getAlbumFiles();
+                    mAdapter.notifyDataChanged(mAlbumFiles);
+                }
+            }
         }
         recyclerView.setAdapter(mAdapter);
     }
@@ -280,6 +296,16 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     private void setGoClubData() {
+        strTitle = txtServiceTitle.getText().toString();
+        strDesc = txtServiceDesc.getText().toString();
+        strTags = txtServiceTag.getText().toString();
+        goclubModel.setName(strTitle);
+        goclubModel.setDescription(strDesc);
+        goclubModel.setTags(strTags);
+        goclubModel.setAlbumFiles(mAlbumFiles);
+
+        JGGAppManager.getInstance().setGoclubModel(goclubModel);
+
         listener.onNextButtonClick();
     }
 

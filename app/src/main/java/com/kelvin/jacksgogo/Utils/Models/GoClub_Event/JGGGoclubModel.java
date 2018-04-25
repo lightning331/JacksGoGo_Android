@@ -1,6 +1,9 @@
 package com.kelvin.jacksgogo.Utils.Models.GoClub_Event;
 
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,11 @@ public class JGGGoclubModel {
     private ArrayList<String> UserProfileIDs = new ArrayList<>();
 
     private JGGCategoryModel Category = new JGGCategoryModel();
+    private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
+    private JGGRegionModel Region = new JGGRegionModel();
+
+    // temp data
+    private ArrayList<AlbumFile> albumFiles;
 
     public String getUserProfileID() {
         return UserProfileID;
@@ -108,5 +116,29 @@ public class JGGGoclubModel {
 
     public void setCategory(JGGCategoryModel category) {
         Category = category;
+    }
+
+    public JGGUserProfileModel getUserProfile() {
+        return UserProfile;
+    }
+
+    public void setUserProfile(JGGUserProfileModel userProfile) {
+        UserProfile = userProfile;
+    }
+
+    public JGGRegionModel getRegion() {
+        return Region;
+    }
+
+    public void setRegion(JGGRegionModel region) {
+        Region = region;
+    }
+
+    public ArrayList<AlbumFile> getAlbumFiles() {
+        return albumFiles;
+    }
+
+    public void setAlbumFiles(ArrayList<AlbumFile> albumFiles) {
+        this.albumFiles = albumFiles;
     }
 }
