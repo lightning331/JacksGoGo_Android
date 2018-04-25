@@ -9,19 +9,21 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
+import java.util.ArrayList;
+
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.regions;
 
 public class JGGSplashActivity extends AppCompatActivity {
 
@@ -65,7 +67,8 @@ public class JGGSplashActivity extends AppCompatActivity {
             public void onResponse(Call<JGGRegionResponse> call, Response<JGGRegionResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        regions = response.body().getValue();
+                        ArrayList<JGGRegionModel> regions = response.body().getValue();
+                        JGGAppManager.getInstance().setRegions(regions);
                         loadCategories();
                     } else {
                         Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -92,7 +95,8 @@ public class JGGSplashActivity extends AppCompatActivity {
             public void onResponse(Call<JGGCategoryResponse> call, Response<JGGCategoryResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        categories = response.body().getValue();
+                        ArrayList<JGGCategoryModel> categories = response.body().getValue();
+                        JGGAppManager.getInstance().setCategories(categories);
                         autoAuthorize();
                     } else {
                         Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -130,7 +134,8 @@ public class JGGSplashActivity extends AppCompatActivity {
                     if (response.body().getSuccess()) {
 
                         // Save the Current User
-                        currentUser = response.body().getValue();
+                        JGGUserProfileModel currentUser = response.body().getValue();
+                        JGGAppManager.getInstance().setCurrentUser(currentUser);
                         // Save the Access Token and Expire Date
                         String access_token = response.body().getToken().getAccess_token();
                         Long expire_in = response.body().getToken().getExpires_in();

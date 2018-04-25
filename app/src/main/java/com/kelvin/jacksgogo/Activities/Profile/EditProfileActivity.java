@@ -32,6 +32,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
@@ -51,7 +52,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
 import static com.kelvin.jacksgogo.Utils.Global.USERS;
@@ -105,7 +105,7 @@ public class EditProfileActivity extends AppCompatActivity implements
             }
         });
 
-        mUserProfile = currentUser;
+        mUserProfile = JGGAppManager.getInstance().getCurrentUser();
         mUser = mUserProfile.getUser();
         mAddress.setUnit(mUserProfile.getResidentialAddress_Unit());
         mAddress.setStreet(mUserProfile.getResidentialAddress_State());

@@ -24,14 +24,13 @@ import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.ACCEPTED;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
@@ -50,7 +49,9 @@ public class PostProposalActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private String postedProposalID;
 
+    private JGGUserProfileModel currentUser;
     private JGGAppointmentModel selectedAppointment;
+    private JGGProposalModel selectedProposal;
     private PostProposalSummaryFragment proposalSummaryFragment;
     private String status;
     public boolean isEdit;
@@ -66,6 +67,8 @@ public class PostProposalActivity extends AppCompatActivity {
         } else {
             status = NONE;
         }
+
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.post_proposal_actionbar);
@@ -94,6 +97,7 @@ public class PostProposalActivity extends AppCompatActivity {
             selectedProposal.setUserProfileID(currentUser.getID());
             selectedProposal.setCurrencyCode(selectedAppointment.getCurrencyCode());
             selectedProposal.setUserProfile(currentUser);
+            JGGAppManager.getInstance().setSelectedProposal(selectedProposal);
 
             getSupportFragmentManager()
                     .beginTransaction()

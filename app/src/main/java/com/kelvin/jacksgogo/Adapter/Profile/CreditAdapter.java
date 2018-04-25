@@ -11,8 +11,6 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.CreditCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.CreditHeaderCell;
 import com.kelvin.jacksgogo.R;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-
 /**
  * Created by storm2 on 4/16/2018.
  */

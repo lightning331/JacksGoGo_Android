@@ -16,10 +16,10 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -36,7 +36,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     public JobDetailsAdapter (Context context) {
         this.mContext = context;
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
     }
 
     @Override
@@ -54,10 +54,10 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             ServiceDetailCategoryCell categoryViewHolder = new ServiceDetailCategoryCell(postCategoryView);
 
             Picasso.with(mContext)
-                    .load(selectedAppointment.getCategory().getImage())
+                    .load(mJob.getCategory().getImage())
                     .placeholder(null)
                     .into(categoryViewHolder.imgCategory);
-            categoryViewHolder.lblCategory.setText(selectedAppointment.getCategory().getName());
+            categoryViewHolder.lblCategory.setText(mJob.getCategory().getName());
             categoryViewHolder.title.setText(mJob.getTitle());
 
             return categoryViewHolder;

@@ -25,6 +25,7 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -41,7 +42,6 @@ import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -112,7 +112,7 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_job_report_main, container, false);
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         initView(view);
         return view;
     }
@@ -160,10 +160,10 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
 
     private void onRefreshView() {
         // Start time
-        Date postOn = appointmentMonthDate(selectedAppointment.getPostOn());
+        Date postOn = appointmentMonthDate(mJob.getPostOn());
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
         lblStartTime.setText(postedTime);
-        lblPickupAddress.setText(selectedAppointment.getAddress().getFullAddress());
+        lblPickupAddress.setText(mJob.getAddress().getFullAddress());
 
         // Before Photo view
         if (beforePhotoAlbums.size() > 0) {
@@ -177,7 +177,7 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
         }
 
         String pinCode = " has requested a PIN code. Your recipient should give you the PIN code.";
-        String clientName = selectedAppointment.getUserProfile().getUser().getFullName();
+        String clientName = mJob.getUserProfile().getUser().getFullName();
         lblPinTitle.setText("");
         lblPinTitle.append(setBoldText(clientName));
         lblPinTitle.append(pinCode);

@@ -35,7 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
@@ -46,6 +45,7 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
     private CategoryAdapter adapter;
     private ProgressDialog progressDialog;
 
+    private ArrayList<JGGCategoryModel> categories;
     private ArrayList<JGGCategoryModel> mCategories;
 
     public PostServiceSkillVerifiedFragment() {
@@ -71,6 +71,8 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_skill_verified, container, false);
+
+        categories = JGGAppManager.getInstance().getCategories();
 
         if (categories == null)
             loadCategories();

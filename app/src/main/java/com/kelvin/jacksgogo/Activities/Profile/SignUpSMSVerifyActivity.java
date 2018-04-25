@@ -19,6 +19,7 @@ import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -30,7 +31,6 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -95,7 +95,8 @@ public class SignUpSMSVerifyActivity extends AppCompatActivity implements View.O
 
                         // Save Current User
                         JGGUserProfileModel user = response.body().getValue();
-                        currentUser = user;
+                        JGGAppManager.getInstance().setCurrentUser(user);
+
                         // Save Access Token
                         String access_token = response.body().getToken().getAccess_token();
                         Long expire_in = response.body().getToken().getExpires_in();

@@ -19,13 +19,13 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeHeaderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Profile.ProfileHomeSignOutCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 /**
  * Created by PUMA on 1/27/2018.
@@ -45,7 +45,7 @@ public class ProfileHomeAdapter extends RecyclerView.Adapter {
 
     public ProfileHomeAdapter(Context context) {
         mContext = context;
-        user = currentUser;
+        user = JGGAppManager.getInstance().getCurrentUser();
     }
 
     @Override

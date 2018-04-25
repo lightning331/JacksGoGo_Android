@@ -21,6 +21,7 @@ import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
@@ -30,7 +31,6 @@ import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +42,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private String status;
     private AppointmentType appType;
     private JGGAppointmentModel selectedAppointment;
+    private JGGUserProfileModel currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             else if (type.equals(JOBS))
                 appType = AppointmentType.JOBS;
         }
+
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.post_service_actionbar);

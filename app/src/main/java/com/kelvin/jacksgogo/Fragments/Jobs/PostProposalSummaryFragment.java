@@ -23,6 +23,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
@@ -36,7 +37,6 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
@@ -108,7 +108,10 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
 
         String postTime = appointmentNewDate(new Date());
-        selectedProposal.setPostOn(postTime);
+
+        JGGProposalModel proposalModel = JGGAppManager.getInstance().getSelectedProposal();
+        proposalModel.setPostOn(postTime);
+        JGGAppManager.getInstance().setSelectedProposal(proposalModel);
 
         initView(view);
         setData();
@@ -160,6 +163,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         lblCategory.setText(selectedAppointment.getCategory().getName());
         lblTime.setText(getAppointmentTime(selectedAppointment));
 
+        JGGProposalModel selectedProposal = JGGAppManager.getInstance().getSelectedProposal();
         if (selectedProposal != null) {
             // Description
             lblDesc.setText(selectedProposal.getDescription());
@@ -192,7 +196,9 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private void onPostProposal() {
         progressDialog = createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.postNewProposal(selectedProposal);
+
+        JGGProposalModel proposalModel = JGGAppManager.getInstance().getSelectedProposal();
+        Call<JGGPostAppResponse> call = manager.postNewProposal(proposalModel);
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -200,7 +206,11 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedProposalID = response.body().getValue();
-                        selectedProposal.setID(postedProposalID);
+
+                        JGGProposalModel model = JGGAppManager.getInstance().getSelectedProposal();
+                        model.setID(postedProposalID);
+                        JGGAppManager.getInstance().setSelectedProposal(model);
+
                         showPostProposalAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -223,7 +233,9 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         //showPostProposalAlertDialog();
         progressDialog = createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.editProposal(selectedProposal);
+        JGGProposalModel proposalModel = JGGAppManager.getInstance().getSelectedProposal();
+
+        Call<JGGPostAppResponse> call = manager.editProposal(proposalModel);
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -231,7 +243,10 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedProposalID = response.body().getValue();
-                        selectedProposal.setID(postedProposalID);
+
+                        JGGProposalModel model = JGGAppManager.getInstance().getSelectedProposal();
+                        model.setID(postedProposalID);
+                        JGGAppManager.getInstance().setSelectedProposal(model);
                         showPostProposalAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -254,7 +269,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         progressDialog = createProgressDialog(mContext);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        String proposalID = selectedProposal.getID();
+        String proposalID = JGGAppManager.getInstance().getSelectedProposal().getID();
         Call<JGGBaseResponse> call = apiManager.deleteProposal(proposalID);
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override

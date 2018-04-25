@@ -54,7 +54,6 @@ import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
 
 
 public class SearchFragment extends Fragment {
@@ -69,6 +68,7 @@ public class SearchFragment extends Fragment {
     private SearchServicesAdapter serviceAdapter;
     private android.app.AlertDialog alertDialog;
 
+    private ArrayList<JGGCategoryModel> categories = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType = SERVICES;
@@ -100,6 +100,7 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         token = JGGSharedPrefs.getInstance(mContext).getToken();
+        categories = JGGAppManager.getInstance().getCategories();
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeSearchContainer);

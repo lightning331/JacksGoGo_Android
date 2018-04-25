@@ -132,7 +132,7 @@ public class GcTimeFragment extends Fragment implements
 
         btnNext.setClickable(false);
 
-        mService = JGGAppManager.getSelectedAppointment();
+        mService = JGGAppManager.getInstance().getSelectedAppointment();
         if (mService != null
                 && mService.getSessions() != null
                 && mService.getSessions().size() > 0) {
@@ -440,7 +440,7 @@ public class GcTimeFragment extends Fragment implements
             listener.onNextButtonClick();
 //        }
         mService.setSessions(mTimeSlots);
-        JGGAppManager.setSelectedAppointment(mService);
+        JGGAppManager.getInstance().setSelectedAppointment(mService);
     }
     private void updateRecyclerView(final ArrayList<JGGTimeSlotModel> seletedSlotModels) {
         recyclerView.setVisibility(View.VISIBLE);

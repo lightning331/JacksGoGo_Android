@@ -38,7 +38,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -96,7 +95,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
         adapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                selectedAppointment = mServices.get(position);
+                JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position));
                 onPostedServiceClick();
             }
         });

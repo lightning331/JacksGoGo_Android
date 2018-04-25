@@ -36,7 +36,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
@@ -114,6 +113,7 @@ public class InviteProviderActivity extends AppCompatActivity {
     }
 
     private void getInviteUsers() {
+        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
         if (currentUser == null) return;
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);

@@ -55,7 +55,7 @@ public class VerifiedSkillFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_verified_skill, container, false);
 
-        mCategories = JGGAppManager.getInstance().categories;
+        mCategories = JGGAppManager.getInstance().getCategories();
         recyclerView = view.findViewById(R.id.category_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));

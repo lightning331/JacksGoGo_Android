@@ -55,7 +55,7 @@ public class ServiceTimeSlotsActivity extends AppCompatActivity implements OnDat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_time_slots);
 
-        mTimeSlots = JGGAppManager.getSelectedAppointment().getSessions();
+        mTimeSlots = JGGAppManager.getInstance().getSelectedAppointment().getSessions();
 
         actionbarView = new JGGActionbarView(this);
         mToolbar = (Toolbar) findViewById(R.id.service_time_slots_actionbar);

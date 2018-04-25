@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 
 import retrofit2.Call;
@@ -105,7 +106,9 @@ public class ProfileHomeFragment extends Fragment {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        JGGAppManager.clearAll();
+                        JGGSharedPrefs.getInstance(mContext).clearAll();
+                        JGGAppManager.getInstance().setCurrentUser(null);
+
                         mActivity.getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.container, SignInFragment.newInstance())

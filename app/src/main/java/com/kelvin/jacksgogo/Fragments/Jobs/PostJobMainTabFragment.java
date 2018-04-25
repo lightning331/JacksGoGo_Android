@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceAddressFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.squareup.picasso.Picasso;
@@ -35,7 +36,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import static com.kelvin.jacksgogo.Utils.Global.getReportTypeID;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class PostJobMainTabFragment extends Fragment {
 
@@ -78,7 +78,7 @@ public class PostJobMainTabFragment extends Fragment {
             tabName = getArguments().getString("tabName");
             postStatus = getArguments().getString("postStatus");
         }
-        creatingJob = selectedAppointment;
+        creatingJob = JGGAppManager.getInstance().getSelectedAppointment();
     }
 
     @Override
@@ -91,10 +91,10 @@ public class PostJobMainTabFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_post_job_tab_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_post_job_tab_category_name);
         Picasso.with(mContext)
-                .load(selectedAppointment.getCategory().getImage())
+                .load(creatingJob.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedAppointment.getCategory().getName());
+        lblCategory.setText(creatingJob.getCategory().getName());
 
         recyclerView = (RecyclerView)view.findViewById(R.id.post_job_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -197,7 +197,8 @@ public class PostJobMainTabFragment extends Fragment {
             container.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            creatingJob = selectedAppointment;
+            creatingJob = JGGAppManager.getInstance().getSelectedAppointment();
+
             selectedIds = getReportTypeID(creatingJob.getReportType());
 
             reportAdapter = new AppointmentReportAdapter(mContext, true, JOBS);
@@ -262,7 +263,7 @@ public class PostJobMainTabFragment extends Fragment {
             }
         }
         creatingJob.setReportType(reportType);
-        selectedAppointment = creatingJob;
+        JGGAppManager.getInstance().setSelectedAppointment(creatingJob);
     }
 
     public void onButtonPressed(Uri uri) {

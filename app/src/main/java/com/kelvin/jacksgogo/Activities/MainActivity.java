@@ -28,6 +28,8 @@ import com.kelvin.jacksgogo.Fragments.Profile.ProfileHomeFragment;
 import com.kelvin.jacksgogo.Fragments.Profile.SignInFragment;
 import com.kelvin.jacksgogo.Fragments.Search.SearchFragment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -35,7 +37,6 @@ import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     private CoordinatorLayout.LayoutParams bottomNavLayoutParams;
     private BottomNavigationView mbtmView;
     private MenuItem mItem;
+
+    private JGGUserProfileModel currentUser;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -115,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         initView();
     }

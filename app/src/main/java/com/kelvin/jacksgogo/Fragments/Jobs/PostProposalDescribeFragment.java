@@ -14,10 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 
 public class PostProposalDescribeFragment extends Fragment implements TextWatcher, View.OnClickListener {
 
@@ -28,6 +27,7 @@ public class PostProposalDescribeFragment extends Fragment implements TextWatche
     private EditText txtProposal;
     private TextView btnNext;
 
+    private JGGAppointmentModel selectedAppointment;
     private JGGProposalModel proposal;
 
     public PostProposalDescribeFragment() {
@@ -55,6 +55,7 @@ public class PostProposalDescribeFragment extends Fragment implements TextWatche
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_proposal_describe, container, false);
 
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
         initView(view);
 
         return view;
@@ -68,7 +69,7 @@ public class PostProposalDescribeFragment extends Fragment implements TextWatche
 
         if (selectedAppointment != null)
             lbljobDesc.setText(selectedAppointment.getDescription());
-        proposal = selectedProposal;
+        proposal = JGGAppManager.getInstance().getSelectedProposal();
         if (proposal.getDescription() != null) {
             txtProposal.setText(proposal.getDescription());
             onNextButtonEnable();
@@ -109,7 +110,9 @@ public class PostProposalDescribeFragment extends Fragment implements TextWatche
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_proposal_next) {
-            selectedProposal.setDescription(txtProposal.getText().toString());
+            proposal.setDescription(txtProposal.getText().toString());
+            JGGAppManager.getInstance().setSelectedProposal(proposal);
+
             listener.onNextButtonClick();
         }
     }

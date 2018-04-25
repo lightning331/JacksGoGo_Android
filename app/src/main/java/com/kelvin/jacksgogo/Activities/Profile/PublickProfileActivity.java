@@ -13,6 +13,7 @@ import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ProviderReviewsActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.synnapps.carouselview.CarouselView;
@@ -29,7 +30,6 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class PublickProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -73,7 +73,7 @@ public class PublickProfileActivity extends AppCompatActivity implements View.On
         btnAllReview.setOnClickListener(this);
         btnViewService.setOnClickListener(this);
 
-        mUserProfile = currentUser;
+        mUserProfile = JGGAppManager.getInstance().getCurrentUser();
         mUser = mUserProfile.getUser();
         if (mUserProfile == null)
             return;

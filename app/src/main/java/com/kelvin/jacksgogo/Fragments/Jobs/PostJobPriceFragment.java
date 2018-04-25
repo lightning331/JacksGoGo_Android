@@ -17,9 +17,9 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.no_limit;
@@ -96,7 +96,7 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
         btnFixed.setOnClickListener(this);
         btnFrom.setOnClickListener(this);
 
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         budgetType = mJob.getBudgetType();
         if (budgetType == no_limit) isNolimit = true;
         updateData();
@@ -190,7 +190,8 @@ public class PostJobPriceFragment extends Fragment implements View.OnClickListen
                 mJob.setBudget(null);   mJob.setBudgetFrom(null);   mJob.setBudgetTo(null);
             }
             mJob.setBudgetType(budgetType);
-            selectedAppointment = mJob;
+
+            JGGAppManager.getInstance().setSelectedAppointment(mJob);
             listener.onNextButtonClick();
 
             return;

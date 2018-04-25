@@ -48,7 +48,6 @@ import static com.kelvin.jacksgogo.Utils.Global.PostStatus.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.Global.PostStatus;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -144,9 +143,15 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
         category = JGGAppManager.getInstance().getSelectedCategory();
         String postTime = appointmentNewDate(new Date());
-        selectedAppointment.setPostOn(postTime);
-        mAlbumFiles = selectedAppointment.getAlbumFiles();
-        creatingJob = selectedAppointment;
+
+        JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+        appointmentModel.setPostOn(postTime);
+        JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
+
+
+        JGGAppointmentModel appointment = JGGAppManager.getInstance().getSelectedAppointment();
+        mAlbumFiles = appointment.getAlbumFiles();
+        creatingJob = appointment;
 
         btnDescribe.setOnClickListener(this);
         btnTime.setOnClickListener(this);
@@ -256,7 +261,10 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
     private void onPostJob() {
         progressDialog = Global.createProgressDialog(mContext);
-        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+        appointmentModel.setAttachmentURLs(attachmentURLs);
+        JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
+
         creatingJob.setAttachmentURLs(attachmentURLs);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGPostAppResponse> call = manager.postNewJob(creatingJob);
@@ -267,7 +275,11 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
-                        selectedAppointment.setID(postedJobID);
+
+                        JGGAppointmentModel model = JGGAppManager.getInstance().getSelectedAppointment();
+                        model.setID(postedJobID);
+                        JGGAppManager.getInstance().setSelectedAppointment(model);
+
                         showPostJobAlertDialog(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -305,7 +317,10 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedJobID = response.body().getValue();
-                        selectedAppointment.setID(postedJobID);
+                        JGGAppointmentModel model = JGGAppManager.getInstance().getSelectedAppointment();
+                        model.setID(postedJobID);
+                        JGGAppManager.getInstance().setSelectedAppointment(model);
+
                         showPostJobAlertDialog(true);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -326,8 +341,9 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
 
     private void getJobByID() {
         progressDialog = Global.createProgressDialog(mContext);
+        String jobId = JGGAppManager.getInstance().getSelectedAppointment().getID();
         JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
-        Call<JGGGetAppResponse> call = apiManager.getJobByID(selectedAppointment.getID());
+        Call<JGGGetAppResponse> call = apiManager.getJobByID(jobId);
         call.enqueue(new Callback<JGGGetAppResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppResponse> call, Response<JGGGetAppResponse> response) {

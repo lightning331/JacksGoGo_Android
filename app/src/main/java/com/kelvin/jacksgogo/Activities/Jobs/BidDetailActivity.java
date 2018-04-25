@@ -29,6 +29,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.squareup.picasso.Picasso;
@@ -40,8 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -61,6 +61,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
+    private JGGAppointmentModel selectedAppointment;
     private JGGProposalModel mProposal;
 
     public static boolean getRandomBoolean() {
@@ -73,7 +74,8 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_bid_detail);
         ButterKnife.bind(this);
 
-        mProposal = selectedProposal;
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+        mProposal = JGGAppManager.getInstance().getSelectedProposal();
         initView();
         setCategory();
     }
@@ -129,7 +131,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         progressDialog = createProgressDialog(this);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        String proposalID = selectedProposal.getID();
+        String proposalID = mProposal.getID();
         Call<JGGBaseResponse> call = apiManager.rejectProposal(proposalID);
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override

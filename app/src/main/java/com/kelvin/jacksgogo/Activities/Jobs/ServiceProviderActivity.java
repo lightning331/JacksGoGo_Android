@@ -35,7 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
@@ -168,7 +167,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     }
 
     private void onShowBidDetailClick(int position) {
-        selectedProposal = proposals.get(position);
+        JGGAppManager.getInstance().setSelectedProposal(proposals.get(position));
         Intent intent = new Intent(this, BidDetailActivity.class);
         startActivity(intent);
     }
