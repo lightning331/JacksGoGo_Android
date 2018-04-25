@@ -43,7 +43,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.VIEW;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
@@ -63,9 +62,8 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel selectedAppointment;
-    private JGGProposalModel selectedProposal;
     private JGGUserProfileModel currentUser;
-    private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
+    private JGGProposalModel mProposal;
     private boolean reportFlag = false;
 
     @Override
@@ -75,7 +73,6 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         ButterKnife.bind(this);
 
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
-        selectedProposal = JGGAppManager.getInstance().getSelectedProposal();
         currentUser = JGGAppManager.getInstance().getCurrentUser();
         // Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.job_detail_bottom);
@@ -83,13 +80,13 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JobDetailActivity.this, PostProposalActivity.class);
-                if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
-                    intent.putExtra(EDIT_STATUS, VIEW);
+                if (mProposal == null) {
+                    // TODO : New Proposal
+                    intent.putExtra(EDIT_STATUS, POST);
                 } else {
-                    if (selectedProposal == null)
-                        intent.putExtra(EDIT_STATUS, POST);
-                    else
-                        intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
+                    // TODO : Already proposed
+                    JGGAppManager.getInstance().setSelectedProposal(mProposal);
+                    intent.putExtra(EDIT_STATUS, VIEW);
                 }
                 startActivity(intent);
             }
@@ -128,17 +125,18 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
-                        mProposals = response.body().getValue();
-
-                        if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
-                            if (mProposals.size() > 0) {
-                                JGGAppManager.getInstance().setSelectedProposal(mProposals.get(0));
-                                btnMakeProposal.setText("View Proposals");
-
-                                onShowBottomView();
-                            }
-                        } else {
+                        ArrayList<JGGProposalModel> proposals = response.body().getValue();
+                        // TODO : Already proposed
+                        if (proposals.size() > 0) {
+                            mProposal = proposals.get(0);
+                            btnMakeProposal.setText("View Proposal");
                             onShowBottomView();
+                        }
+                        // TODO : New Proposal
+                        if (!selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+                            onShowBottomView();
+                        } else {
+                            // TODO : It is my Job
                         }
 
                     } else {
