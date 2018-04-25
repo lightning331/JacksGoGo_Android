@@ -21,6 +21,8 @@ import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
@@ -34,7 +36,6 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -61,6 +62,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private TextView btnSubmit;
     private TextView btnDelete;
 
+    private JGGAppointmentModel selectedAppointment;
     private ProposalStatus proposalStatus;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
@@ -102,6 +104,9 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_proposal_summary, container, false);
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+
         String postTime = appointmentNewDate(new Date());
         selectedProposal.setPostOn(postTime);
 

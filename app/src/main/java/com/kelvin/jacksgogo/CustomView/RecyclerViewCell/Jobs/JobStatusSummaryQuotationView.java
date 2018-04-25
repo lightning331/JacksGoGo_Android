@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 
 import java.util.Date;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -69,7 +69,8 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
     }
 
     public void notifyDataChanged(boolean isDeleted, int count) {
-        Date postOn = appointmentMonthDate(selectedAppointment.getPostOn());
+        String strPostOn = JGGAppManager.getInstance().getSelectedAppointment().getPostOn();
+        Date postOn = appointmentMonthDate(strPostOn);
         String proposalCount = "You have received " + count + " new quotation!";
         if (isDeleted) {
             quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));

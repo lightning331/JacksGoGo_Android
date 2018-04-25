@@ -14,9 +14,10 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class PostServiceMainTabFragment extends Fragment {
@@ -34,6 +35,7 @@ public class PostServiceMainTabFragment extends Fragment {
     private ImageView imgCategory;
     private TextView lblCategory;
 
+    private JGGAppointmentModel selectedAppointment;
     private PostServiceSummaryFragment.PostEditStatus editStatus;
     private String tabName;
 
@@ -69,6 +71,9 @@ public class PostServiceMainTabFragment extends Fragment {
 
         imgCategory = (ImageView) view.findViewById(R.id.img_post_service_tab_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_post_service_tab_category_name);
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+
         Picasso.with(mContext)
                 .load(selectedAppointment.getCategory().getImage())
                 .placeholder(null)

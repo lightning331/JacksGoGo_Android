@@ -60,7 +60,7 @@ public class PostServiceSkillNotVerifiedFragment extends Fragment implements Vie
     }
 
     private void initView(View view) {
-        mCategories = JGGAppManager.getInstance(mContext).categories;
+        mCategories = JGGAppManager.getInstance().categories;
 
         recyclerView = view.findViewById(R.id.category_recycler_view);
         if (recyclerView != null) {

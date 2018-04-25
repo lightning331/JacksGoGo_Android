@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
@@ -32,7 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -92,7 +92,8 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
         adapter.setOnItemClickListener(new ServiceListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                selectedCategory = mCategories.get(position);
+                JGGAppManager.getInstance().setSelectedCategory(mCategories.get(position));
+
                 Intent intent = new Intent(ServiceListingActivity.this, ServiceListingDetailActivity.class);
                 intent.putExtra("is_post", false);
                 startActivity(intent);

@@ -26,7 +26,9 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
@@ -36,17 +38,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class ActiveServiceMainFragment extends Fragment implements ActiveServiceMapFragment.OnFragmentInteractionListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
+    private JGGCategoryModel selectedCategory;
     private RecyclerView recyclerView;
     private ActiveServiceTabView tabView;
 
@@ -89,6 +90,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_active_service_main, container, false);
 
+        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
+
         if (selectedCategory == null)
             mCategoryID = null;
         else
@@ -114,7 +117,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    selectedAppointment = mServices.get(position);
+                    JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position));
+
                     Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
                     intent.putExtra("is_post", false);
                     startActivity(intent);
@@ -127,7 +131,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    selectedAppointment = mJobs.get(position);
+                    JGGAppManager.getInstance().setSelectedAppointment(mJobs.get(position));
+
                     Intent intent = new Intent(mContext, PostedJobActivity.class);
                     startActivity(intent);
                 }

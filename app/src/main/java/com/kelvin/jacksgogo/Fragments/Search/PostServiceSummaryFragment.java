@@ -22,6 +22,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
 import com.yanzhenjie.album.AlbumFile;
@@ -43,7 +45,6 @@ import static com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment.P
 import static com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment.PostEditStatus.POST;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 public class PostServiceSummaryFragment extends Fragment implements View.OnClickListener {
@@ -103,8 +104,12 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
         }
         String postTime = appointmentNewDate(new Date());
-        selectedAppointment.setPostOn(postTime);
-        mAlbumFiles = selectedAppointment.getAlbumFiles();
+
+        JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+        appointmentModel.setPostOn(postTime);
+        JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
+
+        mAlbumFiles = appointmentModel.getAlbumFiles();
     }
 
     @Override
@@ -144,43 +149,45 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     }
 
     private void setDatas() {
-        if (selectedAppointment != null) {
+        JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+
+        if (appointmentModel != null) {
             // Category
             Picasso.with(mContext)
-                    .load(selectedAppointment.getCategory().getImage())
+                    .load(appointmentModel.getCategory().getImage())
                     .placeholder(null)
                     .into(imgCategory);
-            lblCategory.setText(selectedAppointment.getCategory().getName());
+            lblCategory.setText(appointmentModel.getCategory().getName());
             // Describe
-            lblDescribeTitle.setText(selectedAppointment.getTitle());
-            lblDescribeDesc.setText(selectedAppointment.getDescription());
+            lblDescribeTitle.setText(appointmentModel.getTitle());
+            lblDescribeDesc.setText(appointmentModel.getDescription());
             // Tag
-            String tags = selectedAppointment.getTags();
+            String tags = appointmentModel.getTags();
             if (tags != null && tags.length() > 0) {
                 String [] strings = tags.split(",");
                 describeTagView.setTags(Arrays.asList(strings));
             }
             // Price
             String price = "";
-            if (selectedAppointment.getAppointmentType() == 1) {
-                if (selectedAppointment.getBudgetType() == fixed)
-                    price = "Fixed $ " + selectedAppointment.getBudget().toString();
-                else if (selectedAppointment.getBudgetType() == from)
-                    price = "From $ " + selectedAppointment.getBudgetFrom().toString()
+            if (appointmentModel.getAppointmentType() == 1) {
+                if (appointmentModel.getBudgetType() == fixed)
+                    price = "Fixed $ " + appointmentModel.getBudget().toString();
+                else if (appointmentModel.getBudgetType() == from)
+                    price = "From $ " + appointmentModel.getBudgetFrom().toString()
                             + " "
-                            + "to $ " + selectedAppointment.getBudgetTo().toString();
+                            + "to $ " + appointmentModel.getBudgetTo().toString();
                 else
                     price = "No set";
-            } else if (selectedAppointment.getAppointmentType() >= 2) {
-                price = String.valueOf(selectedAppointment.getAppointmentType()) + " Services, ";
-                if (selectedAppointment.getBudget() != null)
-                    price = price + "$ " + String.valueOf(selectedAppointment.getBudget()) + " per service";
+            } else if (appointmentModel.getAppointmentType() >= 2) {
+                price = String.valueOf(appointmentModel.getAppointmentType()) + " Services, ";
+                if (appointmentModel.getBudget() != null)
+                    price = price + "$ " + String.valueOf(appointmentModel.getBudget()) + " per service";
                 else
-                    price = "$ " + String.valueOf(selectedAppointment.getBudget());
+                    price = "$ " + String.valueOf(appointmentModel.getBudget());
             }
             lblPrice.setText(price);
             // Address
-            lblAddress.setText(selectedAppointment.getAddress().getFullAddress());
+            lblAddress.setText(appointmentModel.getAddress().getFullAddress());
         } else {
             lblDescribeTitle.setText("No title");
             lblDescribeDesc.setText("");
@@ -255,9 +262,12 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
 
     private void onPostService() {
         progressDialog = Global.createProgressDialog(mContext);
-        selectedAppointment.setAttachmentURLs(attachmentURLs);
+        JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+        appointmentModel.setAttachmentURLs(attachmentURLs);
+        JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
+
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.postNewService(selectedAppointment);
+        Call<JGGPostAppResponse> call = manager.postNewService(JGGAppManager.getInstance().getSelectedAppointment());
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -265,7 +275,11 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedServiceID = response.body().getValue();
-                        selectedAppointment.setID(postedServiceID);
+
+                        JGGAppointmentModel model = JGGAppManager.getInstance().getSelectedAppointment();
+                        model.setID(postedServiceID);
+                        JGGAppManager.getInstance().setSelectedAppointment(model);
+
                         showAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -295,7 +309,7 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
     private void onEditService() {
         progressDialog = Global.createProgressDialog(mContext);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.editService(selectedAppointment);
+        Call<JGGPostAppResponse> call = manager.editService(JGGAppManager.getInstance().getSelectedAppointment());
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -303,7 +317,11 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedServiceID = response.body().getValue();
-                        selectedAppointment.setID(postedServiceID);
+
+                        JGGAppointmentModel model = JGGAppManager.getInstance().getSelectedAppointment();
+                        model.setID(postedServiceID);
+                        JGGAppManager.getInstance().setSelectedAppointment(model);
+
                         showAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();

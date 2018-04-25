@@ -21,6 +21,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 
@@ -29,7 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.ACCEPTED;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -49,6 +50,7 @@ public class PostProposalActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private String postedProposalID;
 
+    private JGGAppointmentModel selectedAppointment;
     private PostProposalSummaryFragment proposalSummaryFragment;
     private String status;
     public boolean isEdit;
@@ -77,6 +79,8 @@ public class PostProposalActivity extends AppCompatActivity {
                 actionbarViewItemClick(view);
             }
         });
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
 
         initFragment();
     }

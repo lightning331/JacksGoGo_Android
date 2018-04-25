@@ -45,6 +45,7 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.CustomView.JGGJobInfoWindow;
 import com.kelvin.jacksgogo.CustomView.JGGServiceInfoWindow;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import java.util.ArrayList;
@@ -53,7 +54,6 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class ActiveServiceMapFragment extends Fragment implements
         View.OnClickListener,
@@ -253,8 +253,9 @@ public class ActiveServiceMapFragment extends Fragment implements
             public void onInfoWindowClick(Marker marker) {
                 if (marker.getSnippet() != null) {
                     int index = Integer.parseInt(marker.getSnippet());
-                    selectedAppointment = null;
-                    selectedAppointment = mAppointments.get(index);
+
+                    JGGAppManager.getInstance().setSelectedAppointment(mAppointments.get(index));
+
                     if (appType.equals(SERVICES)) {
                         Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                         mContext.startActivity(intent);

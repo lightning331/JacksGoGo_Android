@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.Utils;
 
 import android.content.Context;
 
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoclubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class JGGAppManager {
 
-    private static JGGAppManager appManager = new JGGAppManager();
+    private static JGGAppManager appManager = null;
 
     /*
      *  User
@@ -27,23 +28,23 @@ public class JGGAppManager {
     public static ArrayList<JGGRegionModel> regions;
     public static JGGRegionModel currentRegion;
 
-    /*
+    /**
      *  Appointment
      */
-    public static JGGCategoryModel selectedCategory;
-    public static JGGAppointmentModel selectedAppointment;
-    public static JGGQuotationModel selectedQuotation;
-
-    /*
-     *  Proposal
-     */
-    public static JGGProposalModel selectedProposal;
+    private JGGCategoryModel selectedCategory;
+    private JGGAppointmentModel selectedAppointment;
+    private JGGQuotationModel selectedQuotation;
+    private JGGGoclubModel goclubModel;
+    private JGGProposalModel selectedProposal;
 
     private JGGAppManager() {
 
     }
 
-    public static JGGAppManager getInstance(Context context) {
+    public static JGGAppManager getInstance() {
+        if(null == appManager){
+            appManager = new JGGAppManager();
+        }
         return appManager;
     }
 
@@ -56,31 +57,47 @@ public class JGGAppManager {
         this.currentRegion = region;
     }
 
-    public static JGGCategoryModel getSelectedCategory() {
+    public JGGCategoryModel getSelectedCategory() {
         return selectedCategory;
     }
 
-    public static void setSelectedCategory(JGGCategoryModel category) {
-        selectedCategory = category;
+    public void setSelectedCategory(JGGCategoryModel selectedCategory) {
+        this.selectedCategory = selectedCategory;
     }
 
-    public static JGGAppointmentModel getSelectedAppointment() {
+    public JGGAppointmentModel getSelectedAppointment() {
         return selectedAppointment;
     }
 
-    public static void setSelectedAppointment(JGGAppointmentModel appointment) {
-        selectedAppointment = appointment;
+    public void setSelectedAppointment(JGGAppointmentModel selectedAppointment) {
+        this.selectedAppointment = selectedAppointment;
     }
 
-    public static JGGProposalModel getSelectedProposal() {
+    public JGGQuotationModel getSelectedQuotation() {
+        return selectedQuotation;
+    }
+
+    public void setSelectedQuotation(JGGQuotationModel selectedQuotation) {
+        this.selectedQuotation = selectedQuotation;
+    }
+
+    public JGGProposalModel getSelectedProposal() {
         return selectedProposal;
     }
 
-    public static void setSelectedProposal(JGGProposalModel proposal) {
-        selectedProposal = proposal;
+    public void setSelectedProposal(JGGProposalModel selectedProposal) {
+        this.selectedProposal = selectedProposal;
     }
 
     public static void clearAll() {
         currentUser = null;
+    }
+
+    public JGGGoclubModel getGoclubModel() {
+        return goclubModel;
+    }
+
+    public void setGoclubModel(JGGGoclubModel goclubModel) {
+        this.goclubModel = goclubModel;
     }
 }

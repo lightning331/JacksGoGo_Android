@@ -18,6 +18,8 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Search.ActiveServiceMainFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -26,7 +28,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class ActiveServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,10 +41,14 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
     public String editStatus;
     public int status;      // 0: Category, 1: Active, 2: Joined
 
+    private JGGCategoryModel selectedCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_active_service);
+
+        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
 
         initializeView();
     }

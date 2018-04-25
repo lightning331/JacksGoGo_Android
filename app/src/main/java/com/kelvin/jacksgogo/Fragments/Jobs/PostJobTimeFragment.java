@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.CustomView.Views.RepeatingDayDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.jggcalendarview.CalendarDay;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
@@ -133,7 +133,7 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         btnOneTime.setOnClickListener(this);
         btnRepeating.setOnClickListener(this);
 
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         jobType = mJob.getAppointmentType();
         repetitionType = mJob.getRepetitionType();
         repetition = mJob.getRepetition();
@@ -373,7 +373,8 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
         mJob.setSessions(selectedTimeSlots);
         mJob.setRepetitionType(repetitionType);
         mJob.setAppointmentType(jobType);
-        selectedAppointment = mJob;
+
+        JGGAppManager.getInstance().setSelectedAppointment(mJob);
     }
 
     private void onShowCalendarDialog() {

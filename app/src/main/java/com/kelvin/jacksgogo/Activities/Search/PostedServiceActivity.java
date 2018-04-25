@@ -23,6 +23,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -40,7 +41,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -98,7 +98,7 @@ public class PostedServiceActivity extends AppCompatActivity {
             }
         });
 
-        mService = selectedAppointment;
+        mService = JGGAppManager.getInstance().getSelectedAppointment();
         if (mService != null)
             initView();
     }
@@ -113,10 +113,10 @@ public class PostedServiceActivity extends AppCompatActivity {
         lblPostedTime.setText("Submitted on " + time + ". Pending verification.");
         // Category
         Picasso.with(this)
-                .load(selectedAppointment.getCategory().getImage())
+                .load(mService.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedAppointment.getCategory().getName());
+        lblCategory.setText(mService.getCategory().getName());
         lblTitle.setText(mService.getTitle());
         // Description
         lblDescription.setText(mService.getDescription());
@@ -286,7 +286,7 @@ public class PostedServiceActivity extends AppCompatActivity {
     private void onDeleteService() {
         progressDialog = createProgressDialog(this);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGBaseResponse> call = manager.deleteService(selectedAppointment.getID());
+        Call<JGGBaseResponse> call = manager.deleteService(mService.getID());
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {

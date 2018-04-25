@@ -31,7 +31,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class PostServiceActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +41,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
     private boolean alreadyVerifiedSkills = true;
     private String status;
     private AppointmentType appType;
+    private JGGAppointmentModel selectedAppointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             selectedAppointment = new JGGAppointmentModel();
             selectedAppointment.setUserProfile(currentUser);
             selectedAppointment.setUserProfileID(currentUser.getID());
-            JGGRegionModel currentRegion = JGGAppManager.getInstance(this).getCurrentRegion();
+            JGGRegionModel currentRegion = JGGAppManager.getInstance().getCurrentRegion();
             selectedAppointment.setRegion(currentRegion);
             selectedAppointment.setRegionID(currentRegion.getID());
             selectedAppointment.setCurrencyCode(currentRegion.getCurrencyCode());
@@ -113,6 +113,8 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
                 default:
                     break;
             }
+
+            JGGAppManager.getInstance().setSelectedAppointment(selectedAppointment);
 
         } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {

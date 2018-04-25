@@ -26,6 +26,7 @@ import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
@@ -40,8 +41,6 @@ import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -361,10 +360,12 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
     private void onSelectListViewItem(int position, Object object) {
         JGGAppointmentModel appointment = (JGGAppointmentModel) object;
-        selectedCategory = appointment.getCategory();
-        selectedAppointment = appointment;
+
+        JGGAppManager.getInstance().setSelectedCategory(appointment.getCategory());
+        JGGAppManager.getInstance().setSelectedAppointment(appointment);
+
         if (appointment.isRequest()) {
-            if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+            if (appointment.getUserProfileID().equals(currentUser.getID())) {
                 Intent intent = new Intent(mContext, OutgoingJobActivity.class);
                 mContext.startActivity(intent);
             } else {

@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
@@ -41,7 +42,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.USERS;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class FavouriteFragment extends Fragment {
 
@@ -141,7 +141,7 @@ public class FavouriteFragment extends Fragment {
         serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                selectedAppointment = mServices.get(position);
+                JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position));
                 Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                 mContext.startActivity(intent);
             }
@@ -155,7 +155,7 @@ public class FavouriteFragment extends Fragment {
         jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                selectedAppointment = mJobs.get(position);
+                JGGAppManager.getInstance().setSelectedAppointment(mJobs.get(position));
                 Intent intent = new Intent(mContext, JobDetailActivity.class);
                 mContext.startActivity(intent);
             }

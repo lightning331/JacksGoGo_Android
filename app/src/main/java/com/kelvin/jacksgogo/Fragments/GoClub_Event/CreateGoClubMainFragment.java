@@ -17,16 +17,18 @@ import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class CreateGoClubMainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
+    private JGGCategoryModel selectedCategory;
     private PostGoClubTabView tabView;
     private ImageView imgCategory;
     private TextView lblCategory;
@@ -64,6 +66,9 @@ public class CreateGoClubMainFragment extends Fragment {
 
         imgCategory = (ImageView) view.findViewById(R.id.img_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
+
+        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
+
         Picasso.with(mContext)
                 .load(selectedCategory.getImage())
                 .placeholder(null)
@@ -81,11 +86,11 @@ public class CreateGoClubMainFragment extends Fragment {
         LinearLayout tabViewLayout = view.findViewById(R.id.post_go_club_tab_view);
         tabViewLayout.addView(tabView);
         if (tabName.equals("DESCRIBE")) {
-            tabView.setTabName(GoClubTabName.DESCRIBE);
+            tabView.setTabName(GoClubTabName.DESCRIBE, true);
         } else if (tabName.equals("LIMIT")) {
-            tabView.setTabName(GoClubTabName.LIMIT);
+            tabView.setTabName(GoClubTabName.LIMIT, true);
         } else if (tabName.equals("ADMIN")) {
-            tabView.setTabName(GoClubTabName.ADMIN);
+            tabView.setTabName(GoClubTabName.ADMIN, true);
         }
         tabView.setTabItemClickListener(new PostGoClubTabView.OnTabItemClickListener() {
             @Override
@@ -99,11 +104,11 @@ public class CreateGoClubMainFragment extends Fragment {
     private void onTabViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabView.setTabName(GoClubTabName.DESCRIBE);
+            tabView.setTabName(GoClubTabName.DESCRIBE, true);
         } else if (view.getId() == R.id.btn_time) {
-            tabView.setTabName(GoClubTabName.LIMIT);
+            tabView.setTabName(GoClubTabName.LIMIT, true);
         } else if (view.getId() == R.id.btn_address) {
-            tabView.setTabName(GoClubTabName.ADMIN);
+            tabView.setTabName(GoClubTabName.ADMIN, true);
         }
         refreshFragment();
     }
@@ -116,7 +121,7 @@ public class CreateGoClubMainFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(GoClubTabName.LIMIT);
+                    tabView.setTabName(GoClubTabName.LIMIT, true);
                     refreshFragment();
                 }
             });
@@ -126,7 +131,7 @@ public class CreateGoClubMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcLimitFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(GoClubTabName.ADMIN);
+                    tabView.setTabName(GoClubTabName.ADMIN, true);
                     refreshFragment();
                 }
             });

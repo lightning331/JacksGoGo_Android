@@ -20,13 +20,14 @@ import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class AllGoClubsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,7 +38,7 @@ public class AllGoClubsActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.btn_post) TextView btnPost;
 
     private JGGActionbarView actionbarView;
-
+    private JGGCategoryModel selectedCategory;
     private boolean isCategory;
 
     @Override
@@ -46,6 +47,7 @@ public class AllGoClubsActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_all_go_clubs);
         ButterKnife.bind(this);
 
+        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
         isCategory = getIntent().getBooleanExtra("is_category", false);
 
         // Hide Bottom NavigationView and ToolBar

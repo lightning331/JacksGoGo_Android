@@ -20,6 +20,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -34,7 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
@@ -62,7 +62,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_service_provider);
         ButterKnife.bind(this);
 
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         if (mJob != null)
             setCategory();
         initView();
@@ -176,10 +176,10 @@ public class ServiceProviderActivity extends AppCompatActivity {
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(selectedAppointment.getCategory().getImage())
+                .load(mJob.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedAppointment.getCategory().getName());
+        lblCategory.setText(mJob.getCategory().getName());
         // Time
         lblTime.setText(getAppointmentTime(mJob));
     }
