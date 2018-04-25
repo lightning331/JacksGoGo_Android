@@ -11,9 +11,9 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptio
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDaysString;
 
@@ -33,6 +33,7 @@ public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        JGGProposalModel selectedProposal = JGGAppManager.getInstance().getSelectedProposal();
         if (viewType == 0) {
             View biderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
             UserNameRatingCell biderCell = new UserNameRatingCell(mContext, biderView);

@@ -25,6 +25,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -41,7 +42,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
@@ -98,7 +98,7 @@ public class PostedJobActivity extends AppCompatActivity {
             }
         });
 
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         if (mJob != null)
             setData();
     }
@@ -106,10 +106,10 @@ public class PostedJobActivity extends AppCompatActivity {
     private void setData() {
         // Category
         Picasso.with(this)
-                .load(selectedAppointment.getCategory().getImage())
+                .load(mJob.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedAppointment.getCategory().getName());
+        lblCategory.setText(mJob.getCategory().getName());
         lblTitle.setText(mJob.getTitle());
         // Time
         String time = "";

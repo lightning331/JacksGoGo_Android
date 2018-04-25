@@ -19,9 +19,10 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomeMainExplore;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomeMainUserInfo;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Home.HomePostAppointment;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
@@ -115,6 +116,7 @@ public class HomeFragment extends Fragment {
     private void updateView() {
         resetView();
 
+        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
         if (currentUser == null) {
             userInfoLayout.setVisibility(View.GONE);
             detailsLayout.setVisibility(View.GONE);

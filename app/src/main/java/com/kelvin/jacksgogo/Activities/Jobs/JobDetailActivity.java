@@ -27,7 +27,10 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 
 import java.lang.reflect.Field;
@@ -39,9 +42,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -62,6 +62,9 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
+    private JGGAppointmentModel selectedAppointment;
+    private JGGProposalModel selectedProposal;
+    private JGGUserProfileModel currentUser;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private boolean reportFlag = false;
 
@@ -71,6 +74,9 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_job_detail);
         ButterKnife.bind(this);
 
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+        selectedProposal = JGGAppManager.getInstance().getSelectedProposal();
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
         // Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.job_detail_bottom);
         btnMakeProposal.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +132,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
 
                         if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
                             if (mProposals.size() > 0) {
-                                selectedProposal = mProposals.get(0);
+                                JGGAppManager.getInstance().setSelectedProposal(mProposals.get(0));
                                 btnMakeProposal.setText("View Proposals");
 
                                 onShowBottomView();

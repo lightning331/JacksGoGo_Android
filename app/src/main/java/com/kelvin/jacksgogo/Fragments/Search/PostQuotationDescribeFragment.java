@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -31,8 +32,6 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 
 import java.util.ArrayList;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedQuotation;
 
 public class PostQuotationDescribeFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -92,7 +91,7 @@ public class PostQuotationDescribeFragment extends Fragment implements View.OnCl
         btnNext = view.findViewById(R.id.btn_edit_job_next);
         lblNext = view.findViewById(R.id.lbl_edit_job_next);
 
-        mQuotation = selectedQuotation;
+        mQuotation = JGGAppManager.getInstance().getSelectedQuotation();
         if (mQuotation.getTitle() == null) {
             txtServiceTitle.setHint("e.g.Gardening");
             txtServiceDesc.setHint("e.g.My air-cond unit isn't cold.");

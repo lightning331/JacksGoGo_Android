@@ -15,12 +15,12 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Adapter.Jobs.AppointmentReportAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.getReportTypeID;
 
@@ -73,7 +73,7 @@ public class JobReportAddToolsFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        mAppointment = selectedAppointment;
+        mAppointment = JGGAppManager.getInstance().getSelectedAppointment();
         selectedIds = getReportTypeID(mAppointment.getReportType());
 
         reportAdapter = new AppointmentReportAdapter(mContext, true, JOBS);

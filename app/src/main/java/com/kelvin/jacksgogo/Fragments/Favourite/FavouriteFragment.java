@@ -29,6 +29,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.USERS;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class FavouriteFragment extends Fragment {
 
@@ -111,6 +111,7 @@ public class FavouriteFragment extends Fragment {
     public void refreshFragment(String type) {
 
         appType = type;
+        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
         if (currentUser == null) {
             if (type.equals(USERS)) {
                 updateUsersAdapter();

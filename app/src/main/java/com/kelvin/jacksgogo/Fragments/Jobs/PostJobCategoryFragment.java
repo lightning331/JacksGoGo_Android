@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
@@ -41,8 +42,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class PostJobCategoryFragment extends Fragment {
 
@@ -56,6 +55,7 @@ public class PostJobCategoryFragment extends Fragment {
     private ProgressDialog progressDialog;
     private View view;
 
+    private ArrayList<JGGCategoryModel> categories;
     private ArrayList<JGGCategoryModel> mCategories = new ArrayList<>();
     private AppointmentType appType;
     private String title = "Choose a category for your ";
@@ -102,6 +102,8 @@ public class PostJobCategoryFragment extends Fragment {
         lblTitle = view.findViewById(R.id.lbl_title);
         lblTitle.setText(title);
 
+        categories = JGGAppManager.getInstance().getCategories();
+
         if (categories == null)
             loadCategories();
         else {
@@ -133,8 +135,11 @@ public class PostJobCategoryFragment extends Fragment {
                         JGGCategoryModel categoryModel = mCategories.get(position - 1);
                         JGGAppManager.getInstance().setSelectedCategory(categoryModel);
 
-                        selectedAppointment.setCategory(categoryModel);
-                        selectedAppointment.setCategoryID(categoryModel.getID());
+                        JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+                        appointmentModel.setCategory(categoryModel);
+                        appointmentModel.setCategoryID(categoryModel.getID());
+                        JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
+
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.post_service_container, frag)

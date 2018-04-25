@@ -15,15 +15,13 @@ import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.Fragments.Search.PostQuotationMainTabFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedQuotation;
 
 public class PostQuotationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,6 +31,9 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
 
     private JGGActionbarView actionbarView;
     private android.app.AlertDialog alertDialog;
+
+    private JGGAppointmentModel selectedAppointment;
+    private JGGQuotationModel selectedQuotation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+
         // Category
         Picasso.with(this)
                 .load(selectedAppointment.getCategory().getImage())
@@ -64,9 +67,11 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
         selectedQuotation = new JGGQuotationModel();
         selectedQuotation.setProviderProfileID(selectedAppointment.getUserProfileID());
         selectedQuotation.setCategoryID(selectedAppointment.getCategoryID());
-        selectedQuotation.setUserProfileID(currentUser.getID());
+        selectedQuotation.setUserProfileID(JGGAppManager.getInstance().getCurrentUser().getID());
         selectedQuotation.setRegionID(selectedAppointment.getRegionID());
         selectedQuotation.setCurrencyCode(selectedAppointment.getCurrencyCode());
+
+        JGGAppManager.getInstance().setSelectedQuotation(selectedQuotation);
 
         // Main Tab Fragment
         PostQuotationMainTabFragment frag = PostQuotationMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.DESCRIBE, true);

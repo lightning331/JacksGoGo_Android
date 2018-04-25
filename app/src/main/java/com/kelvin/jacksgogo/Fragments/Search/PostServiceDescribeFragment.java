@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -99,7 +100,7 @@ public class PostServiceDescribeFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_describe, container, false);
 
-        creatingApp = selectedAppointment;
+        creatingApp = JGGAppManager.getInstance().getSelectedAppointment();
 
         initView(view);
         initRecyclerView();
@@ -273,7 +274,8 @@ public class PostServiceDescribeFragment extends Fragment
         creatingApp.setDescription(strDesc);
         creatingApp.setTags(strTags);
         creatingApp.setAlbumFiles(mAlbumFiles);
-        selectedAppointment = creatingApp;
+
+        JGGAppManager.getInstance().setSelectedAppointment(creatingApp);
         listener.onNextButtonClick();
     }
 

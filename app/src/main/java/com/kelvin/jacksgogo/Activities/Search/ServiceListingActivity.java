@@ -32,7 +32,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -47,6 +46,7 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
     private ServiceListingAdapter adapter;
     private ProgressDialog progressDialog;
 
+    private ArrayList<JGGCategoryModel> categories;
     private ArrayList<JGGCategoryModel> mCategories = new ArrayList<>();
 
     @Override
@@ -80,6 +80,8 @@ public class ServiceListingActivity extends AppCompatActivity implements View.On
         }
 
         adapter = new ServiceListingAdapter(this);
+
+        categories = JGGAppManager.getInstance().getCategories();
         if (categories == null)
             loadCategories();
         else {

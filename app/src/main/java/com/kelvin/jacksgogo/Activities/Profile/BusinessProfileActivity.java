@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.synnapps.carouselview.CarouselView;
@@ -21,8 +22,6 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 public class BusinessProfileActivity extends AppCompatActivity {
 
@@ -70,7 +69,7 @@ public class BusinessProfileActivity extends AppCompatActivity {
             }
         });
 
-        mUserProfile = currentUser;
+        mUserProfile = JGGAppManager.getInstance().getCurrentUser();
         mUser = mUserProfile.getUser();
         if (mUserProfile == null)
             return;

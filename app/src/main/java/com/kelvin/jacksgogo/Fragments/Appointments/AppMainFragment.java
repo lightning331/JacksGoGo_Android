@@ -28,6 +28,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -70,6 +70,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private static AppointmentMainAdapter confirmedListAdapter;
     private static AppointmentMainAdapter historyListAdapter;
     private String userID;
+    private JGGUserProfileModel currentUser;
 
     public AppMainFragment() {
         // Required empty public constructor
@@ -98,6 +99,9 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_app_main, container, false);
+
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
+
         searchView = (SearchView) view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
         pendingListAdapter = new AppointmentMainAdapter(getContext());

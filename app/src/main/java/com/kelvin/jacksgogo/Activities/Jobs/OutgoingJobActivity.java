@@ -29,6 +29,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActi
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
@@ -52,7 +53,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class OutgoingJobActivity extends AppCompatActivity implements TextWatcher {
@@ -167,7 +167,6 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mActivities = response.body().getValue();
-                        String userID = currentUser.getID();
                         getProposalsByJob();
                     } else {
                         progressDialog.dismiss();
@@ -279,6 +278,7 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                     manager.popBackStack();
             } else {
                 if (actionbarView.getEditStatus() == JOB_DETAILS) {
+                    JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
                     if (mJob.getUserProfileID().equals(currentUser.getID()))
                         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                     else

@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActi
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppointmentActivityResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -44,7 +45,6 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.APPOINTMENT;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_DETAILS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class IncomingJobActivity extends AppCompatActivity implements TextWatcher {
@@ -129,6 +129,7 @@ public class IncomingJobActivity extends AppCompatActivity implements TextWatche
                     manager.popBackStack();
             } else {
                 if (actionbarView.getEditStatus() == JOB_DETAILS) {
+                    JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
                     if (mJob.getUserProfileID().equals(currentUser.getID()))
                         actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                     else
@@ -190,7 +191,6 @@ public class IncomingJobActivity extends AppCompatActivity implements TextWatche
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mActivities = response.body().getValue();
-                        String userID = currentUser.getID();
                         getProposalsByJob();
                     } else {
                         progressDialog.dismiss();

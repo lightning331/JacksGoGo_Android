@@ -20,9 +20,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
@@ -42,7 +41,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public NewJobDetailsAdapter(Context context) {
         this.mContext = context;
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
-        mProposal = selectedProposal;
+        mProposal = JGGAppManager.getInstance().getSelectedProposal();
     }
 
     @Override
@@ -151,6 +150,7 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 originalViewHolder.inviteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
                         if (mJob.getUserProfileID().equals(currentUser.getID())) {
                             Intent intent = new Intent(mContext, PostedJobActivity.class);
                             mContext.startActivity(intent);

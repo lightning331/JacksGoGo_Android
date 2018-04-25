@@ -34,10 +34,12 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -60,8 +62,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
@@ -103,6 +103,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
+    private JGGUserProfileModel currentUser;
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private JGGAppointmentModel mJob;
     private JGGProposalModel mProposal;
@@ -141,6 +142,9 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_incoming_job, container, false);
+
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
+
         initView(view);
         onRefreshView();
         return view;
@@ -154,7 +158,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
         for (JGGProposalModel p : proposals) {
             if (p.getUserProfileID().equals(currentUser.getID())) {
                 mProposal = p;
-                selectedProposal = mProposal;
+                JGGAppManager.getInstance().setSelectedProposal(mProposal);
                 mJob = mProposal.getAppointment();
             }
         }

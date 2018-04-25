@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
 
 public class ServiceFilterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -89,7 +89,7 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
             lblTitle.setText(R.string.title_show_event);
         }
 
-        mCategories = categories;
+        mCategories = JGGAppManager.getInstance().getCategories();
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }

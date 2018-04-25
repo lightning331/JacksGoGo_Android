@@ -15,9 +15,10 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -37,6 +38,7 @@ public class PostProposalMainTabFragment extends Fragment {
     private String tabName;
     private String postStatus;
 
+    private JGGAppointmentModel selectedAppointment;
     private PostProposalActivity mActivity;
 
     public PostProposalMainTabFragment() {
@@ -70,6 +72,8 @@ public class PostProposalMainTabFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
         lblTime = (TextView) view.findViewById(R.id.lbl_date);
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
 
         Picasso.with(mContext)
                 .load(selectedAppointment.getCategory().getImage())

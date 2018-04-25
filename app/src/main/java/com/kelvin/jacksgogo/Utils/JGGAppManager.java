@@ -23,10 +23,10 @@ public class JGGAppManager {
     /*
      *  User
      */
-    public static JGGUserProfileModel currentUser;
-    public static ArrayList<JGGCategoryModel> categories;
-    public static ArrayList<JGGRegionModel> regions;
-    public static JGGRegionModel currentRegion;
+    private JGGUserProfileModel currentUser;
+    private ArrayList<JGGCategoryModel> categories;
+    private ArrayList<JGGRegionModel> regions;
+    private JGGRegionModel currentRegion;
 
     /**
      *  Appointment
@@ -46,6 +46,30 @@ public class JGGAppManager {
             appManager = new JGGAppManager();
         }
         return appManager;
+    }
+
+    public JGGUserProfileModel getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(JGGUserProfileModel currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public ArrayList<JGGCategoryModel> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<JGGCategoryModel> categories) {
+        this.categories = categories;
+    }
+
+    public ArrayList<JGGRegionModel> getRegions() {
+        return regions;
+    }
+
+    public void setRegions(ArrayList<JGGRegionModel> regions) {
+        this.regions = regions;
     }
 
     public JGGRegionModel getCurrentRegion() {
@@ -87,10 +111,6 @@ public class JGGAppManager {
 
     public void setSelectedProposal(JGGProposalModel selectedProposal) {
         this.selectedProposal = selectedProposal;
-    }
-
-    public static void clearAll() {
-        currentUser = null;
     }
 
     public JGGGoclubModel getGoclubModel() {

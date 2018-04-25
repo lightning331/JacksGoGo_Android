@@ -15,11 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getDays;
 import static com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel.getHours;
@@ -92,15 +91,15 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
         txtTerms = view.findViewById(R.id.txt_terms);        txtTerms.addTextChangedListener(this);
         btnNext = view.findViewById(R.id.btn_post_proposal_next);
 
-        if (selectedAppointment != null) {
-            mJob = selectedAppointment;
+        if (JGGAppManager.getInstance().getSelectedAppointment() != null) {
+            mJob = JGGAppManager.getInstance().getSelectedAppointment();
             if (mJob.getBudget() != null)
                 lblJobType.setText("Package Job");
             else
                 lblJobType.setText("One Time Job");
             lblJobTime.setText(getAppointmentTime(mJob));
         }
-        mProposal = selectedProposal;
+        mProposal = JGGAppManager.getInstance().getSelectedProposal();
 
         if (isRescheduling) {
             if (mProposal.isRescheduleAllowed() == null) {
@@ -197,7 +196,8 @@ public class PostProposalRescheduleFragment extends Fragment implements View.OnC
             mProposal.setCancellationNote(txtTerms.getText().toString());
         }
         mProposal.setCancellationNote(txtTerms.getText().toString());
-        selectedProposal = mProposal;
+
+        JGGAppManager.getInstance().setSelectedProposal(mProposal);
     }
 
     private void onYellowButtonColor(TextView button) {

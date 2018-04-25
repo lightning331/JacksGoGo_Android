@@ -17,6 +17,8 @@ import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -31,8 +33,6 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
@@ -63,6 +63,7 @@ public class PostedProposalFragment extends Fragment {
     private PostProposalActivity mActivity;
     private ProgressDialog progressDialog;
 
+    private JGGAppointmentModel selectedAppointment;
     private JGGProposalModel mProposal;
     private String editStatus;
 
@@ -91,7 +92,9 @@ public class PostedProposalFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posted_proposal, container, false);
-        mProposal = selectedProposal;
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+        mProposal = JGGAppManager.getInstance().getSelectedProposal();
 
         initView(view);
         setData();
@@ -201,7 +204,7 @@ public class PostedProposalFragment extends Fragment {
         progressDialog = createProgressDialog(mContext);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        String proposalID = selectedProposal.getID();
+        String proposalID = mProposal.getID();
         Call<JGGBaseResponse> call = apiManager.deleteProposal(proposalID);
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override

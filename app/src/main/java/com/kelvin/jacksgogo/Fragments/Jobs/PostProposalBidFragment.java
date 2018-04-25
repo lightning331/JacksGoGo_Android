@@ -14,11 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedProposal;
 
 public class PostProposalBidFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
@@ -75,7 +73,7 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
         txtBidDesc.addTextChangedListener(this);
         btnNext = view.findViewById(R.id.btn_post_proposal_next);
 
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         if (mJob != null) {
             String budget = "";
             if (mJob.getBudget() == null && mJob.getBudgetFrom() == null)
@@ -94,9 +92,9 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
             }
             lblBudget.setText(budget);
         }
-        mProposal = selectedProposal;
+        mProposal = JGGAppManager.getInstance().getSelectedProposal();
         if (mProposal.getBudget() != null) {
-            txtAmount.setText(String.valueOf(selectedProposal.getBudget()));
+            txtAmount.setText(String.valueOf(mProposal.getBudget()));
             txtBidDesc.setText(mProposal.getBreakdown());
         }
     }
@@ -119,7 +117,8 @@ public class PostProposalBidFragment extends Fragment implements View.OnClickLis
             String amount = txtAmount.getText().toString();
             mProposal.setBudget(Double.parseDouble(amount));
             mProposal.setBreakdown(txtBidDesc.getText().toString());
-            selectedProposal = mProposal;
+
+            JGGAppManager.getInstance().setSelectedProposal(mProposal);
             listener.onNextButtonClick();
         }
     }

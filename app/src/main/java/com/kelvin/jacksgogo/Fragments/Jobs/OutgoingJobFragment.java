@@ -35,6 +35,7 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActi
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +50,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.started;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
@@ -89,6 +89,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
     private View view;
 
     private JGGAppointmentModel mJob;
+    private JGGUserProfileModel currentUser;
     private JGGProposalModel mProposal;
     private JGGContractModel mContract;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
@@ -131,6 +132,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         view = inflater.inflate(R.layout.fragment_outgoing_job, container, false);
 
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         initView();
         onRefreshView();

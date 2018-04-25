@@ -25,6 +25,7 @@ import com.kelvin.jacksgogo.Adapter.Jobs.PostQuotationTimeAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
 import com.kelvin.jacksgogo.CustomView.Views.RecyclerItemClickListener;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
@@ -33,7 +34,6 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedQuotation;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
@@ -75,7 +75,7 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQuotation = selectedQuotation;
+        mQuotation = JGGAppManager.getInstance().getSelectedQuotation();
         mAddress = mQuotation.getAddress();
     }
 
@@ -250,7 +250,8 @@ public class PostQuotationMainTabFragment extends Fragment implements View.OnCli
         }
         // Save Quotation Report Data
         mQuotation.setReportType(reportType);
-        selectedQuotation = mQuotation;
+
+        JGGAppManager.getInstance().setSelectedQuotation(mQuotation);
 
         mActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.request_quotation_container, PostQuotationSummaryFragment.newInstance(true))

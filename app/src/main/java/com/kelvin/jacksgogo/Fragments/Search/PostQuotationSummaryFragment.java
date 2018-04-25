@@ -25,6 +25,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.yanzhenjie.album.AlbumFile;
@@ -36,7 +37,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedQuotation;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
@@ -88,7 +88,7 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
 
         View view = inflater.inflate(R.layout.fragment_post_quotation_summary, container, false);
 
-        mQuotation = selectedQuotation;
+        mQuotation = JGGAppManager.getInstance().getSelectedQuotation();
         String postTime = appointmentNewDate(new Date());
         mQuotation.setPostOn(postTime);
 
@@ -201,7 +201,10 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         postedQuotationID = response.body().getValue();
-                        selectedQuotation.setID(postedQuotationID);
+                        JGGQuotationModel quotationModel = JGGAppManager.getInstance().getSelectedQuotation();
+                        quotationModel.setID(postedQuotationID);
+                        JGGAppManager.getInstance().setSelectedQuotation(quotationModel);
+
                         showAlertDialog();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
