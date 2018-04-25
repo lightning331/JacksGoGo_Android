@@ -17,17 +17,19 @@ import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class CreateEventMainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
+    private JGGCategoryModel selectedCategory;
     private PostEventTabView tabView;
     private ImageView imgCategory;
     private TextView lblCategory;
@@ -65,6 +67,9 @@ public class CreateEventMainFragment extends Fragment {
 
         imgCategory = (ImageView) view.findViewById(R.id.img_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
+
+        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
+
         Picasso.with(mContext)
                 .load(selectedCategory.getImage())
                 .placeholder(null)

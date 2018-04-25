@@ -13,15 +13,15 @@ import com.kelvin.jacksgogo.Fragments.Jobs.JobReportMainFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.JobReportSummaryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_BILLABLE_ITEM;
-import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_TOOLS;
-import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_REPORT;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
+import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.*;
+
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.UNKNOWN;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
@@ -35,6 +35,7 @@ public class JobReportActivity extends AppCompatActivity {
 
     private JGGActionbarView actionbarView;
 
+    private JGGAppointmentModel selectedAppointment;
     private String mUserType;
     private boolean isStartWork;
 
@@ -49,6 +50,8 @@ public class JobReportActivity extends AppCompatActivity {
             mUserType = extra.getString(JGG_USERTYPE);
             isStartWork = extra.getBoolean("work_start");
         }
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);

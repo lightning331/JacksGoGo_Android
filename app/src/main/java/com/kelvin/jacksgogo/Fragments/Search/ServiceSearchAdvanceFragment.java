@@ -135,7 +135,7 @@ public class ServiceSearchAdvanceFragment extends Fragment implements View.OnCli
         btnTime.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
 
-        mCategories = JGGAppManager.getInstance(mContext).categories;
+        mCategories = JGGAppManager.getInstance().categories;
         recyclerView = view.findViewById(R.id.category_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));

@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 
 import java.util.regex.Matcher;
@@ -97,7 +97,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
-                        JGGAppManager.getInstance(SignUpEmailActivity.this).saveUser(txtUserName.getText().toString(), strEmail, strPassword);
+                        JGGSharedPrefs.getInstance(SignUpEmailActivity.this).saveUser(txtUserName.getText().toString(), strEmail, strPassword);
 
                         onShowPhoneVerify();
 

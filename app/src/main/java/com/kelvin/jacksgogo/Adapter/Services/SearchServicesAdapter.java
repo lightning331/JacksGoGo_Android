@@ -15,12 +15,11 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDeta
 import com.kelvin.jacksgogo.CustomView.Views.LoadingViewHolder;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 /**
  * Created by PUMA on 11/14/2017.
@@ -92,8 +91,8 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             cell.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    selectedAppointment = null;
-                    selectedAppointment = mServices.get(position - 2);
+                    JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position - 2));
+
                     Intent intent = new Intent(mContext, ServiceDetailActivity.class);
                     mContext.startActivity(intent);
                 }

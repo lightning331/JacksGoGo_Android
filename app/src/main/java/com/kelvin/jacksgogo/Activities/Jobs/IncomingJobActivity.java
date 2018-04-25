@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
@@ -44,7 +45,6 @@ import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_DETAILS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.currentUser;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class IncomingJobActivity extends AppCompatActivity implements TextWatcher {
@@ -77,7 +77,7 @@ public class IncomingJobActivity extends AppCompatActivity implements TextWatche
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
 
-        mJob = selectedAppointment;
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         setCategory();
 
         actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
@@ -99,10 +99,10 @@ public class IncomingJobActivity extends AppCompatActivity implements TextWatche
     private void setCategory() {
         // Category
         Picasso.with(this)
-                .load(selectedAppointment.getCategory().getImage())
+                .load(mJob.getCategory().getImage())
                 .placeholder(null)
                 .into(imgCategory);
-        lblCategory.setText(selectedAppointment.getCategory().getName());
+        lblCategory.setText(mJob.getCategory().getName());
         // Time
         lblTime.setText(getAppointmentTime(mJob));
     }
@@ -183,7 +183,7 @@ public class IncomingJobActivity extends AppCompatActivity implements TextWatche
     public void getAppointmentActivities() {
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGAppointmentActivityResponse> call = apiManager.getAppointmentActivities(selectedAppointment.getID());
+        Call<JGGAppointmentActivityResponse> call = apiManager.getAppointmentActivities(mJob.getID());
         call.enqueue(new Callback<JGGAppointmentActivityResponse>() {
             @Override
             public void onResponse(Call<JGGAppointmentActivityResponse> call, Response<JGGAppointmentActivityResponse> response) {

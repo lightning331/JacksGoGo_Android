@@ -3,7 +3,7 @@ package com.kelvin.jacksgogo.Utils.API;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -39,7 +39,7 @@ public class JGGURLManager {
 
     public static <S> S createService(Class<S> serviceClass, Context mContext) {
 
-        String authToken = "Bearer " + JGGAppManager.getInstance(mContext).getToken();
+        String authToken = "Bearer " + JGGSharedPrefs.getInstance(mContext).getToken();
 
         if (!TextUtils.isEmpty(authToken)) {
             JGGAuthenticationInterceptor interceptor =

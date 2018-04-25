@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGBudgetType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.fixed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.from;
 import static com.kelvin.jacksgogo.Utils.Global.JGGBudgetType.none;
@@ -117,7 +117,7 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
         btnFrom.setOnClickListener(this);
         btnPackage.setOnClickListener(this);
 
-        mService = selectedAppointment;
+        mService = JGGAppManager.getInstance().getSelectedAppointment();
         serviceType = mService.getAppointmentType();
         budgetType = mService.getBudgetType();
     }
@@ -235,9 +235,9 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
     }
 
     private void onSaveCreatingService() {
-        selectedAppointment.setBudgetFrom(null);
-        selectedAppointment.setBudgetTo(null);
-        selectedAppointment.setBudget(null);
+        mService.setBudgetFrom(null);
+        mService.setBudgetTo(null);
+        mService.setBudget(null);
         if (serviceType == 1) {     // One-time Service Budget
             mService.setAppointmentType(serviceType);
             if (budgetType == fixed) {
@@ -251,7 +251,8 @@ public class PostServicePriceFragment extends Fragment implements View.OnClickLi
             mService.setAppointmentType(Integer.parseInt(txtPackageNum.getText().toString()));
         }
         mService.setBudgetType(budgetType);
-        selectedAppointment = mService;
+
+        JGGAppManager.getInstance().setSelectedAppointment(mService);
         listener.onNextButtonClick();
     }
 

@@ -24,6 +24,8 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 
@@ -34,8 +36,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 public class PostServiceSkillVerifiedFragment extends Fragment implements View.OnClickListener {
 
@@ -100,9 +100,16 @@ public class PostServiceSkillVerifiedFragment extends Fragment implements View.O
             public void onItemClick(int position) {
                 PostServiceMainTabFragment frag = PostServiceMainTabFragment.newInstance(PostServiceTabView.PostServiceTabName.DESCRIBE);
                 frag.setEditStatus(PostServiceSummaryFragment.PostEditStatus.POST);
-                selectedCategory = mCategories.get(position);
-                selectedAppointment.setCategory(selectedCategory);
-                selectedAppointment.setCategoryID(selectedCategory.getID());
+
+                JGGCategoryModel categoryModel = mCategories.get(position);
+
+                JGGAppManager.getInstance().setSelectedCategory(categoryModel);
+
+                JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
+                appointmentModel.setCategory(categoryModel);
+                appointmentModel.setCategoryID(categoryModel.getID());
+                JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
+
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.post_service_container, frag)

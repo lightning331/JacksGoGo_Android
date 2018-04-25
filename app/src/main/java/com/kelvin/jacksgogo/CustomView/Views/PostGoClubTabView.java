@@ -64,7 +64,7 @@ public class PostGoClubTabView extends RelativeLayout implements View.OnClickLis
         return goClubTabName;
     }
 
-    public void setTabName(GoClubTabName name) {
+    public void setTabName(GoClubTabName name, boolean isPost) {
         this.goClubTabName = name;
 
         mDescribeText.setTextColor(getResources().getColor(R.color.JGGGrey1));
@@ -76,27 +76,44 @@ public class PostGoClubTabView extends RelativeLayout implements View.OnClickLis
         mAddressImage.setImageResource(R.mipmap.counter_grey);
         mTimeImage.setImageResource(R.mipmap.counter_grey);
 
-        mDescribeButton.setOnClickListener(this);
-        mTimeButton.setOnClickListener(this);
-        mAddressButton.setOnClickListener(this);
+        if (!isPost){
+            mDescribeButton.setOnClickListener(this);
+            mTimeButton.setOnClickListener(this);
+            mAddressButton.setOnClickListener(this);
+        }
         switch (name) {
             case DESCRIBE:
                 mDescribeText.setTextColor(getResources().getColor(R.color.JGGPurple));
-                mDescribeImage.setImageResource(R.mipmap.counter_purpleactive);
+                mDescribeImage.setImageResource(R.mipmap.counter_grey);
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
+                    mDescribeImage.setImageResource(R.mipmap.counter_purpleactive);
+                }
                 break;
             case LIMIT:
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 mTimeText.setTextColor(getResources().getColor(R.color.JGGPurple));
-                mTimeImage.setImageResource(R.mipmap.counter_purpleactive);
+                mTimeImage.setImageResource(R.mipmap.counter_grey);
                 mDescribeImage.setImageResource(R.mipmap.counter_greytick);
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
+                    mTimeButton.setOnClickListener(this);
+                    mTimeImage.setImageResource(R.mipmap.counter_purpleactive);
+                }
                 break;
             case ADMIN:
                 imgTimeLine.setImageResource(R.mipmap.line_full);
                 imgAddressLine.setImageResource(R.mipmap.line_full);
                 mAddressText.setTextColor(getResources().getColor(R.color.JGGPurple));
-                mAddressImage.setImageResource(R.mipmap.counter_purpleactive);
+                mAddressImage.setImageResource(R.mipmap.counter_grey);
                 mDescribeImage.setImageResource(R.mipmap.counter_greytick);
                 mTimeImage.setImageResource(R.mipmap.counter_greytick);
+                if (isPost) {
+                    mDescribeButton.setOnClickListener(this);
+                    mTimeButton.setOnClickListener(this);
+                    mAddressButton.setOnClickListener(this);
+                    mAddressImage.setImageResource(R.mipmap.counter_purpleactive);
+                }
                 break;
             default:
                 break;

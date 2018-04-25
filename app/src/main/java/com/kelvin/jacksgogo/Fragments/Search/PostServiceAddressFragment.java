@@ -23,10 +23,10 @@ import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
@@ -89,7 +89,7 @@ public class PostServiceAddressFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_service_address, container, false);
 
-        creatingJob = selectedAppointment;
+        creatingJob = JGGAppManager.getInstance().getSelectedAppointment();
         mAddress = creatingJob.getAddress();
 
         initView(view);
@@ -162,7 +162,8 @@ public class PostServiceAddressFragment extends Fragment
             mAddress.setShowFullAddress(!isShowFullAddress);
 
             creatingJob.setAddress(mAddress);
-            selectedAppointment = creatingJob;
+
+            JGGAppManager.getInstance().setSelectedAppointment(creatingJob);
 
             listener.onNextButtonClick();
         }

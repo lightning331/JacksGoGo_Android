@@ -20,13 +20,13 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.Fragments.Search.ServiceDetailFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 
 public class ServiceDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,6 +39,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     private JGGActionbarView actionbarView;
     private AlertDialog alertDialog;
 
+    private JGGAppointmentModel selectedAppointment;
     private boolean reportFlag = false;
 
     @Override
@@ -54,6 +55,9 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         BottomNavigationViewHelper.disableShiftMode(mbtmView);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
+
+
+        selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
 
         /*
          *  Service BudgetType

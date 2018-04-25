@@ -22,12 +22,12 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTimeSlotsCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTotalReviewCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -58,7 +58,7 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public ServiceDetailAdapter(Context context) {
         this.mContext = context;
-        mService = selectedAppointment;
+        mService = JGGAppManager.getInstance().getSelectedAppointment();
         mUserProfile = mService.getUserProfile();
         mUser = mUserProfile.getUser();
         if (mService.getBudget() != null) isFixedBudget = true;

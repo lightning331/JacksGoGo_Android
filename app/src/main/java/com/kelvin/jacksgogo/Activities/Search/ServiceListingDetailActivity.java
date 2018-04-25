@@ -24,7 +24,9 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +39,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedAppointment;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
@@ -53,6 +54,7 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
 
     private ActiveServiceAdapter adapter;
     private ProgressDialog progressDialog;
+    private JGGCategoryModel selectedCategory;
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private boolean isPost;
 
@@ -64,6 +66,8 @@ public class ServiceListingDetailActivity extends AppCompatActivity implements V
 
         Bundle bundle = getIntent().getExtras();
         isPost = bundle.getBoolean("is_post");
+
+        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
 
         // Hide Bottom NavigationView and ToolBar
         BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_listing_detail_navigation);

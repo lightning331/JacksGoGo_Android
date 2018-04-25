@@ -30,6 +30,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
@@ -54,7 +55,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.JGGAppManager.categories;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 
 public class SearchFragment extends Fragment {
@@ -527,7 +527,7 @@ public class SearchFragment extends Fragment {
         if (view.getId() == R.id.btn_view_my_service) {
             mIntent = new Intent(mContext, ServiceListingActivity.class);
         } else if (view.getId() == R.id.btn_view_all) {
-            selectedCategory = null;
+            JGGAppManager.getInstance().setSelectedCategory(null);
             mIntent = new Intent(mContext, ActiveServiceActivity.class);
             mIntent.putExtra("active_status", 1);
         } else if (view.getId() == R.id.btn_post_new) {

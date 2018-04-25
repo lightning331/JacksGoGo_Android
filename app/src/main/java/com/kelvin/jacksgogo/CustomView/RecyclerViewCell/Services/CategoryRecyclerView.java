@@ -16,6 +16,7 @@ import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
-import static com.kelvin.jacksgogo.Utils.JGGAppManager.selectedCategory;
 
 /**
  * Created by PUMA on 11/14/2017.
@@ -68,7 +68,7 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
             @Override
             public void onItemClick(int position) {
                 if (mCategories != null) {
-                    selectedCategory = mCategories.get(position);
+                    JGGAppManager.getInstance().setSelectedCategory(mCategories.get(position));
                 }
                 if (mType == GOCLUB) {
                     Intent intent = new Intent(mContext, AllGoClubsActivity.class);
@@ -90,7 +90,7 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
                                 Toast.makeText(mContext, name,
                                         Toast.LENGTH_LONG).show();
                             } else {
-                                selectedCategory = mCategories.get(position - 1);
+                                JGGAppManager.getInstance().setSelectedCategory(mCategories.get(position - 1));
                             }
                         }
                     }
