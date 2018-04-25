@@ -143,8 +143,6 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_incoming_job, container, false);
 
-        currentUser = JGGAppManager.getInstance().getCurrentUser();
-
         initView(view);
         onRefreshView();
         return view;
@@ -153,6 +151,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     public void setAppointmentActivities(ArrayList<JGGAppointmentActivityModel> activities,
                                          ArrayList<JGGProposalModel> proposals,
                                          JGGContractModel contract) {
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
         mActivities = activities;
         mContract = contract;
         for (JGGProposalModel p : proposals) {
