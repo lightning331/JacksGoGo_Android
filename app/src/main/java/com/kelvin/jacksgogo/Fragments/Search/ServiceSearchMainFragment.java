@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Search.SearchResultActivity;
@@ -29,7 +29,7 @@ public class ServiceSearchMainFragment extends Fragment implements View.OnClickL
     private Context mContext;
     private OnFragmentInteractionListener mListener;
 
-    private LinearLayout searchLayout;
+    private RelativeLayout searchLayout;
     private EditText txtSearch;
     private ImageView btnSearch;
     private TextView btnAdvanced;

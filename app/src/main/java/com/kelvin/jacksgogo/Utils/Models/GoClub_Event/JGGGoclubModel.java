@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by storm on 4/24/2018.
  */
 
-public class JGGGoclubModel {
+public class JGGGoClubModel {
     private String UserProfileID;
     private String RegionID;
     private String CategoryID;
@@ -19,7 +19,7 @@ public class JGGGoclubModel {
     private String Description;
     private String Tags;
     private boolean IsSole;
-    private int Limit;
+    private Integer Limit;
     private ArrayList<String> AttachmentURLs = new ArrayList<>();
     private ArrayList<String> UserProfileIDs = new ArrayList<>();
 
@@ -86,11 +86,11 @@ public class JGGGoclubModel {
         IsSole = sole;
     }
 
-    public int getLimit() {
+    public Integer getLimit() {
         return Limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Integer limit) {
         Limit = limit;
     }
 

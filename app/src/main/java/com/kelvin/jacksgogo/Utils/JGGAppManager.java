@@ -1,8 +1,6 @@
 package com.kelvin.jacksgogo.Utils;
 
-import android.content.Context;
-
-import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoclubModel;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
@@ -34,7 +32,7 @@ public class JGGAppManager {
     private JGGCategoryModel selectedCategory;
     private JGGAppointmentModel selectedAppointment;
     private JGGQuotationModel selectedQuotation;
-    private JGGGoclubModel goclubModel;
+    private JGGGoClubModel selectedClub;
     private JGGProposalModel selectedProposal;
 
     private JGGAppManager() {
@@ -113,11 +111,11 @@ public class JGGAppManager {
         this.selectedProposal = selectedProposal;
     }
 
-    public JGGGoclubModel getGoclubModel() {
-        return goclubModel;
+    public JGGGoClubModel getSelectedClub() {
+        return selectedClub;
     }
 
-    public void setGoclubModel(JGGGoclubModel goclubModel) {
-        this.goclubModel = goclubModel;
+    public void setSelectedClub(JGGGoClubModel selectedClub) {
+        this.selectedClub = selectedClub;
     }
 }

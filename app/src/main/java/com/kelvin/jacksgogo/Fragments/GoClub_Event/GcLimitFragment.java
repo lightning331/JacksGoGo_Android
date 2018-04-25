@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,12 +28,13 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
 
     @BindView(R.id.btn_no_limit)                    Button btnNoLimits;
     @BindView(R.id.btn_limit)                       Button btnLimitTo;
-    @BindView(R.id.edit_pax)
-    EditText editPax;
+    @BindView(R.id.edit_pax)                        EditText editPax;
     @BindView(R.id.btn_next)                        Button btnNext;
 
     private Context mContext;
     private boolean isLimit = false;
+
+    private JGGGoClubModel creatingClub;
 
     public GcLimitFragment() {
         // Required empty public constructor
@@ -44,6 +47,8 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gc_limit, container, false);
         ButterKnife.bind(this, view);
+
+        creatingClub = JGGAppManager.getInstance().getSelectedClub();
 
         initView();
 
@@ -62,6 +67,16 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
         editPax.setVisibility(View.GONE);
         btnNext.setClickable(false);
         btnNext.setVisibility(View.GONE);
+
+        if (creatingClub.getLimit() == null) {}
+        else {
+            isLimit = true;
+            btnNoLimits.setVisibility(View.GONE);
+            this.onYellowButtonColor(btnLimitTo);
+            editPax.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.VISIBLE);
+            editPax.setText(String.valueOf(creatingClub.getLimit()));
+        }
     }
 
     private void onYellowButtonColor(Button button) {
@@ -76,7 +91,7 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_no_limit)
     public void onClickNoLimit() {
-        this.listener.onNextButtonClick();
+        setGoClubData();
     }
 
     @OnClick(R.id.btn_limit)
@@ -97,6 +112,16 @@ public class GcLimitFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_next)
     public void onClickNext() {
+        setGoClubData();
+    }
+
+    private void setGoClubData() {
+        if (isLimit)
+            creatingClub.setLimit(Integer.valueOf(editPax.getText().toString()));
+        else
+            creatingClub.setLimit(null);
+        JGGAppManager.getInstance().setSelectedClub(creatingClub);
+
         this.listener.onNextButtonClick();
     }
 

@@ -220,7 +220,23 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                         case invite_sent:
                             setInvitedStatus(activity);
                             break;
+                        case invite_accepted:
+                            bottomLayout.setVisibility(View.GONE);
+                            acceptLayout.setVisibility(View.GONE);
+                            if (activity.getReferenceID().equals(mProposal.getID())) {
+                                setProposedStatus(activity);
+                                // Waiting for Client's decision
+                                setWaitingClientDecision(activity);
+                                // Client Info view
+                                onShowClientInfoView();
+                            }
+                            break;
+                        case invite_rejected:
+
+                            break;
                         case proposal_sent:
+                            bottomLayout.setVisibility(View.GONE);
+                            acceptLayout.setVisibility(View.GONE);
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
@@ -230,6 +246,8 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                             }
                             break;
                         case proposal_edited:
+                            bottomLayout.setVisibility(View.GONE);
+                            acceptLayout.setVisibility(View.GONE);
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
@@ -347,6 +365,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     private void setProposedStatus(JGGAppointmentActivityModel activity) {
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
         lblPostedTime.setText(submitTime);
         lblPostedJob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -538,7 +557,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     }
 
     private void onAcceptInvitation() {
-        mProposal.setStatus(JGGProposalStatus.confirmed);
+        mProposal.setStatus(JGGProposalStatus.open);
         Intent intent = new Intent(mContext, PostProposalActivity.class);
         intent.putExtra(EDIT_STATUS, INVITE_PROPOSAL);
         startActivity(intent);

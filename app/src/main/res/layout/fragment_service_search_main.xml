@@ -14,7 +14,6 @@
             android:background="@color/JGGGrey5"
             android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/search_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -22,10 +21,12 @@
                 android:layout_marginRight="16dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:background="@drawable/green_border_background">
+                android:background="@color/JGGWhite">
                 <RelativeLayout
+                    android:id="@+id/search_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/green_border_background">
                     <EditText
                         android:id="@+id/txt_search"
                         android:hint="Search Service"
@@ -44,6 +45,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="3dp"
                         android:padding="@dimen/edit_text_padding_size"
                         android:weightSum="100">
                         <LinearLayout
