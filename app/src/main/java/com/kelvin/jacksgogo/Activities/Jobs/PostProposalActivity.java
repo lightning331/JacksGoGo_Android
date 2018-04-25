@@ -84,6 +84,7 @@ public class PostProposalActivity extends AppCompatActivity {
         });
 
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+        selectedProposal = JGGAppManager.getInstance().getSelectedProposal();
 
         initFragment();
     }
@@ -175,6 +176,7 @@ public class PostProposalActivity extends AppCompatActivity {
                 if (status.equals(POST)
                         || status.equals(EDIT)
                         || status.equals(INVITE_PROPOSAL)) {
+                    // TODO - show quick proposal alert
                     showAlertDialog();
                 } else {
                     onBackPressed();
@@ -233,6 +235,7 @@ public class PostProposalActivity extends AppCompatActivity {
         actionbarView.setEditProposalMenu(edit);
     }
 
+    // TODO - show quick proposal alert
     private void showAlertDialog() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();

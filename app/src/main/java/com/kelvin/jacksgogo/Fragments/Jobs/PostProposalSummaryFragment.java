@@ -229,6 +229,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         });
     }
 
+    // TODO - invite/edit proposal
     public void onEditProposal() {
         //showPostProposalAlertDialog();
         progressDialog = createProgressDialog(mContext);
