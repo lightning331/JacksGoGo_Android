@@ -185,9 +185,9 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
         pendingListAdapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position, JGGAppointmentModel appointment) {
+            public void onItemClick(JGGAppointmentModel appointment) {
                 // ListView item select
-                onSelectListViewItem(position, appointment);
+                onSelectListViewItem(appointment);
             }
         });
     }
@@ -304,8 +304,8 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         // RecyclerView Item select
         adapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position, JGGAppointmentModel appointment) {
-                onSelectListViewItem(position, appointment);
+            public void onItemClick(JGGAppointmentModel appointment) {
+                onSelectListViewItem(appointment);
             }
         });
     }
@@ -329,8 +329,8 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
             pendingListAdapter.setOnItemClickListener(new AppointmentMainAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(int position, JGGAppointmentModel appointment) {
-                    onSelectListViewItem(position, appointment);
+                public void onItemClick(JGGAppointmentModel appointment) {
+                    onSelectListViewItem(appointment);
                 }
             });
 
@@ -362,7 +362,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         return filteredModelList;
     }
 
-    private void onSelectListViewItem(int position, JGGAppointmentModel appointment) {
+    private void onSelectListViewItem(JGGAppointmentModel appointment) {
 
         JGGAppManager.getInstance().setSelectedCategory(appointment.getCategory());
         JGGAppManager.getInstance().setSelectedAppointment(appointment);

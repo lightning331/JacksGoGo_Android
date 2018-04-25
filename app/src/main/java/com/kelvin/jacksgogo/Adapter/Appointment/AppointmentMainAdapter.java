@@ -45,7 +45,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, JGGAppointmentModel appointment);
+        void onItemClick(JGGAppointmentModel appointment);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -144,7 +144,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 cellView.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(position, appointment);
+                        listener.onItemClick(appointment);
                     }
                 });
             //}
