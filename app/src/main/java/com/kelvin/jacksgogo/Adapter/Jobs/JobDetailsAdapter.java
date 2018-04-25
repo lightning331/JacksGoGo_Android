@@ -84,10 +84,10 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             View addressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_location, parent, false);
             JobDetailLocationCell addressViewHolder = new JobDetailLocationCell(addressView);
             String street;
-            if (mJob.getAddress().getStreet() == null)
-                street = mJob.getAddress().getAddress();
+            if (mJob.getAddress() != null)
+                street = mJob.getAddress().getFullAddress();
             else
-                street = mJob.getAddress().getStreet();
+                street = "";
             addressViewHolder.lblDescription.setText(street + ", 0.4 km away");
             addressViewHolder.location.setVisibility(View.INVISIBLE);
             return addressViewHolder;
