@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     };
 
     public void selectFragment() {
+
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
+
         Fragment frag = null;
         // Show Top Navigation Bar
         topNavLayoutParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
@@ -118,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
-
-        currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         initView();
     }
