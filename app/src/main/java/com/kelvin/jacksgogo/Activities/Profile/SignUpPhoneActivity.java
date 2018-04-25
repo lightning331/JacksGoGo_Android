@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +17,7 @@ import com.hbb20.CountryCodePicker;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 
 import retrofit2.Call;
@@ -64,7 +63,7 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
     private void sendSMS() {
         progressDialog = createProgressDialog(this);
 
-        String username = JGGAppManager.getInstance(this).getUsernamePassword()[2];
+        String username = JGGSharedPrefs.getInstance(this).getUsernamePassword()[2];
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGBaseResponse> signUpCall = signInManager.accountAddPhone(username, strPhoneNumber);

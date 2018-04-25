@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
@@ -34,8 +34,8 @@ public class JGGSplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
 
-        strEmail = JGGAppManager.getInstance(this).getUsernamePassword()[0];
-        strPassword = JGGAppManager.getInstance(this).getUsernamePassword()[1];
+        strEmail = JGGSharedPrefs.getInstance(this).getUsernamePassword()[0];
+        strPassword = JGGSharedPrefs.getInstance(this).getUsernamePassword()[1];
 
     }
 
@@ -134,7 +134,7 @@ public class JGGSplashActivity extends AppCompatActivity {
                         // Save the Access Token and Expire Date
                         String access_token = response.body().getToken().getAccess_token();
                         Long expire_in = response.body().getToken().getExpires_in();
-                        JGGAppManager.getInstance(JGGSplashActivity.this).saveToken(access_token, expire_in);
+                        JGGSharedPrefs.getInstance(JGGSplashActivity.this).saveToken(access_token, expire_in);
 
                         onShowMainActivity();
 
