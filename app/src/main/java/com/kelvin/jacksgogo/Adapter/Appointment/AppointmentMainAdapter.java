@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
 import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
-import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.squareup.picasso.Picasso;
@@ -23,9 +22,9 @@ import java.util.Map;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.closed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.flagged;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 
 /**
  * Created by PUMA on 10/31/2017.
@@ -46,7 +45,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, Object object);
+        void onItemClick(int position, JGGAppointmentModel appointment);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -91,7 +90,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if (itemData instanceof JGGAppointmentModel) {
             // RecyclerView Cell
             ApptHistoryListCell cellView = (ApptHistoryListCell) holder;
-            JGGAppointmentModel appointment = (JGGAppointmentModel) itemData;
+            final JGGAppointmentModel appointment = (JGGAppointmentModel) itemData;
 
             cellView.lbl_Title.setText(appointment.getTitle());
             cellView.lbl_Comment.setText(appointment.getDescription());
@@ -145,7 +144,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 cellView.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(position, itemData);
+                        listener.onItemClick(position, appointment);
                     }
                 });
             //}

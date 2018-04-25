@@ -312,6 +312,7 @@ public class Global {
         job_flagged(104),
         job_deleted(105),
         job_reported(106),
+        job_awarded(107),
 
         service_created(200),
         service_edited(201),

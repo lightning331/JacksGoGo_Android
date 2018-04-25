@@ -152,13 +152,13 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                                          ArrayList<JGGProposalModel> proposals,
                                          JGGContractModel contract) {
         currentUser = JGGAppManager.getInstance().getCurrentUser();
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
         mActivities = activities;
         mContract = contract;
         for (JGGProposalModel p : proposals) {
             if (p.getUserProfileID().equals(currentUser.getID())) {
                 mProposal = p;
                 JGGAppManager.getInstance().setSelectedProposal(mProposal);
-                mJob = mProposal.getAppointment();
             }
         }
     }
@@ -216,6 +216,9 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                     switch (activity.getStatus()) {
                         case job_deleted:
                             setDeletedJobStatus();
+                            break;
+                        case job_awarded:
+
                             break;
                         case invite_sent:
                             setInvitedStatus(activity);
