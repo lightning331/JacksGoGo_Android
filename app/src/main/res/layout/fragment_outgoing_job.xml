@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.kelvin.jacksgogo.Fragments.Jobs.ProgressJobSummaryFragment">
+    tools:context="com.kelvin.jacksgogo.Fragments.Jobs.OutgoingJobFragment">
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"

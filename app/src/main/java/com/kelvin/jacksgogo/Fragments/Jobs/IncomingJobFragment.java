@@ -245,7 +245,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                                 onShowClientInfoView();
                             }
                             break;
-                        case proposal_edited:
+                        case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
                             bottomLayout.setVisibility(View.GONE);
                             acceptLayout.setVisibility(View.GONE);
                             if (activity.getReferenceID().equals(mProposal.getID())) {

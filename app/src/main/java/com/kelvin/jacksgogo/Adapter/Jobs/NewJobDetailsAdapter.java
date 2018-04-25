@@ -113,7 +113,10 @@ public class NewJobDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 break;
             case 3:
                 JobDetailLocationCell jobDetailLocationCell = (JobDetailLocationCell)holder;
-                jobDetailLocationCell.lblDescription.setText(mJob.getAddress().getFullAddress());
+                if (mJob.getAddress() != null)
+                    jobDetailLocationCell.lblDescription.setText(mJob.getAddress().getFullAddress());
+                else
+                    jobDetailLocationCell.lblDescription.setText("");
                 jobDetailLocationCell.location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
