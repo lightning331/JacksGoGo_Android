@@ -16,6 +16,8 @@
             android:id="@+id/img_avatar"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:src="@mipmap/nurse1"
             android:background="@color/transparent"
             android:adjustViewBounds="true"

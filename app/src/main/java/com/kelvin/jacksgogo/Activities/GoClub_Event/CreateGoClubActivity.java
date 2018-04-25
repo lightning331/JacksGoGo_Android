@@ -13,8 +13,7 @@ import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoclubModel;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
@@ -42,7 +41,7 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
     private int alertTitle;
 
     private JGGUserProfileModel currentUser;
-    private JGGGoclubModel goclubModel;
+    private JGGGoClubModel goclubModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,19 +89,20 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
 
         if (status.equals(POST)) {
             // Create New Goclub Model
-            goclubModel = new JGGGoclubModel();
+            goclubModel = new JGGGoClubModel();
             goclubModel.setUserProfile(currentUser);
             goclubModel.setUserProfileID(currentUser.getID());
             JGGRegionModel currentRegion = JGGAppManager.getInstance().getCurrentRegion();
             goclubModel.setRegion(currentRegion);
             goclubModel.setRegionID(currentRegion.getID());
 
+            JGGAppManager.getInstance().setSelectedClub(goclubModel);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_go_club_container, PostJobCategoryFragment.newInstance(appType.toString()))
                     .commit();
 
-            JGGAppManager.getInstance().setGoclubModel(goclubModel);
         } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case GOCLUB:
