@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
@@ -127,12 +128,14 @@ public class PostJobCategoryFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 if (position > 0) {
-                    JGGAppManager.getInstance().setSelectedCategory(mCategories.get(position));
+
+                    JGGCategoryModel categoryModel = mCategories.get(position);
+                    JGGAppManager.getInstance().setSelectedCategory(categoryModel);
 
                     if (appType == AppointmentType.JOBS) {
                         PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabName.DESCRIBE, PostStatus.POST);
 
-                        JGGCategoryModel categoryModel = mCategories.get(position - 1);
+                        categoryModel = mCategories.get(position - 1);
                         JGGAppManager.getInstance().setSelectedCategory(categoryModel);
 
                         JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
@@ -146,6 +149,10 @@ public class PostJobCategoryFragment extends Fragment {
                                 .addToBackStack("post_job")
                                 .commit();
                     } else if (appType == AppointmentType.GOCLUB) {
+                        JGGGoClubModel creatingClub = JGGAppManager.getInstance().getSelectedClub();
+                        creatingClub.setCategoryID(categoryModel.getID());
+                        creatingClub.setCategory(categoryModel);
+                        JGGAppManager.getInstance().setSelectedClub(creatingClub);
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.post_go_club_container, CreateGoClubMainFragment.newInstance(GoClubTabName.DESCRIBE, PostStatus.POST))

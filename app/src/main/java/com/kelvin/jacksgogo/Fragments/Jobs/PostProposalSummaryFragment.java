@@ -266,6 +266,41 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         });
     }
 
+    public void onAcceptInvite() {
+        JGGProposalModel proposalModel = JGGAppManager.getInstance().getSelectedProposal();
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+
+        Call<JGGPostAppResponse> call = manager.acceptInvite(proposalModel);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        postedProposalID = response.body().getValue();
+
+                        JGGProposalModel model = JGGAppManager.getInstance().getSelectedProposal();
+                        model.setID(postedProposalID);
+                        JGGAppManager.getInstance().setSelectedProposal(model);
+                        showPostProposalAlertDialog();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     private void onDeleteProposal() {
         progressDialog = createProgressDialog(mContext);
 
@@ -360,8 +395,10 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             //showPostProposalAlertDialog();
             if (proposalStatus == ProposalStatus.POST)
                 onPostProposal();
-            else if (proposalStatus == ProposalStatus.INVITE)
+            else if (proposalStatus == ProposalStatus.EDIT)
                 onEditProposal();
+            else if (proposalStatus == ProposalStatus.INVITE)
+                onAcceptInvite();
             return;
         } else if (view.getId() == R.id.btn_delete_proposal) {
             showDeleteAlertDialog();

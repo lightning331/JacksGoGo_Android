@@ -62,6 +62,7 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@drawable/grey_border_background"
                 android:textAllCaps="false"
+                android:inputType="number"
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/list_title_font_size"
                 android:paddingLeft="@dimen/edit_text_padding_size"

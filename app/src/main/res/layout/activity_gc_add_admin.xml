@@ -41,8 +41,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/added_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"></android.support.v7.widget.RecyclerView>
+            android:layout_height="176dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin">
+        </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
 
     <Button
@@ -62,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@color/JGGGrey4"></LinearLayout>
+        android:background="@color/JGGGrey4">
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
@@ -71,11 +73,11 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:background="@drawable/purple_border_background">
+        android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/purple_border_background">
             <EditText
                 android:id="@+id/txt_search"
                 android:hint="Search User"
