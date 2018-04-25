@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "67557661503",
+    "firebase_url": "https://jacksgogo-2cdfe.firebaseio.com",
+    "project_id": "jacksgogo-2cdfe",
+    "storage_bucket": "jacksgogo-2cdfe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67557661503:android:c38b2cca752e074b",
+        "android_client_info": {
+          "package_name": "com.kelvin.jacksgogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67557661503-ch7kr692f8ra410mvs652rov2q3d9p9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kelvin.jacksgogo",
+            "certificate_hash": "3db67fedfe3a61619d9011bc8bb60ef6a1d7599f"
+          }
+        },
+        {
+          "client_id": "67557661503-f01etkm2fdl7dtigpbuea7hp8jlg717b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJyUsgFJa8EHU7TQ081kc1O2eai7s4GLI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67557661503-f01etkm2fdl7dtigpbuea7hp8jlg717b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

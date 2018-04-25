@@ -60,9 +60,6 @@
             android:name=".Activities.Appointment.AppFilterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Jobs.OutgoingJobActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activities.Search.ServiceDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -150,6 +147,15 @@
             android:name=".Activities.Jobs.PostProposalActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Activities.Jobs.JobReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Jobs.IncomingJobActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.Jobs.OutgoingJobActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".Activities.Appointment.AppMapViewActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -160,9 +166,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Profile.EditProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.Jobs.JobReportActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.GoClub_Event.JoinedGoClubsActivity"
@@ -221,7 +224,6 @@
         <activity
             android:name=".Activities.GoClub_Event.GcAddAdminActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Jobs.IncomingJobActivity"></activity>
     </application>
 
 </manifest>
