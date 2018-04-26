@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/JGGBlack"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"/>

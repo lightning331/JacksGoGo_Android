@@ -51,11 +51,8 @@ public class InviteProviderActivity extends AppCompatActivity {
     private InviteProviderAdapter adapter;
     private ProgressDialog progressDialog;
 
-    private ArrayList<JGGUserProfileModel> users = new ArrayList<>();
-    private JGGUserProfileModel user;
     private JGGAppointmentModel mJob;
     private JGGCategoryModel mCategory;
-    private String proposalID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +81,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         getInviteUsers();
     }
 
-    private void updateRecyclerView() {
+    private void updateRecyclerView(ArrayList<JGGUserProfileModel> users) {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(InviteProviderActivity.this, LinearLayout.VERTICAL, false));
         }
@@ -93,8 +90,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new InviteProviderAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(JGGUserProfileModel u) {
-                user = u;
-                sendInvite();
+                sendInvite(u);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -123,9 +119,8 @@ public class InviteProviderActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        users = response.body().getValue();
-
-                        updateRecyclerView();
+                        ArrayList<JGGUserProfileModel> users = response.body().getValue();
+                        updateRecyclerView(users);
                     } else {
                         Toast.makeText(InviteProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -144,7 +139,7 @@ public class InviteProviderActivity extends AppCompatActivity {
         });
     }
 
-    private void sendInvite() {
+    private void sendInvite(JGGUserProfileModel user) {
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGSendInviteResponse> call = apiManager.sendInvite(mJob.getID(), user.getID());
@@ -154,7 +149,7 @@ public class InviteProviderActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        proposalID = response.body().getValue();
+                        String proposalID = response.body().getValue();
                         Toast.makeText(InviteProviderActivity.this, "Invitation sent!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(InviteProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();

@@ -208,8 +208,9 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     private void onRefreshView() {
 
         //Provider invited to Job
-        if (mProposal == null) {}
-        else {
+        if (mProposal == null) {
+            bottomLayout.setVisibility(View.GONE);
+        } else {
             if (mActivities.size() > 0) {
                 for (int i = mActivities.size() - 1; i >= 0; i --) {
                     JGGAppointmentActivityModel activity = mActivities.get(i);
@@ -224,8 +225,6 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                             setInvitedStatus(activity);
                             break;
                         case invite_accepted:
-                            bottomLayout.setVisibility(View.GONE);
-                            acceptLayout.setVisibility(View.GONE);
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
@@ -238,8 +237,6 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
 
                             break;
                         case proposal_sent:
-                            bottomLayout.setVisibility(View.GONE);
-                            acceptLayout.setVisibility(View.GONE);
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
@@ -249,8 +246,6 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                             }
                             break;
                         case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
-                            bottomLayout.setVisibility(View.GONE);
-                            acceptLayout.setVisibility(View.GONE);
                             if (activity.getReferenceID().equals(mProposal.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
@@ -260,6 +255,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                             }
                             break;
                         case proposal_rejected:
+                            bottomLayout.setVisibility(View.GONE);
                             // Client rejected provider's proposal
                             setDeclineProposalStatus(activity);
                             break;
@@ -350,13 +346,14 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     }
 
     private void setInvitedStatus(JGGAppointmentActivityModel activity) {
+        bottomLayout.setVisibility(View.VISIBLE);
+        acceptLayout.setVisibility(View.VISIBLE);
+
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
         lblPostedTime.setText(submitTime);
         imgProposal.setImageResource(R.mipmap.icon_posted_orange);
         lblPostedJob.setText(R.string.invited_proposal_title);
-        bottomLayout.setVisibility(View.VISIBLE);
-        acceptLayout.setVisibility(View.VISIBLE);
         lblPostedJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -379,8 +376,16 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     }
 
     private void setWaitingClientDecision(JGGAppointmentActivityModel activity) {
-        bottomLayout.setVisibility(View.GONE);
+        clientDetailLayout.setVisibility(View.VISIBLE);
+        acceptLayout.setVisibility(View.GONE);
+
         lblPostedJob.setText(R.string.sent_proposal_title);
+        lblPostedJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPostedJob();
+            }
+        });
 
         quotationLayout.removeAllViews();
         Date submitOn = activity.getActiveOn();
@@ -501,20 +506,26 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
         quotationView.lblTime.setText(submitTime);
-        quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
-        quotationView.btnViewQuotation.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-        quotationView.btnViewQuotation.setText(R.string.edit_your_title);
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
-        quotationView.lblTitle.setText(R.string.proposal_declined);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
-        quotationView.btnViewQuotation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, PostProposalActivity.class);
-                intent.putExtra(EDIT_STATUS, EDIT);
-                startActivity(intent);
-            }
-        });
+        if (mProposal.isInvited()) {
+            imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
+            quotationView.btnViewQuotation.setVisibility(View.GONE);
+            quotationView.lblTitle.setText(R.string.declined_invite);
+        } else {
+            quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
+            quotationView.btnViewQuotation.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+            quotationView.btnViewQuotation.setText(R.string.edit_your_title);
+            quotationView.lblTitle.setText(R.string.proposal_declined);
+            quotationView.btnViewQuotation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PostProposalActivity.class);
+                    intent.putExtra(EDIT_STATUS, EDIT);
+                    startActivity(intent);
+                }
+            });
+        }
         quotationLayout.addView(quotationView);
     }
 

@@ -19,7 +19,6 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
-import static com.kelvin.jacksgogo.Utils.Global.getProposalStatus;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -61,28 +60,27 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
         JGGUserProfileModel provider = proposal.getUserProfile();
         JGGProposalStatus status = proposal.getStatus();
 
-        lblStatus.setVisibility(View.GONE);
+        lblStatus.setVisibility(View.VISIBLE);
+        lblPrice.setVisibility(View.GONE);
+        imgProposal.setVisibility(View.GONE);
 
+        // Status
         if (proposal.isInvited()) {
-            imgProposal.setVisibility(View.GONE);
-            lblPrice.setVisibility(View.GONE);
+//            lblStatus.setVisibility(View.VISIBLE);
+//            lblStatus.setText("Invited");
+            lblStatus.setVisibility(View.GONE);
         }
 //        if (status == newproposal) {
 //            cellBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
 //        }
         if (status == confirmed) {
-            lblStatus.setVisibility(View.VISIBLE);
             lblStatus.setText("Confirmed");
             imgProposal.setVisibility(View.VISIBLE);
             lblPrice.setVisibility(View.VISIBLE);
         } else if (status == declined) {
-            lblStatus.setVisibility(View.VISIBLE);
             lblStatus.setText("Declined");
-            imgProposal.setVisibility(View.GONE);
-            lblPrice.setVisibility(View.GONE);
             itemView.setAlpha(.5f);
         } else if (status == rejected) {
-            lblStatus.setVisibility(View.VISIBLE);
             lblStatus.setText("Rejected");
             imgProposal.setVisibility(View.VISIBLE);
             lblPrice.setVisibility(View.VISIBLE);
@@ -114,7 +112,5 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
             ratingBar.setRating(provider.getUser().getRate().floatValue());
         // Budget
         lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
-        // Status
-        lblStatus.setText(getProposalStatus(status));
     }
 }
