@@ -27,6 +27,8 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

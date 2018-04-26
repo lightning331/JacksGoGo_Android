@@ -122,9 +122,8 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                 .commit();
     }
 
-    public void deleteJob(String reason) {
-        mJob.setStatus(deleted);
-        mJob.setReason(reason);
+    public void deleteJob(final String reason) {
+
 
         String jobID = mJob.getID();
 
@@ -138,6 +137,9 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
+                        mJob.setStatus(deleted);
+                        mJob.setReason(reason);
+
                         deleteJobFinished();
                         getAppointmentActivities();
                     } else {

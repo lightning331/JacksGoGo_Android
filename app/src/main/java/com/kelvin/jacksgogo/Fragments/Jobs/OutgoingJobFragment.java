@@ -95,7 +95,6 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private String mReason;
-    private String providerName = "";
     private boolean isDeleted;
 
     public OutgoingJobFragment() {
@@ -145,12 +144,6 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         mActivities = activities;
         mProposals = proposals;
         mContract = contract;
-        for (JGGProposalModel p : proposals) {
-            if (p.getStatus() == Global.JGGProposalStatus.confirmed) {
-                mProposal = p;
-                providerName = mProposal.getUserProfile().getUser().getFullName();
-            }
-        }
     }
 
     private void initView() {
@@ -205,36 +198,44 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         lblPostedTime.setText(postedTime);
 
         // Job Open View
-        if (mJob.getStatus() == open) {
-            quotationView.notifyDataChanged(isDeleted, mProposals.size());
-            lblPostedJob.setText(R.string.outgoing_job);
-            quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
-                @Override
-                public void onItemClick(View item) {
-                    quotationViewItemClick(item);
+        switch (mJob.getStatus()) {
+            case open:
+                quotationView.notifyDataChanged(isDeleted, mProposals.size());
+                lblPostedJob.setText(R.string.outgoing_job);
+                quotationView.setOnItemClickListener(new JobStatusSummaryQuotationView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View item) {
+                        quotationViewItemClick(item);
+                    }
+                });
+                quotationLayout.addView(quotationView);
+                break;
+            case closed:
+                break;
+            case confirmed:
+                // TODO - contract exist
+                if (mContract != null)
+                    setJobConfirmedStatus();
+                break;
+            case finished:
+                break;
+            case flagged:
+                break;
+            case deleted:
+                // Cancelled View
+                Picasso.with(mContext).load(currentUser.getUser().getPhotoURL())
+                        .placeholder(R.mipmap.icon_profile)
+                        .into(cancelledView.imgAvatar);
+                cancelledView.lblComment.setText(mReason);
+                cancelledLayout.addView(cancelledView);
+                break;
+            case started:
+                // TODO - contract exist
+                if (mContract != null) {
+                    setJobConfirmedStatus();
+                    setJobStartedStatus();
                 }
-            });
-            quotationLayout.addView(quotationView);
-        }
-
-        // Job Confirmed View
-        if (mJob.getStatus() == confirmed) {
-            setJobConfirmedStatus();
-            //setJobStartedStatus();
-        }
-
-        // Job Started View
-        if (mJob.getStatus() == started) {
-            setJobConfirmedStatus();
-            setJobStartedStatus();
-        }
-        if (mJob.getStatus() == deleted) {
-            // Cancelled View
-            Picasso.with(mContext).load(currentUser.getUser().getPhotoURL())
-                    .placeholder(R.mipmap.icon_profile)
-                    .into(cancelledView.imgAvatar);
-            cancelledView.lblComment.setText(mReason);
-            cancelledLayout.addView(cancelledView);
+                break;
         }
         /*LinearLayout givenReviewLayout = (LinearLayout)view.findViewById(R.id.job_main_given_review_layout);
         JobStatusSummaryReview givenReviewView = new JobStatusSummaryReview(mContext);
@@ -282,6 +283,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         lblPostedJob.setText(R.string.job_request_posted);
 
         // Quotation View
+
         quotationView.lblTime.setText(postedTime);
         quotationView.viewQuotationLayout.setVisibility(View.GONE);
         quotationView.awardedLayout.setVisibility(View.VISIBLE);
@@ -289,6 +291,8 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
         quotationView.lblQuotationCount.setText("");
         quotationView.lblQuotationCount.append("You have awarded ");
+
+        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
         quotationView.lblQuotationCount.append(setBoldText(providerName));
         quotationView.lblQuotationCount.append(" to the job.");
         quotationView.lblQuotationCount.setOnClickListener(this);
@@ -311,13 +315,13 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
 
         // Provider Info view
         String imgURL = null;
-        if (mProposals.size() > 0)
-            imgURL = mProposal.getUserProfile().getUser().getPhotoURL();
+        imgURL = mContract.getProposal().getUserProfile().getUser().getPhotoURL();
         Picasso.with(mContext)
                 .load(imgURL)
                 .placeholder(R.mipmap.icon_profile)
                 .into(imgProvider);
         lblProviderName.setText(providerName);
+
         providerDetailLayout.setVisibility(View.VISIBLE);
     }
 
@@ -332,6 +336,8 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         progressView.lblStartTime.setText(postedTime);
         progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork);
         progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+
+        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
         progressView.lblUserName.setText(providerName);
         progressLayout.addView(progressView);
 
