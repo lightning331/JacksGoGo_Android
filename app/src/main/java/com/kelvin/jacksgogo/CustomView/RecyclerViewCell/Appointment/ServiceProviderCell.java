@@ -60,31 +60,43 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
         JGGUserProfileModel provider = proposal.getUserProfile();
         JGGProposalStatus status = proposal.getStatus();
 
-        lblStatus.setVisibility(View.VISIBLE);
+        lblStatus.setVisibility(View.GONE);
         lblPrice.setVisibility(View.GONE);
         imgProposal.setVisibility(View.GONE);
 
-        // Status
-        if (proposal.isInvited()) {
-//            lblStatus.setVisibility(View.VISIBLE);
-//            lblStatus.setText("Invited");
-            lblStatus.setVisibility(View.GONE);
-        }
-//        if (status == newproposal) {
-//            cellBackground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.JGGGreen10Percent));
-//        }
-        if (status == confirmed) {
-            lblStatus.setText("Confirmed");
-            imgProposal.setVisibility(View.VISIBLE);
-            lblPrice.setVisibility(View.VISIBLE);
-        } else if (status == declined) {
-            lblStatus.setText("Declined");
-            itemView.setAlpha(.5f);
-        } else if (status == rejected) {
-            lblStatus.setText("Rejected");
-            imgProposal.setVisibility(View.VISIBLE);
-            lblPrice.setVisibility(View.VISIBLE);
-            itemView.setAlpha(.5f);
+        switch (status) {
+            case open:
+                if (proposal.isInvited()) {
+
+                } else {
+                    lblPrice.setVisibility(View.VISIBLE);
+                    imgProposal.setVisibility(View.VISIBLE);
+                    lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
+                }
+                break;
+            case rejected:
+                lblStatus.setVisibility(View.VISIBLE);
+                lblStatus.setText("Rejected");
+                imgProposal.setVisibility(View.VISIBLE);
+                lblPrice.setVisibility(View.VISIBLE);
+                lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
+
+                itemView.setAlpha(.5f);
+                break;
+            case confirmed:
+                lblStatus.setVisibility(View.VISIBLE);
+                lblStatus.setText("Confirmed");
+                imgProposal.setVisibility(View.VISIBLE);
+                lblPrice.setVisibility(View.VISIBLE);
+                lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
+                break;
+            case withdrawn:
+                break;
+            case declined:
+                lblStatus.setVisibility(View.VISIBLE);
+                lblStatus.setText("Declined");
+                itemView.setAlpha(.5f);
+                break;
         }
 
         // Need to fix in API field
@@ -110,7 +122,5 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
             ratingBar.setRating(0.0f);
         else
             ratingBar.setRating(provider.getUser().getRate().floatValue());
-        // Budget
-        lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
     }
 }
