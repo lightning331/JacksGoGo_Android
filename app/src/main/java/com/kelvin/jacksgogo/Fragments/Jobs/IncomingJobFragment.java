@@ -216,69 +216,72 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                 for (int i = mActivities.size() - 1; i >= 0; i --) {
                     JGGAppointmentActivityModel activity = mActivities.get(i);
                     // TODO - update required
-//                    if (activity.getReferenceID().equals(currentUser.getID())) {}
 //                    if (activity.getReferenceID().equals(mProposal.getID()))
-                    switch (activity.getStatus()) {
-                        case job_deleted:
-                            setDeletedJobStatus();
-                            break;
-                        case job_awarded:
+                    if (activity.getReferenceID().equals(currentUser.getID())) {
+                        switch (activity.getStatus()) {
+                            case job_deleted:
+                                setDeletedJobStatus();
+                                break;
+                            case job_awarded:
 
-                            break;
-                        case invite_sent:
-                            setInvitedStatus(activity);
-                            break;
-                        case invite_accepted:
-                            if (activity.getReferenceID().equals(currentUser.getID())) {
-                                setProposedStatus(activity);
-                                // Waiting for Client's decision
-                                setWaitingClientDecision(activity);
-                                // Client Info view
-                                onShowClientInfoView();
-                            }
-                            break;
-                        case invite_rejected:
+                                break;
+                            case invite_sent:
+                                setInvitedStatus(activity);
+                                break;
+                            case invite_accepted:
+                                if (activity.getReferenceID().equals(currentUser.getID())) {
+                                    setProposedStatus(activity);
+                                    // Waiting for Client's decision
+                                    setWaitingClientDecision(activity);
+                                    // Client Info view
+                                    onShowClientInfoView();
+                                }
+                                break;
+                            case invite_rejected:
 
-                            break;
-                        case proposal_sent:
-                            if (activity.getReferenceID().equals(currentUser.getID())) {
-                                setProposedStatus(activity);
-                                // Waiting for Client's decision
-                                setWaitingClientDecision(activity);
+                                break;
+                            case proposal_sent:
+                                if (activity.getReferenceID().equals(currentUser.getID())) {
+                                    setProposedStatus(activity);
+                                    // Waiting for Client's decision
+                                    setWaitingClientDecision(activity);
+                                    // Client Info view
+                                    onShowClientInfoView();
+                                }
+                                break;
+                            case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
+                                if (activity.getReferenceID().equals(currentUser.getID())) {
+                                    setProposedStatus(activity);
+                                    // Waiting for Client's decision
+                                    setWaitingClientDecision(activity);
+                                    // Client Info view
+                                    onShowClientInfoView();
+                                }
+                                break;
+                            case proposal_rejected:
+                                bottomLayout.setVisibility(View.GONE);
+                                // Client rejected provider's proposal
+                                setDeclineProposalStatus(activity);
+                                break;
+                            case proposal_deleted:
+                                break;
+                            case proposal_withdraw:
+                                setDeletedJobStatus();
+                                mActivity.setStatus(mProposal);
+                                break;
+                            case proposal_approved:
+                                // Set More button
+                                mActivity.setStatus(mProposal);
                                 // Client Info view
                                 onShowClientInfoView();
-                            }
-                            break;
-                        case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
-                            if (activity.getReferenceID().equals(currentUser.getID())) {
-                                setProposedStatus(activity);
-                                // Waiting for Client's decision
-                                setWaitingClientDecision(activity);
-                                // Client Info view
-                                onShowClientInfoView();
-                            }
-                            break;
-                        case proposal_rejected:
-                            bottomLayout.setVisibility(View.GONE);
-                            // Client rejected provider's proposal
-                            setDeclineProposalStatus(activity);
-                            break;
-                        case proposal_deleted:
-                            break;
-                        case proposal_withdraw:
-                            setDeletedJobStatus();
-                            mActivity.setStatus(mProposal);
-                            break;
-                        case proposal_approved:
-                            // Set More button
-                            mActivity.setStatus(mProposal);
-                            // Job confirmed View
-                            setReadyToStartStatus(activity);
-                            setJobConfirmedStatus(activity);
-                            break;
-                        case contract_started:
-                            setJobReportStatus(activity);
-                            break;
+                                // Job confirmed View
+                                setReadyToStartStatus(activity);
+                                setJobConfirmedStatus(activity);
+                                break;
+                            case contract_started:
+                                setJobReportStatus(activity);
+                                break;
+                        }
                     }
                 }
             }

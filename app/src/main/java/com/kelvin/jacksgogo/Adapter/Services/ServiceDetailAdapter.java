@@ -117,10 +117,10 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 addressViewHolder.location.setVisibility(View.GONE);
 
                 if (isFixedBudget) {
-                    addressViewHolder.lblDescription.setText("Eunos Swim Club");
-                    addressViewHolder.lblDescription.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
-                    addressViewHolder.address.setVisibility(View.VISIBLE);
-                    addressViewHolder.address.setText(street);
+                    //addressViewHolder.lblDescription.setText("Eunos Swim Club");
+                    //addressViewHolder.lblDescription.setTypeface(Typeface.create("mulibold", Typeface.BOLD));
+                    //addressViewHolder.address.setText(street);
+                    //addressViewHolder.address.setVisibility(View.VISIBLE);
                     addressViewHolder.location.setVisibility(View.VISIBLE);
                     addressViewHolder.location.setOnClickListener(this);
                 }
