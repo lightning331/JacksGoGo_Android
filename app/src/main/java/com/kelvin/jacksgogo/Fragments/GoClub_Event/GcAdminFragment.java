@@ -15,12 +15,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GcAddAdminActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.GcAddedAdminAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,9 +44,11 @@ public class GcAdminFragment extends Fragment {
     @BindView(R.id.ll_admin) LinearLayout ll_admin;
     @BindView(R.id.admin_recycler_view) RecyclerView adminRecyclerView;
 
-    Context mContext;
+    private Context mContext;
     private GcAddedAdminAdapter adapter;
-    private boolean isOthers = false;
+    private JGGGoClubModel creatingClub;
+    private ArrayList<JGGUserProfileModel> invitedUsers;
+    private ArrayList<String> invitedUserIDs;
 
     public GcAdminFragment() {
         // Required empty public constructor
@@ -53,27 +62,55 @@ public class GcAdminFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gc_admin, container, false);
         ButterKnife.bind(this, view);
 
+        creatingClub = JGGAppManager.getInstance().getSelectedClub();
+        invitedUsers = creatingClub.getUsers();
+        invitedUserIDs = creatingClub.getUserProfileIDs();
+
         if (adminRecyclerView != null) {
             adminRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
 
         // Added Recycler View
-        adapter = new GcAddedAdminAdapter(mContext);
+        adapter = new GcAddedAdminAdapter(mContext, invitedUsers);
         adapter.setOnItemClickListener(new GcAddedAdminAdapter.OnItemClickListener() {
             @Override
             public void onDeleteItemClick(int position) {
-                Toast.makeText(mContext, "Delete button clicked "+position, Toast.LENGTH_SHORT).show();
+                ArrayList<JGGUserProfileModel> tmpUsers = invitedUsers;
+                tmpUsers.remove(position);
+                invitedUsers = tmpUsers;
+                adapter.notifyDataChanged(invitedUsers);
             }
         });
         adminRecyclerView.setAdapter(adapter);
 
-        ll_admin.setVisibility(View.GONE);
+        updateView();
 
         return view;
     }
 
-    private void setGoClubData() {
+    private void updateView() {
+        ll_admin.setVisibility(View.GONE);
+        if (invitedUsers.size() > 0) {
+            btnSoleAdmin.setVisibility(View.GONE);
+            this.onYellowButtonColor(btnOthers);
+            ll_admin.setVisibility(View.VISIBLE);
+        } else {
+            btnSoleAdmin.setVisibility(View.VISIBLE);
+            this.onPurpleButtonColor(btnOthers);
+            ll_admin.setVisibility(View.GONE);
+        }
+    }
 
+    private void setGoClubData() {
+        if (invitedUserIDs.size() > 0) {
+            creatingClub.setSole(false);
+            creatingClub.setUsers(invitedUsers);
+            creatingClub.setUserProfileIDs(invitedUserIDs);
+        } else
+            creatingClub.setSole(true);
+        JGGAppManager.getInstance().setSelectedClub(creatingClub);
+
+        listener.onNextButtonClick();
     }
 
     private void onYellowButtonColor(Button button) {
@@ -88,7 +125,15 @@ public class GcAdminFragment extends Fragment {
 
     @OnClick(R.id.btn_sole_admin)
     public void onClickSoleAdmin() {
+        invitedUserIDs.clear();
+        invitedUsers.clear();
         setGoClubData();
+    }
+
+    @OnClick(R.id.btn_others)
+    public void onClickOthers() {
+        Intent intent = new Intent(mContext, GcAddAdminActivity.class);
+        startActivityForResult(intent, Global.REQUEST_CODE);
     }
 
     @OnClick(R.id.btn_summary)
@@ -96,28 +141,26 @@ public class GcAdminFragment extends Fragment {
         setGoClubData();
     }
 
-    @OnClick(R.id.btn_others)
-    public void onClickOthers() {
-        isOthers  = !isOthers;
-        Intent intent = new Intent(mContext, GcAddAdminActivity.class);
-        startActivityForResult(intent, Global.REQUEST_CODE);
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Global.REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                if (isOthers) {
-                    btnSoleAdmin.setVisibility(View.GONE);
-                    this.onYellowButtonColor(btnOthers);
-                    ll_admin.setVisibility(View.VISIBLE);
-                } else {
-                    btnSoleAdmin.setVisibility(View.VISIBLE);
-                    this.onPurpleButtonColor(btnOthers);
-                    ll_admin.setVisibility(View.GONE);
-                }
+
+                String usersStr = data.getStringExtra("invitedUsers");
+                String userIdStr = data.getStringExtra("invitedUserIDs");
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<JGGUserProfileModel>>() {}.getType();
+                Type idType = new TypeToken<ArrayList<String>>() {}.getType();
+
+                ArrayList<JGGUserProfileModel> users = gson.fromJson(usersStr, type);
+                ArrayList<String> userIDs = gson.fromJson(userIdStr, idType);
+
+                this.invitedUsers = users;
+                this.invitedUserIDs = userIDs;
+                adapter.notifyDataChanged(invitedUsers);
+
+                updateView();
             }
         }
     }

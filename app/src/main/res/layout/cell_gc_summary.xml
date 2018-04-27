@@ -2,20 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:background="@color/JGGGrey5">
+    android:background="@color/JGGWhite">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/JGGWhite"
         android:paddingRight="@dimen/activity_horizontal_margin">
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_avatar"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:src="@mipmap/nurse1"
             android:background="@color/transparent"
             android:adjustViewBounds="true"
@@ -51,15 +50,14 @@
                 app:mrb_secondaryProgressTint="@color/JGGYellow" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="40">
+            android:layout_gravity="center_vertical">
             <TextView
                 android:id="@+id/txt_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="organiser"
+                android:text="Group Owner"
                 android:textColor="@color/JGGBlack"
                 android:fontFamily="@font/muliregular"
                 android:textSize="@dimen/caption_font_size"

@@ -18,18 +18,25 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCa
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 
 public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
+    private JGGGoClubModel mClub;
 
     public GoClubDetailAdapter(Context context) {
         mContext = context;
+        mClub = JGGAppManager.getInstance().getSelectedClub();
     }
 
     @Override
@@ -38,12 +45,21 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // GoClub Photo Cell
             View imgPageView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_image_carousel, parent, false);
             JobDetailImageCarouselCell pageViewHolder = new JobDetailImageCarouselCell(imgPageView, mContext);
+            pageViewHolder.imageArray = mClub.getAttachmentURLs();
+            pageViewHolder.carouselView.setPageCount(mClub.getAttachmentURLs().size());
+            pageViewHolder.carouselView.setImageListener(pageViewHolder.imageListener);
 
             return pageViewHolder;
         } else if (viewType == 1) {
             // Category & GoClub Title view
             View postCategoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_header, parent, false);
             ServiceDetailCategoryCell categoryViewHolder = new ServiceDetailCategoryCell(postCategoryView);
+            Picasso.with(mContext)
+                    .load(mClub.getCategory().getImage())
+                    .placeholder(null)
+                    .into(categoryViewHolder.imgCategory);
+            categoryViewHolder.lblCategory.setText(mClub.getCategory().getName());
+            categoryViewHolder.title.setText(mClub.getName());
 
             return categoryViewHolder;
         } else if (viewType == 2) {
@@ -51,13 +67,19 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
             JobDetailDescriptionCell descriptionViewHolder = new JobDetailDescriptionCell(descriptionView);
             descriptionViewHolder.descriptionImage.setImageResource(R.mipmap.icon_info);
-            descriptionViewHolder.description.setText("Football fan club and sessions in Victory Park.");
+            descriptionViewHolder.description.setText(mClub.getDescription());
             return descriptionViewHolder;
         } else if (viewType == 3) {
             // Member count view
             View membersView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
             JobDetailDescriptionCell membersViewHolder = new JobDetailDescriptionCell(membersView);
             membersViewHolder.descriptionImage.setImageResource(R.mipmap.icon_group);
+            String title;
+            if (mClub.getLimit() == null)
+                title = mClub.getClubUsers().size() + " (No limit)";
+            else
+                title = mClub.getClubUsers().size() + " (max" + mClub.getLimit() + ")";
+            membersViewHolder.description.setText(title);
             membersViewHolder.btnViewAllMemebers.setVisibility(View.VISIBLE);
             membersViewHolder.btnViewAllMemebers.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,7 +87,6 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     mContext.startActivity(new Intent(mContext, GoClubMembersActivity.class));
                 }
             });
-            membersViewHolder.description.setText("1032");
             return membersViewHolder;
         } else if (viewType == 4){
             // Past Events list view
@@ -91,23 +112,64 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // Tag list view
             View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
             ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
-            tagListViewHolder.tagList.setTagTextColor(R.color.JGGPurple);
-            tagListViewHolder.setTagList("football, discussion, Ole");
-            return tagListViewHolder;
+
+            // Active Group view
+            View activeGroupView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
+            JobDetailAverageQuoteCell activeGroup = new JobDetailAverageQuoteCell(activeGroupView);
+
+            if (mClub.getTags() == null) {
+                // Active Group view
+                activeGroup.lblResponseCount.setText("Active Group");
+                activeGroup.budgetLayout.setVisibility(View.GONE);
+                return activeGroup;
+            } else {
+                if (mClub.getTags().equals("")) {
+                    // Active Group view
+                    activeGroup.lblResponseCount.setText("Active Group");
+                    activeGroup.budgetLayout.setVisibility(View.GONE);
+                    return activeGroup;
+                } else {
+                    // Tag list view
+                    tagListViewHolder.setTagList(mClub.getTags());
+                    tagListViewHolder.tagList.setTagTextColor(R.color.JGGPurple);
+                    return tagListViewHolder;
+                }
+            }
         } else if (viewType == 6) {
             // Active Group view
             View activeGroupView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
             JobDetailAverageQuoteCell activeGroup = new JobDetailAverageQuoteCell(activeGroupView);
-            activeGroup.lblResponseCount.setText("Active Group");
-            activeGroup.budgetLayout.setVisibility(View.GONE);
-            return activeGroup;
+
+            // GoClub reference no view
+            View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
+            ServiceDetailReferenceNoCell referenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
+            if (mClub.getTags() == null) {
+                // GoClub reference no view
+                referenceNo.lblTitle.setText("GoClub reference no: ");
+                referenceNo.lblNumber.setText(mClub.getID());
+                referenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mClub.getCreatedOn())));
+                return referenceNo;
+            } else {
+                if (mClub.getTags().equals("")) {
+                    // GoClub reference no view
+                    referenceNo.lblTitle.setText("GoClub reference no: ");
+                    referenceNo.lblNumber.setText(mClub.getID());
+                    referenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mClub.getCreatedOn())));
+                    return referenceNo;
+                } else {
+                    // Active Group view
+                    activeGroup.lblResponseCount.setText("Active Group");
+                    activeGroup.budgetLayout.setVisibility(View.GONE);
+                    return activeGroup;
+                }
+            }
         } else {
             // GoClub reference no view
             View bookedInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_reference_no, parent, false);
             ServiceDetailReferenceNoCell referenceNo = new ServiceDetailReferenceNoCell(bookedInfoView);
             referenceNo.lblTitle.setText("GoClub reference no: ");
-            referenceNo.lblNumber.setText("C39852");
-            referenceNo.lblPostedTime.setText("15 Apr, 2018");
+            referenceNo.lblNumber.setText(mClub.getID());
+            referenceNo.lblPostedTime.setText(getDayMonthYear(appointmentMonthDate(mClub.getCreatedOn())));
             return referenceNo;
         }
     }
@@ -124,6 +186,12 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return 8;
+        if (mClub.getTags() == null)
+            return 7;
+        else {
+            if (mClub.getTags().equals(""))
+                return 7;
+            return 8;
+        }
     }
 }

@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+
+import java.util.ArrayList;
 
 public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -45,6 +48,8 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private ImageView imgCategory;
         private TextView lblCategory;
 
+        private ArrayList<JGGGoClubModel> mClubs = new ArrayList<>();
+
         public JoinedGoClubViewHolder(View itemView) {
             super(itemView);
 
@@ -55,7 +60,7 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (mRecyclerView != null) {
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
             }
-            GoClubMainAdapter adapter = new GoClubMainAdapter(mContext);
+            GoClubMainAdapter adapter = new GoClubMainAdapter(mContext, mClubs);
             adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {

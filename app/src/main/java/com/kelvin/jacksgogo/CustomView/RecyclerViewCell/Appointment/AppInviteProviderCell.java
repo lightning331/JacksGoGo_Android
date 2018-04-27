@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global.EventUserType;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -57,6 +59,24 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
             ratingBar.setRating(0);
         else
             ratingBar.setRating(rating.floatValue());
+    }
+
+    public void setClubUser(JGGGoClubUserModel clubUser) {
+        lblUserType.setVisibility(View.VISIBLE);
+        ratingBar.setVisibility(View.GONE);
+        btnInvite.setVisibility(View.GONE);
+        Picasso.with(mContext)
+                .load(clubUser.getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(avatarImage);
+        if (clubUser.getUserProfile().getUser().getGivenName() == null)
+            userName.setText(clubUser.getUserProfile().getUser().getUserName());
+        else
+            userName.setText(clubUser.getUserProfile().getUser().getFullName());
+        if (clubUser.getUserType() == EventUserType.owner)
+            lblUserType.setText("Group Owner");
+        else if (clubUser.getUserType() == EventUserType.admin)
+            lblUserType.setText("Admin");
     }
 
     public void disableInviteButton(boolean disable) {

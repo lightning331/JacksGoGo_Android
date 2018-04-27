@@ -31,12 +31,15 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +66,18 @@ public class SearchFragment extends Fragment {
 
     private SwipeRefreshLayout swipeContainer;
     private RecyclerView recyclerView;
-    private ArrayList<JGGCategoryModel> mCategories;
     private SearchJobsAdapter jobAdapter;
     private SearchServicesAdapter serviceAdapter;
+    private SearchGoClubAdapter goClubAdapter;
+    private JGGAPIManager apiManager;
     private android.app.AlertDialog alertDialog;
 
+    private ArrayList<JGGCategoryModel> mCategories;
     private ArrayList<JGGCategoryModel> categories = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
+    private ArrayList<JGGGoClubModel> mGoClubs = new ArrayList<>();
+    private ArrayList<JGGEventModel> mEvents = new ArrayList<>();
     private String appType = SERVICES;
     private Intent mIntent;
 
@@ -101,6 +108,9 @@ public class SearchFragment extends Fragment {
 
         token = JGGSharedPrefs.getInstance(mContext).getToken();
         categories = JGGAppManager.getInstance().getCategories();
+
+        Retrofit retrofit = JGGURLManager.getClient();
+        apiManager = retrofit.create(JGGAPIManager.class);
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeSearchContainer);
@@ -190,8 +200,9 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    // TODO : Service search Adapter
     private void updateServiceAdapter() {
-        serviceAdapter = new SearchServicesAdapter(mContext, mCategories, mServices);
+        serviceAdapter = new SearchServicesAdapter(mContext, mServices);
         serviceAdapter.setOnItemClickLietener(new SearchServicesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -209,7 +220,7 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void run() {
                                 int index = mServices.size() - 1;
-                                //onLoadServiceMore(index);
+                                onLoadServiceMore(index);
                             }
                         });
                     }
@@ -219,8 +230,9 @@ public class SearchFragment extends Fragment {
         recyclerView.setAdapter(serviceAdapter);
     }
 
+    // TODO : Job search Adapter
     private void updateJobAdapter() {
-        jobAdapter = new SearchJobsAdapter(mContext, mCategories, mJobs);
+        jobAdapter = new SearchJobsAdapter(mContext, mJobs);
         jobAdapter.setOnItemClickLietener(new SearchJobsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -243,7 +255,7 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void run() {
                                 int index = mServices.size() - 1;
-                                //onLoadJobsMore(index);
+                                onLoadJobsMore(index);
                             }
                         });
                     }
@@ -253,8 +265,10 @@ public class SearchFragment extends Fragment {
         recyclerView.setAdapter(jobAdapter);
     }
 
+    // TODO : GoClub & Event search Adapter
     private void updateGoClubAdapter() {
-        SearchGoClubAdapter goClubAdapter = new SearchGoClubAdapter(mContext, mCategories);
+        goClubAdapter = new SearchGoClubAdapter(mContext);
+        // GoClub
         goClubAdapter.setOnGoClubClickListener(new SearchGoClubAdapter.OnGoClubHeaderViewClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -276,6 +290,9 @@ public class SearchFragment extends Fragment {
                 mContext.startActivity(mIntent);
             }
         });
+        onLoadGoClubs();
+
+        // Event
         goClubAdapter.setOnEventClickListener(new SearchGoClubAdapter.OnEventHeaderViewClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -304,13 +321,27 @@ public class SearchFragment extends Fragment {
                 mContext.startActivity(mIntent);
             }
         });
+        if (mEvents.size() > 0)
+            goClubAdapter.setLoadMoreListener(new SearchGoClubAdapter.OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int index = mEvents.size() - 1;
+                            onLoadMoreEvents(index);
+                        }
+                    });
+                }
+            });
+        onLoadEvents();
         recyclerView.setAdapter(goClubAdapter);
         swipeContainer.setRefreshing(false);
     }
 
+    // TODO : Get Total Appointment Count
     private void getTotalAppointmentsCount(boolean isJob) {
-        Retrofit retrofit = JGGURLManager.getClient();
-        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
         Call<JGGAppTotalCountResponse> call = apiManager.getTotalAppointmentsCount(hours);
         call.enqueue(new Callback<JGGAppTotalCountResponse>() {
             @Override
@@ -333,12 +364,11 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // TODO : Get Recommended Service
     private void onLoadServices() {
-        Retrofit retrofit = JGGURLManager.getClient();
-        JGGAPIManager apiManager = retrofit.create(JGGAPIManager.class);
-        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+        Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null,
-                null, null, null, 0, 10);
+                null, null, null, false, 0, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -346,7 +376,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         mServices = response.body().getValue();
 
-                        serviceAdapter.notifyDataChanged(mCategories, mServices);
+                        serviceAdapter.notifyDataChanged(mServices);
                         serviceAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(serviceAdapter);
 
@@ -367,18 +397,18 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // TODO : Get more Recommended Service
     private void onLoadServiceMore(int index){
 
         //add loading progress view
         mServices.add(new JGGAppointmentModel());
-        serviceAdapter.notifyItemInserted(mServices.size()-1);
+        serviceAdapter.notifyItemInserted(mServices.size() - 1);
 
-        int pageIndex = (int)(index/10);
+        //int pageIndex = (int)(index/10);
 
-        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+        Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null,
-                null, null, null, pageIndex, 10);
+                null, null, null, false, index, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -386,7 +416,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
 
                         //remove loading view
-                        mServices.remove(mServices.size()-1);
+                        mServices.remove(mServices.size() - 1);
 
                         List<JGGAppointmentModel> result = response.body().getValue();
                         if (result.size() > 0) {
@@ -396,13 +426,12 @@ public class SearchFragment extends Fragment {
                             //telling adapter to stop calling load more as no more server data available
                             Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
-                        serviceAdapter.notifyDataChanged(mCategories, mServices);
+                        serviceAdapter.notifyDataChanged(mServices);
                         serviceAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -414,11 +443,11 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // TODO : Get Recommended Job
     private void onLoadJobs() {
-        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+        Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null, null,
-                null, null, 0, 10);
+                null, null, true, 0, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -426,7 +455,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         mJobs = response.body().getValue();
 
-                        jobAdapter.notifyDataChanged(mCategories, mJobs);
+                        jobAdapter.notifyDataChanged(mJobs);
                         jobAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(jobAdapter);
 
@@ -448,24 +477,24 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // TODO : Get more Recommended Job
     private void onLoadJobsMore(int index) {
         //add loading progress view
         mJobs.add(new JGGAppointmentModel());
-        jobAdapter.notifyItemInserted(mJobs.size()-1);
+        jobAdapter.notifyItemInserted(mJobs.size() - 1);
 
-        int pageIndex = (int)(index/10);
+        //int pageIndex = (int)(index/10);
 
-        final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
+        Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null, null,
-                null, null, pageIndex, 10);
+                null, null, true, index, 10);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
-                        mJobs.remove(mJobs.size()-1);
+                        mJobs.remove(mJobs.size() - 1);
 
                         List<JGGAppointmentModel> result = response.body().getValue();
                         if (result.size() > 0) {
@@ -475,7 +504,7 @@ public class SearchFragment extends Fragment {
                             //telling adapter to stop calling load more as no more server data available
                             Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
-                        jobAdapter.notifyDataChanged(mCategories, mJobs);
+                        jobAdapter.notifyDataChanged(mJobs);
                         jobAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -493,6 +522,49 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    // TODO : Get Recommended GoClubs
+    private void onLoadGoClubs() {
+        Call<JGGGetGoClubResponse> call = apiManager.searchGoClub(null, null,
+                null,  0, 10);
+        call.enqueue(new Callback<JGGGetGoClubResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetGoClubResponse> call, Response<JGGGetGoClubResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        mGoClubs = response.body().getValue();
+
+                        goClubAdapter.notifyGoClubDataChanged(mGoClubs);
+                        goClubAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(goClubAdapter);
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetGoClubResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // TODO : Get Recommended Events
+    private void onLoadEvents() {
+
+    }
+
+    // TODO : Get Recommended Events
+    private void onLoadMoreEvents(int index) {
+
+    }
+
+    // TODO : Get All Categories
     private void loadCategories() {
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGCategoryResponse> call = apiManager.getCategory();
@@ -503,6 +575,7 @@ public class SearchFragment extends Fragment {
                     if (response.body().getSuccess()) {
                         mCategories = response.body().getValue();
                         categories = mCategories;
+                        JGGAppManager.getInstance().setCategories(categories);
                         swipeContainer.setRefreshing(false);
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();

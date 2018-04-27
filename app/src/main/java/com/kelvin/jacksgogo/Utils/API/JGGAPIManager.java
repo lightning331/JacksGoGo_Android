@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils.API;
 
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
@@ -11,6 +12,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -98,19 +100,20 @@ public interface JGGAPIManager {
                                     @Query("Reason") String reason);
 
     @FormUrlEncoded
-    @POST("api/Appointment/SearchJob")
-    Call<JGGGetAppsResponse> searchJob(@Field("RegionID") String regionID,
-                                       @Field("UserProfileID") String userProfileID,
-                                       @Field("Query") String query,
-                                       @Field("CategoryID") String categoryID,
-                                       @Field("Tag") Integer tag,
-                                       @Field("PostedOn") Integer postedOn,
-                                       @Field("Lat") String lat,
-                                       @Field("Lon") String lon,
-                                       @Field("Distance") String distance,
-                                       @Field("IsNearBy") String isNearBy,
-                                       @Field("PageIndex") Integer pageIndex,
-                                       @Field("PageSize") Integer pageSize);
+    @POST("api/Appointment/SearchAppointment")
+    Call<JGGGetAppsResponse> searchAppointment(@Field("RegionID") String regionID,
+                                               @Field("UserProfileID") String userProfileID,
+                                               @Field("Query") String query,
+                                               @Field("CategoryID") String categoryID,
+                                               @Field("Tag") String tag,
+                                               @Field("PostedOn") String postedOn,
+                                               @Field("Lat") Double lat,
+                                               @Field("Lon") Double lon,
+                                               @Field("Distance") Double distance,
+                                               @Field("IsNearBy") Boolean isNearBy,
+                                               @Field("IsRequest") Boolean isRequest,
+                                               @Field("PageIndex") Integer pageIndex,
+                                               @Field("PageSize") Integer pageSize);
 
     /*
      *  Appointment Service
@@ -128,21 +131,6 @@ public interface JGGAPIManager {
     Call<JGGGetAppsResponse> getServicesByCategory(@Query("CategoryID") String categoryID,
                                                    @Query("PageIndex") Integer pageIndex,
                                                    @Query("PageSize") Integer pageSize);
-
-    @FormUrlEncoded
-    @POST("api/Appointment/SearchService")
-    Call<JGGGetAppsResponse> searchService(@Field("RegionID") String regionID,
-                                           @Field("UserProfileID") String userProfileID,
-                                           @Field("Query") String query,
-                                           @Field("CategoryID") String categoryID,
-                                           @Field("Tag") Integer tag,
-                                           @Field("PostedOn") Integer postedOn,
-                                           @Field("Lat") String lat,
-                                           @Field("Lon") String lon,
-                                           @Field("Distance") String distance,
-                                           @Field("IsNearBy") String isNearBy,
-                                           @Field("PageIndex") Integer pageIndex,
-                                           @Field("PageSize") Integer pageSize);
 
     /*
      *  Appointment Quotation
@@ -244,4 +232,18 @@ public interface JGGAPIManager {
 
     @GET("api/Contract/GetContractByAppointment")
     Call<JGGGetContractResponse> getContractByAppointment(@Query("AppointmentID") String appointmentID);
+
+    /*
+     * GoClubs
+     */
+    @POST("api/Event/CreateClubs")
+    Call<JGGPostAppResponse> createClubs(@Body JGGGoClubModel club);
+
+    @FormUrlEncoded
+    @POST("api/Event/SearchGoClub")
+    Call<JGGGetGoClubResponse> searchGoClub(@Field("Query") String query,
+                                            @Field("CategoryID") String categoryID,
+                                            @Field("Tag") String tag,
+                                            @Field("PageIndex") Integer pageIndex,
+                                            @Field("PageSize") Integer pageSize);
 }

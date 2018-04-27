@@ -141,12 +141,10 @@ public class CreateGoClubMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcAdminFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    GcSummaryFragment fragment = new GcSummaryFragment();
-//                    fragment.setEditStatus(editStatus);
 
                     getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.post_go_club_container, fragment, fragment.getTag())
-                            .addToBackStack("create_goclub_summary")
+                            .replace(R.id.post_go_club_container, new GcSummaryFragment())
+                            .addToBackStack("create_club_summary")
                             .commit();
                 }
             });

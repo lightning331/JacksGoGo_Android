@@ -42,9 +42,9 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     * It will prevent useless load more request even after all the server data loaded
     * */
 
-    public SearchJobsAdapter(Context context, ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> jobs) {
+    public SearchJobsAdapter(Context context, ArrayList<JGGAppointmentModel> jobs) {
         this.mContext = context;
-        mCategories = data;
+        mCategories = JGGAppManager.getInstance().getCategories();
         mJobs = jobs;
     }
 
@@ -52,7 +52,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.JOBS, mContext, new ArrayList<JGGCategoryModel>());
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.JOBS, mContext);
             headerView.setOnClickListener(this);
             return headerView;
         } else if (viewType == VIEW_TYPE_CATEGORY) {
@@ -75,12 +75,12 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        if(position>=getItemCount()-2 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+        if(position>=getItemCount() - 2 && isMoreDataAvailable && !isLoading && loadMoreListener != null){
             isLoading = true;
             loadMoreListener.onLoadMore();
         }
 
-        if (getItemViewType(position)==VIEW_TYPE_ITEM) {
+        if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             JobListDetailCell cell = (JobListDetailCell) holder;
             JGGAppointmentModel job = mJobs.get(position - 2);
 
@@ -107,10 +107,10 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return HEADER_TYPE;
         } else if (position == 1) {
             return VIEW_TYPE_CATEGORY;
-        } else  {
-            if(mJobs.get(position-2).getID() != null){
+        } else {
+            if (mJobs.get(position-2).getID() != null) {
                 return VIEW_TYPE_ITEM;
-            }else{
+            } else {
                 return VIEW_TYPE_LOADING;
             }
         }
@@ -126,8 +126,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     /* notifyDataSetChanged is final method so we can't override it
          call adapter.notifyDataChanged(); after update the list
          */
-    public void notifyDataChanged(ArrayList<JGGCategoryModel> data,ArrayList<JGGAppointmentModel> jobs) {
-        mCategories = data;
+    public void notifyDataChanged(ArrayList<JGGAppointmentModel> jobs) {
         mJobs = jobs;
 
         super.notifyDataSetChanged();

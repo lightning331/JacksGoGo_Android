@@ -14,8 +14,13 @@ import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppInviteProviderCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 
-public class GoClubDetailEventView extends RecyclerView.ViewHolder implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class GoClubDetailEventView extends RecyclerView.ViewHolder {
 
     private Context mContext;
 
@@ -24,9 +29,14 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder implements Vi
     public TextView btnViewPastEvents;
     public TextView btnCreateEvent;
 
+    private JGGGoClubModel mClub;
+    private ArrayList<JGGGoClubUserModel> adminUsers;
+
     public GoClubDetailEventView(View itemView, Context context) {
         super(itemView);
         mContext = context;
+        mClub = JGGAppManager.getInstance().getSelectedClub();
+        adminUsers = mClub.getClubUsers();
 
         // Todo - Events
         eventRecyclerView = itemView.findViewById(R.id.go_club_detail_event_recycler_view);
@@ -53,26 +63,20 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder implements Vi
         memberRecyclerView.setAdapter(memberAdapter);
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
-
     public class GoClubDetailMemberAdapter extends RecyclerView.Adapter {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View posterView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_invite_provider, parent, false);
             AppInviteProviderCell posterViewHolder = new AppInviteProviderCell(mContext, posterView);
-            posterViewHolder.lblUserType.setVisibility(View.VISIBLE);
-            posterViewHolder.btnInvite.setVisibility(View.GONE);
-            posterViewHolder.ratingBar.setVisibility(View.GONE);
             return posterViewHolder;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+            AppInviteProviderCell viewHolder = (AppInviteProviderCell) holder;
+            JGGGoClubUserModel userProfileModel = mClub.getClubUsers().get(position);
+            viewHolder.setClubUser(userProfileModel);
         }
 
         @Override
@@ -82,7 +86,7 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder implements Vi
 
         @Override
         public int getItemCount() {
-            return 2;
+            return adminUsers.size();
         }
     }
 }

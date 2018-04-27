@@ -21,7 +21,10 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +41,9 @@ public class AllGoClubsActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.btn_post) TextView btnPost;
 
     private JGGActionbarView actionbarView;
+
     private JGGCategoryModel selectedCategory;
+    private ArrayList<JGGGoClubModel> mClubs = new ArrayList<>();
     private boolean isCategory;
 
     @Override
@@ -74,7 +79,7 @@ public class AllGoClubsActivity extends AppCompatActivity implements View.OnClic
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        GoClubMainAdapter adapter = new GoClubMainAdapter(this);
+        GoClubMainAdapter adapter = new GoClubMainAdapter(this, mClubs);
         adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

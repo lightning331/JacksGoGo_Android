@@ -12,9 +12,6 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.CustomView.Views.SectionTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
-
-import java.util.ArrayList;
 
 /**
  * Created by PUMA on 11/13/2017.
@@ -40,11 +37,10 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
     private Context mContext;
     private AppointmentType type;
 
-    // setionTitleView
     private SectionTitleView titleView;
 
 
-    public SearchHomeHeaderView(View itemView, AppointmentType t, Context context, ArrayList<JGGCategoryModel> data) {
+    public SearchHomeHeaderView(View itemView, AppointmentType t, Context context) {
         super(itemView);
         mContext = context;
         type = t;

@@ -9,13 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.squareup.picasso.Picasso;
 
-public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
+    private ArrayList<JGGGoClubModel> mClubs;
 
-    public GoClubMainAdapter(Context context) {
+    public GoClubMainAdapter(Context context, ArrayList<JGGGoClubModel> clubs) {
         mContext = context;
+        mClubs = clubs;
+    }
+
+    public void notifyDataChanged(ArrayList<JGGGoClubModel> clubs) {
+        mClubs = clubs;
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -28,6 +39,7 @@ public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         GoClubListViewHolder viewHolder = (GoClubListViewHolder) holder;
+        viewHolder.setGoClub(mClubs.get(position));
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,12 +50,7 @@ public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return 10;
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        return mClubs.size();
     }
 
     private OnItemClickListener listener;
@@ -76,8 +83,29 @@ public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             lblMemberCount = itemView.findViewById(R.id.lbl_go_club_member_count);
         }
 
-        public void setGoClub() {
-
+        public void setGoClub(JGGGoClubModel goClub) {
+            // Club Image
+            if (goClub.getAttachmentURLs().size() > 0)
+                Picasso.with(mContext)
+                        .load(goClub.getAttachmentURLs().get(0))
+                        .placeholder(R.mipmap.appointment_placeholder)
+                        .into(imgGoClub);
+            else
+                Picasso.with(mContext)
+                        .load(R.mipmap.appointment_placeholder)
+                        .placeholder(R.mipmap.appointment_placeholder)
+                        .into(imgGoClub);
+            // Category
+            Picasso.with(mContext)
+                    .load(goClub.getCategory().getImage())
+                    .placeholder(null)
+                    .into(imgCategory);
+            // Club Name
+            lblGoClubName.setText(goClub.getName());
+            // Club Overview
+            lblGoClubOverview.setText(goClub.getDescription());
+            // Members
+            lblMemberCount.setText(String.valueOf(goClub.getClubUsers().size()));
         }
     }
 }

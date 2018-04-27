@@ -44,7 +44,7 @@
                     android:textSize="@dimen/list_title_font_size"/>
             </LinearLayout>
             <TextView
-                android:text="Football fan club and sessions in Victory V"
+                android:text=""
                 android:id="@+id/lbl_go_club_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
