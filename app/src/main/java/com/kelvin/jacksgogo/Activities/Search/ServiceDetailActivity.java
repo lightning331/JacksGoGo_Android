@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import java.lang.reflect.Field;
 
@@ -37,6 +38,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.lbl_booked_title) TextView lblViewedCountDesc;
 
     private JGGActionbarView actionbarView;
+    private BottomNavigationView mbtmView;
     private AlertDialog alertDialog;
 
     private JGGAppointmentModel selectedAppointment;
@@ -51,33 +53,35 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         Bundle bundle = getIntent().getExtras();
 
         // TODO -   Hide Bottom NavigationView and ToolBar
-        BottomNavigationView mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
-        BottomNavigationViewHelper.disableShiftMode(mbtmView);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
-
+        mbtmView = (BottomNavigationView) findViewById(R.id.service_detail_bottom);
 
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         /*
          *  Service BudgetType
          *  If Fixed Budget, Can buy Service
          *  If Package Budget, Can Request to Service
          */
-        if (selectedAppointment.getBudgetFrom() == null)
-            bottomTitle.setText("Buy Service");
-        else
-            bottomTitle.setText(R.string.title_request_quotation);
-        bottomTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (selectedAppointment.getBudget() == null) {
-                    startActivity(new Intent(ServiceDetailActivity.this, PostQuotationActivity.class));
-                } else {
-                    startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
+        if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
+            mbtmView.setVisibility(View.GONE);
+        } else {
+            onShowBottomView();
+            if (selectedAppointment.getBudgetFrom() == null)
+                bottomTitle.setText("Buy Service");
+            else
+                bottomTitle.setText(R.string.title_request_quotation);
+            bottomTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedAppointment.getBudget() == null) {
+                        startActivity(new Intent(ServiceDetailActivity.this, PostQuotationActivity.class));
+                    } else {
+                        startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // TODO - Top ActionbarView
         actionbarView = new JGGActionbarView(this);
@@ -97,6 +101,13 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
                 .beginTransaction()
                 .replace(R.id.app_original_container, frag)
                 .commit();
+    }
+
+    private void onShowBottomView() {
+        mbtmView.setVisibility(View.VISIBLE);
+        BottomNavigationViewHelper.disableShiftMode(mbtmView);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mbtmView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     private void actionbarViewItemClick(View view) {
