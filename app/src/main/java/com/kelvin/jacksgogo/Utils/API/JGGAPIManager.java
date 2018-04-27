@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.Utils.API;
 
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
@@ -17,6 +18,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGReportResultResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
@@ -232,6 +234,12 @@ public interface JGGAPIManager {
 
     @GET("api/Contract/GetContractByAppointment")
     Call<JGGGetContractResponse> getContractByAppointment(@Query("AppointmentID") String appointmentID);
+
+    /**
+     *  Report
+    **/
+    @POST("api/Contract/ReportResult")
+    Call<JGGReportResultResponse> reportResult(@Body JGGReportResultModel reportResultModel);
 
     /*
      * GoClubs

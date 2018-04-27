@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 public class JGGReportResultModel {
 
+    private String ID;
     private String ContractID;
     private String GeoData;
     private String PinCode;
-    private String BeforePhotoURL;
-    private String AfterPhotoURL;
+    private boolean IsPhoto;
+    private ArrayList<String> BeforePhotoURLs;
+    private ArrayList<String> AfterPhotoURLs;
     private String BeforeComment;
     private String AfterComment;
 
@@ -23,6 +25,14 @@ public class JGGReportResultModel {
     private JGGBillableModel billableModel;
 
     private String endJobDate;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getContractID() {
         return ContractID;
@@ -44,24 +54,32 @@ public class JGGReportResultModel {
         return PinCode;
     }
 
+    public boolean isPhoto() {
+        return IsPhoto;
+    }
+
+    public void setPhoto(boolean photo) {
+        IsPhoto = photo;
+    }
+
     public void setPinCode(String pinCode) {
         PinCode = pinCode;
     }
 
-    public String getBeforePhotoURL() {
-        return BeforePhotoURL;
+    public ArrayList<String> getBeforePhotoURLs() {
+        return BeforePhotoURLs;
     }
 
-    public void setBeforePhotoURL(String beforePhotoURL) {
-        BeforePhotoURL = beforePhotoURL;
+    public void setBeforePhotoURLs(ArrayList<String> beforePhotoURLs) {
+        BeforePhotoURLs = beforePhotoURLs;
     }
 
-    public String getAfterPhotoURL() {
-        return AfterPhotoURL;
+    public ArrayList<String> getAfterPhotoURLs() {
+        return AfterPhotoURLs;
     }
 
-    public void setAfterPhotoURL(String afterPhotoURL) {
-        AfterPhotoURL = afterPhotoURL;
+    public void setAfterPhotoURLs(ArrayList<String> afterPhotoURLs) {
+        AfterPhotoURLs = afterPhotoURLs;
     }
 
     public String getBeforeComment() {

@@ -168,7 +168,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         progressLayout = view.findViewById(R.id.job_main_work_progress_layout);
         progressView = new JobStatusSummaryWorkProgressView(mContext, CLIENT);
 
-        footerLayout = view.findViewById(R.id.job_main_footer_layout);
+        footerLayout = view.findViewById(R.id.job_main_header_layout);
         footerView = new JobStatusSummaryFooterView(mContext, CLIENT);
 
         cancelledLayout = view.findViewById(R.id.job_main_cancelled_layout);
