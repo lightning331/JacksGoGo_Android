@@ -13,6 +13,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobInfoResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -99,22 +100,6 @@ public interface JGGAPIManager {
     Call<JGGBaseResponse> deleteJob(@Query("JobID") String jobID,
                                     @Query("Reason") String reason);
 
-    @FormUrlEncoded
-    @POST("api/Appointment/SearchAppointment")
-    Call<JGGGetAppsResponse> searchAppointment(@Field("RegionID") String regionID,
-                                               @Field("UserProfileID") String userProfileID,
-                                               @Field("Query") String query,
-                                               @Field("CategoryID") String categoryID,
-                                               @Field("Tag") String tag,
-                                               @Field("PostedOn") String postedOn,
-                                               @Field("Lat") Double lat,
-                                               @Field("Lon") Double lon,
-                                               @Field("Distance") Double distance,
-                                               @Field("IsNearBy") Boolean isNearBy,
-                                               @Field("IsRequest") Boolean isRequest,
-                                               @Field("PageIndex") Integer pageIndex,
-                                               @Field("PageSize") Integer pageSize);
-
     /*
      *  Appointment Service
      */
@@ -164,6 +149,25 @@ public interface JGGAPIManager {
 
     @GET("api/Appointment/GetJobByID")
     Call<JGGGetAppResponse> getJobByID(@Query("JobID") String jobID);
+
+    @FormUrlEncoded
+    @POST("api/Appointment/SearchAppointment")
+    Call<JGGGetAppsResponse> searchAppointment(@Field("RegionID") String regionID,
+                                               @Field("UserProfileID") String userProfileID,
+                                               @Field("Query") String query,
+                                               @Field("CategoryID") String categoryID,
+                                               @Field("Tag") String tag,
+                                               @Field("PostedOn") String postedOn,
+                                               @Field("Lat") Double lat,
+                                               @Field("Lon") Double lon,
+                                               @Field("Distance") Double distance,
+                                               @Field("IsNearBy") Boolean isNearBy,
+                                               @Field("IsRequest") Boolean isRequest,
+                                               @Field("PageIndex") Integer pageIndex,
+                                               @Field("PageSize") Integer pageSize);
+
+    @GET("api/Appointment/GetInformationOfAppointment")
+    Call<JGGGetJobInfoResponse> getInformationOfAppointment(@Query("AppointmentID") String appointmentID);
 
     /*
      *  Proposal
