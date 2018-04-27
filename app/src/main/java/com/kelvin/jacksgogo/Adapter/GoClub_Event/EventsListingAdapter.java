@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.EventListDetailCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by PUMA on 12/18/2017.
@@ -16,9 +19,11 @@ import com.kelvin.jacksgogo.R;
 public class EventsListingAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context mContext;
+    private ArrayList<JGGEventModel> mEvents;
 
-    public EventsListingAdapter(Context context) {
+    public EventsListingAdapter(Context context, ArrayList<JGGEventModel> events) {
         mContext = context;
+        mEvents = events;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
 
     @Override
     public int getItemCount() {
-        return 3;
+        return mEvents.size();
     }
 
     @Override

@@ -29,8 +29,10 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobInfoModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobInfoResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 
 import java.lang.reflect.Field;
@@ -58,12 +60,14 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
 
     private JGGActionbarView actionbarView;
     private BottomNavigationView mbtmView;
+    private JobDetailsAdapter adapter;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
     private JGGAppointmentModel selectedAppointment;
     private JGGUserProfileModel currentUser;
     private JGGProposalModel mProposal;
+    private JGGJobInfoModel mJobInfo;
     private boolean reportFlag = false;
 
     @Override
@@ -91,9 +95,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
             }
         });
-
         mbtmView.setVisibility(View.GONE);
-        getProposedStatus();
 
         // Top ActionbarView
         actionbarView = new JGGActionbarView(this);
@@ -110,8 +112,14 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
-        JobDetailsAdapter adapter = new JobDetailsAdapter(this);
+        adapter = new JobDetailsAdapter(this);
         mRecyclerView.setAdapter(adapter);
+
+        // Get Proposed status
+        getProposedStatus();
+
+        // Get Appointment Information - AveragePrice, ProposalCount, LastRespondOn
+        getInformationOfAppointment();
     }
 
     private void getProposedStatus() {
@@ -151,6 +159,36 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getInformationOfAppointment() {
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGGetJobInfoResponse> call = apiManager.getInformationOfAppointment(selectedAppointment.getID());
+        call.enqueue(new Callback<JGGGetJobInfoResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetJobInfoResponse> call, Response<JGGGetJobInfoResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                        mJobInfo = response.body().getValue();
+
+                        adapter.notifyDataChanged(mJobInfo);
+                        adapter.notifyDataSetChanged();
+                        //mRecyclerView.setAdapter(adapter);
+
+                    } else {
+                        Toast.makeText(JobDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(JobDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetJobInfoResponse> call, Throwable t) {
                 Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });

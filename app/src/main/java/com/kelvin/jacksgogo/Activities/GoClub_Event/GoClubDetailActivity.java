@@ -26,14 +26,16 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Global.JoinGoClubStatus;
+import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +61,9 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
     private JGGGoClubModel mClub;
     private JGGUserProfileModel groupOwner;
-    private JoinGoClubStatus joinGoClubStatus;
+    private EventUserStatus joinGoClubStatus;
+    private ArrayList<JGGGoClubUserModel> clubUsers;
+    private JGGUserProfileModel currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +73,11 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
         mClub = JGGAppManager.getInstance().getSelectedClub();
         groupOwner = mClub.getUserProfile();
+        clubUsers = mClub.getClubUsers();
+        currentUser = JGGAppManager.getInstance().getCurrentUser();
 
         // Todo - Dummy Data
-        setJoinToGoClubStatus(JoinGoClubStatus.none);
+        setJoinToGoClubStatus();
 
         // Todo - Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.go_club_detail_bottom);
@@ -104,24 +110,49 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         mRecyclerView.setAdapter(adapter);
     }
 
-    public void setJoinToGoClubStatus(JoinGoClubStatus status) {
+    public void setJoinToGoClubStatus() {
+        if (groupOwner.getID().equals(currentUser.getID())) {
+            // Current user is Owner of the Club
+            setBottomNavHideStatus(EventUserStatus.approved);
+        } else {
+            if (clubUsers.size() > 0) {
+                for (JGGGoClubUserModel clubUser : clubUsers) {
+                    if (clubUser.getUserProfileID().equals(currentUser.getID())) {
+                        // Current user is Admin of the Club
+                        setBottomNavHideStatus(clubUser.getUserStatus());
+                        return;
+                    } else
+                        // Current user is not member of the Club
+                        setBottomNavHideStatus(EventUserStatus.none);
+                }
+            } else
+                // Current user is not member of the Club
+                setBottomNavHideStatus(EventUserStatus.none);
+        }
+    }
+
+    private void setBottomNavHideStatus(EventUserStatus status) {
         joinGoClubStatus = status;
         btnJoinGoClub.setVisibility(View.GONE);
         pendingLayout.setVisibility(View.GONE);
         ownerLayout.setVisibility(View.GONE);
 
-        if (mClub.getUserProfileID().equals(JGGAppManager.getInstance().getCurrentUser().getID())) {
-            ownerLayout.setVisibility(View.VISIBLE);
-            setGroupOwnerLayout();
-        } else {
-            if (status == JoinGoClubStatus.none || status == JoinGoClubStatus.rejected) {
+        switch (status) {
+            case none:
+            case declined:
+            case leave:
+            case removed:
                 btnJoinGoClub.setVisibility(View.VISIBLE);
-            } else if (status == JoinGoClubStatus.pending) {
+                break;
+            case requested:
                 pendingLayout.setVisibility(View.VISIBLE);
-            } else if (status == JoinGoClubStatus.approved) {
+                break;
+            case approved:
                 ownerLayout.setVisibility(View.VISIBLE);
                 setGroupOwnerLayout();
-            }
+                break;
+            default:
+                break;
         }
     }
 
@@ -153,7 +184,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     // Todo - Withdraw GoClub
     private void onWithdrawGoClub() {
         alertDialog.dismiss();
-        setJoinToGoClubStatus(JoinGoClubStatus.none);
+        setBottomNavHideStatus(EventUserStatus.none);
     }
 
     private void actionbarItemClick(View view) {
@@ -171,13 +202,19 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     // Todo - Edit Popup Menu
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        if (mClub.getUserProfileID().equals(JGGAppManager.getInstance().getCurrentUser().getID()))     // Owner popup menu
+        if (groupOwner.getID().equals(currentUser.getID())) {
+            // Current user is Owner of the Club
             popupMenu.inflate(R.menu.go_club_owner_share_menu);
-        else{                                                                           // personal user popup menu
-            if (joinGoClubStatus == JoinGoClubStatus.none)
+        } else {
+            // Current user is not member of the Club
+            if (joinGoClubStatus == EventUserStatus.none)
                 popupMenu.inflate(R.menu.go_club_share_menu);
-            else if (joinGoClubStatus == JoinGoClubStatus.approved || joinGoClubStatus == JoinGoClubStatus.pending)
-                popupMenu.inflate(R.menu.go_club_owner_share_menu);//go_club_joined_menu);
+            else if (joinGoClubStatus == EventUserStatus.approved
+                    || joinGoClubStatus == EventUserStatus.requested)
+                // Current user is Admin of the Club
+                // or
+                // Current user requested to join to the Club
+                popupMenu.inflate(R.menu.go_club_joined_menu);
         }
 
         popupMenu.setOnDismissListener(new OnDismissListener());
@@ -314,7 +351,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(View v) {
                     alertDialog.dismiss();
-                    setJoinToGoClubStatus(JoinGoClubStatus.approved);
+                    setBottomNavHideStatus(EventUserStatus.approved);
                 }
             });
         }
@@ -348,7 +385,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     }
 
     // Todo - Can not Leave GoClub
-    private void onNnotLeaveGoClubDialog() {
+    private void onNotAbleToLeaveGoClubDialog() {
         final JGGAlertView builder = new JGGAlertView(this,
                 "Promote Another As Admin",
                 "You can't leave this GoClub if you are the sole admin.",

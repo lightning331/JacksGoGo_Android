@@ -25,8 +25,11 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.EventUserType;
+import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.squareup.picasso.Picasso;
@@ -97,19 +100,22 @@ public class GcSummaryFragment extends Fragment {
         // TODO : Add current user to Invited Users
         ArrayList<JGGUserProfileModel> owner = new ArrayList<>();
         owner.add(JGGAppManager.getInstance().getCurrentUser());
-
         invitedUsers.addAll(owner);
         invitedUsers.addAll(creatingClub.getUsers());
 
-        // TODO : Add current userID to Invited UserIDs
-        ArrayList<String> ownerID = new ArrayList<>();
-        ownerID.add(JGGAppManager.getInstance().getCurrentUser().getID());
+        ArrayList<JGGGoClubUserModel> clubUsers = new ArrayList<>();
+        JGGGoClubUserModel clubUser = new JGGGoClubUserModel();
+        for (JGGUserProfileModel user : creatingClub.getUsers()) {
+            clubUser.setUserProfile(user);
+            clubUser.setClubID(user.getID());
+            clubUser.setUserProfileID(user.getID());
+            clubUser.setUserType(EventUserType.owner);
+            clubUser.setUserStatus(EventUserStatus.approved);
 
-        invitedUserIDs.addAll(ownerID);
-        invitedUserIDs.addAll(creatingClub.getUserProfileIDs());
-
-        creatingClub.setUsers(invitedUsers);
-        creatingClub.setUserProfileIDs(invitedUserIDs);
+            clubUsers.add(clubUser);
+        }
+        creatingClub.setClubUsers(clubUsers);
+        JGGAppManager.getInstance().setSelectedClub(creatingClub);
 
         // TODO : Init RecyclerView
         if (summaryRecyclerView != null) {

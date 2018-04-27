@@ -105,7 +105,7 @@ public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             // Club Overview
             lblGoClubOverview.setText(goClub.getDescription());
             // Members
-            lblMemberCount.setText(String.valueOf(goClub.getClubUsers().size()));
+            lblMemberCount.setText(String.valueOf(goClub.getClubUsers().size() + 1));
         }
     }
 }

@@ -18,6 +18,7 @@ import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTa
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGJobInfoModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
@@ -33,10 +34,17 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private JGGAppointmentModel mJob;
+    private JGGJobInfoModel mJobInfo;
 
     public JobDetailsAdapter (Context context) {
         this.mContext = context;
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
+    }
+
+    public void notifyDataChanged(JGGJobInfoModel jobInfo) {
+        mJobInfo = jobInfo;
+
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -134,11 +142,13 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
             if (mJob.getTags() == null) {
                 View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
                 JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
+                averageViewHolder.setAverageData(mJobInfo);
                 return averageViewHolder;
             } else {    // Taglist Cell
                 if (mJob.getTags().equals("")) {
                     View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
                     JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
+                    averageViewHolder.setAverageData(mJobInfo);
                     return averageViewHolder;
                 } else {
                     View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
@@ -167,6 +177,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
                 } else {
                     View average = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_average_quote, parent, false);
                     JobDetailAverageQuoteCell averageViewHolder = new JobDetailAverageQuoteCell(average);
+                    averageViewHolder.setAverageData(mJobInfo);
                     return averageViewHolder;
                 }
             }

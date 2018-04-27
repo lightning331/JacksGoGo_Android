@@ -33,10 +33,11 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"/>
                 <TextView
-                    android:text="Football Ole"
                     android:id="@+id/lbl_go_club_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGBlack"
@@ -44,10 +45,9 @@
                     android:textSize="@dimen/list_title_font_size"/>
             </LinearLayout>
             <TextView
-                android:text=""
                 android:id="@+id/lbl_go_club_overview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:layout_marginLeft="8dp"
@@ -70,7 +70,6 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"/>
                 <TextView
-                    android:text="1043"
                     android:id="@+id/lbl_go_club_member_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -272,35 +272,6 @@ public class Global {
         }
     }
 
-    public static enum JoinGoClubStatus {
-        none(null),
-        pending(0),
-        approved(1),
-        withdraw(2),
-        rejected(3);
-
-        private Integer value;
-        private static Map map = new HashMap<>();
-
-        JoinGoClubStatus(final Integer value) {
-            this.value = value;
-        }
-
-        static {
-            for (JoinGoClubStatus status : JoinGoClubStatus.values()) {
-                map.put(status.value, status);
-            }
-        }
-
-        public static JoinGoClubStatus valueOf(Integer status) {
-            return (JoinGoClubStatus) map.get(status);
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     public static enum ClubStatus {
         none(null),
         created(0),

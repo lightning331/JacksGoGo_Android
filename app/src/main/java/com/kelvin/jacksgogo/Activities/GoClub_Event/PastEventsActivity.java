@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +53,7 @@ public class PastEventsActivity extends AppCompatActivity implements View.OnClic
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
-        EventsListingAdapter adapter = new EventsListingAdapter(this);
+        EventsListingAdapter adapter = new EventsListingAdapter(this, new ArrayList<JGGEventModel>());
         adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick() {
