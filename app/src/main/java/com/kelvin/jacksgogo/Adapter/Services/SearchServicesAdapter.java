@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.CategoryRecyclerView;
-
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.SearchHomeHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceListDetailCell;
 import com.kelvin.jacksgogo.CustomView.Views.LoadingViewHolder;
@@ -45,9 +44,9 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     * It will prevent useless load more request even after all the server data loaded
     * */
 
-    public SearchServicesAdapter(Context context, ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> services) {
+    public SearchServicesAdapter(Context context, ArrayList<JGGAppointmentModel> services) {
         mContext = context;
-        mCategories = data;
+        mCategories = JGGAppManager.getInstance().getCategories();
         mServices = services;
     }
 
@@ -56,7 +55,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
-            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext, new ArrayList<JGGCategoryModel>());
+            SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext);
             headerView.setOnClickListener(this);
             return headerView;
         } else if (viewType == VIEW_TYPE_CATEGORY) {
@@ -112,9 +111,9 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (position == 1) {
             return VIEW_TYPE_CATEGORY;
         } else  {
-            if(mServices.get(position-2).getID() != null){
+            if (mServices.get(position - 2).getID() != null) {
                 return VIEW_TYPE_ITEM;
-            }else{
+            } else {
                 return VIEW_TYPE_LOADING;
             }
         }
@@ -134,8 +133,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     /* notifyDataSetChanged is final method so we can't override it
          call adapter.notifyDataChanged(); after update the list
          */
-    public void notifyDataChanged(ArrayList<JGGCategoryModel> data, ArrayList<JGGAppointmentModel> services) {
-        mCategories = data;
+    public void notifyDataChanged(ArrayList<JGGAppointmentModel> services) {
         mServices = services;
 
         super.notifyDataSetChanged();

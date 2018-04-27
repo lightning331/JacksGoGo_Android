@@ -1,7 +1,9 @@
 package com.kelvin.jacksgogo.Utils.Models.GoClub_Event;
 
+import com.kelvin.jacksgogo.Utils.Global.ClubStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.yanzhenjie.album.AlbumFile;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
  */
 
 public class JGGGoClubModel {
+    private String ID;
     private String UserProfileID;
     private String RegionID;
     private String CategoryID;
@@ -20,15 +23,29 @@ public class JGGGoClubModel {
     private String Tags;
     private boolean IsSole;
     private Integer Limit;
+    private Integer Status;
+    private String CreatedOn;
     private ArrayList<String> AttachmentURLs = new ArrayList<>();
+    private ArrayList<JGGGoClubUserModel> ClubUsers = new ArrayList<>();
+    private ArrayList<JGGEventModel> Events = new ArrayList<>();
     private ArrayList<String> UserProfileIDs = new ArrayList<>();
 
     private JGGCategoryModel Category = new JGGCategoryModel();
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private JGGRegionModel Region = new JGGRegionModel();
 
+    private ArrayList<JGGUserProfileModel> Users = new ArrayList<>();
+
     // temp data
     private ArrayList<AlbumFile> albumFiles;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getUserProfileID() {
         return UserProfileID;
@@ -94,12 +111,44 @@ public class JGGGoClubModel {
         Limit = limit;
     }
 
+    public ClubStatus getStatus() {
+        return ClubStatus.valueOf(Status);
+    }
+
+    public void setStatus(ClubStatus status) {
+        Status = status.getValue();
+    }
+
+    public String getCreatedOn() {
+        return CreatedOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        CreatedOn = createdOn;
+    }
+
     public ArrayList<String> getAttachmentURLs() {
         return AttachmentURLs;
     }
 
     public void setAttachmentURLs(ArrayList<String> attachmentURLs) {
         AttachmentURLs = attachmentURLs;
+    }
+
+    public ArrayList<JGGGoClubUserModel> getClubUsers() {
+        return ClubUsers;
+    }
+
+    public void setClubUsers(ArrayList<JGGGoClubUserModel> users) {
+        ClubUsers = users;
+    }
+
+    public ArrayList<JGGEventModel> getEvents() {
+        return Events;
+    }
+
+    public void setEvents(ArrayList<JGGEventModel> events) {
+        Events = events;
     }
 
     public ArrayList<String> getUserProfileIDs() {
@@ -140,5 +189,13 @@ public class JGGGoClubModel {
 
     public void setAlbumFiles(ArrayList<AlbumFile> albumFiles) {
         this.albumFiles = albumFiles;
+    }
+
+    public ArrayList<JGGUserProfileModel> getUsers() {
+        return Users;
+    }
+
+    public void setUsers(ArrayList<JGGUserProfileModel> users) {
+        Users = users;
     }
 }

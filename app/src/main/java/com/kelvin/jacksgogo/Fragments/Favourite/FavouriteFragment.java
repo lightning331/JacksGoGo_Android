@@ -184,9 +184,9 @@ public class FavouriteFragment extends Fragment {
     private void searchServices() {
         progressDialog = Global.createProgressDialog(mContext);
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchService(null, null,
+        Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null,
-                null, null, null, 0, 50);
+                null, null, null, false, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -218,9 +218,9 @@ public class FavouriteFragment extends Fragment {
     private void searchJobs() {
         progressDialog = Global.createProgressDialog(mContext);
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGGetAppsResponse> call = apiManager.searchJob(null, null,
-                null, null, null, null, null, null,
-                null, null, 0, 50);
+        Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
+                null, null, null, null, null,
+                null, null, null, true, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {

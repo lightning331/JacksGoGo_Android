@@ -144,6 +144,7 @@ public class JobDetailsAdapter extends RecyclerView.Adapter {
                     View tagListView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_service_detail_tag_list, parent, false);
                     ServiceDetailTagListCell tagListViewHolder = new ServiceDetailTagListCell(tagListView);
                     tagListViewHolder.setTagList(mJob.getTags());
+                    tagListViewHolder.tagList.setTagTextColor(R.color.JGGCyan);
                     return tagListViewHolder;
                 }
             }
