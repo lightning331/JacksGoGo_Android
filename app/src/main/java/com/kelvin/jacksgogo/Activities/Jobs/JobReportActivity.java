@@ -15,6 +15,8 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -39,6 +41,8 @@ public class JobReportActivity extends AppCompatActivity {
     private String mUserType;
     private boolean isStartWork;
 
+    private JGGReportResultModel mReportResultModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,7 @@ public class JobReportActivity extends AppCompatActivity {
         }
 
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
+        mReportResultModel = JGGAppManager.getInstance().getReportResultModel();
 
         // Top Navigationbar View
         actionbarView = new JGGActionbarView(this);

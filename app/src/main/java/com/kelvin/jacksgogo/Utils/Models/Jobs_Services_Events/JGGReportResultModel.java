@@ -1,9 +1,12 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
+import com.yanzhenjie.album.AlbumFile;
+
+import java.util.ArrayList;
+
 public class JGGReportResultModel {
 
-    private String ID;
-    private String AppointmentID;
+    private String ContractID;
     private String GeoData;
     private String PinCode;
     private String BeforePhotoURL;
@@ -11,20 +14,18 @@ public class JGGReportResultModel {
     private String BeforeComment;
     private String AfterComment;
 
-    public String getID() {
-        return ID;
+    // dump data
+    private JGGContractModel contractModel;
+
+    private ArrayList<AlbumFile> beforeAlbumFiles = new ArrayList<>();
+    private ArrayList<AlbumFile> afterAlbumFiles = new ArrayList<>();
+
+    public String getContractID() {
+        return ContractID;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public String getAppointmentID() {
-        return AppointmentID;
-    }
-
-    public void setAppointmentID(String appointmentID) {
-        AppointmentID = appointmentID;
+    public void setContractID(String contractID) {
+        ContractID = contractID;
     }
 
     public String getGeoData() {
@@ -73,5 +74,29 @@ public class JGGReportResultModel {
 
     public void setAfterComment(String afterComment) {
         AfterComment = afterComment;
+    }
+
+    public JGGContractModel getContractModel() {
+        return contractModel;
+    }
+
+    public void setContractModel(JGGContractModel contractModel) {
+        this.contractModel = contractModel;
+    }
+
+    public ArrayList<AlbumFile> getBeforeAlbumFiles() {
+        return beforeAlbumFiles;
+    }
+
+    public void setBeforeAlbumFiles(ArrayList<AlbumFile> beforeAlbumFiles) {
+        this.beforeAlbumFiles = beforeAlbumFiles;
+    }
+
+    public ArrayList<AlbumFile> getAfterAlbumFiles() {
+        return afterAlbumFiles;
+    }
+
+    public void setAfterAlbumFiles(ArrayList<AlbumFile> afterAlbumFiles) {
+        this.afterAlbumFiles = afterAlbumFiles;
     }
 }

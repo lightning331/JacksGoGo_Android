@@ -3,6 +3,7 @@ package com.kelvin.jacksgogo.Utils;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGQuotationModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -34,6 +35,11 @@ public class JGGAppManager {
     private JGGQuotationModel selectedQuotation;
     private JGGGoClubModel selectedClub;
     private JGGProposalModel selectedProposal;
+
+    /**
+     * Report Result
+     **/
+    private JGGReportResultModel reportResultModel;
 
     private JGGAppManager() {
 
@@ -117,5 +123,13 @@ public class JGGAppManager {
 
     public void setSelectedClub(JGGGoClubModel selectedClub) {
         this.selectedClub = selectedClub;
+    }
+
+    public JGGReportResultModel getReportResultModel() {
+        return reportResultModel;
+    }
+
+    public void setReportResultModel(JGGReportResultModel reportResultModel) {
+        this.reportResultModel = reportResultModel;
     }
 }

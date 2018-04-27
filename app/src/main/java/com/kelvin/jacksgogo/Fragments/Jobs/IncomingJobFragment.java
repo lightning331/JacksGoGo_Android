@@ -38,6 +38,7 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -216,6 +217,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                     JGGAppointmentActivityModel activity = mActivities.get(i);
                     // TODO - update required
 //                    if (activity.getReferenceID().equals(currentUser.getID())) {}
+//                    if (activity.getReferenceID().equals(mProposal.getID()))
                     switch (activity.getStatus()) {
                         case job_deleted:
                             setDeletedJobStatus();
@@ -227,7 +229,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                             setInvitedStatus(activity);
                             break;
                         case invite_accepted:
-                            if (activity.getReferenceID().equals(mProposal.getID())) {
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
                                 setWaitingClientDecision(activity);
@@ -239,7 +241,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
 
                             break;
                         case proposal_sent:
-                            if (activity.getReferenceID().equals(mProposal.getID())) {
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
                                 setWaitingClientDecision(activity);
@@ -248,7 +250,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
                             }
                             break;
                         case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
-                            if (activity.getReferenceID().equals(mProposal.getID())) {
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
                                 setProposedStatus(activity);
                                 // Waiting for Client's decision
                                 setWaitingClientDecision(activity);
@@ -496,6 +498,12 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
     }
 
     private void onShowReportActivity() {
+        // TODO - create global ReportResultModel
+        JGGReportResultModel resultModel = new JGGReportResultModel();
+        resultModel.setContractID(mContract.getID());
+        resultModel.setContractModel(mContract);
+        JGGAppManager.getInstance().setReportResultModel(resultModel);
+
         Intent intent = new Intent(mContext, JobReportActivity.class);
         intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
         intent.putExtra("work_start", true);
@@ -515,6 +523,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
             quotationView.btnViewQuotation.setVisibility(View.GONE);
             quotationView.lblTitle.setText(R.string.declined_invite);
         } else {
+            quotationView.btnViewQuotation.setVisibility(View.VISIBLE);
             quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
             quotationView.btnViewQuotation.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
             quotationView.btnViewQuotation.setText(R.string.edit_your_title);
@@ -607,6 +616,7 @@ public class IncomingJobFragment extends Fragment implements View.OnClickListene
         });
     }
 
+    // TODO - start contract
     private void onStartContract() {
         progressDialog = createProgressDialog(mContext);
 

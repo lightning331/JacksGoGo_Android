@@ -393,13 +393,17 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     public void onClick(View view) {
         if (view.getId() == R.id.btn_post_proposal) {
             //showPostProposalAlertDialog();
-            if (proposalStatus == ProposalStatus.POST)
-                onPostProposal();
-            else if (proposalStatus == ProposalStatus.EDIT)
-                onEditProposal();
-            else if (proposalStatus == ProposalStatus.INVITE)
-                onAcceptInvite();
-            return;
+            switch (proposalStatus) {
+                case POST:
+                    onPostProposal();
+                    return;
+                case EDIT:
+                    onEditProposal();
+                    return;
+                case INVITE:
+                    onAcceptInvite();
+                    return;
+            }
         } else if (view.getId() == R.id.btn_delete_proposal) {
             showDeleteAlertDialog();
             return;

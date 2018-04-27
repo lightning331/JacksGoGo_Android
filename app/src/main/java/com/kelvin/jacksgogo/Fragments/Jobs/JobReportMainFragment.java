@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -86,6 +87,9 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     private boolean readyForSubmit;
 
     private String mUserType;
+    private JGGReportResultModel mReportResultModel;
+
+    private boolean isBeforePhoto;
 
     public JobReportMainFragment() {
         // Required empty public constructor
@@ -103,7 +107,7 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mUserType = getArguments().getString("jgg_usertype");
         }
     }
 
@@ -113,6 +117,8 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_job_report_main, container, false);
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
+        mReportResultModel = JGGAppManager.getInstance().getReportResultModel();
+
         initView(view);
         return view;
     }
@@ -166,7 +172,17 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
         lblPickupAddress.setText(mJob.getAddress().getFullAddress());
 
         // Before Photo view
-        if (beforePhotoAlbums.size() > 0) {
+        if (mReportResultModel.getBeforeAlbumFiles() != null) {
+            if (mReportResultModel.getBeforeAlbumFiles().size() > 0) {
+                beforePhotoAlbums = mReportResultModel.getBeforeAlbumFiles();
+                beforePhotoAdapter.notifyDataChanged(beforePhotoAlbums);
+            }
+        }
+        if (mReportResultModel.getAfterAlbumFiles() != null) {
+            if (mReportResultModel.getAfterAlbumFiles().size() > 0) {
+                afterPhotoAlbums = mReportResultModel.getAfterAlbumFiles();
+                afterPhotoAdapter.notifyDataChanged(afterPhotoAlbums);
+            }
         }
 
         // Billable view
@@ -297,6 +313,14 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_tools) {
+            if (isBeforePhoto) {
+                mReportResultModel.setBeforeAlbumFiles(beforePhotoAlbums);
+                mReportResultModel.setBeforeComment(txtComment.getText().toString());
+            } else {
+                mReportResultModel.setAfterAlbumFiles(afterPhotoAlbums);
+                mReportResultModel.setAfterComment(txtComment.getText().toString());
+            }
+
             mActivity.setActionbarView(ADD_TOOLS);
             mActivity.getSupportFragmentManager()
                     .beginTransaction()
@@ -309,8 +333,10 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                     .replace(R.id.job_report_container, new JobReportBillableItemFragment())
                     .commit();
         } else if (view.getId() == R.id.btn_take_before_photo) {
+            isBeforePhoto = true;
             selectImage(true);
         } else if (view.getId() == R.id.btn_take_after_photo) {
+            isBeforePhoto = false;
             selectImage(false);
             btnTakeAfterPhoto.setVisibility(View.GONE);
         } else if (view.getId() == R.id.btn_submit_report) {
