@@ -27,6 +27,11 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.JoinGoClubStatus;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
 
@@ -42,6 +47,9 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
     @BindView(R.id.pending_layout) LinearLayout pendingLayout;
     @BindView(R.id.owner_layout) LinearLayout ownerLayout;
+    @BindView(R.id.lbl_user_type) TextView lblUserType;
+    @BindView(R.id.lbl_user_name) TextView lblUserName;
+    @BindView(R.id.img_avatar) RoundedImageView imgAvatar;
 
     private JGGActionbarView actionbarView;
     private BottomNavigationView mbtmView;
@@ -49,6 +57,8 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
+    private JGGGoClubModel mClub;
+    private JGGUserProfileModel groupOwner;
     private JoinGoClubStatus joinGoClubStatus;
 
     @Override
@@ -56,6 +66,9 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_go_club_detail);
         ButterKnife.bind(this);
+
+        mClub = JGGAppManager.getInstance().getSelectedClub();
+        groupOwner = mClub.getUserProfile();
 
         // Todo - Dummy Data
         setJoinToGoClubStatus(JoinGoClubStatus.none);
@@ -97,13 +110,32 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         pendingLayout.setVisibility(View.GONE);
         ownerLayout.setVisibility(View.GONE);
 
-        if (status == JoinGoClubStatus.none || status == JoinGoClubStatus.rejected) {
-            btnJoinGoClub.setVisibility(View.VISIBLE);
-        } else if (status == JoinGoClubStatus.pending) {
-            pendingLayout.setVisibility(View.VISIBLE);
-        } else if (status == JoinGoClubStatus.approved) {
+        if (mClub.getUserProfileID().equals(JGGAppManager.getInstance().getCurrentUser().getID())) {
             ownerLayout.setVisibility(View.VISIBLE);
+            setGroupOwnerLayout();
+        } else {
+            if (status == JoinGoClubStatus.none || status == JoinGoClubStatus.rejected) {
+                btnJoinGoClub.setVisibility(View.VISIBLE);
+            } else if (status == JoinGoClubStatus.pending) {
+                pendingLayout.setVisibility(View.VISIBLE);
+            } else if (status == JoinGoClubStatus.approved) {
+                ownerLayout.setVisibility(View.VISIBLE);
+                setGroupOwnerLayout();
+            }
         }
+    }
+
+    // TODO : Owner Layout
+    private void setGroupOwnerLayout() {
+        Picasso.with(this)
+                .load(groupOwner.getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(imgAvatar);
+        if (groupOwner.getUser().getGivenName() == null)
+            lblUserName.setText(groupOwner.getUser().getUserName());
+        else
+            lblUserName.setText(groupOwner.getUser().getFullName());
+        lblUserType.setText("Group Owner");
     }
 
     // Todo - Send Report request
@@ -139,14 +171,14 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     // Todo - Edit Popup Menu
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        //if (selectedAppointment.getUserProfileID().equals(currentUser.getID()))     // Owner popup menu
-        //    popupMenu.inflate(R.menu.go_club_owner_share_menu);
-        //else{                                                                           // personal user popup menu
+        if (mClub.getUserProfileID().equals(JGGAppManager.getInstance().getCurrentUser().getID()))     // Owner popup menu
+            popupMenu.inflate(R.menu.go_club_owner_share_menu);
+        else{                                                                           // personal user popup menu
             if (joinGoClubStatus == JoinGoClubStatus.none)
                 popupMenu.inflate(R.menu.go_club_share_menu);
             else if (joinGoClubStatus == JoinGoClubStatus.approved || joinGoClubStatus == JoinGoClubStatus.pending)
                 popupMenu.inflate(R.menu.go_club_owner_share_menu);//go_club_joined_menu);
-        //}
+        }
 
         popupMenu.setOnDismissListener(new OnDismissListener());
         popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());

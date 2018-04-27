@@ -301,6 +301,153 @@ public class Global {
         }
     }
 
+    public static enum ClubStatus {
+        none(null),
+        created(0),
+        close(1),
+        flagged(2),
+        deleted(3);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        ClubStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (ClubStatus status : ClubStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static ClubStatus valueOf(Integer status) {
+            return (ClubStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum EventStatus {
+        none(null),
+        created(0),
+        active(1),
+        close(2),
+        finished(3),
+        flagged(4),
+        deleted(5);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        EventStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (EventStatus status : EventStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static EventStatus valueOf(Integer status) {
+            return (EventStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum EventUserType {
+        none(null),
+        owner(0),
+        admin(1),
+        user(2);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        EventUserType(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (EventUserType status : EventUserType.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static EventUserType valueOf(Integer status) {
+            return (EventUserType) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum EventUserStatus {
+        none(null),
+        requested(0),
+        declined(1),
+        approved(2),
+        leave(3),
+        removed(4);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        EventUserStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (EventUserStatus status : EventUserStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static EventUserStatus valueOf(Integer status) {
+            return (EventUserStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static enum EventSessionStatus {
+        none(null),
+        pending(0),
+        opened(1),
+        cancelled(2),
+        closed(3);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        EventSessionStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (EventSessionStatus status : EventSessionStatus.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static EventSessionStatus valueOf(Integer status) {
+            return (EventSessionStatus) map.get(status);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     public static enum AppointmentActivityStatus {
         none(0),
         unknown(99999),

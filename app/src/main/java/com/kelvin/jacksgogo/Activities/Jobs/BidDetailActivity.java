@@ -166,7 +166,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_bid_detail_reject) {
-            onShowAlertDialog();
+            onRejectProposalDialog();
         } else if (view.getId() == R.id.btn_bid_detail_accept) {
             boolean paymentVerified = getRandomBoolean();
             if (paymentVerified) {
@@ -185,7 +185,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void onShowAlertDialog() {
+    private void onRejectProposalDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = (this).getLayoutInflater();
         View alertView = inflater.inflate(R.layout.jgg_alert_view, null);

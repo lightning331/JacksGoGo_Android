@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,9 +26,16 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 public class GcAddedAdminAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
+    private ArrayList<JGGUserProfileModel> mUsers;
 
-    public GcAddedAdminAdapter(Context context) {
+    public GcAddedAdminAdapter(Context context, ArrayList<JGGUserProfileModel> users) {
         mContext = context;
+        mUsers = users;
+    }
+
+    public void notifyDataChanged(ArrayList<JGGUserProfileModel> users) {
+        mUsers = users;
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -43,6 +52,7 @@ public class GcAddedAdminAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         GcAttendeesViewHolder viewHolder = (GcAttendeesViewHolder) holder;
+        viewHolder.setUser(mUsers.get(position));
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,7 +63,7 @@ public class GcAddedAdminAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 5;
+        return mUsers.size();
     }
 
     private OnItemClickListener listener;
@@ -77,6 +87,22 @@ public class GcAddedAdminAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+        }
+
+        public void setUser(JGGUserProfileModel user) {
+            Picasso.with(mContext)
+                    .load(user.getUser().getPhotoURL())
+                    .placeholder(R.mipmap.icon_profile)
+                    .into(img_avatar);
+            if (user.getUser().getGivenName() == null)
+                txt_name.setText(user.getUser().getUserName());
+            else
+                txt_name.setText(user.getUser().getFullName());
+            Double rating = user.getUser().getRate();
+            if (rating == null)
+                ratingBar.setRating(0);
+            else
+                ratingBar.setRating(rating.floatValue());
         }
     }
 }

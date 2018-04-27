@@ -52,19 +52,13 @@
                 app:mrb_progressTint="@color/JGGYellow"
                 app:mrb_secondaryProgressTint="@color/JGGYellow" />
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_plus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/btn_plus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="8dp"
             android:gravity="right"
-            android:layout_weight="20">
-            <Button
-                android:id="@+id/btn_plus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@mipmap/add_fat_purple"/>
-        </LinearLayout>
+            android:background="@mipmap/add_fat_purple"/>
     </LinearLayout>
 </LinearLayout>

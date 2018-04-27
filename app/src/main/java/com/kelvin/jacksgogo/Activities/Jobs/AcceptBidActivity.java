@@ -114,6 +114,7 @@ public class AcceptBidActivity extends AppCompatActivity implements View.OnClick
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         String contractID = response.body().getValue();
+                        Toast.makeText(AcceptBidActivity.this, "You accepted the bid.", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(AcceptBidActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
