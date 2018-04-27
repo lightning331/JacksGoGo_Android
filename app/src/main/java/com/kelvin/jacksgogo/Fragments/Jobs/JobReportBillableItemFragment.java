@@ -25,13 +25,21 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGBillableModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import butterknife.OnClick;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_REPORT;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
@@ -53,6 +61,8 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
     private RecyclerView recyclerView;
     private JGGImageGalleryAdapter mAdapter;
     private ArrayList<AlbumFile> mAlbumFiles;
+
+    private JGGBillableModel billableModel;
 
     public JobReportBillableItemFragment() {
         // Required empty public constructor
@@ -79,6 +89,7 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_job_report_billable_item, container, false);
 
+        billableModel = new JGGBillableModel();
         initView(view);
         initRecyclerView(view);
 
@@ -92,12 +103,6 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
         txtBudget = view.findViewById(R.id.txt_billable_item_budget);
         txtBudget.addTextChangedListener(this);
         btnSendApproval = view.findViewById(R.id.btn_send_billable_item);
-        btnSendApproval.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendBillableItemForApproval();
-            }
-        });
         btnTakePhoto = view.findViewById(R.id.btn_item_take_photo);
         btnTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,22 +139,42 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void sendBillableItemForApproval() {
+    @OnClick(R.id.btn_send_billable_item)
+    public void sendBillableItemForApproval() {
         if (txtItemDesc.length() > 0 && txtBudget.length() > 0) {
             mActivity.setActionbarView(JOB_REPORT);
-            JobReportMainFragment frag = JobReportMainFragment.newInstance(PROVIDER.toString());
-            frag.setBillableItem(txtItemDesc.getText().toString(), Double.parseDouble(txtBudget.getText().toString()));
-            mActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.job_report_container, frag)
-                    .addToBackStack("report_main")
-                    .commit();
+
+            billableModel.setItemDescription(txtItemDesc.getText().toString());
+            billableModel.setPrice(Double.parseDouble(txtBudget.getText().toString()));
+
+            Date now = new Date();
+            SimpleDateFormat simpleDateFormat =
+                    new SimpleDateFormat("MMM dd, yyyy h:mm a");
+            billableModel.setRequestSentDate(simpleDateFormat.format(now));
+
+            if (mAlbumFiles != null)
+                billableModel.setItemPictures(mAlbumFiles);
+
+            JGGReportResultModel reportResultModel = JGGAppManager.getInstance().getReportResultModel();
+            reportResultModel.setBillableModel(billableModel);
+
+            requestBillableApprove();
         } else {
             if (txtItemDesc.getText().toString().equals(""))
                 txtItemDesc.setBackgroundResource(R.drawable.red_border_background);
             if (txtBudget.getText().toString().equals(""))
                 budgetLayout.setBackgroundResource(R.drawable.red_border_background);
         }
+    }
+
+    // TODO - Request Approval of Billable request
+    private void requestBillableApprove() {
+        JobReportMainFragment frag = JobReportMainFragment.newInstance(PROVIDER.toString());
+        mActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.job_report_container, frag)
+                .addToBackStack("report_main")
+                .commit();
     }
 
     private void selectImage() {

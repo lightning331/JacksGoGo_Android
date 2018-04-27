@@ -25,8 +25,10 @@ import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGBillableModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -35,8 +37,12 @@ import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_BILLABLE_ITEM;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_TOOLS;
@@ -47,38 +53,39 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
-public class JobReportMainFragment extends Fragment implements View.OnClickListener, TextWatcher {
+public class JobReportMainFragment extends Fragment implements TextWatcher {
 
     private OnFragmentInteractionListener mListener;
     private JobReportActivity mActivity;
     private Context mContext;
 
-    private TextView lblStartTime;
-    private TextView lblPickupAddress;
-    private EditText txtComment;
-    private LinearLayout beforeLayout;
-    private LinearLayout btnTakeBeforePhoto;
-    private RecyclerView beforeRecyclerView;
-    private LinearLayout billableLayout;
-    private TextView lblBillableDesc;
-    private TextView lblBillableBudget;
-    private LinearLayout approvedLayout;
-    private TextView lblWaiting;
-    private LinearLayout endJobLayout;
-    private TextView lblPinTitle;
-    private EditText txtPin;
-    private EditText txtPinDesc;
-    private LinearLayout afterLayout;
-    private LinearLayout btnTakeAfterPhoto;
-    private RecyclerView afterRecyclerView;
-    private LinearLayout toolsLayout;
-    private LinearLayout btnAddTools;
-    private LinearLayout btnAddBillabe;
-    private TextView btnSubmit;
+    @BindView(R.id.lbl_job_start_time)              TextView txtStartTime;
+    @BindView(R.id.lbl_report_pickup)               TextView txtPickupAddress;
+    @BindView(R.id.txt_start_job_comment)           EditText editComment;
+    @BindView(R.id.before_layout)                   LinearLayout beforeLayout;
+    @BindView(R.id.btn_take_before_photo)           LinearLayout llTakeBeforePhoto;
+    @BindView(R.id.start_mp_recycler_view)          RecyclerView beforeRecyclerView;
+    @BindView(R.id.billable_layout)                 LinearLayout billableLayout;
+    @BindView(R.id.lbl_billable_desc)               TextView txtBillableDesc;
+    @BindView(R.id.lbl_billable_budget)             TextView txtBillableBudget;
+    @BindView(R.id.approved_layout)                 LinearLayout approvedLayout;
+    @BindView(R.id.lbl_waiting_approval)            TextView txtWaiting;
+
+    @BindView(R.id.end_layout)                      LinearLayout endJobLayout;
+    @BindView(R.id.lbl_end_job_time)                TextView txtEndJobTime;
+    @BindView(R.id.lbl_pin_code_title)              TextView txtPinTitle;
+    @BindView(R.id.txt_pin_code)                    EditText editPin;
+    @BindView(R.id.txt_pin_code_desc)               EditText editPinDesc;
+    @BindView(R.id.after_photo_layout)              LinearLayout afterLayout;
+    @BindView(R.id.btn_take_after_photo)            LinearLayout llTakeAfterPhoto;
+    @BindView(R.id.end_recycler_view)               RecyclerView afterRecyclerView;
+    @BindView(R.id.tools_layout)                    LinearLayout toolsLayout;
+    @BindView(R.id.btn_tools)                       LinearLayout llAddTools;
+    @BindView(R.id.btn_invoice)                     LinearLayout llAddBillabe;
+    @BindView(R.id.btn_submit_report)               TextView txtSubmit;
+    @BindView(R.id.lbl_request_time)                TextView txtRequestTime;
 
     private JGGAppointmentModel mJob;
-    private String billableDesc = "";
-    private Double billableBudget;
     private ArrayList<AlbumFile> beforePhotoAlbums = new ArrayList<>();
     private JGGImageGalleryAdapter beforePhotoAdapter;
     private ArrayList<AlbumFile> afterPhotoAlbums = new ArrayList<>();
@@ -90,6 +97,11 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     private JGGReportResultModel mReportResultModel;
 
     private boolean isBeforePhoto;
+
+
+    private boolean isReportBeforeAfterPhoto;
+    private boolean isReportGeotracking;
+    private boolean isReportPinCode;
 
     public JobReportMainFragment() {
         // Required empty public constructor
@@ -119,8 +131,45 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
         mReportResultModel = JGGAppManager.getInstance().getReportResultModel();
 
+        checkReportType();
         initView(view);
         return view;
+    }
+
+    private void checkReportType() {
+        int reportType = mJob.getReportType();
+        switch (reportType) {
+            case 1:
+                isReportBeforeAfterPhoto = true;
+                break;
+            case 2:
+                isReportGeotracking = true;
+                break;
+            case 3:
+                isReportBeforeAfterPhoto = true;
+                isReportGeotracking = true;
+                break;
+            case 4:
+                isReportPinCode = true;
+                break;
+            case 5:
+                isReportBeforeAfterPhoto = true;
+                isReportPinCode = true;
+                break;
+            case 6:
+                isReportGeotracking = true;
+                isReportPinCode = true;
+                break;
+            case 7:
+                isReportBeforeAfterPhoto = true;
+                isReportPinCode = true;
+                break;
+            default:
+                isReportBeforeAfterPhoto = false;
+                isReportGeotracking = false;
+                isReportPinCode = false;
+                break;
+        }
     }
 
     @Override
@@ -133,51 +182,29 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
     }
 
     private void initView(View view) {
-        lblStartTime = view.findViewById(R.id.lbl_job_start_time);
-        lblPickupAddress = view.findViewById(R.id.lbl_report_pickup);
-        txtComment = view.findViewById(R.id.txt_start_job_comment);
-        beforeLayout = view.findViewById(R.id.before_layout);
-        billableLayout = view.findViewById(R.id.billable_layout);
-        lblBillableDesc = view.findViewById(R.id.lbl_billable_desc);
-        lblBillableBudget = view.findViewById(R.id.lbl_billable_budget);
-        approvedLayout = view.findViewById(R.id.approved_layout);
-        lblWaiting = view.findViewById(R.id.lbl_waiting_approval);
-        endJobLayout = view.findViewById(R.id.end_layout);
-        lblPinTitle = view.findViewById(R.id.lbl_pin_code_title);
-        txtPin = view.findViewById(R.id.txt_pin_code);
-        txtPinDesc = view.findViewById(R.id.txt_pin_code_desc);
-        afterLayout = view.findViewById(R.id.after_photo_layout);
-        toolsLayout = view.findViewById(R.id.tools_layout);
-        btnAddTools = view.findViewById(R.id.btn_tools);
-        btnAddBillabe = view.findViewById(R.id.btn_invoice);
-        btnSubmit = view.findViewById(R.id.btn_submit_report);
-        btnTakeBeforePhoto = view.findViewById(R.id.btn_take_before_photo);
-        btnTakeAfterPhoto = view.findViewById(R.id.btn_take_after_photo);
+        endJobLayout.setVisibility(View.GONE);
 
-        txtComment.addTextChangedListener(this);
-        txtPin.addTextChangedListener(this);
-        txtPinDesc.addTextChangedListener(this);
-        btnTakeBeforePhoto.setOnClickListener(this);
-        btnTakeAfterPhoto.setOnClickListener(this);
-        btnAddTools.setOnClickListener(this);
-        btnAddBillabe.setOnClickListener(this);
-        btnSubmit.setOnClickListener(this);
+        editComment.addTextChangedListener(this);
+        editPin.addTextChangedListener(this);
+        editPinDesc.addTextChangedListener(this);
     }
 
     private void onRefreshView() {
         // Start time
         Date postOn = appointmentMonthDate(mJob.getPostOn());
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
-        lblStartTime.setText(postedTime);
-        lblPickupAddress.setText(mJob.getAddress().getFullAddress());
+        txtStartTime.setText(postedTime);
+        txtPickupAddress.setText(mJob.getAddress().getFullAddress());
 
-        // Before Photo view
+        // TODO - BeforePhoto View
         if (mReportResultModel.getBeforeAlbumFiles() != null) {
             if (mReportResultModel.getBeforeAlbumFiles().size() > 0) {
                 beforePhotoAlbums = mReportResultModel.getBeforeAlbumFiles();
                 beforePhotoAdapter.notifyDataChanged(beforePhotoAlbums);
             }
         }
+
+        // TODO - AfterPhoto View
         if (mReportResultModel.getAfterAlbumFiles() != null) {
             if (mReportResultModel.getAfterAlbumFiles().size() > 0) {
                 afterPhotoAlbums = mReportResultModel.getAfterAlbumFiles();
@@ -185,23 +212,25 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
             }
         }
 
-        // Billable view
-        if (!billableDesc.equals("")) {
+        // TODO - Billable View
+        if (mReportResultModel.getBillableModel() != null) {
+            JGGBillableModel billableModel = mReportResultModel.getBillableModel();
             billableLayout.setVisibility(View.VISIBLE);
-            lblBillableDesc.setText(billableDesc);
-            lblBillableBudget.setText("$ " + String.valueOf(billableBudget));
+            txtBillableDesc.setText(billableModel.getItemDescription());
+            txtBillableBudget.setText("$ " + String.valueOf(billableModel.getPrice()));
+            txtRequestTime.setText(billableModel.getRequestSentDate());
+        } else {
+            billableLayout.setVisibility(View.GONE);
         }
 
-        String pinCode = " has requested a PIN code. Your recipient should give you the PIN code.";
-        String clientName = mJob.getUserProfile().getUser().getFullName();
-        lblPinTitle.setText("");
-        lblPinTitle.append(setBoldText(clientName));
-        lblPinTitle.append(pinCode);
-    }
 
-    public void setBillableItem(String desc, Double budget) {
-        billableDesc = desc;
-        billableBudget = budget;
+        // TODO - PIN code View
+        String pinCode = getString(R.string.pin_request);
+
+        String clientName = mJob.getUserProfile().getUser().getFullName();
+        txtPinTitle.setText("");
+        txtPinTitle.append(setBoldText(clientName));
+        txtPinTitle.append(pinCode);
     }
 
     private void initRecyclerView(boolean isStartJob) {
@@ -212,7 +241,6 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
         int itemSize = (width) / 4;
 
         if (isStartJob) {
-            beforeRecyclerView = view.findViewById(R.id.start_mp_recycler_view);
             beforeRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
             beforePhotoAdapter = new JGGImageGalleryAdapter(mContext, itemSize, false, new OnItemClickListener() {
                 @Override
@@ -231,7 +259,6 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
             });
             beforeRecyclerView.setAdapter(beforePhotoAdapter);
         } else {
-            afterRecyclerView = view.findViewById(R.id.end_recycler_view);
             afterRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
             afterPhotoAdapter = new JGGImageGalleryAdapter(mContext, itemSize, false, new OnItemClickListener() {
                 @Override
@@ -285,17 +312,17 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                         if (isStartJob) {
                             beforePhotoAlbums = result;
                             if (beforePhotoAlbums.size() > 0)
-                                btnTakeBeforePhoto.setVisibility(View.GONE);
+                                llTakeBeforePhoto.setVisibility(View.GONE);
                             else
-                                btnTakeBeforePhoto.setVisibility(View.VISIBLE);
+                                llTakeBeforePhoto.setVisibility(View.VISIBLE);
                             initRecyclerView(true);
                             beforePhotoAdapter.notifyDataChanged(beforePhotoAlbums);
                         } else {
                             afterPhotoAlbums = result;
                             if (afterPhotoAlbums.size() > 0)
-                                btnTakeAfterPhoto.setVisibility(View.GONE);
+                                llTakeAfterPhoto.setVisibility(View.GONE);
                             else
-                                btnTakeAfterPhoto.setVisibility(View.VISIBLE);
+                                llTakeAfterPhoto.setVisibility(View.VISIBLE);
                             initRecyclerView(false);
                             afterPhotoAdapter.notifyDataChanged(afterPhotoAlbums);
                         }
@@ -310,61 +337,80 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
                 .start();
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_tools) {
-            if (isBeforePhoto) {
-                mReportResultModel.setBeforeAlbumFiles(beforePhotoAlbums);
-                mReportResultModel.setBeforeComment(txtComment.getText().toString());
-            } else {
-                mReportResultModel.setAfterAlbumFiles(afterPhotoAlbums);
-                mReportResultModel.setAfterComment(txtComment.getText().toString());
-            }
+    @OnClick(R.id.btn_tools)
+    public void onClickAddTools() {
+        if (isBeforePhoto) {
+            mReportResultModel.setBeforeAlbumFiles(beforePhotoAlbums);
+            mReportResultModel.setBeforeComment(editComment.getText().toString());
+        } else {
+            mReportResultModel.setAfterAlbumFiles(afterPhotoAlbums);
+            mReportResultModel.setAfterComment(editComment.getText().toString());
+        }
 
-            mActivity.setActionbarView(ADD_TOOLS);
-            mActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.job_report_container, new JobReportAddToolsFragment())
-                    .commit();
-        } else if (view.getId() == R.id.btn_invoice) {
-            mActivity.setActionbarView(ADD_BILLABLE_ITEM);
-            mActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.job_report_container, new JobReportBillableItemFragment())
-                    .commit();
-        } else if (view.getId() == R.id.btn_take_before_photo) {
-            isBeforePhoto = true;
-            selectImage(true);
-        } else if (view.getId() == R.id.btn_take_after_photo) {
-            isBeforePhoto = false;
-            selectImage(false);
-            btnTakeAfterPhoto.setVisibility(View.GONE);
-        } else if (view.getId() == R.id.btn_submit_report) {
-            if (readyForSubmit) {
+        mActivity.setActionbarView(ADD_TOOLS);
+        mActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.job_report_container, new JobReportAddToolsFragment())
+                .commit();
+    }
 
-            } else {
-                toolsLayout.setVisibility(View.GONE);
-                btnSubmit.setVisibility(View.GONE);
-                endJobLayout.setVisibility(View.VISIBLE);
-            }
+    @OnClick(R.id.btn_invoice)
+    public void onClickAddBillableItem() {
+        mActivity.setActionbarView(ADD_BILLABLE_ITEM);
+        mActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.job_report_container, new JobReportBillableItemFragment())
+                .commit();
+    }
+
+    @OnClick(R.id.btn_take_before_photo)
+    public void onClickBeforePhoto() {
+        isBeforePhoto = true;
+        selectImage(true);
+    }
+
+    @OnClick(R.id.btn_take_after_photo)
+    public void onClickAfterPhoto() {
+        isBeforePhoto = false;
+        selectImage(false);
+        llTakeAfterPhoto.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.btn_submit_report)
+    public void onClickSubmitReport() {
+        if (readyForSubmit) {
+
+        } else {
+            toolsLayout.setVisibility(View.GONE);
+            txtSubmit.setVisibility(View.GONE);
+
+
+            endJobLayout.setVisibility(View.VISIBLE);
+
+            Date now = new Date();
+            SimpleDateFormat simpleDateFormat =
+                    new SimpleDateFormat("MMM dd, yyyy h:mm a");
+
+            String endTime = simpleDateFormat.format(now);
+            mReportResultModel.setEndJobDate(endTime);
         }
     }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (txtPin.length() > 0) {
-            txtPinDesc.setVisibility(View.VISIBLE);
+        if (editPin.length() > 0) {
+            editPinDesc.setVisibility(View.VISIBLE);
             readyForSubmit = true;
             afterLayout.setVisibility(View.VISIBLE);
             toolsLayout.setVisibility(View.VISIBLE);
-            btnSubmit.setVisibility(View.VISIBLE);
-            btnSubmit.setText("Submit Report");
-        } else if (txtPin.getText().toString().equals("")) {
-            txtPinDesc.setVisibility(View.GONE);
+            txtSubmit.setVisibility(View.VISIBLE);
+            txtSubmit.setText("Submit Report");
+        } else if (editPin.getText().toString().equals("")) {
+            editPinDesc.setVisibility(View.GONE);
             readyForSubmit = false;
             afterLayout.setVisibility(View.GONE);
             toolsLayout.setVisibility(View.GONE);
-            btnSubmit.setVisibility(View.GONE);
+            txtSubmit.setVisibility(View.GONE);
         }
     }
 
@@ -389,9 +435,6 @@ public class JobReportMainFragment extends Fragment implements View.OnClickListe
         super.onAttach(context);
         mContext = context;
         mActivity = ((JobReportActivity) context);
-        if (getArguments() != null) {
-            mUserType = getArguments().getString("jgg_usertype");
-        }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

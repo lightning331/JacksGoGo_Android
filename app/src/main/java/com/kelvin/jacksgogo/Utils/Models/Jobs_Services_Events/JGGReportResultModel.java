@@ -20,6 +20,10 @@ public class JGGReportResultModel {
     private ArrayList<AlbumFile> beforeAlbumFiles = new ArrayList<>();
     private ArrayList<AlbumFile> afterAlbumFiles = new ArrayList<>();
 
+    private JGGBillableModel billableModel;
+
+    private String endJobDate;
+
     public String getContractID() {
         return ContractID;
     }
@@ -98,5 +102,21 @@ public class JGGReportResultModel {
 
     public void setAfterAlbumFiles(ArrayList<AlbumFile> afterAlbumFiles) {
         this.afterAlbumFiles = afterAlbumFiles;
+    }
+
+    public JGGBillableModel getBillableModel() {
+        return billableModel;
+    }
+
+    public void setBillableModel(JGGBillableModel billableModel) {
+        this.billableModel = billableModel;
+    }
+
+    public String getEndJobDate() {
+        return endJobDate;
+    }
+
+    public void setEndJobDate(String endJobDate) {
+        this.endJobDate = endJobDate;
     }
 }

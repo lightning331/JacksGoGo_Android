@@ -129,7 +129,7 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/billable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -237,7 +237,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/end_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

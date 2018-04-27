@@ -166,6 +166,7 @@
     <string name="post_new_service">Post New Service</string>
     <string name="buy_service">Buy Service</string>
     <string name="go_to_summary">Go To Summary</string>
+    <string name="pin_request"> has requested a PIN code. Your recipient should give you the PIN code.</string>
 
     <!-- TODO: Make proposal -->
     <string name="proposal_title">Proposal</string>
