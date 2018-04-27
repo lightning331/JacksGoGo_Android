@@ -34,9 +34,8 @@ public class JGGGoClubModel {
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private JGGRegionModel Region = new JGGRegionModel();
 
+    // Dummy data
     private ArrayList<JGGUserProfileModel> Users = new ArrayList<>();
-
-    // temp data
     private ArrayList<AlbumFile> albumFiles;
 
     public String getID() {

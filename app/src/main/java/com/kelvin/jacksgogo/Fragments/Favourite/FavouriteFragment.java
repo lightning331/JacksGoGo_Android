@@ -28,6 +28,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
@@ -166,7 +167,7 @@ public class FavouriteFragment extends Fragment {
     }
 
     private void updateEventsAdapter() {
-        EventsListingAdapter adapter = new EventsListingAdapter(mContext);
+        EventsListingAdapter adapter = new EventsListingAdapter(mContext, new ArrayList<JGGEventModel>());
         adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick() {

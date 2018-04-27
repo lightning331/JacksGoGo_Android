@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
@@ -139,7 +140,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             });
             recyclerView.setAdapter(jobAdapter);
         } else if (appType.equals(EVENTS)) {
-            eventAdapter = new EventsListingAdapter(mContext);
+            eventAdapter = new EventsListingAdapter(mContext, new ArrayList<JGGEventModel>());
             eventAdapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {

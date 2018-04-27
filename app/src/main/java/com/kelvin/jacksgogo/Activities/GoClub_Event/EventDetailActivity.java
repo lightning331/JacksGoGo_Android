@@ -26,7 +26,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Global.JoinGoClubStatus;
+import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
 
 import java.lang.reflect.Field;
 
@@ -47,7 +47,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
 
-    private JoinGoClubStatus joinGoClubStatus;
+    private EventUserStatus joinGoClubStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         ButterKnife.bind(this);
 
         // Todo - Dummy Data
-        setJoinToGoClubStatus(JoinGoClubStatus.none);
+        setJoinToGoClubStatus(EventUserStatus.none);
 
         // Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.event_detail_bottom);
@@ -89,14 +89,14 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         mRecyclerView.setAdapter(adapter);
     }
 
-    public void setJoinToGoClubStatus(JoinGoClubStatus status) {
+    public void setJoinToGoClubStatus(EventUserStatus status) {
         joinGoClubStatus = status;
         btnJoinGoClub.setVisibility(View.GONE);
         ownerLayout.setVisibility(View.GONE);
 
-        if (status == JoinGoClubStatus.none || status == JoinGoClubStatus.rejected) {
+        if (status == EventUserStatus.none || status == EventUserStatus.declined) {
             btnJoinGoClub.setVisibility(View.VISIBLE);
-        } else if (status == JoinGoClubStatus.approved) {
+        } else if (status == EventUserStatus.approved) {
             ownerLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -110,13 +110,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     // Todo - Send join request to the Event
     private void onSendJoinRequest() {
         alertDialog.dismiss();
-        setJoinToGoClubStatus(JoinGoClubStatus.approved);
+        setJoinToGoClubStatus(EventUserStatus.approved);
     }
 
     // Todo - Withdraw from Event
     private void onWithdrawFromEvent() {
         alertDialog.dismiss();
-        setJoinToGoClubStatus(JoinGoClubStatus.none);
+        setJoinToGoClubStatus(EventUserStatus.none);
     }
 
     private void actionbarItemClick(View view) {
@@ -133,9 +133,9 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
     private void showEditPopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        if (joinGoClubStatus == JoinGoClubStatus.none)
+        if (joinGoClubStatus == EventUserStatus.none)
             popupMenu.inflate(R.menu.event_share_menu);
-        else if (joinGoClubStatus == JoinGoClubStatus.approved)
+        else if (joinGoClubStatus == EventUserStatus.approved)
             popupMenu.inflate(R.menu.event_joined_menu);
 
         popupMenu.setOnDismissListener(new OnDismissListener());

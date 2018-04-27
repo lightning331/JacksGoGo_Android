@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.EventUserType;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -73,10 +72,21 @@ public class AppInviteProviderCell extends RecyclerView.ViewHolder {
             userName.setText(clubUser.getUserProfile().getUser().getUserName());
         else
             userName.setText(clubUser.getUserProfile().getUser().getFullName());
-        if (clubUser.getUserType() == EventUserType.owner)
-            lblUserType.setText("Group Owner");
-        else if (clubUser.getUserType() == EventUserType.admin)
-            lblUserType.setText("Admin");
+
+        switch (clubUser.getUserType()) {
+            case owner:
+                lblUserType.setText("Group Owner");
+                break;
+            case admin:
+                lblUserType.setText("Admin");
+                break;
+            case user:
+                lblUserType.setText("");
+                break;
+            case none:
+                lblUserType.setText("");
+                break;
+        }
     }
 
     public void disableInviteButton(boolean disable) {

@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubMembersActivity;
-import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.GoClubDetailEventView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailAverageQuoteCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
@@ -22,10 +20,6 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.squareup.picasso.Picasso;
 
-import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
-import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 
@@ -76,9 +70,9 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             membersViewHolder.descriptionImage.setImageResource(R.mipmap.icon_group);
             String title;
             if (mClub.getLimit() == null)
-                title = mClub.getClubUsers().size() + " (No limit)";
+                title = (mClub.getClubUsers().size() + 1) + " (No limit)";
             else
-                title = mClub.getClubUsers().size() + " (max" + mClub.getLimit() + ")";
+                title = (mClub.getClubUsers().size() + 1) + " (max" + mClub.getLimit() + ")";
             membersViewHolder.description.setText(title);
             membersViewHolder.btnViewAllMemebers.setVisibility(View.VISIBLE);
             membersViewHolder.btnViewAllMemebers.setOnClickListener(new View.OnClickListener() {
@@ -92,21 +86,7 @@ public class GoClubDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // Past Events list view
             View eventView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_go_club_detail_event, parent, false);
             GoClubDetailEventView eventViewHolder = new GoClubDetailEventView(eventView, mContext);
-            eventViewHolder.btnViewPastEvents.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, PastEventsActivity.class));
-                }
-            });
-            eventViewHolder.btnCreateEvent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent mIntent = new Intent(mContext, CreateGoClubActivity.class);
-                    mIntent.putExtra(EDIT_STATUS, POST);
-                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                    mContext.startActivity(mIntent);
-                }
-            });
+
             return eventViewHolder;
         } else if (viewType == 5) {
             // Tag list view

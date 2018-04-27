@@ -5,7 +5,6 @@ import com.kelvin.jacksgogo.Utils.Global.EventUserType;
 
 public class JGGGoClubUserModel {
 
-    private String ID;
     private String ClubID;
     private String UserProfileID;
     private Integer UserType;
@@ -13,14 +12,6 @@ public class JGGGoClubUserModel {
     private String Reason;
     private String AddedOn;
     private JGGUserProfileModel UserProfile;
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
 
     public String getClubID() {
         return ClubID;
