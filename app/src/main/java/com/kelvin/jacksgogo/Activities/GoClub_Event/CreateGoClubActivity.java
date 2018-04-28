@@ -9,9 +9,11 @@ import android.view.View;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.GcEventSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.GoClub_Event.GcSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -106,15 +108,25 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
         } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case GOCLUB:
-                    actionbarView.setStatus(JGGActionbarView.EditStatus.POST, AppointmentType.GOCLUB);
-                    GcEventSummaryFragment summaryFrag = new GcEventSummaryFragment();
+                    actionbarView.setPurpleBackButton(R.string.title_edit_go_club, R.string.title_empty);
+                    GcSummaryFragment clubSummaryFrag = new GcSummaryFragment();
                     if (status.equals(EDIT))
-                        summaryFrag.setEditStatus(GcEventSummaryFragment.PostEditStatus.EDIT);
-                    else if (status.equals(DUPLICATE))
-                        summaryFrag.setEditStatus(GcEventSummaryFragment.PostEditStatus.DUPLICATE);
+                        clubSummaryFrag.setEditStatus(PostStatus.EDIT);
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.post_go_club_container, summaryFrag)
+                            .replace(R.id.post_go_club_container, clubSummaryFrag)
+                            .commit();
+                    break;
+                case EVENTS:
+                    actionbarView.setPurpleBackButton(R.string.title_create_event, R.string.title_empty);
+                    GcEventSummaryFragment eventSummaryFrag = new GcEventSummaryFragment();
+                    if (status.equals(EDIT))
+                        eventSummaryFrag.setEditStatus(PostStatus.EDIT);
+                    else if (status.equals(DUPLICATE))
+                        eventSummaryFrag.setEditStatus(PostStatus.DUPLICATE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.post_go_club_container, eventSummaryFrag)
                             .commit();
                     break;
                 default:
