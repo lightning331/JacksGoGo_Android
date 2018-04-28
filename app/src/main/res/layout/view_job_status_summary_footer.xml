@@ -15,7 +15,7 @@
             android:gravity="center_horizontal">
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/job_report_layout"
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
@@ -39,7 +39,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/job_invoice_layout"
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
@@ -62,7 +62,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/job_review_layout"
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
@@ -85,7 +85,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/job_tip_layout"
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
@@ -108,7 +108,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/job_rehire_layout"
                 android:layout_width="65dp"
                 android:layout_height="match_parent"

@@ -105,12 +105,13 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"/>
-            <TextView
+            <Button
                 android:id="@+id/btn_send_billable_item"
                 android:text="Send To Client For Approval"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center"
+                android:textAllCaps="false"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGWhite"

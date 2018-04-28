@@ -276,44 +276,50 @@
                             android:fontFamily="@font/muliregular"
                             android:text="19 Dec, 2017 11:50AM"/>
                     </LinearLayout>
-                    <TextView
-                        android:id="@+id/lbl_pin_code_title"
-                        android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/list_title_font_size"
-                        android:textColor="@color/JGGBlack"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <EditText
-                        android:hint="PIN code"
-                        android:id="@+id/txt_pin_code"
+                    <LinearLayout
+                        android:id="@+id/pincode_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:padding="@dimen/edit_text_padding_size"
-                        android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/list_title_font_size"
-                        android:background="@drawable/grey_border_background">
-                    </EditText>
-                    <EditText
-                        android:visibility="gone"
-                        android:hint="Comment (optional)"
-                        android:id="@+id/txt_pin_code_desc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:padding="@dimen/edit_text_padding_size"
-                        android:fontFamily="@font/muliregular"
-                        android:textSize="@dimen/list_title_font_size"
-                        android:background="@drawable/grey_border_background">
-                    </EditText>
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/lbl_pin_code_title"
+                            android:fontFamily="@font/muliregular"
+                            android:textSize="@dimen/list_title_font_size"
+                            android:textColor="@color/JGGBlack"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:hint="PIN code"
+                            android:id="@+id/txt_pin_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:padding="@dimen/edit_text_padding_size"
+                            android:fontFamily="@font/muliregular"
+                            android:textSize="@dimen/list_title_font_size"
+                            android:background="@drawable/grey_border_background">
+                        </EditText>
+                        <EditText
+                            android:visibility="gone"
+                            android:hint="Comment (optional)"
+                            android:id="@+id/txt_after_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:padding="@dimen/edit_text_padding_size"
+                            android:fontFamily="@font/muliregular"
+                            android:textSize="@dimen/list_title_font_size"
+                            android:background="@drawable/grey_border_background">
+                        </EditText>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:visibility="gone"
@@ -413,7 +419,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <TextView
+            <Button
                 android:id="@+id/btn_submit_report"
                 android:text="Job Completed? End Job"
                 android:layout_width="match_parent"
@@ -423,6 +429,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
+                android:textAllCaps="false"
                 android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGWhite"

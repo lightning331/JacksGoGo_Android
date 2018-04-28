@@ -27,6 +27,9 @@
     <string name="go_club_members_search_placeholder">Search through All Memebers</string>
     <string name="title_empty"></string>
 
+    <!-- TODO : Report-->
+    <string name="submit_report">Submit Report</string>
+
     <!-- TODO: Search -->
     <string name="services">Services</string>
     <string name="jobs">Jobs</string>
@@ -167,6 +170,8 @@
     <string name="buy_service">Buy Service</string>
     <string name="go_to_summary">Go To Summary</string>
     <string name="pin_request"> has requested a PIN code. Your recipient should give you the PIN code.</string>
+    <string name="alert_job_completed">Job Completed</string>
+    <string name="msg_job_complete">has been notified and will verify the work doen.</string>
 
     <!-- TODO: Make proposal -->
     <string name="proposal_title">Proposal</string>

@@ -17,16 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGBillableModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.yanzhenjie.album.Action;
@@ -39,6 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.JOB_REPORT;
@@ -52,11 +53,11 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
     private Context mContext;
     private JobReportActivity mActivity;
 
-    private LinearLayout btnTakePhoto;
-    private EditText txtItemDesc;
-    private LinearLayout budgetLayout;
-    private EditText txtBudget;
-    private TextView btnSendApproval;
+    @BindView(R.id.btn_item_take_photo) LinearLayout llTakePhoto;
+    @BindView(R.id.txt_billable_item_desc) EditText txtItemDesc;
+    @BindView(R.id.budget_layout) LinearLayout budgetLayout;
+    @BindView(R.id.txt_billable_item_budget) EditText txtBudget;
+    @BindView(R.id.btn_send_billable_item) Button btnSendApproval;
 
     private RecyclerView recyclerView;
     private JGGImageGalleryAdapter mAdapter;
@@ -88,28 +89,16 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_job_report_billable_item, container, false);
+        ButterKnife.bind(this, view);
 
         billableModel = new JGGBillableModel();
-        initView(view);
+
+        txtItemDesc.addTextChangedListener(this);
+        txtBudget.addTextChangedListener(this);
+
         initRecyclerView(view);
 
         return view;
-    }
-
-    private void initView(View view) {
-        txtItemDesc = view.findViewById(R.id.txt_billable_item_desc);
-        txtItemDesc.addTextChangedListener(this);
-        budgetLayout = view.findViewById(R.id.budget_layout);
-        txtBudget = view.findViewById(R.id.txt_billable_item_budget);
-        txtBudget.addTextChangedListener(this);
-        btnSendApproval = view.findViewById(R.id.btn_send_billable_item);
-        btnTakePhoto = view.findViewById(R.id.btn_item_take_photo);
-        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectImage();
-            }
-        });
     }
 
     private void initRecyclerView(View view) {
@@ -137,6 +126,11 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
             }
         });
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @OnClick(R.id.btn_item_take_photo)
+    public void onClickTakePhoto() {
+        selectImage();
     }
 
     @OnClick(R.id.btn_send_billable_item)
@@ -205,7 +199,7 @@ public class JobReportBillableItemFragment extends Fragment implements TextWatch
                     @Override
                     public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
-                        btnTakePhoto.setVisibility(View.GONE);
+                        llTakePhoto.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         mAdapter.notifyDataChanged(mAlbumFiles);
                     }

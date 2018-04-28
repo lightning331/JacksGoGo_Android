@@ -35,18 +35,58 @@
             android:id="@+id/view_quotation_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical">
-            <TextView
-                android:text="@string/waiting_service_provider"
-                android:id="@+id/lbl_title"
+            <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/awarded_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textColor="@color/JGGBlack"
-                android:fontFamily="@font/mulibold"
-                android:textSize="@dimen/list_title_font_size"/>
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/lbl_received_quotation_time"
+                    android:text="12 Jul 2017 8:15 PM"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/JGGGrey2"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="12dp"/>
+                <TextView
+                    android:text="@string/waiting_service_provider"
+                    android:id="@+id/lbl_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/mulibold"
+                    android:textSize="@dimen/list_title_font_size"/>
+
+                <TextView
+                    android:id="@+id/lbl_declined_time"
+                    android:text="12 Jul 2017 8:15 PM"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/JGGGrey2"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="12dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:id="@+id/lbl_quotation_count"
+                        android:text="You have awarded catherinedesilva the job."
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/muliregular"
+                        android:textSize="@dimen/list_title_font_size"/>
+                </LinearLayout>
+            </LinearLayout>
             <TextView
                 android:visibility="visible"
                 android:id="@+id/btn_view_quotation"
@@ -62,40 +102,6 @@
                 android:background="@drawable/green_background">
             </TextView>
         </LinearLayout>
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/awarded_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/lbl_received_quotation_time"
-                android:text="12 Jul 2017 8:15 PM"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/JGGGrey2"
-                android:fontFamily="@font/muliregular"
-                android:textSize="12dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
-                <TextView
-                    android:id="@+id/lbl_quotation_count"
-                    android:text="You have awarded catherinedesilva the job."
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/JGGBlack"
-                    android:fontFamily="@font/muliregular"
-                    android:textSize="@dimen/list_title_font_size"/>
-                <ImageView
-                    android:id="@+id/img_right"
-                    android:src="@mipmap/button_next_green"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
