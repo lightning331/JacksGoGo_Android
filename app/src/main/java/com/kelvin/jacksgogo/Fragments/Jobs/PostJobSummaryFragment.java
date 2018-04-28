@@ -430,32 +430,17 @@ public class PostJobSummaryFragment extends Fragment implements View.OnClickList
             }
             return;
         } else if (view.getId() == R.id.btn_post_job_summary_describe) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, POST);
-            if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, EDIT);
-            }
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, jobStatus);
         } else if (view.getId() == R.id.btn_post_job_summary_time) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.TIME, POST);
-            if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.TIME, EDIT);
-            }
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.TIME, jobStatus);
         } else if (view.getId() == R.id.btn_post_job_summary_address) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.ADDRESS, POST);
-            if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.ADDRESS, EDIT);
-            }
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.ADDRESS, jobStatus);
         }  else if (view.getId() == R.id.btn_post_job_summary_budget) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.BUDGET, POST);
-            if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.BUDGET, EDIT);
-            }
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.BUDGET, jobStatus);
         } else if (view.getId() == R.id.btn_post_job_summary_report) {
-            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.REPORT, POST);
-            if (jobStatus == EDIT) {
-                fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.REPORT, EDIT);
-            }
+            fragment = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.REPORT, jobStatus);
         }
-        getActivity().getSupportFragmentManager()
+        mActivity.getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_service_container, fragment)
                 .addToBackStack("post_job")

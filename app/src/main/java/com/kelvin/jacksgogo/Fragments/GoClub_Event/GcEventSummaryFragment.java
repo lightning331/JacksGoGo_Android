@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.yanzhenjie.album.AlbumFile;
 
@@ -40,9 +41,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.*;
-import static com.kelvin.jacksgogo.Fragments.GoClub_Event.GcEventSummaryFragment.PostEditStatus.EDIT;
-import static com.kelvin.jacksgogo.Fragments.GoClub_Event.GcEventSummaryFragment.PostEditStatus.POST;
+import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.ADDRESS;
+import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.COST;
+import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.DESCRIBE;
+import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.LIMIT;
+import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.TIME;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 /**
@@ -76,7 +81,7 @@ public class GcEventSummaryFragment extends Fragment {
 
     AlertDialog alertDialog;
 
-    private PostEditStatus editStatus;
+    private PostStatus editStatus;
     private String postedServiceID;
     private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
     private ArrayList<String> attachmentURLs = new ArrayList<>();
@@ -84,13 +89,7 @@ public class GcEventSummaryFragment extends Fragment {
     private ProgressDialog progressDialog;
     private CreateEventMainFragment fragment;
 
-    public enum PostEditStatus {
-        POST,
-        EDIT,
-        DUPLICATE
-    }
-
-    public void setEditStatus(PostEditStatus editStatus) {
+    public void setEditStatus(PostStatus editStatus) {
         this.editStatus = editStatus;
     }
 
@@ -296,7 +295,7 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_main_describe)
     public void onClickDescribe() {
-        fragment = CreateEventMainFragment.newInstance(DESCRIBE, Global.PostStatus.POST);
+        fragment = CreateEventMainFragment.newInstance(DESCRIBE, POST);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -305,7 +304,7 @@ public class GcEventSummaryFragment extends Fragment {
     }
     @OnClick(R.id.ll_time_schedule)
     public void onClickViewSchedule() {
-        fragment = CreateEventMainFragment.newInstance(TIME, Global.PostStatus.POST);
+        fragment = CreateEventMainFragment.newInstance(TIME, POST);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -315,7 +314,7 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_address)
     public void onClickAddress() {
-        fragment = CreateEventMainFragment.newInstance(ADDRESS, Global.PostStatus.POST);
+        fragment = CreateEventMainFragment.newInstance(ADDRESS, POST);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -325,7 +324,7 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_limit)
     public void onClickLimit() {
-        fragment = CreateEventMainFragment.newInstance(LIMIT, Global.PostStatus.POST);
+        fragment = CreateEventMainFragment.newInstance(LIMIT, POST);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -335,7 +334,7 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_cost)
     public void onClickCost() {
-        fragment = CreateEventMainFragment.newInstance(COST, Global.PostStatus.POST);
+        fragment = CreateEventMainFragment.newInstance(COST, POST);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)

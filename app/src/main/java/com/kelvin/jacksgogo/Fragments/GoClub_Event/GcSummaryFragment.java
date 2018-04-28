@@ -18,15 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.GcSummaryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
+import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
-import com.kelvin.jacksgogo.Utils.Global.EventUserType;
-import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
+import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
@@ -50,6 +51,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -66,26 +70,33 @@ public class GcSummaryFragment extends Fragment {
     @BindView(R.id.ll_limit)                            LinearLayout ll_limit;
     @BindView(R.id.txt_pax)                             TextView txtPax;
 
+    @BindView(R.id.ll_admin)                            LinearLayout ll_admin;
     @BindView(R.id.txt_admin)                           TextView txtAdmin;
 
+    @BindView(R.id.txt_create_club)                     TextView txtCreate;
     @BindView(R.id.summary_recycler_view)               RecyclerView summaryRecyclerView;
 
     private Context mContext;
+    private CreateGoClubActivity mActivity;
     private GcSummaryAdapter adapter;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
+    private CreateGoClubMainFragment mainFragment;
 
     private JGGGoClubModel creatingClub;
     private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
-    private ArrayList<String> invitedUserIDs = new ArrayList<>();
     private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
     private ArrayList<String> attachmentURLs = new ArrayList<>();
     private String clubID;
+    private PostStatus postStatus;
 
     public GcSummaryFragment() {
         // Required empty public constructor
     }
 
+    public void setEditStatus(PostStatus status) {
+        postStatus = status;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,25 +108,19 @@ public class GcSummaryFragment extends Fragment {
         // TODO : Get creating GoClub
         creatingClub = JGGAppManager.getInstance().getSelectedClub();
         mAlbumFiles = creatingClub.getAlbumFiles();
+        attachmentURLs = creatingClub.getAttachmentURLs();
         // TODO : Add current user to Invited Users
         ArrayList<JGGUserProfileModel> owner = new ArrayList<>();
         owner.add(JGGAppManager.getInstance().getCurrentUser());
         invitedUsers.addAll(owner);
-        invitedUsers.addAll(creatingClub.getUsers());
-
-        ArrayList<JGGGoClubUserModel> clubUsers = new ArrayList<>();
-        JGGGoClubUserModel clubUser = new JGGGoClubUserModel();
-        for (JGGUserProfileModel user : creatingClub.getUsers()) {
-            clubUser.setUserProfile(user);
-            clubUser.setClubID(user.getID());
-            clubUser.setUserProfileID(user.getID());
-            clubUser.setUserType(EventUserType.owner);
-            clubUser.setUserStatus(EventUserStatus.approved);
-
-            clubUsers.add(clubUser);
-        }
-        creatingClub.setClubUsers(clubUsers);
-        JGGAppManager.getInstance().setSelectedClub(creatingClub);
+        if (creatingClub.getClubUsers().size() > 0) {
+            ArrayList<JGGUserProfileModel> tmpUser = new ArrayList<>();
+            for (JGGGoClubUserModel user : creatingClub.getClubUsers()) {
+                tmpUser.add(user.getUserProfile());
+            }
+            invitedUsers.addAll(tmpUser);
+        } else
+            invitedUsers.addAll(creatingClub.getUsers());
 
         // TODO : Init RecyclerView
         if (summaryRecyclerView != null) {
@@ -161,7 +166,9 @@ public class GcSummaryFragment extends Fragment {
             } else {
                 txtAdmin.setText("You are the sole admin:");
             }
-
+            // Post button
+            if (postStatus == EDIT) txtCreate.setText("Save Changes");
+            // Member recyclerView
             adapter = new GcSummaryAdapter(mContext, invitedUsers);
             summaryRecyclerView.setAdapter(adapter);
         }
@@ -205,9 +212,54 @@ public class GcSummaryFragment extends Fragment {
         });
     }
 
+    private void onEditClub() {
+        progressDialog = Global.createProgressDialog(mContext);
+
+        creatingClub.setAttachmentURLs(attachmentURLs);
+
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = manager.editClubs(creatingClub);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                        clubID = response.body().getValue();
+
+                        creatingClub = JGGAppManager.getInstance().getSelectedClub();
+                        creatingClub.setID(clubID);
+
+                        JGGAppManager.getInstance().setSelectedClub(creatingClub);
+
+                        if (postStatus.equals(POST))
+                            showReferenceNoDialog();
+                        else
+                            mActivity.finish();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void uploadImage(final int index) {
         if (mAlbumFiles == null) {
-            onCreateNewClub();
+            if (postStatus.equals(POST)) {
+                onCreateNewClub();
+            } else {
+                onEditClub();
+            }
         } else {
             if (index < mAlbumFiles.size()) {
                 String name = (String) mAlbumFiles.get(index).getPath();
@@ -247,7 +299,11 @@ public class GcSummaryFragment extends Fragment {
                     }
                 });
             } else {
-                onCreateNewClub();
+                if (postStatus.equals(POST)) {
+                    onCreateNewClub();
+                } else {
+                    onEditClub();
+                }
             }
         }
     }
@@ -286,12 +342,47 @@ public class GcSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_create_club)
     public void onClickCreateClub() {
-        uploadImage(0);
+        if (attachmentURLs.size() == 0)
+            uploadImage(0);
+        else {
+            if (postStatus.equals(POST)) {
+                onCreateNewClub();
+            } else {
+                onEditClub();
+            }
+        }
+    }
+
+    @OnClick(R.id.ll_main_describe)
+    public void onClickDescribe() {
+        mainFragment = CreateGoClubMainFragment.newInstance(GoClubTabName.DESCRIBE, postStatus);
+        onShowClubMainFragment();
+    }
+
+    @OnClick(R.id.ll_limit)
+    public void onClickLimit() {
+        mainFragment = CreateGoClubMainFragment.newInstance(GoClubTabName.LIMIT, postStatus);
+        onShowClubMainFragment();
+    }
+
+    @OnClick(R.id.ll_admin)
+    public void onClickAdmin() {
+        mainFragment = CreateGoClubMainFragment.newInstance(GoClubTabName.ADMIN, postStatus);
+        onShowClubMainFragment();
+    }
+
+    private void onShowClubMainFragment() {
+        mActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.post_go_club_container, mainFragment)
+                .addToBackStack("post_club")
+                .commit();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((CreateGoClubActivity) context);
     }
 }

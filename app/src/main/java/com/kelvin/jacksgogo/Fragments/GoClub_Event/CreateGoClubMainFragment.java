@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView;
 import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
@@ -22,11 +23,13 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.squareup.picasso.Picasso;
 
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.POST;
 
 public class CreateGoClubMainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private CreateGoClubActivity mActivity;
 
     private JGGCategoryModel selectedCategory;
     private PostGoClubTabView tabView;
@@ -67,7 +70,7 @@ public class CreateGoClubMainFragment extends Fragment {
         imgCategory = (ImageView) view.findViewById(R.id.img_category);
         lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
 
-        selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
+        selectedCategory = JGGAppManager.getInstance().getSelectedClub().getCategory();
 
         Picasso.with(mContext)
                 .load(selectedCategory.getImage())
@@ -141,16 +144,22 @@ public class CreateGoClubMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcAdminFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.post_go_club_container, new GcSummaryFragment())
-                            .addToBackStack("create_club_summary")
-                            .commit();
+                    onClickGoToSummary();
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
         }
         ft.commit();
+    }
+
+    private void onClickGoToSummary() {
+        GcSummaryFragment fragment = new GcSummaryFragment();
+        if (postStatus.equals(POST)) fragment.setEditStatus(PostStatus.POST);
+        else fragment.setEditStatus(PostStatus.EDIT);
+        mActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.post_go_club_container, fragment)
+                .addToBackStack("create_club_summary")
+                .commit();
     }
 
     public void onButtonPressed(Uri uri) {
@@ -163,6 +172,7 @@ public class CreateGoClubMainFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((CreateGoClubActivity) context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

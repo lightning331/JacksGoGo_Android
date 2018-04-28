@@ -24,6 +24,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 
 import java.lang.reflect.Type;
@@ -47,8 +48,8 @@ public class GcAdminFragment extends Fragment {
     private Context mContext;
     private GcAddedAdminAdapter adapter;
     private JGGGoClubModel creatingClub;
-    private ArrayList<JGGUserProfileModel> invitedUsers;
-    private ArrayList<String> invitedUserIDs;
+    private ArrayList<JGGUserProfileModel> invitedUsers = new ArrayList<>();
+    private ArrayList<String> invitedUserIDs = new ArrayList<>();
 
     public GcAdminFragment() {
         // Required empty public constructor
@@ -63,14 +64,28 @@ public class GcAdminFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         creatingClub = JGGAppManager.getInstance().getSelectedClub();
-        invitedUsers = creatingClub.getUsers();
-        invitedUserIDs = creatingClub.getUserProfileIDs();
 
-        if (adminRecyclerView != null) {
-            adminRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        if (creatingClub.getClubUsers().size() > 0) {
+            ArrayList<JGGUserProfileModel> tmpUser = new ArrayList<>();
+            ArrayList<String> tmpUserID = new ArrayList<>();
+            for (JGGGoClubUserModel user : creatingClub.getClubUsers()) {
+                tmpUser.add(user.getUserProfile());
+                tmpUserID.add(user.getUserProfile().getID());
+            }
+            invitedUsers.addAll(tmpUser);
+            invitedUserIDs.addAll(tmpUserID);
+            creatingClub.setUsers(invitedUsers);
+            creatingClub.setUserProfileIDs(invitedUserIDs);
+            JGGAppManager.getInstance().setSelectedClub(creatingClub);
+        } else {
+            invitedUsers = creatingClub.getUsers();
+            invitedUserIDs = creatingClub.getUserProfileIDs();
         }
 
         // Added Recycler View
+        if (adminRecyclerView != null) {
+            adminRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        }
         adapter = new GcAddedAdminAdapter(mContext, invitedUsers);
         adapter.setOnItemClickListener(new GcAddedAdminAdapter.OnItemClickListener() {
             @Override
@@ -78,6 +93,7 @@ public class GcAdminFragment extends Fragment {
                 ArrayList<JGGUserProfileModel> tmpUsers = invitedUsers;
                 tmpUsers.remove(position);
                 invitedUsers = tmpUsers;
+                invitedUserIDs.remove(position);
                 adapter.notifyDataChanged(invitedUsers);
             }
         });
@@ -102,12 +118,28 @@ public class GcAdminFragment extends Fragment {
     }
 
     private void setGoClubData() {
-        if (invitedUserIDs.size() > 0) {
+        if (invitedUsers.size() > 0) {
             creatingClub.setSole(false);
             creatingClub.setUsers(invitedUsers);
             creatingClub.setUserProfileIDs(invitedUserIDs);
-        } else
+
+            ArrayList<JGGGoClubUserModel> clubUsers = new ArrayList<>();
+            JGGGoClubUserModel clubUser = new JGGGoClubUserModel();
+            for (JGGUserProfileModel user : invitedUsers) {
+                clubUser.setUserProfile(user);
+                clubUser.setClubID(user.getID());
+                clubUser.setUserProfileID(user.getID());
+                clubUser.setUserType(Global.EventUserType.admin);
+                clubUser.setUserStatus(Global.EventUserStatus.approved);
+
+                clubUsers.add(clubUser);
+            }
+            creatingClub.setClubUsers(clubUsers);
+        } else {
+            creatingClub.getClubUsers().clear();
             creatingClub.setSole(true);
+        }
+
         JGGAppManager.getInstance().setSelectedClub(creatingClub);
 
         listener.onNextButtonClick();

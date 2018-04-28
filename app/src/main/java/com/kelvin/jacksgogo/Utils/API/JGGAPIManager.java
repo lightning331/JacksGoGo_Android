@@ -251,6 +251,9 @@ public interface JGGAPIManager {
     @POST("api/Event/CreateClubs")
     Call<JGGPostAppResponse> createClubs(@Body JGGGoClubModel club);
 
+    @POST("api/Event/EditClubs")
+    Call<JGGPostAppResponse> editClubs(@Body JGGGoClubModel club);
+
     @FormUrlEncoded
     @POST("api/Event/SearchGoClub")
     Call<JGGGetGoClubResponse> searchGoClub(@Field("Query") String query,

@@ -282,6 +282,7 @@
     <string name="title_joined_go_club">Joined GoClubs</string>
     <string name="title_all_go_club">All GoClubs</string>
     <string name="title_post_go_club">Create A New GoClub</string>
+    <string name="title_edit_go_club">Edit GoClub</string>
     <string name="title_view_members">View All Members</string>
     <string name="title_request_join_go_club">Request To Join GoClub</string>
     <string name="people_joined_go_club">people have joined this GoClub recently!</string>
@@ -337,8 +338,6 @@
     <string name="added_as_admin">Added as admin:</string>
     <string name="view_goclub_details">View GoClub Details</string>
     <string name="alert_goclub_created">GoClub Created</string>
-
-    <!-- TODO: Event-->
     <string name="title_request_join_event">Join Event</string>
     <string name="people_joined_event">people have joined this Event recently!</string>
     <string name="alert_report_event_title">Report Event</string>

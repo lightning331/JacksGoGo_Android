@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -39,6 +40,11 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT;
+import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 
 public class GoClubDetailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -108,6 +114,10 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         }
         adapter = new GoClubDetailAdapter(this);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    private void getClubByID() {
+
     }
 
     public void setJoinToGoClubStatus() {
@@ -193,14 +203,14 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         } else if (view.getId() == R.id.btn_more) {
             actionbarView.setMoreButtonClicked(true);
             // Show Edit PopUp Menu
-            showEditPopUpMenu(view);
+            showMorePopUpMenu(view);
         } else if (view.getId() == R.id.btn_back) {
             this.finish();
         }
     }
 
     // Todo - Edit Popup Menu
-    private void showEditPopUpMenu(View view) {
+    private void showMorePopUpMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         if (groupOwner.getID().equals(currentUser.getID())) {
             // Current user is Owner of the Club
@@ -256,7 +266,11 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
             } else if (menuItem.getItemId() == R.id.menu_option_leave_go_club) {
                 onLeaveGoClubDialog();
             } else if (menuItem.getItemId() == R.id.menu_option_edit_go_club) {
-
+                // Todo - Edit Club
+                Intent mIntent = new Intent(GoClubDetailActivity.this, CreateGoClubActivity.class);
+                mIntent.putExtra(EDIT_STATUS, EDIT);
+                mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
+                startActivity(mIntent);
             }
             return true;
         }
@@ -378,31 +392,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                     alertDialog.dismiss();
                 else
                     onWithdrawGoClub();
-            }
-        });
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-    }
-
-    // Todo - Can not Leave GoClub
-    private void onNotAbleToLeaveGoClubDialog() {
-        final JGGAlertView builder = new JGGAlertView(this,
-                "Promote Another As Admin",
-                "You can't leave this GoClub if you are the sole admin.",
-                false,
-                "",
-                R.color.JGGPurple,
-                R.color.JGGPurple10Percent,
-                getResources().getString(R.string.alert_withdraw),
-                R.color.JGGPurple);
-        alertDialog = builder.create();
-        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
-            @Override
-            public void onDoneButtonClick(View view) {
-                if (view.getId() == R.id.btn_alert_cancel)
-                    alertDialog.dismiss();
-                else
-                    alertDialog.dismiss();
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);
