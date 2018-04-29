@@ -36,6 +36,8 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
     public TextView btnViewQuotation;
     public LinearLayout viewQuotationLayout;
     public LinearLayout awardedLayout;
+    public TextView lblAwardTime;
+    public LinearLayout llAwardQuote;
     public ImageView imgRightButton;
 
     public JobStatusSummaryQuotationView(Context context, JGGUserType userType) {
@@ -54,17 +56,23 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_quotation, this);
 
-        lblTitle = view.findViewById(R.id.lbl_title);
         imgQuotation = view.findViewById(R.id.img_quotation);
         quotationLine = view.findViewById(R.id.quotation_line);
-        btnViewQuotation = view.findViewById(R.id.btn_view_quotation);
-        lblTime = view.findViewById(R.id.lbl_received_quotation_time);
-        lblQuotationCount = view.findViewById(R.id.lbl_quotation_count);
+
         viewQuotationLayout = view.findViewById(R.id.view_quotation_layout);
+
+        lblTime = view.findViewById(R.id.lbl_received_quotation_time);
+        lblTitle = view.findViewById(R.id.lbl_title);
+
         awardedLayout = view.findViewById(R.id.awarded_layout);
+        lblAwardTime = view.findViewById(R.id.lbl_award_time);
+
+        llAwardQuote = view.findViewById(R.id.ll_award_quote);
+        lblQuotationCount = view.findViewById(R.id.lbl_quotation_count);
         imgRightButton = view.findViewById(R.id.img_right);
         imgRightButton.setImageResource(mImage);
 
+        btnViewQuotation = view.findViewById(R.id.btn_view_quotation);
         btnViewQuotation.setOnClickListener(this);
     }
 

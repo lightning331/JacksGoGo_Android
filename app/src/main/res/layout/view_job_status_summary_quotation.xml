@@ -56,6 +56,7 @@
                     android:id="@+id/lbl_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textColor="@color/JGGBlack"
@@ -63,16 +64,16 @@
                     android:textSize="@dimen/list_title_font_size"/>
 
                 <TextView
-                    android:id="@+id/lbl_declined_time"
+                    android:id="@+id/lbl_award_time"
                     android:text="12 Jul 2017 8:15 PM"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/JGGGrey2"
                     android:fontFamily="@font/muliregular"
                     android:textSize="12dp"/>
                 <LinearLayout
+                    android:id="@+id/ll_award_quote"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical">

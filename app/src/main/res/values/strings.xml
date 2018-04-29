@@ -206,6 +206,16 @@
     <string name="set_app_date_title">Appointment to be set.</string>
     <string name="set_app_date_desc">Discuss an appropriate date to set an appointment.</string>
 
+    <string name="appointment_confirmed">Appointment confirmed.</string>
+    <string name="ready_start">I Am Ready to Start</string>
+    <string name="work_in_progress">Work is in progress...</string>
+    <string name="job_report">Job Report...</string>
+    <string name="report_description">Submit your job report for verification once its completed.</string>
+    <string name="started_work">You started the work.</string>
+
+    <string name="completed_work">You completed the work.</string>
+    <string name="official_complete">Job is officially completed. Payment is released.</string>
+
 
     <!-- TODO: Reject Bid -->
     <string name="title_bid">Bid</string>

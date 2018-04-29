@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobStatusSummaryFooterView extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryHeaderView extends RelativeLayout implements View.OnClickListener {
 
     private Context mContext;
     private int mColor;
@@ -25,7 +25,7 @@ public class JobStatusSummaryFooterView extends RelativeLayout implements View.O
     public LinearLayout tipLayout;
     public LinearLayout rehireLayout;
 
-    public JobStatusSummaryFooterView(Context context, JGGUserType userType) {
+    public JobStatusSummaryHeaderView(Context context, JGGUserType userType) {
         super(context);
         this.mContext = context;
 
@@ -39,7 +39,7 @@ public class JobStatusSummaryFooterView extends RelativeLayout implements View.O
 
     private void initView() {
         LayoutInflater mLayoutInflater       = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_footer, this);
+        View view                            = mLayoutInflater.inflate(R.layout.view_job_status_summary_header, this);
 
         reportLayout = (LinearLayout) view.findViewById(R.id.job_report_layout);
         invoiceLayout = (LinearLayout) view.findViewById(R.id.job_invoice_layout);

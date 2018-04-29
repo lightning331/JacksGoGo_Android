@@ -21,14 +21,13 @@ import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.ServiceProviderActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryFooterView;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryHeaderView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryPaymentView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryQuotationView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryTipView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryWorkProgressView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentActivityModel;
@@ -43,10 +42,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.open;
-import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.started;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
@@ -79,7 +74,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
     private LinearLayout progressLayout;
     private JobStatusSummaryWorkProgressView progressView;
     private LinearLayout footerLayout;
-    private JobStatusSummaryFooterView footerView;
+    private JobStatusSummaryHeaderView footerView;
     private LinearLayout tipLayout;
     private JobStatusSummaryTipView tipView;
     private LinearLayout paymentLayout;
@@ -169,7 +164,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         progressView = new JobStatusSummaryWorkProgressView(mContext, CLIENT);
 
         footerLayout = view.findViewById(R.id.job_main_header_layout);
-        footerView = new JobStatusSummaryFooterView(mContext, CLIENT);
+        footerView = new JobStatusSummaryHeaderView(mContext, CLIENT);
 
         cancelledLayout = view.findViewById(R.id.job_main_cancelled_layout);
         cancelledView = new JobStatusSummaryCancelled(mContext, CLIENT);
@@ -344,7 +339,7 @@ public class OutgoingJobFragment extends Fragment implements View.OnClickListene
         // Footer Layout
         footerView.reportLayout.setVisibility(View.VISIBLE);
         footerView.invoiceLayout.setVisibility(View.VISIBLE);
-        footerView.setOnItemClickListener(new JobStatusSummaryFooterView.OnItemClickListener() {
+        footerView.setOnItemClickListener(new JobStatusSummaryHeaderView.OnItemClickListener() {
             @Override
             public void onItemClick(View item) {
                 if (item.getId() == R.id.job_report_layout) {
