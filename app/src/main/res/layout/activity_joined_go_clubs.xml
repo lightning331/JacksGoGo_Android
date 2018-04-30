@@ -49,9 +49,13 @@
                     android:textAlignment="center"
                     app:queryHint="@string/joined_go_club_search_placeholder">
                 </android.support.v7.widget.SearchView>
-                <RelativeLayout
+                <android.support.v4.widget.SwipeRefreshLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/swipeSearchContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/JGGGrey5">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/joined_go_club_recycler_view"
                         android:layout_width="match_parent"
@@ -59,7 +63,7 @@
                         android:background="@color/JGGGrey5"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior">
                     </android.support.v7.widget.RecyclerView>
-                </RelativeLayout>
+                </android.support.v4.widget.SwipeRefreshLayout>>
             </LinearLayout>
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>

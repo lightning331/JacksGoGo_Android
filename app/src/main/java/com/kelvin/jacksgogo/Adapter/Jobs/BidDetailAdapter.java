@@ -35,10 +35,10 @@ public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         JGGProposalModel selectedProposal = JGGAppManager.getInstance().getSelectedProposal();
         if (viewType == 0) {
-            View biderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
-            UserNameRatingCell biderCell = new UserNameRatingCell(mContext, biderView);
-            biderCell.setData(mProposal.getUserProfile());
-            return biderCell;
+            View bidderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
+            UserNameRatingCell bidderCell = new UserNameRatingCell(mContext, bidderView);
+            bidderCell.setData(mProposal.getUserProfile());
+            return bidderCell;
         } else if (viewType == 1) {
             View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);
             JobDetailDescriptionCell descriptionCell = new JobDetailDescriptionCell(descriptionView);
@@ -51,7 +51,7 @@ public class BidDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             budgetCell.titleLayout.setVisibility(View.VISIBLE);
             budgetCell.titleLayout.setOrientation(LinearLayout.VERTICAL);
             budgetCell.setTitle("$ " + String.valueOf(mProposal.getBudget()), true);
-            budgetCell.description.setText("- Our own supplies $20.");
+            //budgetCell.description.setText("- Our own supplies $20.");
             return budgetCell;
 //        } else if (viewType == 3) {
 //            View descriptionView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_description, parent, false);

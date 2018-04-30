@@ -9,8 +9,8 @@
         android:icon="@mipmap/button_edit_purple"
         android:title="@string/menu_option_edit" />
     <item
-        android:id="@+id/menu_option_report_go_club"
-        android:icon="@mipmap/icon_flag_purple"
-        android:title="@string/menu_option_report_go_club" />
+        android:id="@+id/menu_option_delete"
+        android:icon="@mipmap/button_delete_purple"
+        android:title="@string/menu_option_delete" />
 </menu>
 

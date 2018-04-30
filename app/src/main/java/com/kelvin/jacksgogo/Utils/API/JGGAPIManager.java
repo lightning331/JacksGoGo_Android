@@ -14,7 +14,9 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobInfoResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGoclubusersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
@@ -26,6 +28,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -256,9 +259,29 @@ public interface JGGAPIManager {
 
     @FormUrlEncoded
     @POST("api/Event/SearchGoClub")
-    Call<JGGGetGoClubResponse> searchGoClub(@Field("Query") String query,
-                                            @Field("CategoryID") String categoryID,
-                                            @Field("Tag") String tag,
-                                            @Field("PageIndex") Integer pageIndex,
-                                            @Field("PageSize") Integer pageSize);
+    Call<JGGGetGoClubsResponse> searchGoClub(@Field("Query") String query,
+                                             @Field("CategoryID") String categoryID,
+                                             @Field("Tag") String tag,
+                                             @Field("PageIndex") Integer pageIndex,
+                                             @Field("PageSize") Integer pageSize);
+
+    @GET("api/Event/GetUsersByClub")
+    Call<JGGGoclubusersResponse> getUsersByClub(@Query("ClubID") String clubID);
+
+    @GET("api/Event/GetClubsByUser")
+    Call<JGGGetGoClubsResponse> getClubsByUser(@Query("UserProfileID") String userProfileID,
+                                               @Query("PageIndex") Integer pageIndex,
+                                               @Query("PageSize") Integer pageSize);
+
+    @GET("api/Event/GetClubByID")
+    Call<JGGGetGoClubResponse> getClubByID(@Query("ClubID") String clubID);
+
+    @FormUrlEncoded
+    @POST("api/Event/LeaveGoClub")
+    Call<JGGBaseResponse> leaveGoClub(@Field("ClubID") String clubID,
+                                      @Field("UserProfileID") String userProfileID,
+                                      @Field("Reason") String reason);
+
+    @DELETE("api/Event/DeleteGoClub")
+    Call<JGGBaseResponse> deleteGoClub(@Query("ClubID") String clubID);
 }

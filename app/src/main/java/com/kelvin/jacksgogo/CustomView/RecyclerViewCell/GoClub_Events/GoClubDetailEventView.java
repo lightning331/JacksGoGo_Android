@@ -14,10 +14,9 @@ import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppInviteProviderCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
-import com.kelvin.jacksgogo.Utils.Global.EventUserType;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
@@ -28,6 +27,7 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
+import static com.kelvin.jacksgogo.Utils.Global.getClubAdminUsers;
 
 public class GoClubDetailEventView extends RecyclerView.ViewHolder {
 
@@ -39,25 +39,14 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
     public TextView btnCreateEvent;
 
     private JGGGoClubModel mClub;
-    private ArrayList<JGGGoClubUserModel> adminUsers = new ArrayList<>();
-    private ArrayList<JGGGoClubUserModel> owners = new ArrayList<>();
-    private JGGGoClubUserModel owner = new JGGGoClubUserModel();
+    private ArrayList<JGGGoClubUserModel> adminUsers;
 
     public GoClubDetailEventView(View itemView, Context context) {
         super(itemView);
         mContext = context;
         mClub = JGGAppManager.getInstance().getSelectedClub();
-        // Todo - Create Owner for add to the ClubUser list
-        owner.setClubID(mClub.getID());
-        owner.setUserProfileID(mClub.getUserProfileID());
-        owner.setUserType(EventUserType.owner);
-        owner.setUserStatus(EventUserStatus.approved);
-        owner.setAddedOn(mClub.getCreatedOn());
-        owner.setUserProfile(mClub.getUserProfile());
-        owners.add(owner);
         // Todo - Make ClubUser list
-        adminUsers.addAll(owners);
-        adminUsers.addAll(mClub.getClubUsers());
+        adminUsers = getClubAdminUsers(mClub.getClubUsers());
 
         // Todo - Events
         initEventView();
@@ -100,18 +89,24 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
         });
 
         // Todo - Create New Event
-        for (JGGGoClubUserModel clubUser : adminUsers) {
-            if (clubUser.getUserProfileID().equals(JGGAppManager.getInstance().getCurrentUser().getID())) {
+        String currentUserID = JGGAppManager.getInstance().getCurrentUser().getID();
+        if (mClub.getUserProfileID().equals(currentUserID)) {
+            btnCreateEvent.setVisibility(View.VISIBLE);
+            btnCreateEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCreateNewClub();
+                }
+            });
+        } else {
+            for (JGGGoClubUserModel clubUser : adminUsers) {
                 switch (clubUser.getUserType()) {
-                    case owner:
                     case admin:
+                        btnCreateEvent.setVisibility(View.VISIBLE);
                         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent mIntent = new Intent(mContext, CreateGoClubActivity.class);
-                                mIntent.putExtra(EDIT_STATUS, POST);
-                                mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                                mContext.startActivity(mIntent);
+                                onCreateNewClub();
                             }
                         });
                         break;
@@ -120,25 +115,31 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
                         btnCreateEvent.setVisibility(View.GONE);
                         break;
                 }
-            } else
-                btnCreateEvent.setVisibility(View.GONE);
+            }
         }
+    }
+
+    private void onCreateNewClub() {
+        Intent mIntent = new Intent(mContext, CreateGoClubActivity.class);
+        mIntent.putExtra(EDIT_STATUS, POST);
+        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+        mContext.startActivity(mIntent);
     }
 
     public class GoClubDetailMemberAdapter extends RecyclerView.Adapter {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View posterView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_invite_provider, parent, false);
-            AppInviteProviderCell posterViewHolder = new AppInviteProviderCell(mContext, posterView);
-            return posterViewHolder;
+            View clubUserView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
+            UserNameRatingCell clubUserViewHolder = new UserNameRatingCell(mContext, clubUserView);
+            return clubUserViewHolder;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            AppInviteProviderCell viewHolder = (AppInviteProviderCell) holder;
+            UserNameRatingCell viewHolder = (UserNameRatingCell) holder;
             JGGGoClubUserModel userProfileModel = adminUsers.get(position);
-            viewHolder.setClubUser(userProfileModel);
+            viewHolder.setClubAdminUser(userProfileModel);
         }
 
         @Override

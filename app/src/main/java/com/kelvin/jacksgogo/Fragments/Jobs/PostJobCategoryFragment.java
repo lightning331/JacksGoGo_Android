@@ -129,8 +129,7 @@ public class PostJobCategoryFragment extends Fragment {
             public void onItemClick(int position) {
                 if (position > 0) {
 
-                    JGGCategoryModel categoryModel = mCategories.get(position);
-                    JGGAppManager.getInstance().setSelectedCategory(categoryModel);
+                    JGGCategoryModel categoryModel;
 
                     if (appType == AppointmentType.JOBS) {
                         PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabName.DESCRIBE, PostStatus.POST);
@@ -149,6 +148,7 @@ public class PostJobCategoryFragment extends Fragment {
                                 .addToBackStack("post_job")
                                 .commit();
                     } else if (appType == AppointmentType.GOCLUB) {
+                        categoryModel =  mCategories.get(position);
                         JGGGoClubModel creatingClub = JGGAppManager.getInstance().getSelectedClub();
                         creatingClub.setCategoryID(categoryModel.getID());
                         creatingClub.setCategory(categoryModel);
@@ -164,6 +164,8 @@ public class PostJobCategoryFragment extends Fragment {
                                 .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(EventTabName.DESCRIBE, PostStatus.POST))
                                 .addToBackStack("post_event")
                                 .commit();
+                    } else {
+                         categoryModel = mCategories.get(position);
                     }
                 }
             }

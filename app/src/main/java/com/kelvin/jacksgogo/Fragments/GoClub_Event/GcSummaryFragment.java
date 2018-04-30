@@ -113,12 +113,12 @@ public class GcSummaryFragment extends Fragment {
         ArrayList<JGGUserProfileModel> owner = new ArrayList<>();
         owner.add(JGGAppManager.getInstance().getCurrentUser());
         invitedUsers.addAll(owner);
-        if (creatingClub.getClubUsers().size() > 0) {
-            ArrayList<JGGUserProfileModel> tmpUser = new ArrayList<>();
+        if (postStatus == EDIT) {
+            ArrayList<JGGUserProfileModel> adminUsers = new ArrayList<>();
             for (JGGGoClubUserModel user : creatingClub.getClubUsers()) {
-                tmpUser.add(user.getUserProfile());
+                adminUsers.add(user.getUserProfile());
             }
-            invitedUsers.addAll(tmpUser);
+            invitedUsers.addAll(adminUsers);
         } else
             invitedUsers.addAll(creatingClub.getUsers());
 

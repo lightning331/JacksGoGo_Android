@@ -167,7 +167,7 @@ public class PostedProposalFragment extends Fragment {
             lblBudget.setText(budget);
             // Supplies
             String supplies = "Our own supplies - $ ";
-            lblSupplies.setText(supplies);
+            //lblSupplies.setText(supplies);
             // Rescheduling
             String noReschedule = "No rescheduling allowed.";
             if (mProposal.isRescheduleAllowed() == null)

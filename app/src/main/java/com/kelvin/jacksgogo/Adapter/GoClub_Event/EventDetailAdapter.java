@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kelvin.jacksgogo.Activities.Appointment.AppMapViewActivity;
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppInviteProviderCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.GoClub_Events.UpdatesEventView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailAverageQuoteCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailDescriptionCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailImageCarouselCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobDetailLocationCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailCategoryCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailReferenceNoCell;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Services.ServiceDetailTagListCell;
@@ -86,12 +86,9 @@ public class EventDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return membersViewHolder;
         } else if (viewType == 6) {
             // Event Poster view
-            View posterView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_invite_provider, parent, false);
-            AppInviteProviderCell posterViewHolder = new AppInviteProviderCell(mContext, posterView);
-            posterViewHolder.lblUserType.setVisibility(View.VISIBLE);
-            posterViewHolder.btnInvite.setVisibility(View.GONE);
-            posterViewHolder.ratingBar.setVisibility(View.GONE);
-            return posterViewHolder;
+            View eventUserView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
+            UserNameRatingCell eventUserViewHolder = new UserNameRatingCell(mContext, eventUserView);
+            return eventUserViewHolder;
         } else if (viewType == 7) {
             // Updates event view
             View eventView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_updates_event_list, parent, false);

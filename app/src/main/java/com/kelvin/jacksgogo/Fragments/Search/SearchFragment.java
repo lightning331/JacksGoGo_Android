@@ -39,7 +39,7 @@ import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
 import com.kelvin.jacksgogo.Utils.Responses.JGGAppTotalCountResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -524,11 +524,11 @@ public class SearchFragment extends Fragment {
 
     // TODO : Get Recommended GoClubs
     private void onLoadGoClubs() {
-        Call<JGGGetGoClubResponse> call = apiManager.searchGoClub(null, null,
+        Call<JGGGetGoClubsResponse> call = apiManager.searchGoClub(null, null,
                 null,  0, 10);
-        call.enqueue(new Callback<JGGGetGoClubResponse>() {
+        call.enqueue(new Callback<JGGGetGoClubsResponse>() {
             @Override
-            public void onResponse(Call<JGGGetGoClubResponse> call, Response<JGGGetGoClubResponse> response) {
+            public void onResponse(Call<JGGGetGoClubsResponse> call, Response<JGGGetGoClubsResponse> response) {
                 swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
@@ -547,7 +547,7 @@ public class SearchFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<JGGGetGoClubResponse> call, Throwable t) {
+            public void onFailure(Call<JGGGetGoClubsResponse> call, Throwable t) {
                 swipeContainer.setRefreshing(false);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }

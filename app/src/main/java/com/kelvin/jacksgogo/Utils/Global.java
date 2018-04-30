@@ -10,6 +10,8 @@ import android.view.WindowManager;
 
 import com.kelvin.jacksgogo.CustomView.CustomTypefaceSpan;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -572,6 +574,51 @@ public class Global {
             default:
                 return array;
         }
+    }
+
+    public static ArrayList<JGGGoClubUserModel> getClubAdminUsers(ArrayList<JGGGoClubUserModel> allUsers) {
+        JGGGoClubModel club = JGGAppManager.getInstance().getSelectedClub();
+        ArrayList<JGGGoClubUserModel> clubAdminUsers = new ArrayList<>();
+        ArrayList<JGGGoClubUserModel> owners = new ArrayList<>();
+        ArrayList<JGGGoClubUserModel> admins = new ArrayList<>();
+        // Todo - Create Owner for add to the ClubUser list
+        JGGGoClubUserModel owner = new JGGGoClubUserModel();
+        owner.setClubID(club.getID());
+        owner.setUserProfileID(club.getUserProfileID());
+        owner.setUserType(EventUserType.owner);
+        owner.setUserStatus(EventUserStatus.approved);
+        owner.setAddedOn(club.getCreatedOn());
+        owner.setUserProfile(club.getUserProfile());
+        owners.add(owner);
+        // Todo - Short Club Admin User
+        for (JGGGoClubUserModel user : allUsers) {
+            if (user.getUserType() == EventUserType.admin) {
+                admins.add(user);
+            }
+        }
+        // Todo - Make ClubUser list
+        clubAdminUsers.addAll(owners);
+        clubAdminUsers.addAll(admins);
+        return clubAdminUsers;
+    }
+
+    public static ArrayList<JGGGoClubUserModel> getClubAllUsers(ArrayList<JGGGoClubUserModel> allUsers) {
+        JGGGoClubModel club = JGGAppManager.getInstance().getSelectedClub();
+        ArrayList<JGGGoClubUserModel> clubAllUsers = new ArrayList<>();
+        ArrayList<JGGGoClubUserModel> owners = new ArrayList<>();
+        // Todo - Create Owner for add to the ClubUser list
+        JGGGoClubUserModel owner = new JGGGoClubUserModel();
+        owner.setClubID(club.getID());
+        owner.setUserProfileID(club.getUserProfileID());
+        owner.setUserType(EventUserType.owner);
+        owner.setUserStatus(EventUserStatus.approved);
+        owner.setAddedOn(club.getCreatedOn());
+        owner.setUserProfile(club.getUserProfile());
+        owners.add(owner);
+        // Todo - Make ClubUser list
+        clubAllUsers.addAll(owners);
+        clubAllUsers.addAll(allUsers);
+        return clubAllUsers;
     }
 
     public static SpannableString setBoldText(String s) {

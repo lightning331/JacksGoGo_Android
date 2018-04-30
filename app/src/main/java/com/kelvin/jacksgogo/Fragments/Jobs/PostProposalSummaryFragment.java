@@ -172,7 +172,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             // Budget
             lblBidBudget.setText(String.valueOf(selectedProposal.getBudget()) + "/month");
             // Supplies
-            lblSupplies.setText("Our own supplies - $ ");
+            //lblSupplies.setText("Our own supplies - $ ");
             // Rescheduling
             if (selectedProposal.isRescheduleAllowed())
                 lblRescheduling.setText(getDaysString(Long.valueOf(selectedProposal.getRescheduleTime())));
