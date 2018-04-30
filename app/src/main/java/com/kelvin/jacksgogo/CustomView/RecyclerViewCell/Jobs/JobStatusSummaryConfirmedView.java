@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,7 +27,7 @@ public class JobStatusSummaryConfirmedView extends RelativeLayout {
     public TextView lblConfirmedTime;
     public TextView lblConfirmedTitle;
     public TextView lblConfirmedDesc;
-    public TextView btnSetAppDate;
+    public Button btnSetAppDate;
 
     public JobStatusSummaryConfirmedView(Context context, JGGUserType userType) {
         super(context);

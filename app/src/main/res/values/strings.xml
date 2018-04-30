@@ -205,6 +205,11 @@
     <string name="proposal_accepted_title">Congratulations! Your proposal was accepted.</string>
     <string name="set_app_date_title">Appointment to be set.</string>
     <string name="set_app_date_desc">Discuss an appropriate date to set an appointment.</string>
+    <string name="set_appointment_date">Set Appointment Date</string>
+    <string name="appointment_description">We\'ll drop you a notification a day before your appointment.</string>
+    <string name="pending_appointment">Pending Setting Appointment...</string>
+    <string name="having_problem">Having problems?</string>
+    <string name="report_to_us">Report To Us</string>
 
     <string name="appointment_confirmed">Appointment confirmed.</string>
     <string name="ready_start">I Am Ready to Start</string>
