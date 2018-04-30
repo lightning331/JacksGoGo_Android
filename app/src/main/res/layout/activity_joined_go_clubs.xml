@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.GoClub_Event.JoinedGoClubsActivity">
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -66,6 +66,6 @@
                 </android.support.v4.widget.SwipeRefreshLayout>>
             </LinearLayout>
         </FrameLayout>
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>

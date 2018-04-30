@@ -19,6 +19,7 @@ import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBeha
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.MarginDecoration;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -114,7 +115,7 @@ public class AllGoClubsActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
+        recyclerView.addItemDecoration(new MarginDecoration(this));
 
         onLoadGoClubs();
     }

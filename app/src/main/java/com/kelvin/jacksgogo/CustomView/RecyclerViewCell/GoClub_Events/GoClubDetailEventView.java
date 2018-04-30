@@ -16,6 +16,7 @@ import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
@@ -88,19 +89,24 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
         });
 
         // Todo - Create New Event
-        for (JGGGoClubUserModel clubUser : adminUsers) {
-            if (clubUser.getUserProfileID().equals(JGGAppManager.getInstance().getCurrentUser().getID())) {
+        String currentUserID = JGGAppManager.getInstance().getCurrentUser().getID();
+        if (mClub.getUserProfileID().equals(currentUserID)) {
+            btnCreateEvent.setVisibility(View.VISIBLE);
+            btnCreateEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCreateNewClub();
+                }
+            });
+        } else {
+            for (JGGGoClubUserModel clubUser : adminUsers) {
                 switch (clubUser.getUserType()) {
-                    case owner:
                     case admin:
                         btnCreateEvent.setVisibility(View.VISIBLE);
                         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent mIntent = new Intent(mContext, CreateGoClubActivity.class);
-                                mIntent.putExtra(EDIT_STATUS, POST);
-                                mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                                mContext.startActivity(mIntent);
+                                onCreateNewClub();
                             }
                         });
                         break;
@@ -111,6 +117,13 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
                 }
             }
         }
+    }
+
+    private void onCreateNewClub() {
+        Intent mIntent = new Intent(mContext, CreateGoClubActivity.class);
+        mIntent.putExtra(EDIT_STATUS, POST);
+        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+        mContext.startActivity(mIntent);
     }
 
     public class GoClubDetailMemberAdapter extends RecyclerView.Adapter {

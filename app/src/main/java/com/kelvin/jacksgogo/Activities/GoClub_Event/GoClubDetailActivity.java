@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -35,6 +36,7 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -52,6 +54,7 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class GoClubDetailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -72,6 +75,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     private BottomNavigationView mbtmView;
     private GoClubDetailAdapter adapter;
     private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
 
     private JGGGoClubModel mClub;
     private JGGUserProfileModel groupOwner;
@@ -92,7 +96,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
         // Todo - Hide Bottom NavigationView and ToolBar
         mbtmView = findViewById(R.id.go_club_detail_bottom);
-
         mbtmView.setVisibility(View.GONE);
         btnJoinGoClub.setVisibility(View.GONE);
         pendingLayout.setVisibility(View.GONE);
@@ -132,10 +135,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         getClubByID();
-
-        // Todo - Dummy
-        //updateRecyclerView();
-        //setJoinToGoClubStatus();
     }
 
     private void getClubByID() {
@@ -268,10 +267,63 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         onJoinToGoClubDialog(true);
     }
 
-    // Todo - Withdraw GoClub
-    private void onWithdrawGoClub() {
+    // Todo - Leave from GoClub
+    private void onLeaveGoClub(String reason) {
         alertDialog.dismiss();
-        setBottomNavHideStatus(EventUserStatus.none);
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = apiManager.leaveGoClub(mClub.getID(), currentUser.getID(),reason);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        getClubByID();
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Todo - Delete GoClub
+    private void onDeleteGoClub(String reason) {
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = apiManager.deleteGoClub(mClub.getID());
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        GoClubDetailActivity.super.finish();
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void actionbarItemClick(View view) {
@@ -349,7 +401,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                 mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
                 startActivity(mIntent);
             } else if (menuItem.getItemId() == R.id.menu_option_delete) {
-
+                onDeleteGoClubDialog();
             }
             return true;
         }
@@ -453,9 +505,15 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
     // Todo - Leave GoClub
     private void onLeaveGoClubDialog() {
+        String userName;
+        if (groupOwner.getUser().getGivenName() == null)
+            userName = currentUser.getUser().getUserName();
+        else
+            userName = currentUser.getUser().getFullName();
+        String desc = "Let " + userName + " know why you are withdrawing from the event.";
         final JGGAlertView builder = new JGGAlertView(this,
                 "Withdraw From GoClub?",
-                "Let Clarence.Tan know why you are withdrawing from the event.",
+                desc,
                 true,
                 getResources().getString(R.string.alert_cancel),
                 R.color.JGGPurple,
@@ -470,7 +528,33 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                 if (view.getId() == R.id.btn_alert_cancel)
                     alertDialog.dismiss();
                 else
-                    onWithdrawGoClub();
+                    onLeaveGoClub(builder.txtReason.getText().toString());
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    // Todo - Leave GoClub
+    private void onDeleteGoClubDialog() {
+        final JGGAlertView builder = new JGGAlertView(this,
+                "Delete GoClub?",
+                "Let members know why you are deleting the GoClub.",
+                true,
+                getResources().getString(R.string.alert_cancel),
+                R.color.JGGPurple,
+                R.color.JGGPurple10Percent,
+                getResources().getString(R.string.alert_delete),
+                R.color.JGGRed);
+        alertDialog = builder.create();
+        builder.txtReason.addTextChangedListener(this);
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else
+                    onDeleteGoClub(builder.txtReason.getText().toString());
             }
         });
         alertDialog.setCanceledOnTouchOutside(false);

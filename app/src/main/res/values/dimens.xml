@@ -36,6 +36,7 @@
     <dimen name="credit_header_height">152dp</dimen>
 
     <dimen name="flag_width">64dp</dimen>
+    <dimen name="item_margin">4dp</dimen>
 
 
 </resources>

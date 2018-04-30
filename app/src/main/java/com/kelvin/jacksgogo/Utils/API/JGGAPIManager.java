@@ -28,6 +28,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -274,4 +275,13 @@ public interface JGGAPIManager {
 
     @GET("api/Event/GetClubByID")
     Call<JGGGetGoClubResponse> getClubByID(@Query("ClubID") String clubID);
+
+    @FormUrlEncoded
+    @POST("api/Event/LeaveGoClub")
+    Call<JGGBaseResponse> leaveGoClub(@Field("ClubID") String clubID,
+                                      @Field("UserProfileID") String userProfileID,
+                                      @Field("Reason") String reason);
+
+    @DELETE("api/Event/DeleteGoClub")
+    Call<JGGBaseResponse> deleteGoClub(@Query("ClubID") String clubID);
 }
