@@ -58,19 +58,20 @@
             android:textColor="@color/JGGBlack"
             android:fontFamily="@font/muliregular"
             android:textSize="@dimen/list_title_font_size"/>
-        <TextView
-            android:visibility="gone"
+        <Button
+            android:visibility="visible"
             android:id="@+id/btn_set_appointment_date"
             android:text="Set Appointment Date"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:padding="@dimen/edit_text_padding_size"
+            android:textAllCaps="false"
             android:textAlignment="center"
             android:fontFamily="@font/mulibold"
             android:textSize="@dimen/list_title_font_size"
             android:textColor="@color/JGGWhite"
             android:background="@drawable/green_background">
-        </TextView>
+        </Button>
     </LinearLayout>
 </LinearLayout>

@@ -23,7 +23,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobStatusSummaryQuotationView extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryQuotationView extends RelativeLayout {
 
     private Context mContext;
     private int mImage;
@@ -73,7 +73,6 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
         imgRightButton.setImageResource(mImage);
 
         btnViewQuotation = view.findViewById(R.id.btn_view_quotation);
-        btnViewQuotation.setOnClickListener(this);
     }
 
     public void notifyDataChanged(boolean isDeleted, int count) {
@@ -88,7 +87,6 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
 
             lblTime.setText(getDayMonthYear(postOn) + " " + getTimePeriodString(postOn));
             lblQuotationCount.setText(proposalCount);
-            lblQuotationCount.setOnClickListener(this);
         } else {
             quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
             imgQuotation.setImageResource(R.mipmap.icon_provider_green);
@@ -101,23 +99,5 @@ public class JobStatusSummaryQuotationView extends RelativeLayout implements Vie
                 btnViewQuotation.setText(R.string.view_quotation);
             }
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_view_quotation
-                || view.getId() == R.id.lbl_quotation_count) {
-            listener.onItemClick(view);
-        }
-    }
-
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View item);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 }
