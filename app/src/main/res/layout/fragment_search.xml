@@ -1,11 +1,8 @@
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeSearchContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/JGGGrey5"
-    tools:context="com.kelvin.jacksgogo.Fragments.Search.SearchFragment">
+    android:background="@color/JGGGrey5">
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView

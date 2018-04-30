@@ -4,17 +4,19 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 
-public class JGGGetGoClubResponse extends JGGBaseResponse {
+import java.util.ArrayList;
+
+public class JGGGetGoClubsResponse extends JGGBaseResponse {
 
     @SerializedName("Value")
     @Expose
-    private JGGGoClubModel Value;
+    private ArrayList<JGGGoClubModel> Value;
 
-    public JGGGoClubModel getValue() {
+    public ArrayList<JGGGoClubModel> getValue() {
         return Value;
     }
 
-    public void setValue(JGGGoClubModel value) {
+    public void setValue(ArrayList<JGGGoClubModel> value) {
         Value = value;
     }
 }

@@ -22,7 +22,6 @@ import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Jobs.JobsListingAdapter;
 import com.kelvin.jacksgogo.Adapter.Services.ActiveServiceAdapter;
-import com.kelvin.jacksgogo.Adapter.Users.UserListingAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -178,8 +177,8 @@ public class FavouriteFragment extends Fragment {
     }
 
     private void updateUsersAdapter() {
-        UserListingAdapter adapter = new UserListingAdapter(mContext);
-        recyclerView.setAdapter(adapter);
+        //UserListingAdapter adapter = new UserListingAdapter(mContext);
+        //recyclerView.setAdapter(adapter);
     }
 
     private void searchServices() {

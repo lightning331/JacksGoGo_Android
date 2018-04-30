@@ -42,7 +42,6 @@ public class CategoryRecyclerView extends RecyclerView.ViewHolder {
     private CategoryAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
 
-    // recommedn title view
     private SectionTitleView recommendTitleView;
 
     public CategoryRecyclerView(View itemView, Context context, AppointmentType type, ArrayList<JGGCategoryModel> data) {

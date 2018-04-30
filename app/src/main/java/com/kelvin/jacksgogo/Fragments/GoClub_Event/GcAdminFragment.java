@@ -137,6 +137,7 @@ public class GcAdminFragment extends Fragment {
             creatingClub.setClubUsers(clubUsers);
         } else {
             creatingClub.getClubUsers().clear();
+            creatingClub.getUserProfileIDs().clear();
             creatingClub.setSole(true);
         }
 

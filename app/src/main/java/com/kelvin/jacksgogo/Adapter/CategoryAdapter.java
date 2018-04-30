@@ -49,6 +49,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String url = mCategories.get(position).getImage();
                 categoryView.setData(url, categoryName);
             }
+            categoryView.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(position);
+                }
+            });
         } else if (mType == AppointmentType.JOBS) {
             if (position == 0) {
                 categoryView.lblCategory.setText("Quick Jobs");
@@ -60,13 +66,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     categoryView.setData(url, categoryName);
                 }
             }
+            categoryView.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(position - 1);
+                }
+            });
         }
-        categoryView.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onItemClick(position);
-            }
-        });
     }
 
     @Override

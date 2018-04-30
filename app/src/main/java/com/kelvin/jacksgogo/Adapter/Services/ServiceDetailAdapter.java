@@ -175,6 +175,8 @@ public class ServiceDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     View posterInfoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_job_detail_user_name_rating, parent, false);
                     UserNameRatingCell posterInfoViewHolder = new UserNameRatingCell(mContext, posterInfoView);
                     posterInfoViewHolder.setData(mService.getUserProfile());
+                    posterInfoViewHolder.btnReviews.setVisibility(View.VISIBLE);
+                    posterInfoViewHolder.btnReviews.setOnClickListener(this);
                     return posterInfoViewHolder;
                 }
             case 8:     // Service Provider Cell
