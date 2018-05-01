@@ -229,6 +229,7 @@ public class IncomingJobFragment extends Fragment {
                             showJobClosed(activity);
                             break;
                         case job_confirmed:
+                            // TODO - need to check the activity status
                             showConfirmed(activity);
                             break;
                         case job_flagged:
@@ -243,6 +244,8 @@ public class IncomingJobFragment extends Fragment {
 //                            mActivity.setStatus(mProposal);
 
                             showProposalAccepted(activity);
+                            break;
+                        case job_rejected:
                             break;
 
                         case service_created:
@@ -269,6 +272,7 @@ public class IncomingJobFragment extends Fragment {
 
                         case proposal_sent: // 400
                             showSentProposal(activity);
+                            setWaitingClientDecision();
                             break;
                         case proposal_edited:  // 401
                             break;
@@ -289,14 +293,14 @@ public class IncomingJobFragment extends Fragment {
                             showInvited(activity);
                             break;
                         case invite_accepted: // 408
-                            setWaitingClientDecision(activity);
+                            setWaitingClientDecision();
                             break;
                         case invite_rejected:
                             showDeclineInvite(activity);
                             break;
 
                         case contract_created: // 500
-                            setReadyToStartStatus(activity);
+                            showProposalAccepted(activity);
                             break;
                         case contract_started: // 501
                             if (mContract.getStatus() == started) {
@@ -312,6 +316,12 @@ public class IncomingJobFragment extends Fragment {
                             showOfficialComplete(activity);
                             break;
                         case contract_flagged:
+                            break;
+                        case contract_award:
+                            showConfirmed(activity);
+                            break;
+                        case contract_confirmed:
+                            setReadyToStartStatus(activity);
                             break;
 
                         case result_reported:  // 600
@@ -363,7 +373,7 @@ public class IncomingJobFragment extends Fragment {
     }
 
     // TODO - 1-2. Awaiting client acceptance
-    private void setWaitingClientDecision(JGGAppointmentActivityModel activity) {
+    private void setWaitingClientDecision() {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
 
