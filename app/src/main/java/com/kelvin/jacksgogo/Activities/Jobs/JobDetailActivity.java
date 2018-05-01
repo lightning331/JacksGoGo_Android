@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,13 +48,13 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.POST;
 import static com.kelvin.jacksgogo.Utils.Global.VIEW;
-import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class JobDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.job_detail_actionbar) Toolbar mToolbar;
     @BindView(R.id.job_detail_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.btn_job_detail_make_proposal) TextView btnMakeProposal;
+    @BindView(R.id.swipeSearchContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.lbl_booked_count) TextView lblViewedCount;
     @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
     @BindView(R.id.lbl_booked_title) TextView lblViewedCountDesc;
@@ -109,6 +110,28 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGCyan,
+                R.color.JGGCyan,
+                R.color.JGGCyan,
+                R.color.JGGCyan);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Get Proposed status
+                                            getProposedStatus();
+
+                                            // Get Appointment Information - AveragePrice, ProposalCount, LastRespondOn
+                                            getInformationOfAppointment();
+                                        }
+                                    }
+                );
+            }
+        });
+
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
@@ -123,13 +146,13 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void getProposedStatus() {
-        progressDialog = createProgressDialog(this);
+        swipeContainer.setRefreshing(true);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposedStatus(selectedAppointment.getID(), currentUser.getID());
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
@@ -151,14 +174,13 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
                         Toast.makeText(JobDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(JobDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });

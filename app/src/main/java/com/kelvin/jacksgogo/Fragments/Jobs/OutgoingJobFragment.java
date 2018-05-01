@@ -53,7 +53,6 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JobReportStatus.pending;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
@@ -769,7 +768,7 @@ public class OutgoingJobFragment extends Fragment {
 
     }
 
-    //@OnClick(R.id.btn_view_quotation)
+    @OnClick(R.id.btn_view_quotation)
     public void onClickQuotationCount() {
         Intent intent = new Intent(mContext, ServiceProviderActivity.class);
         startActivity(intent);
