@@ -35,11 +35,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            String title = remoteMessage.getData().get("twi_title");
+            String message_id = remoteMessage.getData().get("twi_message_id");
+            String message_body = remoteMessage.getData().get("twi_body");
+            String ReferenceID = remoteMessage.getData().get("ReferenceID");
+            Integer type = Integer.valueOf(remoteMessage.getData().get("Type"));
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "F: " + remoteMessage.getNotification().getBody());
+            Log.d(TAG, "Notification message body: " + remoteMessage.getNotification().getBody());
         }
 
         //sendNotification(remoteMessage.getNotification().getBody());
@@ -47,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
         //sendNotification(remoteMessage.getNotification().getBody());
-        sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+        //sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
     }
 
     /**

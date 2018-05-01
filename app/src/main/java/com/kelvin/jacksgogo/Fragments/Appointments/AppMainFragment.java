@@ -1,12 +1,12 @@
 package com.kelvin.jacksgogo.Fragments.Appointments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +33,8 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,13 +42,13 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
-import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 
 public class AppMainFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    @BindView(R.id.swipeSearchContainer) SwipeRefreshLayout swipeContainer;
 
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -55,7 +57,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     private TextView btnLogin;
 
     private String mStatus;
-    private ProgressDialog progressDialog;
     private AlertDialog alertDialog;
 
     ArrayList<JGGAppointmentModel> arrayAllPendingAppointments = new ArrayList<>();
@@ -99,6 +100,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_app_main, container, false);
+        ButterKnife.bind(this, view);
 
         currentUser = JGGAppManager.getInstance().getCurrentUser();
 
@@ -115,6 +117,12 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                 ((MainActivity)mContext).setProfilePage();
             }
         });
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGOrange,
+                R.color.JGGOrange,
+                R.color.JGGOrange,
+                R.color.JGGOrange);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.appointment_recycler_view);
         if (recyclerView != null) {
@@ -137,13 +145,13 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void loadPendingAppointments() {
-        progressDialog = createProgressDialog(mContext);
+        swipeContainer.setRefreshing(true);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.getPendingAppointments(userID, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         resetData();
@@ -160,7 +168,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -193,13 +201,13 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     private void loadConfirmedAppointments() {
-        progressDialog = createProgressDialog(mContext);
+        swipeContainer.setRefreshing(true);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         retrofit2.Call<JGGGetAppsResponse> call = apiManager.getConfirmedAppointments(userID, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         resetData();
@@ -217,20 +225,20 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadAppointmentsHistory() {
-        progressDialog = createProgressDialog(mContext);
+        swipeContainer.setRefreshing(true);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         retrofit2.Call<JGGGetAppsResponse> call = apiManager.getWastedAppointments(userID, 0, 50);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         resetData();
@@ -248,7 +256,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -263,12 +271,35 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         }
     }
 
-    public void refreshFragment(String status) {
+    public void refreshFragment(final String status) {
         mStatus = status;
         if (isLoggedIn()) {
             loginLayout.setVisibility(View.GONE);
             recyclerViewLayout.setVisibility(View.VISIBLE);
 
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeContainer.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (status.equals(PENDING)) {
+                                                    searchView.setQueryHint("Search through Pending list");
+                                                    loadPendingAppointments();
+
+                                                } else if (status.equals(CONFIRMED)) {
+                                                    searchView.setQueryHint("Search through Confirmed list");
+                                                    loadConfirmedAppointments();
+
+                                                } else if (status.equals(HISTORY)) {
+                                                    searchView.setQueryHint("Search through History list");
+                                                    loadAppointmentsHistory();
+                                                }
+                                            }
+                                        }
+                    );
+                }
+            });
             if (status.equals(PENDING)) {
                 searchView.setQueryHint("Search through Pending list");
                 loadPendingAppointments();
