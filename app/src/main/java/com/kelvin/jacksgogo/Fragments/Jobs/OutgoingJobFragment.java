@@ -330,8 +330,8 @@ public class OutgoingJobFragment extends Fragment {
 
         quotationLayout.removeAllViews();
 
-        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
-        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_green);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
 
         quotationView.lblTime.setVisibility(View.GONE);
         quotationView.lblTitle.setVisibility(View.GONE);
@@ -413,6 +413,9 @@ public class OutgoingJobFragment extends Fragment {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
 
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         confirmedLayout.removeAllViews();
 
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
@@ -430,6 +433,9 @@ public class OutgoingJobFragment extends Fragment {
     private void showUpdateAppointment(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
         confirmedLayout.removeAllViews();
 
@@ -456,6 +462,9 @@ public class OutgoingJobFragment extends Fragment {
     private void showPendingAppointment(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
         confirmedLayout.removeAllViews();
 
@@ -494,6 +503,9 @@ public class OutgoingJobFragment extends Fragment {
     private void showHavingProblems(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
         confirmedLayout.removeAllViews();
 
