@@ -214,7 +214,7 @@ public class IncomingJobFragment extends Fragment {
                 JGGAppointmentActivityModel activity = mActivities.get(i);
                 // TODO - update required
                 //if (activity.getReferenceID().equals(mProposal.getID()))
-                if (activity.getReferenceID().equals(currentUser.getID()))
+                //if (activity.getReferenceID().equals(currentUser.getID()))
                     switch (activity.getStatus()) {
                         case none:
                             break;
@@ -513,6 +513,10 @@ public class IncomingJobFragment extends Fragment {
     private void showDeclineInvite(JGGAppointmentActivityModel activity) {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
+
+        // update post view
+        imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
+        lblPostedJob.setText(R.string.sent_proposal_title);
 
         quotationLayout.removeAllViews();
 
@@ -868,6 +872,7 @@ public class IncomingJobFragment extends Fragment {
         mActivity.startActivity(intent);
     }
 
+    // TODO - Accept Invitation
     private void onAcceptInvitation() {
         mProposal.setStatus(JGGProposalStatus.open);
         Intent intent = new Intent(mContext, PostProposalActivity.class);
@@ -875,6 +880,7 @@ public class IncomingJobFragment extends Fragment {
         startActivity(intent);
     }
 
+    // TODO - Reject Invitation
     private void onRejectInvitation() {
         progressDialog = createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
@@ -903,7 +909,63 @@ public class IncomingJobFragment extends Fragment {
         });
     }
 
-    // TODO - start contract
+    // TODO - Accept Offer
+    private void onAcceptAward() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = apiManager.acceptAward(mJob.getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // TODO - Reject Offer
+    private void onRejectAward() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = apiManager.rejectAward(mJob.getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // TODO - Ready to start work
     private void onStartContract() {
         progressDialog = createProgressDialog(mContext);
 

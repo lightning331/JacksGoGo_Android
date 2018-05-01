@@ -187,14 +187,20 @@ public interface JGGAPIManager {
     @POST("api/Proposal/EditProposal")
     Call<JGGPostAppResponse> editProposal(@Body JGGProposalModel proposal);
 
-    @POST("api/Proposal/AcceptInvite")
-    Call<JGGPostAppResponse> acceptInvite(@Body JGGProposalModel proposal);
-
     @GET("api/Proposal/DeleteProposal")
     Call<JGGBaseResponse> deleteProposal(@Query("ProposalID") String proposalID);
 
+    @POST("api/Proposal/AcceptInvite")
+    Call<JGGPostAppResponse> acceptInvite(@Body JGGProposalModel proposal);
+
     @GET("api/Proposal/RejectInvite")
     Call<JGGBaseResponse> rejectInvite(@Query("ProposalID") String proposalID);
+
+    @GET("api/Proposal/AcceptAward")
+    Call<JGGPostAppResponse> acceptAward(@Query("AppointmentID") String appointmentID);
+
+    @GET("api/Proposal/RejectAward")
+    Call<JGGPostAppResponse> rejectAward(@Query("AppointmentID") String appointmentID);
 
     @GET("api/Proposal/GetProposalsByJob")
     Call<JGGProposalResponse> getProposalsByJob(@Query("JobID") String jobID,
@@ -239,8 +245,7 @@ public interface JGGAPIManager {
     /*
      * Contract
      */
-    @FormUrlEncoded
-    @POST("api/Contract/StartContract")
+    @GET("api/Contract/StartContract")
     Call<JGGPostAppResponse> startContract(@Query("ContractID") String contractID);
 
     @GET("api/Contract/GetContractByAppointment")
