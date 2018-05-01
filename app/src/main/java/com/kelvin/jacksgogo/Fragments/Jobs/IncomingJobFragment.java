@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -223,15 +222,17 @@ public class IncomingJobFragment extends Fragment {
                         case job_created:
                             break;
                         case job_edited:
+                            showJobChanged(activity);
                             break;
                         case job_closed:
+                            showJobClosed(activity);
                             break;
                         case job_confirmed:
                             break;
                         case job_flagged:
                             break;
                         case job_deleted:
-                            setDeletedJobStatus();
+                            showDeletedJob();
                             break;
                         case job_reported:
                             break;
@@ -267,14 +268,12 @@ public class IncomingJobFragment extends Fragment {
                             showSentProposal(activity);
                             // Waiting for Client's decision
                             setWaitingClientDecision(activity);
-                            // Client Info view
-                            onShowClientInfoView();
                             break;
                         case proposal_rejected: // 402
-                            setDeclineProposalStatus(activity);
+                            showDeclineProposal(activity);
                             break;
                         case proposal_withdraw:
-                            setDeletedJobStatus();
+                            showDeletedJob();
                             mActivity.setStatus(mProposal);
                             break;
                         case proposal_approved: // 404
@@ -429,7 +428,7 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - 2-2. Your propoasl has been declined. (quotation view)
     // TODO - Edit Your Proposal
-    private void setDeclineProposalStatus(JGGAppointmentActivityModel activity) {
+    private void showDeclineProposal(JGGAppointmentActivityModel activity) {
         quotationLayout.removeAllViews();
 
         Date submitOn = activity.getActiveOn();
@@ -438,13 +437,14 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
 
-        quotationView.lblTime.setVisibility(View.VISIBLE);
-        quotationView.lblTitle.setVisibility(View.VISIBLE);
-        quotationView.lblTime.setText(submitTime);
-        quotationView.lblTitle.setText(R.string.proposal_declined);
+        quotationView.lblTime.setVisibility(View.GONE);
+        quotationView.lblTitle.setVisibility(View.GONE);
 
-        quotationView.lblAwardTime.setVisibility(View.GONE);
-        quotationView.llAwardQuote.setVisibility(View.GONE);
+        quotationView.lblAwardTime.setVisibility(View.VISIBLE);
+        quotationView.llAwardQuote.setVisibility(View.VISIBLE);
+        quotationView.lblAwardTime.setText(submitTime);
+        quotationView.lblQuotationCount.setText(R.string.proposal_declined);
+        quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.VISIBLE);
         quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
@@ -462,9 +462,77 @@ public class IncomingJobFragment extends Fragment {
         quotationLayout.addView(quotationView);
     }
 
-    // TODO - 2-3. decline invitation
+    // TODO - 2.3. Alicia has made some changes.
+    private void showJobChanged(JGGAppointmentActivityModel activity) {
+        quotationLayout.removeAllViews();
+
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        clientName = mJob.getUserProfile().getUser().getFullName();
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+
+        quotationView.lblTime.setVisibility(View.GONE);
+        quotationView.lblTitle.setVisibility(View.GONE);
+
+
+        quotationView.lblAwardTime.setVisibility(View.VISIBLE);
+        quotationView.llAwardQuote.setVisibility(View.VISIBLE);
+        quotationView.lblAwardTime.setText(submitTime);
+        String description = clientName + " has made some changes.";
+        quotationView.lblQuotationCount.setText("");
+        quotationView.lblQuotationCount.append(setBoldText(description));
+        quotationView.lblQuotationCount.append("\nYou may want to update your proposal if necessary.");
+
+        quotationView.imgRightButton.setVisibility(View.GONE);
+
+        quotationView.btnViewQuotation.setVisibility(View.VISIBLE);
+        quotationView.btnViewQuotation.setBackgroundResource(R.drawable.cyan_border_background);
+        quotationView.btnViewQuotation.setTextColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationView.btnViewQuotation.setText(R.string.edit_your_title);
+        quotationView.btnViewQuotation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, PostProposalActivity.class);
+                intent.putExtra(EDIT_STATUS, EDIT);
+                startActivity(intent);
+            }
+        });
+
+        quotationLayout.addView(quotationView);
+    }
+
+    // TODO - 2-4. decline invitation
     private void showDeclineInvite(JGGAppointmentActivityModel activity) {
         quotationLayout.removeAllViews();
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+
+        quotationView.lblTime.setVisibility(View.GONE);
+        quotationView.lblTitle.setVisibility(View.GONE);
+
+        quotationView.lblAwardTime.setVisibility(View.VISIBLE);
+        quotationView.llAwardQuote.setVisibility(View.VISIBLE);
+        quotationView.lblAwardTime.setText(submitTime);
+        quotationView.lblQuotationCount.setText(R.string.declined_invite);
+
+        quotationView.imgRightButton.setVisibility(View.GONE);
+
+        quotationView.btnViewQuotation.setVisibility(View.GONE);
+
+        quotationLayout.addView(quotationView);
+    }
+
+    // TODO - 2-5. Job Closed (quotation view)
+    // TODO - Your proposal has been declined.
+    private void showJobClosed(JGGAppointmentActivityModel activity) {
+
+        clientName = mJob.getUserProfile().getUser().getFullName();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
@@ -475,18 +543,11 @@ public class IncomingJobFragment extends Fragment {
         quotationView.lblTime.setVisibility(View.VISIBLE);
         quotationView.lblTitle.setVisibility(View.VISIBLE);
         quotationView.lblTime.setText(submitTime);
-        quotationView.lblTitle.setText(R.string.declined_invite);
-
-        quotationView.lblAwardTime.setVisibility(View.GONE);
-        quotationView.llAwardQuote.setVisibility(View.GONE);
-        quotationView.btnViewQuotation.setVisibility(View.GONE);
-
-        quotationLayout.addView(quotationView);
+        quotationView.lblTitle.setText("");
+        String description = "Job Closed. \n" + clientName;
+        quotationView.lblTitle.append(description);
+        quotationView.lblTitle.append(" has awarded the job to someone else.");
     }
-
-    // TODO - 2-4. Job Closed (quotation view)
-    // TODO - Your proposal has been declined.
-
 
 
     // TODO - 3-1. Appointment confirmed (confirm)
@@ -508,7 +569,7 @@ public class IncomingJobFragment extends Fragment {
 
 
     // TODO - 3-2. Job cancelled (cancel)
-    private void setDeletedJobStatus() {
+    private void showDeletedJob() {
 
         cancelledLayout.removeAllViews();
 
@@ -516,10 +577,13 @@ public class IncomingJobFragment extends Fragment {
         Picasso.with(mContext).load(mJob.getUserProfile().getUser().getPhotoURL())
                 .placeholder(R.mipmap.icon_profile)
                 .into(cancelledView.imgAvatar);
-        cancelledView.lblComment.setText(mJob.getReason());
+
         cancelledView.lblCancelTitle.setText("");
         cancelledView.lblCancelTitle.append(setBoldText(mJob.getUserProfile().getUser().getFullName()));
         cancelledView.lblCancelTitle.append(" has cancelled the job.");
+
+        cancelledView.lblComment.setText(mJob.getReason());
+
         cancelledLayout.addView(cancelledView);
     }
     // TODO - 3-3. Pending Scheduling... (work-progress)
@@ -757,19 +821,6 @@ public class IncomingJobFragment extends Fragment {
         intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
         intent.putExtra("work_start", true);
         mActivity.startActivity(intent);
-    }
-
-
-
-    private void onShowClientInfoView() {
-        bottomLayout.setVisibility(View.VISIBLE);
-        clientName = mJob.getUserProfile().getUser().getFullName();
-        Picasso.with(mContext)
-                .load(mJob.getUserProfile().getUser().getPhotoURL())
-                .placeholder(R.mipmap.icon_profile)
-                .into(imgClient);
-        lblClientName.setText(clientName);
-        chatLayout.setVisibility(View.VISIBLE);
     }
 
     private void onAcceptInvitation() {
