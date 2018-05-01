@@ -383,6 +383,8 @@ public class IncomingJobFragment extends Fragment {
         quotationView.llAwardQuote.setVisibility(View.GONE);
         quotationView.btnViewQuotation.setVisibility(View.GONE);
 
+        quotationView.ll_award.setVisibility(View.GONE);
+
         quotationLayout.addView(quotationView);
     }
 
@@ -410,8 +412,8 @@ public class IncomingJobFragment extends Fragment {
         // Quotation View
         quotationLayout.removeAllViews();
 
-        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
-        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
@@ -428,6 +430,20 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+
+        quotationView.ll_award.setVisibility(View.VISIBLE);
+        quotationView.btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAcceptAward();
+            }
+        });
+        quotationView.btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRejectAward();
+            }
+        });
 
         quotationLayout.addView(quotationView);
     }
@@ -464,6 +480,8 @@ public class IncomingJobFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
     }
@@ -506,6 +524,8 @@ public class IncomingJobFragment extends Fragment {
             }
         });
 
+        quotationView.ll_award.setVisibility(View.GONE);
+
         quotationLayout.addView(quotationView);
     }
 
@@ -537,6 +557,8 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+
+        quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
     }

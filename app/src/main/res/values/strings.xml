@@ -202,7 +202,7 @@
     <string name="edit_your_title">Edit Your Proposal</string>
     <string name="proposal_declined">Your proposal has been declined.</string>
     <string name="declined_invite">You were declined this invitation.</string>
-    <string name="proposal_accepted_title">Congratulations! Your proposal was accepted.</string>
+    <string name="proposal_accepted_title">Congratulations!</string>
     <string name="set_app_date_title">Appointment to be set.</string>
     <string name="set_app_date_desc">Discuss an appropriate date to set an appointment.</string>
     <string name="set_appointment_date">Set Appointment Date</string>
