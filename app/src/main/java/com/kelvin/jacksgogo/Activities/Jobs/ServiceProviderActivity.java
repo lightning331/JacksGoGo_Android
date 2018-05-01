@@ -27,8 +27,6 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -118,9 +116,12 @@ public class ServiceProviderActivity extends AppCompatActivity {
 
                         for (JGGProposalModel p: response.body().getValue()) {
                             if (p.getStatus() == Global.JGGProposalStatus.open) {
-                                if (p.isInvited())
-                                    invitedProposal.add(p);
-                                else
+                                if (p.isInvited()) {
+                                    if (p.getAcceptedInvite() == null)
+                                        invitedProposal.add(p);
+                                    else
+                                        openProposal.add(p);
+                                } else
                                     openProposal.add(p);
                             }
                             else if (p.getStatus() == confirmed)
@@ -141,7 +142,6 @@ public class ServiceProviderActivity extends AppCompatActivity {
                         Toast.makeText(ServiceProviderActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(ServiceProviderActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

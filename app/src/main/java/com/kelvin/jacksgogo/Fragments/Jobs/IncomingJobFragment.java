@@ -222,7 +222,7 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case job_created:
                             break;
-                        case job_edited:
+                        case job_edited:    // TODO - Need to fix
                             showJobChanged(activity);
                             break;
                         case job_closed:
@@ -268,18 +268,12 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case proposal_sent: // 400
-                            if (activity.getReferenceID().equals(currentUser.getID())){
-                                showSentProposal(activity);
-                            }
+                            showSentProposal(activity);
                             break;
-                        case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
+                        case proposal_edited:  // 401
                             break;
                         case proposal_rejected: // 402
-                            if (mContract.getProposal() != null) {
-                                if (activity.getReferenceID().equals(mContract.getProposal())) {
-                                    showDeclineProposal(activity);
-                                }
-                            }
+                            showDeclineProposal(activity);
                             break;
                         case proposal_withdraw:
                             showDeletedJob();
@@ -294,7 +288,7 @@ public class IncomingJobFragment extends Fragment {
                         case invite_sent: // 407
                             showInvited(activity);
                             break;
-                        case invite_accepted:
+                        case invite_accepted: // 408
                             setWaitingClientDecision(activity);
                             break;
                         case invite_rejected:
@@ -307,7 +301,7 @@ public class IncomingJobFragment extends Fragment {
                         case contract_started: // 501
                             if (mContract.getStatus() == started) {
                                 showStartedWork(activity);
-                            }else{
+                            } else {
                                 showJobReport(activity);
                             }
                             break;
@@ -372,6 +366,10 @@ public class IncomingJobFragment extends Fragment {
     private void setWaitingClientDecision(JGGAppointmentActivityModel activity) {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
+
+        // update post view
+        imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
+        lblPostedJob.setText(R.string.sent_proposal_title);
 
         quotationLayout.removeAllViews();
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
@@ -513,6 +511,9 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - 2-4. decline invitation
     private void showDeclineInvite(JGGAppointmentActivityModel activity) {
+        chatLayout.setVisibility(View.VISIBLE);
+        acceptLayout.setVisibility(View.GONE);
+
         quotationLayout.removeAllViews();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);

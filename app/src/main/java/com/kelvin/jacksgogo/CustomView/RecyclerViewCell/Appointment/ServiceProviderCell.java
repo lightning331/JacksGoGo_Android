@@ -16,10 +16,6 @@ import com.squareup.picasso.Picasso;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
-
 /**
  * Created by PUMA on 11/13/2017.
  */
@@ -67,7 +63,13 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
         switch (status) {
             case open:
                 if (proposal.isInvited()) {
+                    if (proposal.getAcceptedInvite() == null) {
 
+                    } else {
+                        lblPrice.setVisibility(View.VISIBLE);
+                        imgProposal.setVisibility(View.VISIBLE);
+                        lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
+                    }
                 } else {
                     lblPrice.setVisibility(View.VISIBLE);
                     imgProposal.setVisibility(View.VISIBLE);
