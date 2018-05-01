@@ -80,6 +80,7 @@ public class JobStatusSummaryQuotationView extends RelativeLayout {
         ll_award = view.findViewById(R.id.ll_award);
         btnReject = view.findViewById(R.id.btn_reject);
         btnAccept = view.findViewById(R.id.btn_accept);
+        ll_award.setVisibility(GONE);
     }
 
     public void notifyDataChanged(boolean isDeleted, int count) {
