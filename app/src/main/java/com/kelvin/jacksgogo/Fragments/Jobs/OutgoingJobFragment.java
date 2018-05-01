@@ -238,6 +238,7 @@ public class OutgoingJobFragment extends Fragment {
                         break;
 
                     case proposal_sent: // 400
+
                         break;
                     case proposal_edited:  //
                         break;
@@ -312,7 +313,7 @@ public class OutgoingJobFragment extends Fragment {
             if (mProposals.size() == 0) {
                 showWaitingProvidersResponse();
             } else {
-                showNewQuoations();
+                showNewQuotations();
             }
         }
     }
@@ -391,7 +392,7 @@ public class OutgoingJobFragment extends Fragment {
         quotationLayout.addView(quotationView);
     }
     // TODO - 2.3 - You have received 1 new quotation
-    private void showNewQuoations() {
+    private void showNewQuotations() {
         quotationLayout.removeAllViews();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_green);
