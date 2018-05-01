@@ -1,6 +1,8 @@
 package com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events;
 
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.ContractStatus;
+import com.kelvin.jacksgogo.Utils.Global.JobReportStatus;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGCurrencyModel;
 
@@ -21,6 +23,7 @@ public class JGGContractModel {
     private Integer Status;
     private boolean IsDeleted;
     private String ReasonID;
+    private Integer ReportStatus;
 
     public String getID() {
         return ID;
@@ -128,6 +131,14 @@ public class JGGContractModel {
 
     public void setStatus(ContractStatus status) {
         Status = status.getValue();
+    }
+
+    public JobReportStatus getReportStatus() {
+        return Global.JobReportStatus.valueOf(ReportStatus);
+    }
+
+    public void setReportStatus(JobReportStatus reportStatus) {
+        ReportStatus = reportStatus.getValue();
     }
 
     public boolean isDeleted() {

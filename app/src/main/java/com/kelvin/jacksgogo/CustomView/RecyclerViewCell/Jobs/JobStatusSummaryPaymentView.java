@@ -17,7 +17,7 @@ import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobStatusSummaryPaymentView extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryPaymentView extends RelativeLayout {
 
     private Context mContext;
     private int mColor;
@@ -71,23 +71,5 @@ public class JobStatusSummaryPaymentView extends RelativeLayout implements View.
         txtThirdDescription = (TextView) view.findViewById(R.id.txt_third_desc);
 
         btnReport                   = (Button) view.findViewById(R.id.btn_report);
-        btnReport.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_report) {
-            listener.onItemClick(view);
-        }
-    }
-
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View item);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 }
