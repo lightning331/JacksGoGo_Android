@@ -318,9 +318,10 @@ public class IncomingJobFragment extends Fragment {
                         case contract_flagged:
                             break;
                         case contract_award:
-                            showConfirmed(activity);
+
                             break;
                         case contract_confirmed:
+                            showConfirmed(activity);
                             setReadyToStartStatus(activity);
                             break;
 
@@ -330,6 +331,7 @@ public class IncomingJobFragment extends Fragment {
                                     showWaitingComplete(activity);
                                 } else {
                                     showComplete(activity);
+                                    showHeaderView();
                                 }
                             }
                             break;
@@ -340,7 +342,9 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case invoice_sent:
+                            break;
                         case invoice_approved:
+                            break;
                         case give_tip:
                             showTipView();
                             break;
@@ -392,7 +396,6 @@ public class IncomingJobFragment extends Fragment {
         quotationView.lblAwardTime.setVisibility(View.GONE);
         quotationView.llAwardQuote.setVisibility(View.GONE);
         quotationView.btnViewQuotation.setVisibility(View.GONE);
-
         quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
@@ -440,8 +443,8 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
-
         quotationView.ll_award.setVisibility(View.VISIBLE);
+
         quotationView.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -533,7 +536,6 @@ public class IncomingJobFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
@@ -567,7 +569,6 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
-
         quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
@@ -597,6 +598,10 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - 3-1. Appointment confirmed (confirm)
     private void showConfirmed(JGGAppointmentActivityModel activity) {
+        quotationView.ll_award.setVisibility(View.GONE);
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         // Confirmed View
         confirmedLayout.removeAllViews();
 
@@ -608,6 +613,7 @@ public class IncomingJobFragment extends Fragment {
         confirmedView.lblConfirmedTime.setText(submitTime);
         confirmedView.lblConfirmedTitle.setText(R.string.appointment_confirmed);
         confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
+        confirmedView.btnSetAppDate.setVisibility(View.GONE);
 
         confirmedLayout.addView(confirmedView);
     }
@@ -745,6 +751,10 @@ public class IncomingJobFragment extends Fragment {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
 
+        progressView.btnStart.setVisibility(View.GONE);
+        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
+        progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
@@ -818,6 +828,8 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - show header view (job report, invoice)
     private void showHeaderView() {
+        clientName = mJob.getUserProfile().getUser().getFullName();
+
         headerLayout.removeAllViews();
 
         headerView.reportLayout.setVisibility(View.VISIBLE);
@@ -835,6 +847,11 @@ public class IncomingJobFragment extends Fragment {
                 mActivity.startActivity(intent);
             }
         });
+
+        String verifyDay = "3";
+        String description = clientName + " will have "
+                + verifyDay + " days to verify the work done.";
+        headerView.txtHeader.setText(setBoldText(description));
 
         headerLayout.addView(headerView);
     }
