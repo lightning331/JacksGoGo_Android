@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Profile.SignUpPhoneActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
@@ -27,6 +28,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.JGGDeviceType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Prefs.JGGSharedPrefs;
@@ -35,6 +37,8 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.kelvin.jacksgogo.Utils.Global.uniqueID;
 
 
 public class SignInFragment extends Fragment implements View.OnClickListener, TextWatcher {
@@ -54,6 +58,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
     private String strPassword;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
+    private String deviceToken;
+    private String uuid;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -79,6 +85,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+        deviceToken = FirebaseInstanceId.getInstance().getToken();
+        uuid = uniqueID(mContext);
 
         initView(view);
 
@@ -124,7 +132,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Te
         progressDialog = Global.createProgressDialog(mContext);
 
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
+        Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword, JGGDeviceType.android, deviceToken, uuid);
         loginCall.enqueue(new Callback<JGGUserProfileResponse>() {
             @Override
             public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {

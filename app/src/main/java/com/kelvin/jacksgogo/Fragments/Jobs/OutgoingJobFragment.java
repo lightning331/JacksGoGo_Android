@@ -149,6 +149,7 @@ public class OutgoingJobFragment extends Fragment {
     }
 
     private void initView() {
+        providerDetailLayout.setVisibility(View.GONE);
         quotationView = new JobStatusSummaryQuotationView(mContext, CLIENT);
         confirmedView = new JobStatusSummaryConfirmedView(mContext, CLIENT);
         progressView = new JobStatusSummaryWorkProgressView(mContext, CLIENT);
@@ -593,14 +594,19 @@ public class OutgoingJobFragment extends Fragment {
                 .commit();
     }
 
-    @OnClick(R.id.btn_chat)
-    public void onClickChat() {
+    @OnClick(R.id.btn_view_proposal)
+    public void onClickViewProposal() {
         Intent intent = new Intent(mContext, PostProposalActivity.class);
         intent.putExtra(EDIT_STATUS, "ACCEPTED");
         startActivity(intent);
     }
 
-    @OnClick(R.id.lbl_quotation_count)
+    @OnClick(R.id.btn_chat)
+    public void onClickChat() {
+
+    }
+
+    //@OnClick(R.id.btn_view_quotation)
     public void onClickQuotationCount() {
         Intent intent = new Intent(mContext, ServiceProviderActivity.class);
         startActivity(intent);

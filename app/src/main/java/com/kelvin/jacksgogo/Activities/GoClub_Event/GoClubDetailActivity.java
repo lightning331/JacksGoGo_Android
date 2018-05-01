@@ -299,6 +299,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
     // Todo - Delete GoClub
     private void onDeleteGoClub(String reason) {
+        alertDialog.dismiss();
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGBaseResponse> call = apiManager.deleteGoClub(mClub.getID());

@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.text.SpannableString;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by PUMA on 11/3/2017.
@@ -51,6 +53,24 @@ public class Global {
     public static final int SECONDS_IN_A_MINUTE = 60;
     public static final int REQUEST_CODE = 1;
 
+
+    private static String uniqueID = null;
+    private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    public synchronized static String uniqueID(Context context) {
+        if (uniqueID == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(
+                    PREF_UNIQUE_ID, Context.MODE_PRIVATE);
+            uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID, null);
+            if (uniqueID == null) {
+                uniqueID = UUID.randomUUID().toString();
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString(PREF_UNIQUE_ID, uniqueID);
+                editor.commit();
+            }
+        }
+        return uniqueID;
+    }
+
     public enum AppointmentType {
         JOBS,
         SERVICES,
@@ -69,6 +89,35 @@ public class Global {
         POST,
         EDIT,
         DUPLICATE
+    }
+
+    public static enum JGGDeviceType {
+
+        ios(0),
+        android(1),
+        windows(2),
+        web(3);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        JGGDeviceType(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (JGGDeviceType status : JGGDeviceType.values()) {
+                map.put(status.value, status);
+            }
+        }
+
+        public static JGGDeviceType valueOf(Integer status) {
+            return (JGGDeviceType) map.get(status);
+        }
+
+        public Integer getValue() {
+            return value;
+        }
     }
 
     public static enum JGGJobStatus {

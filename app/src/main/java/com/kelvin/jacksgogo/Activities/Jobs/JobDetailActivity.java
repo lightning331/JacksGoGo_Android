@@ -165,7 +165,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void getInformationOfAppointment() {
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        JGGAPIManager apiManager = JGGURLManager.getClient().create(JGGAPIManager.class);
         Call<JGGGetJobInfoResponse> call = apiManager.getInformationOfAppointment(selectedAppointment.getID());
         call.enqueue(new Callback<JGGGetJobInfoResponse>() {
             @Override

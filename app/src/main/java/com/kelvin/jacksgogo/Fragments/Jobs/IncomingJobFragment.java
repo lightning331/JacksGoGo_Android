@@ -194,12 +194,15 @@ public class IncomingJobFragment extends Fragment {
         if (mProposal == null) {
             bottomLayout.setVisibility(View.GONE);
         } else {
-            if (mActivities.size() > 0) {
-                for (int i = mActivities.size() - 1; i >= 0; i --) {
-                    JGGAppointmentActivityModel activity = mActivities.get(i);
-                    // TODO - update required
-                    /*if (activity.getReferenceID().equals(mProposal.getID()))
-                    if (activity.getReferenceID().equals(currentUser.getID()))*/
+
+        }
+
+        if (mActivities.size() > 0) {
+            for (int i = mActivities.size() - 1; i >= 0; i --) {
+                JGGAppointmentActivityModel activity = mActivities.get(i);
+                // TODO - update required
+                //if (activity.getReferenceID().equals(mProposal.getID()))
+                if (activity.getReferenceID().equals(currentUser.getID()))
                     switch (activity.getStatus()) {
                         case none:
                             break;
@@ -318,9 +321,9 @@ public class IncomingJobFragment extends Fragment {
                         case provider_feedback:
                             break;
                     }
-                }
             }
         }
+
     }
 
     // TODO - 1-1. You sent in a proposal to this job
@@ -611,6 +614,7 @@ public class IncomingJobFragment extends Fragment {
         paymentView.txtThirdDescription.setText(R.string.completed_work);
     }
 
+    // TODO - 5-2. Client has verified work
     private void showVerifiedWork(JGGAppointmentActivityModel activity) {
         paymentView.secondLayout.setVisibility(View.VISIBLE);
 
@@ -622,9 +626,10 @@ public class IncomingJobFragment extends Fragment {
 
         paymentView.txtSecondDescription.setText("");
         paymentView.txtSecondDescription.append(setBoldText(clientName));
-        paymentView.txtSecondDescription.append(" verifed the job done.");
+        paymentView.txtSecondDescription.append(" verified the job done.");
     }
 
+    // TODO - 5-3 Payment is released. Job officially completed.
     private void showOfficialComplete(JGGAppointmentActivityModel activity) {
         paymentView.firstLayout.setVisibility(View.VISIBLE);
 

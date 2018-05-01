@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils.API;
 
+import com.kelvin.jacksgogo.Utils.Global.JGGDeviceType;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
@@ -49,7 +50,10 @@ public interface JGGAPIManager {
     @FormUrlEncoded
     @POST("api/Account/Login")
     Call<JGGUserProfileResponse> accountLogin(@Field("Username") String username,
-                                              @Field("Password") String password);
+                                              @Field("Password") String password,
+                                              @Field("DeviceType") JGGDeviceType DeviceType,
+                                              @Field("DeviceAddress") String DeviceAddress,
+                                              @Field("DeviceUUID") String DeviceUUID);
 
     @POST("api/Account/Logout")
     Call<JGGBaseResponse> accountSignOut();

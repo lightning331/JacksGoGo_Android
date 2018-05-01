@@ -1,14 +1,18 @@
 package com.kelvin.jacksgogo.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global.JGGDeviceType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
@@ -25,12 +29,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.uniqueID;
+
 public class JGGSplashActivity extends AppCompatActivity {
 
     private int SPLASH_DISPLAY_DURATION = 500;
     private String strEmail;
     private String strPassword;
+    private String deviceToken;
+    private String uuid;
 
+    @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +48,9 @@ public class JGGSplashActivity extends AppCompatActivity {
         strEmail = JGGSharedPrefs.getInstance(this).getUsernamePassword()[0];
         strPassword = JGGSharedPrefs.getInstance(this).getUsernamePassword()[1];
 
+        deviceToken = FirebaseInstanceId.getInstance().getToken();
+        uuid = uniqueID(this);
+        Log.d("UUID", uuid);
     }
 
     @Override
@@ -74,7 +86,6 @@ public class JGGSplashActivity extends AppCompatActivity {
                         Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(JGGSplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                     onShowMainActivity();
                 }
@@ -102,7 +113,6 @@ public class JGGSplashActivity extends AppCompatActivity {
                         Toast.makeText(JGGSplashActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(JGGSplashActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -125,7 +135,7 @@ public class JGGSplashActivity extends AppCompatActivity {
 
     private void onAccountLogin() {
         JGGAPIManager signInManager = JGGURLManager.createService(JGGAPIManager.class, JGGSplashActivity.this);
-        Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword);
+        Call<JGGUserProfileResponse> loginCall = signInManager.accountLogin(strEmail, strPassword, JGGDeviceType.android, deviceToken, uuid);
         loginCall.enqueue(new Callback<JGGUserProfileResponse>() {
             @Override
             public void onResponse(Call<JGGUserProfileResponse> call, Response<JGGUserProfileResponse> response) {

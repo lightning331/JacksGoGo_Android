@@ -123,7 +123,6 @@
         </LinearLayout>
     </ScrollView>
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/posted_service_chat_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
