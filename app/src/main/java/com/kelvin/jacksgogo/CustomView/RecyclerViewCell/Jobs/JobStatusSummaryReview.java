@@ -13,7 +13,7 @@ import com.kelvin.jacksgogo.R;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobStatusSummaryReview extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryReview extends RelativeLayout {
 
     private Context mContext;
 
@@ -35,23 +35,5 @@ public class JobStatusSummaryReview extends RelativeLayout implements View.OnCli
         lblReviewDate = (TextView) view.findViewById(R.id.lbl_job_main_review_date);
         lblReviewTitle = (TextView) view.findViewById(R.id.lbl_job_main_review_title);
         btnReview = (LinearLayout) view.findViewById(R.id.btn_job_main_review);
-        btnReview.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_job_main_review) {
-            listener.onItemClick(view);
-        }
-    }
-
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View item);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 }

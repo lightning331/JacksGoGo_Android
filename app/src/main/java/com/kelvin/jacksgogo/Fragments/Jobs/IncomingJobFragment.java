@@ -64,6 +64,7 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
+import static com.kelvin.jacksgogo.Utils.Global.JobReportStatus.pending;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
@@ -93,25 +94,24 @@ public class IncomingJobFragment extends Fragment {
     @BindView(R.id.btn_chat) RelativeLayout btnChat;
 
     @BindView(R.id.job_main_quotation_layout) LinearLayout quotationLayout;
-    private JobStatusSummaryQuotationView quotationView;
     @BindView(R.id.job_main_cancelled_layout) LinearLayout cancelledLayout;
-    private JobStatusSummaryCancelled cancelledView;
     @BindView(R.id.job_main_confirmed_layout) LinearLayout confirmedLayout;
-    private JobStatusSummaryConfirmedView confirmedView;
     @BindView(R.id.job_main_work_progress_layout) LinearLayout progressLayout;
-    private JobStatusSummaryWorkProgressView progressView;
     @BindView(R.id.job_main_header_layout) LinearLayout headerLayout;
-    private JobStatusSummaryHeaderView headerView;
     @BindView(R.id.job_main_tip_layout) LinearLayout tipLayout;
-    private JobStatusSummaryTipView tipView;
     @BindView(R.id.job_main_payment_layout) LinearLayout paymentLayout;
-    private JobStatusSummaryPaymentView paymentView;
-
     @BindView(R.id.job_main_given_review_layout) LinearLayout givenReviewLayout;
-    JobStatusSummaryReview givenReviewView;
-
     @BindView(R.id.job_main_get_review_layout) LinearLayout getReviewLayout;
-    JobStatusSummaryReview getReviewView;
+
+    private JobStatusSummaryQuotationView quotationView;
+    private JobStatusSummaryCancelled cancelledView;
+    private JobStatusSummaryConfirmedView confirmedView;
+    private JobStatusSummaryWorkProgressView progressView;
+    private JobStatusSummaryHeaderView headerView;
+    private JobStatusSummaryTipView tipView;
+    private JobStatusSummaryPaymentView paymentView;
+    private JobStatusSummaryReview givenReviewView;
+    private JobStatusSummaryReview getReviewView;
 
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
@@ -184,13 +184,25 @@ public class IncomingJobFragment extends Fragment {
         tipView = new JobStatusSummaryTipView(mContext, JGGUserType.PROVIDER);
         paymentView = new JobStatusSummaryPaymentView(mContext, JGGUserType.PROVIDER);
 
-        JobStatusSummaryReview getReviewView = new JobStatusSummaryReview(mContext);
-        JobStatusSummaryReview givenReviewView = new JobStatusSummaryReview(mContext);
+        getReviewView = new JobStatusSummaryReview(mContext);
+        givenReviewView = new JobStatusSummaryReview(mContext);
+    }
+
+    private void resetViews() {
+        quotationLayout.removeAllViews();
+        confirmedLayout.removeAllViews();
+        progressLayout.removeAllViews();
+        cancelledLayout.removeAllViews();
+        headerLayout.removeAllViews();
+        tipLayout.removeAllViews();
+        paymentLayout.removeAllViews();
+        getReviewLayout.removeAllViews();
+        givenReviewLayout.removeAllViews();
     }
 
     private void onRefreshView() {
+        resetViews();
 
-        //Provider invited to Job
         if (mProposal == null) {
             bottomLayout.setVisibility(View.GONE);
         } else {
@@ -298,17 +310,25 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case contract_paused:
                         case contract_held:
+                            break;
                         case contract_end:
-                            showComplete(activity);
-                            showVerifiedWork(activity);
                             showOfficialComplete(activity);
                             break;
                         case contract_flagged:
                             break;
 
                         case result_reported:  // 600
+                            if (mContract.getReportStatus() != null) {
+                                if (mContract.getReportStatus() == pending) {
+                                    showComplete(activity);
+                                } else {
+
+                                }
+                            }
                             break;
                         case result_accepted:
+                            showVerifiedWork(activity);
+                            break;
                         case result_rejected:
                             break;
 
@@ -534,6 +554,9 @@ public class IncomingJobFragment extends Fragment {
                 onStartContract();
             }
         });
+
+        progressView.billableLayout.setVisibility(View.GONE);
+
         progressLayout.addView(progressView);
     }
 
@@ -563,6 +586,9 @@ public class IncomingJobFragment extends Fragment {
                 onShowReportActivity();
             }
         });
+
+        progressView.billableLayout.setVisibility(View.GONE);
+
         progressLayout.addView(progressView);
     }
 
@@ -584,6 +610,8 @@ public class IncomingJobFragment extends Fragment {
         progressView.lblReportDesc.setVisibility(View.GONE);
 
         progressView.btnStart.setVisibility(View.GONE);
+        progressView.billableLayout.setVisibility(View.GONE);
+
         progressLayout.addView(progressView);
     }
 
@@ -612,6 +640,9 @@ public class IncomingJobFragment extends Fragment {
 
         paymentView.txtThirdTime.setText(submitTime);
         paymentView.txtThirdDescription.setText(R.string.completed_work);
+
+        paymentView.btnReport.setVisibility(View.GONE);
+        paymentLayout.addView(paymentView);
     }
 
     // TODO - 5-2. Client has verified work
@@ -640,68 +671,73 @@ public class IncomingJobFragment extends Fragment {
         paymentView.txtFirstDescription.setText(R.string.official_complete);
     }
 
-    // TODO - show payment view
-    private void showPaymentView() {
-        paymentLayout.removeAllViews();
-
-        paymentView.setOnItemClickListener(new JobStatusSummaryPaymentView.OnItemClickListener() {
-            @Override
-            public void onItemClick(View item) {
-                JobReportSummaryFragment frag = JobReportSummaryFragment.newInstance(JGGUserType.PROVIDER.toString());
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.incoming_container, frag, frag.getTag());
-                ft.addToBackStack("report_fragment");
-                ft.commit();
-            }
-        });
-        paymentLayout.addView(paymentView);
-    }
-
     // TODO - show header view (job report, invoice)
     private void showHeaderView() {
         headerLayout.removeAllViews();
 
         headerView.reportLayout.setVisibility(View.VISIBLE);
         headerView.invoiceLayout.setVisibility(View.VISIBLE);
-        headerView.setOnItemClickListener(new JobStatusSummaryHeaderView.OnItemClickListener() {
-            @Override
-            public void onItemClick(View item) {
-                if (item.getId() == R.id.job_report_layout) {
-                    Intent intent = new Intent(mContext, JobReportActivity.class);
-                    intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
-                    intent.putExtra("work_start", false);
-                    mActivity.startActivity(intent);
-                } else if (item.getId() == R.id.job_invoice_layout) {
+        headerView.reviewLayout.setVisibility(View.GONE);
+        headerView.tipLayout.setVisibility(View.GONE);
+        headerView.rehireLayout.setVisibility(View.GONE);
 
-                }
+        headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, JobReportActivity.class);
+                intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra("work_start", false);
+                mActivity.startActivity(intent);
             }
         });
+
         headerLayout.addView(headerView);
     }
 
     // TODO - show get review
-    private void showGetReview() {
+    private void showGetReview(JGGAppointmentActivityModel activity) {
         getReviewLayout.removeAllViews();
 
-        getReviewLayout.addView(getReviewView);
-        getReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        clientName = mJob.getUserProfile().getUser().getFullName();
+
+        getReviewView.lblReviewDate.setText(submitTime);
+        getReviewView.lblReviewTitle.setText("");
+        getReviewView.lblReviewTitle.append(setBoldText(clientName));
+        getReviewView.lblReviewTitle.append(" has given you a review.");
+
+        getReviewView.btnReview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(View item) {
+            public void onClick(View view) {
                 onShowReviewFragment();
             }
         });
+
+        getReviewLayout.addView(getReviewView);
     }
 
-    private void showGivenReview() {
+    private void showGivenReview(JGGAppointmentActivityModel activity) {
         givenReviewLayout.removeAllViews();
 
-        givenReviewLayout.addView(givenReviewView);
-        givenReviewView.setOnItemClickListener(new JobStatusSummaryReview.OnItemClickListener() {
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        clientName = mJob.getUserProfile().getUser().getFullName();
+
+        givenReviewView.lblReviewDate.setText(submitTime);
+        givenReviewView.lblReviewTitle.setText("");
+        givenReviewView.lblReviewTitle.append("You have given ");
+        givenReviewView.lblReviewTitle.append(setBoldText(clientName));
+        givenReviewView.lblReviewTitle.append(" a review.");
+
+        givenReviewView.btnReview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(View item) {
+            public void onClick(View view) {
                 onShowReviewFragment();
             }
         });
+
+        givenReviewLayout.addView(givenReviewView);
     }
     // TODO - show tip view
     private void showTipView() {

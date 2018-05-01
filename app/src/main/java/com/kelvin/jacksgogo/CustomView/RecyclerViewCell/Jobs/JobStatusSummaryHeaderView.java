@@ -14,7 +14,7 @@ import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
  * Created by PUMA on 12/12/2017.
  */
 
-public class JobStatusSummaryHeaderView extends RelativeLayout implements View.OnClickListener {
+public class JobStatusSummaryHeaderView extends RelativeLayout {
 
     private Context mContext;
     private int mColor;
@@ -46,26 +46,5 @@ public class JobStatusSummaryHeaderView extends RelativeLayout implements View.O
         reviewLayout = (LinearLayout) view.findViewById(R.id.job_review_layout);
         tipLayout = (LinearLayout) view.findViewById(R.id.job_tip_layout);
         rehireLayout = (LinearLayout) view.findViewById(R.id.job_rehire_layout);
-
-        reportLayout.setOnClickListener(this);
-        invoiceLayout.setOnClickListener(this);
-        reviewLayout.setOnClickListener(this);
-        tipLayout.setOnClickListener(this);
-        rehireLayout.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        listener.onItemClick(view);
-    }
-
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View item);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 }
