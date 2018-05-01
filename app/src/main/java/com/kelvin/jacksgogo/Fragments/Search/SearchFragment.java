@@ -220,7 +220,7 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void run() {
                                 int index = mServices.size() - 1;
-                                onLoadServiceMore(index);
+                                //onLoadServiceMore(index);
                             }
                         });
                     }
@@ -255,7 +255,7 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void run() {
                                 int index = mServices.size() - 1;
-                                onLoadJobsMore(index);
+                                //onLoadJobsMore(index);
                             }
                         });
                     }
@@ -368,7 +368,7 @@ public class SearchFragment extends Fragment {
     private void onLoadServices() {
         Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null,
-                null, null, null, false, 0, 10);
+                null, null, null, false, 0, 100);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -447,7 +447,7 @@ public class SearchFragment extends Fragment {
     private void onLoadJobs() {
         Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null, null,
-                null, null, true, 0, 10);
+                null, null, true, 0, 100);
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
@@ -582,7 +582,6 @@ public class SearchFragment extends Fragment {
                         swipeContainer.setRefreshing(false);
                     }
                 } else {
-                    int statusCode  = response.code();
                     //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                     swipeContainer.setRefreshing(false);
                 }

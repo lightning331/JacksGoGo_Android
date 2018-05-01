@@ -768,12 +768,6 @@ public class OutgoingJobFragment extends Fragment {
 
     }
 
-    @OnClick(R.id.btn_view_quotation)
-    public void onClickQuotationCount() {
-        Intent intent = new Intent(mContext, ServiceProviderActivity.class);
-        startActivity(intent);
-    }
-
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
