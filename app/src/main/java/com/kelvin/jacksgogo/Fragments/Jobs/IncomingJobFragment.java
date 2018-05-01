@@ -56,6 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.ContractStatus.started;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.INVITE_PROPOSAL;
@@ -228,6 +229,7 @@ public class IncomingJobFragment extends Fragment {
                             showJobClosed(activity);
                             break;
                         case job_confirmed:
+                            showConfirmed(activity);
                             break;
                         case job_flagged:
                             break;
@@ -237,6 +239,10 @@ public class IncomingJobFragment extends Fragment {
                         case job_reported:
                             break;
                         case job_awarded: // 107
+                            // Set More button
+                            mActivity.setStatus(mProposal);
+
+                            showProposalAccepted(activity);
                             break;
 
                         case service_created:
@@ -262,26 +268,24 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case proposal_sent: // 400
-                            showSentProposal(activity);
+                            if (activity.getReferenceID().equals(currentUser.getID())){
+                                showSentProposal(activity);
+                            }
                             break;
                         case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
-                            showSentProposal(activity);
-                            // Waiting for Client's decision
-                            setWaitingClientDecision(activity);
                             break;
                         case proposal_rejected: // 402
-                            showDeclineProposal(activity);
+                            if (mContract.getProposal() != null) {
+                                if (activity.getReferenceID().equals(mContract.getProposal())) {
+                                    showDeclineProposal(activity);
+                                }
+                            }
                             break;
                         case proposal_withdraw:
                             showDeletedJob();
                             mActivity.setStatus(mProposal);
                             break;
                         case proposal_approved: // 404
-                            // Set More button
-                            mActivity.setStatus(mProposal);
-
-                            showProposalAccepted(activity);
-                            showConfirmed(activity);
                             break;
                         case proposal_flagged:
                         case proposal_deleted:
@@ -301,7 +305,7 @@ public class IncomingJobFragment extends Fragment {
                             setReadyToStartStatus(activity);
                             break;
                         case contract_started: // 501
-                            if (i < mActivities.size()-1) {
+                            if (mContract.getStatus() == started) {
                                 showStartedWork(activity);
                             }else{
                                 showJobReport(activity);
@@ -319,9 +323,9 @@ public class IncomingJobFragment extends Fragment {
                         case result_reported:  // 600
                             if (mContract.getReportStatus() != null) {
                                 if (mContract.getReportStatus() == pending) {
-                                    showComplete(activity);
+                                    showWaitingComplete(activity);
                                 } else {
-
+                                    showComplete(activity);
                                 }
                             }
                             break;
@@ -334,10 +338,14 @@ public class IncomingJobFragment extends Fragment {
                         case invoice_sent:
                         case invoice_approved:
                         case give_tip:
+                            showTipView();
                             break;
 
                         case client_feedback:
+                            showGivenReview(activity);
+                            break;
                         case provider_feedback:
+                            showGetReview(activity);
                             break;
                     }
             }
@@ -555,8 +563,8 @@ public class IncomingJobFragment extends Fragment {
         // Confirmed View
         confirmedLayout.removeAllViews();
 
-        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
-        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_orange);
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
@@ -598,6 +606,9 @@ public class IncomingJobFragment extends Fragment {
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
         clientName = mJob.getUserProfile().getUser().getFullName();
 
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
+
         // Progress View
         progressLayout.removeAllViews();
 
@@ -633,6 +644,9 @@ public class IncomingJobFragment extends Fragment {
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
+
         // Progress View
         progressLayout.removeAllViews();
         progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_orange);
@@ -663,6 +677,9 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
 
         // Progress View
         progressLayout.removeAllViews();
@@ -704,6 +721,33 @@ public class IncomingJobFragment extends Fragment {
 
         paymentView.txtThirdTime.setText(submitTime);
         paymentView.txtThirdDescription.setText(R.string.completed_work);
+
+        paymentView.btnReport.setVisibility(View.GONE);
+        paymentLayout.addView(paymentView);
+    }
+
+    // TODO - 5.1-1. You completed the work and waiting verify of
+    private void showWaitingComplete(JGGAppointmentActivityModel activity) {
+        chatLayout.setVisibility(View.VISIBLE);
+        acceptLayout.setVisibility(View.GONE);
+
+        Date submitOn = activity.getActiveOn();
+        String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+
+        clientName = mJob.getUserProfile().getUser().getFullName();
+
+        paymentLayout.removeAllViews();
+
+        paymentView.imgDone.setImageResource(R.mipmap.icon_verified_orange);
+        paymentView.dotLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+
+        paymentView.firstLayout.setVisibility(View.GONE);
+        paymentView.secondLayout.setVisibility(View.GONE);
+
+        paymentView.txtThirdTime.setText(submitTime);
+        paymentView.txtThirdDescription.setText("");
+        paymentView.txtThirdDescription.append("You completed the work and waiting verify of ");
+        paymentView.txtThirdDescription.append(setBoldText(clientName));
 
         paymentView.btnReport.setVisibility(View.GONE);
         paymentLayout.addView(paymentView);
