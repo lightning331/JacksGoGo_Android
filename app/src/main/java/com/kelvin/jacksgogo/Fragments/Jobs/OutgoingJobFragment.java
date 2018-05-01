@@ -212,6 +212,8 @@ public class OutgoingJobFragment extends Fragment {
                         break;
                     case job_awarded: // 107
                         break;
+                    case job_rejected:  // 108
+                        break;
 
                     case service_created:
                     case service_edited:
@@ -269,6 +271,10 @@ public class OutgoingJobFragment extends Fragment {
                         showOfficialComplete(activity);
                         break;
                     case contract_flagged:
+                        break;
+                    case contract_award:    // 506
+                        break;
+                    case contract_confirmed:    // 507
                         break;
 
                     case result_reported:  // 600
@@ -355,6 +361,7 @@ public class OutgoingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.VISIBLE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+        quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
     // TODO - 2.2 - Waiting for service provider's to respond...
@@ -380,6 +387,7 @@ public class OutgoingJobFragment extends Fragment {
             }
         });
 
+        quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
     // TODO - 2.3 - You have received 1 new quotation
@@ -406,6 +414,7 @@ public class OutgoingJobFragment extends Fragment {
             }
         });
 
+        quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
     // TODO - 3.1 - Appointment confirmed
