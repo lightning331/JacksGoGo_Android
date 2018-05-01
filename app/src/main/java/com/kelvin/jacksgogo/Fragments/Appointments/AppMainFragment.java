@@ -161,7 +161,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -218,7 +217,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -249,7 +247,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

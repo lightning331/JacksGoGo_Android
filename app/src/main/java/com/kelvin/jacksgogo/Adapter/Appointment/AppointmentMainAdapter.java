@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.ApptHistoryListCell;
+import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Appointment.AppHistoryListCell;
 import com.kelvin.jacksgogo.CustomView.Views.HeaderTitleView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -69,10 +69,10 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return new HeaderTitleView(view);
         } else if (viewType == TYPE_JOB) {
             View jobView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_job_history, parent, false);
-            return new ApptHistoryListCell(jobView);
+            return new AppHistoryListCell(jobView);
         } else if (viewType == TYPE_SERVICE) {
             View serviceView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_service_history, parent, false);
-            return new ApptHistoryListCell(serviceView);
+            return new AppHistoryListCell(serviceView);
         }
         return null;
     }
@@ -89,7 +89,7 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             sectionView.setTitle((String) itemData);
         } else if (itemData instanceof JGGAppointmentModel) {
             // RecyclerView Cell
-            ApptHistoryListCell cellView = (ApptHistoryListCell) holder;
+            AppHistoryListCell cellView = (AppHistoryListCell) holder;
             final JGGAppointmentModel appointment = (JGGAppointmentModel) itemData;
 
             cellView.lbl_Title.setText(appointment.getTitle());
@@ -109,9 +109,9 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     .into(cellView.img_Profile);
 
             if (appointment.getStatus() == closed) {
-                cellView.lbl_Status.setText("Cancelled");
+                //cellView.lbl_Status.setText("Cancelled");
             } else if (appointment.getStatus() == flagged) {
-                cellView.lbl_Status.setText("Withdrawn");
+                //cellView.lbl_Status.setText("Withdrawn");
             } else {
                 cellView.lbl_Status.setVisibility(View.GONE);
             }

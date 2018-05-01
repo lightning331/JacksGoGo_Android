@@ -14,7 +14,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
  * Created by PUMA on 11/13/2017.
  */
 
-public class ApptHistoryListCell extends RecyclerView.ViewHolder {
+public class AppHistoryListCell extends RecyclerView.ViewHolder {
 
     public TextView lbl_Day;
     public TextView lbl_Month;
@@ -26,7 +26,7 @@ public class ApptHistoryListCell extends RecyclerView.ViewHolder {
     public RelativeLayout mViewStatusBar;
     public LinearLayout mAppointmentsHomeListCell;
 
-    public ApptHistoryListCell(View itemView) {
+    public AppHistoryListCell(View itemView) {
         super(itemView);
 
         lbl_Day = (TextView) itemView.findViewById(R.id.lblDay);

@@ -896,7 +896,6 @@ public class IncomingJobFragment extends Fragment {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
