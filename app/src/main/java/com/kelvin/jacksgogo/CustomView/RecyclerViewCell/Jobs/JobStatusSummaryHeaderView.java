@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.JGGUserType;
@@ -24,6 +25,7 @@ public class JobStatusSummaryHeaderView extends RelativeLayout {
     public LinearLayout reviewLayout;
     public LinearLayout tipLayout;
     public LinearLayout rehireLayout;
+    public TextView txtHeader;
 
     public JobStatusSummaryHeaderView(Context context, JGGUserType userType) {
         super(context);
@@ -46,5 +48,7 @@ public class JobStatusSummaryHeaderView extends RelativeLayout {
         reviewLayout = (LinearLayout) view.findViewById(R.id.job_review_layout);
         tipLayout = (LinearLayout) view.findViewById(R.id.job_tip_layout);
         rehireLayout = (LinearLayout) view.findViewById(R.id.job_rehire_layout);
+
+        txtHeader = (TextView) view.findViewById(R.id.txt_header);
     }
 }
