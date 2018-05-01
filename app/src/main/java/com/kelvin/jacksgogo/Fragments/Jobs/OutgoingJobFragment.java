@@ -667,7 +667,7 @@ public class OutgoingJobFragment extends Fragment {
         });
     }
 
-    // TODO - 6.2.1. catherin has completed the work.
+    // TODO - 6.2.1. Provider has completed the work.
     private void showCompleteAndVerify(JGGAppointmentActivityModel activity) {
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
