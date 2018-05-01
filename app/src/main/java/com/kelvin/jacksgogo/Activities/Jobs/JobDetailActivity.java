@@ -189,7 +189,7 @@ public class JobDetailActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onFailure(Call<JGGGetJobInfoResponse> call, Throwable t) {
-                Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(JobDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }

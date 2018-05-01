@@ -33,8 +33,8 @@ public class JobDetailAverageQuoteCell extends RecyclerView.ViewHolder {
 
     public void setAverageData(JGGJobInfoModel jobInfo) {
         if (jobInfo == null) {
-            lblResponseCount.setText(" responses");
-            lblAverageQuote.setText("$ ");
+            lblResponseCount.setText("0 responses");
+            lblAverageQuote.setText("$ 0.0");
             lblLatestResponseTime.setText("Latest response: ");
         } else {
             lblResponseCount.setText(String.valueOf(jobInfo.getProposalCount()) + " responses");
