@@ -1,8 +1,8 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +37,6 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
-import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class ServiceProviderActivity extends AppCompatActivity {
@@ -48,9 +47,9 @@ public class ServiceProviderActivity extends AppCompatActivity {
     @BindView(R.id.lbl_date) TextView lblTime;
     @BindView(R.id.quotation_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.btn_invite_service_provider) TextView btnInvite;
+    @BindView(R.id.swipeSearchContainer) SwipeRefreshLayout swipeContainer;
 
     private JGGActionbarView actionbarView;
-    private ProgressDialog progressDialog;
 
     private ArrayList<JGGProposalModel> proposals = new ArrayList<>();
     private JGGAppointmentModel mJob;
@@ -70,7 +69,6 @@ public class ServiceProviderActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        proposals.clear();
         getProposalsByJob();
     }
 
@@ -95,16 +93,35 @@ public class ServiceProviderActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGGreen,
+                R.color.JGGGreen,
+                R.color.JGGGreen,
+                R.color.JGGGreen);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getProposalsByJob();
+                                        }
+                                    }
+                );
+            }
+        });
     }
 
     private void getProposalsByJob() {
-        progressDialog = createProgressDialog(this);
+        proposals.clear();
+        swipeContainer.setRefreshing(true);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGProposalResponse> call = apiManager.getProposalsByJob(mJob.getID(), 0, 50);
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
 
@@ -148,7 +165,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(ServiceProviderActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
