@@ -241,8 +241,7 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case job_awarded: // 107
                             // Set More button
-                            mActivity.setStatus(mProposal);
-
+                            //mActivity.setStatus(mProposal);s
                             showProposalAccepted(activity);
                             break;
                         case job_rejected:
