@@ -74,7 +74,7 @@ public class JobReportActivity extends AppCompatActivity {
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
         mReportResult = JGGAppManager.getInstance().getReportResultModel();
 
-        // Top Navigationbar View
+        // Top Navigation Bar View
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
         setSupportActionBar(mToolbar);
@@ -142,7 +142,6 @@ public class JobReportActivity extends AppCompatActivity {
                     if (response.body().getSuccess()) {
                         mReportResults = response.body().getValue();
 
-                        initFragment();
                     } else {
                         Toast.makeText(JobReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }

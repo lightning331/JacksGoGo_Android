@@ -286,7 +286,7 @@ public class OutgoingJobFragment extends Fragment {
                         break;
                     case contract_started:  // 501
                         showStartedWork(activity);
-                        showHeaderView();
+                        showHeaderView(activity.getReferenceID());
                         break;
                     case contract_paused:
                     case contract_held:
@@ -593,9 +593,11 @@ public class OutgoingJobFragment extends Fragment {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
 
+        confirmedLayout.removeAllViews();
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
         confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
+        confirmedLayout.addView(confirmedView);
 
         progressLayout.removeAllViews();
 
@@ -792,7 +794,7 @@ public class OutgoingJobFragment extends Fragment {
     }
 
     // TODO - show header view (job report, invoice)
-    private void showHeaderView() {
+    private void showHeaderView(final String reportID) {
 
         headerLayout.removeAllViews();
 
@@ -809,6 +811,7 @@ public class OutgoingJobFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, JobReportActivity.class);
                 intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra(REPORTID, reportID);
                 intent.putExtra("work_start", false);
                 mActivity.startActivity(intent);
             }

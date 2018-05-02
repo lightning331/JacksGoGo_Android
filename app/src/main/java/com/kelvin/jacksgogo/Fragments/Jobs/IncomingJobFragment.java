@@ -67,6 +67,7 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JobReportStatus.pending;
 import static com.kelvin.jacksgogo.Utils.Global.MY_PROPOSAL;
+import static com.kelvin.jacksgogo.Utils.Global.REPORTID;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
@@ -352,7 +353,7 @@ public class IncomingJobFragment extends Fragment {
                                     showWaitingComplete(activity);
                                 } else {
                                     showComplete(activity);
-                                    showHeaderView();
+                                    showHeaderView(activity.getReferenceID());
                                 }
                             }
                             break;
@@ -705,7 +706,7 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - 4-2. Work in progress... (work-progress)
     // TODO - Job Report ...
-    private void showJobReport(JGGAppointmentActivityModel activity) {
+    private void showJobReport(final JGGAppointmentActivityModel activity) {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
 
@@ -729,7 +730,7 @@ public class IncomingJobFragment extends Fragment {
         progressView.btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onShowReportActivity();
+                onShowReportActivity(activity.getReferenceID());
             }
         });
 
@@ -850,7 +851,7 @@ public class IncomingJobFragment extends Fragment {
     }
 
     // TODO - show header view (job report, invoice)
-    private void showHeaderView() {
+    private void showHeaderView(final String reportID) {
 
         headerLayout.removeAllViews();
 
@@ -865,6 +866,7 @@ public class IncomingJobFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, JobReportActivity.class);
                 intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra(REPORTID, reportID);
                 intent.putExtra("work_start", false);
                 mActivity.startActivity(intent);
             }
@@ -928,7 +930,7 @@ public class IncomingJobFragment extends Fragment {
     }
 
 
-    private void onShowReportActivity() {
+    private void onShowReportActivity(String reportID) {
         // TODO - create global ReportResultModel
         JGGReportResultModel resultModel = new JGGReportResultModel();
         resultModel.setContractID(mContract.getID());
@@ -937,6 +939,7 @@ public class IncomingJobFragment extends Fragment {
 
         Intent intent = new Intent(mContext, JobReportActivity.class);
         intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+        intent.putExtra(REPORTID, reportID);
         intent.putExtra("work_start", true);
         mActivity.startActivity(intent);
     }
@@ -1046,7 +1049,7 @@ public class IncomingJobFragment extends Fragment {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-                        onShowReportActivity();
+                        onShowReportActivity(response.body().getValue());
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
