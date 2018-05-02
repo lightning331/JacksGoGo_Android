@@ -270,6 +270,17 @@ public interface JGGAPIManager {
     @GET("api/Contract/RejectReport")
     Call<JGGPostAppResponse> rejectReport(@Query("ReportID") String reportID);
 
+    /**
+     *  Feedback
+     **/
+    @FormUrlEncoded
+    @POST("api/Contract/GiveFeedback")
+    Call<JGGPostAppResponse> giveFeedback(@Field("ContractID") String contractID,
+                                            @Field("UserProfileID") String userProfileID,
+                                            @Field("IsClient") boolean isClient,
+                                            @Field("Score") float score,
+                                            @Field("Comment") String Comment);
+
     /*
      * GoClubs
      */

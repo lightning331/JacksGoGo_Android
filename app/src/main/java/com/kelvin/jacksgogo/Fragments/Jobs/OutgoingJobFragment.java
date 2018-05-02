@@ -14,10 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.Jobs.InviteProviderActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.OutgoingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.PostReviewActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.ServiceProviderActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
@@ -738,7 +740,7 @@ public class OutgoingJobFragment extends Fragment {
         headerView.reviewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onShowReviewFragment();
+                onShowPostReviewActivity();
             }
         });
         headerView.invoiceLayout.setOnClickListener(new View.OnClickListener() {
@@ -749,6 +751,9 @@ public class OutgoingJobFragment extends Fragment {
         });
         headerLayout.addView(headerView);
 
+        paymentView.imgDone.setImageResource(R.mipmap.icon_verified);
+        paymentView.dotLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
+
         paymentView.secondLayout.setVisibility(View.VISIBLE);
         paymentView.txtSecondTime.setText(submitTime);
         paymentView.txtSecondDescription.setText(R.string.verified_work);
@@ -758,6 +763,15 @@ public class OutgoingJobFragment extends Fragment {
         paymentView.txtThirdDescription.append(" has completed the work.");
 
         paymentView.btnReport.setVisibility(View.GONE);
+    }
+
+    private void onShowPostReviewActivity() {
+        Intent intent = new Intent(mContext, PostReviewActivity.class);
+        Gson gson = new Gson();
+        String contractJson = gson.toJson(mContract);
+        intent.putExtra("isClient", true);
+        intent.putExtra("contract", contractJson);
+        startActivity(intent);
     }
 
     // TODO - 6.2.3. You officially completed.

@@ -18,9 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.Jobs.IncomingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
+import com.kelvin.jacksgogo.Activities.Jobs.PostReviewActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryHeaderView;
@@ -372,10 +374,11 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case client_feedback:
-                            showGivenReview(activity);
+                            showGetReview(activity);
+                            showReviewHeader(activity.getReferenceID());
                             break;
                         case provider_feedback:
-                            showGetReview(activity);
+                            showGivenReview(activity);
                             break;
                     }
             }
@@ -878,6 +881,44 @@ public class IncomingJobFragment extends Fragment {
         headerView.txtHeader.setText(setBoldText(description));
 
         headerLayout.addView(headerView);
+    }
+
+    // TODO - show review
+    private void showReviewHeader(final String reportID) {
+        headerLayout.removeAllViews();
+
+        headerView.reportLayout.setVisibility(View.VISIBLE);
+        headerView.invoiceLayout.setVisibility(View.VISIBLE);
+        headerView.reviewLayout.setVisibility(View.VISIBLE);
+        headerView.tipLayout.setVisibility(View.GONE);
+        headerView.rehireLayout.setVisibility(View.GONE);
+
+        headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, JobReportActivity.class);
+                intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra(REPORTID, reportID);
+                intent.putExtra("work_start", false);
+                mActivity.startActivity(intent);
+            }
+        });
+        headerView.reviewLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onShowPostReviewActivity();
+            }
+        });
+        headerView.txtHeader.setVisibility(View.GONE);
+    }
+
+    private void onShowPostReviewActivity() {
+        Intent intent = new Intent(mContext, PostReviewActivity.class);
+        Gson gson = new Gson();
+        String contractJson = gson.toJson(mContract);
+        intent.putExtra("isClient", false);
+        intent.putExtra("contract", contractJson);
+        startActivity(intent);
     }
 
     // TODO - show get review
