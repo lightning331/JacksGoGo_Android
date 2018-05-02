@@ -38,7 +38,6 @@ import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentMode
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGBillableModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGReportResultResponse;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -59,14 +58,11 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Field;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_BILLABLE_ITEM;
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.ADD_TOOLS;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.Global.PostStatus.EDIT;
-import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
@@ -121,6 +117,7 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
 
     private String mUserType;
     private JGGReportResultModel mReportResultModel;
+    private ArrayList<JGGReportResultModel> mReportResults;
 
     private boolean isBeforePhoto;
 
@@ -149,6 +146,10 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
         if (getArguments() != null) {
             mUserType = getArguments().getString("jgg_usertype");
         }
+    }
+
+    public void setReportResult(ArrayList<JGGReportResultModel> reportResults) {
+        mReportResults = reportResults;
     }
 
     @Override
@@ -582,10 +583,10 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
         progressDialog = createProgressDialog(mContext);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGReportResultResponse> call = apiManager.reportResult(mReportResultModel);
-        call.enqueue(new Callback<JGGReportResultResponse>() {
+        Call<JGGPostAppResponse> call = apiManager.reportResult(mReportResultModel);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
-            public void onResponse(Call<JGGReportResultResponse> call, Response<JGGReportResultResponse> response) {
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
@@ -605,7 +606,7 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
             }
 
             @Override
-            public void onFailure(Call<JGGReportResultResponse> call, Throwable t) {
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 btnSubmit.setClickable(true);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();

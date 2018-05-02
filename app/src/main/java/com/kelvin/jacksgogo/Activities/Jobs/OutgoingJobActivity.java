@@ -1,6 +1,5 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +52,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.deleted;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
-import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class OutgoingJobActivity extends AppCompatActivity implements TextWatcher {
@@ -62,9 +61,10 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
     @BindView(R.id.lbl_title) TextView lblCategory;
     @BindView(R.id.lbl_date) TextView lblTime;
     @BindView(R.id.lblStatus) TextView lblCancel;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
 
     public JGGActionbarView actionbarView;
-    private ProgressDialog progressDialog;
+    //private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
     private JGGContractModel mContract;
@@ -124,17 +124,16 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
 
     public void deleteJob(final String reason) {
 
-
         String jobID = mJob.getID();
 
-        progressDialog = createProgressDialog(this);
+        progressBar.setVisibility(View.VISIBLE);
 
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGBaseResponse> call = apiManager.deleteJob(jobID, reason);
         call.enqueue(new Callback<JGGBaseResponse>() {
             @Override
             public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mJob.setStatus(deleted);
@@ -146,7 +145,6 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                         Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -154,13 +152,12 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
             @Override
             public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
                 Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
 
     public void getAppointmentActivities() {
-        progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGAppointmentActivityResponse> call = apiManager.getAppointmentActivities(mJob.getID());
         call.enqueue(new Callback<JGGAppointmentActivityResponse>() {
@@ -171,18 +168,18 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                         mActivities = response.body().getValue();
                         getProposalsByJob();
                     } else {
-                        progressDialog.dismiss();
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    progressDialog.dismiss();
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGAppointmentActivityResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -194,23 +191,24 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
         call.enqueue(new Callback<JGGProposalResponse>() {
             @Override
             public void onResponse(Call<JGGProposalResponse> call, Response<JGGProposalResponse> response) {
-                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mProposals = response.body().getValue();
 
                         getContractByAppointment();
                     } else {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(OutgoingJobActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(OutgoingJobActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGProposalResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -223,7 +221,7 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
         call.enqueue(new Callback<JGGGetContractResponse>() {
             @Override
             public void onResponse(Call<JGGGetContractResponse> call, Response<JGGGetContractResponse> response) {
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mContract = response.body().getValue();
@@ -241,7 +239,7 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
 
             @Override
             public void onFailure(Call<JGGGetContractResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(OutgoingJobActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });

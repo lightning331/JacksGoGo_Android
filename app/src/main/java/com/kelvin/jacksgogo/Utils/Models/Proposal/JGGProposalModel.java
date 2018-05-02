@@ -32,6 +32,7 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
     private Integer CancellationTime;
     private String CancellationNote;
     private Boolean IsInvited;
+    private Boolean AcceptedInvite;
     private String SubmitOn;
     private String LastUpdatedOn;
     private Integer Status;
@@ -164,6 +165,14 @@ public class JGGProposalModel extends JGGAppointmentBaseModel {
 
     public void setInvited(Boolean invited) {
         IsInvited = invited;
+    }
+
+    public Boolean getAcceptedInvite() {
+        return AcceptedInvite;
+    }
+
+    public void setAcceptedInvite(Boolean acceptedInvite) {
+        AcceptedInvite = acceptedInvite;
     }
 
     public Date getSubmitOn() {

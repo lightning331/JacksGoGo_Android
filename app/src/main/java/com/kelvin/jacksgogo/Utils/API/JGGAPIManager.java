@@ -17,12 +17,13 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobInfoResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetReportResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetReportsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGoclubusersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGReportResultResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
@@ -187,14 +188,20 @@ public interface JGGAPIManager {
     @POST("api/Proposal/EditProposal")
     Call<JGGPostAppResponse> editProposal(@Body JGGProposalModel proposal);
 
-    @POST("api/Proposal/AcceptInvite")
-    Call<JGGPostAppResponse> acceptInvite(@Body JGGProposalModel proposal);
-
     @GET("api/Proposal/DeleteProposal")
     Call<JGGBaseResponse> deleteProposal(@Query("ProposalID") String proposalID);
 
+    @POST("api/Proposal/AcceptInvite")
+    Call<JGGPostAppResponse> acceptInvite(@Body JGGProposalModel proposal);
+
     @GET("api/Proposal/RejectInvite")
     Call<JGGBaseResponse> rejectInvite(@Query("ProposalID") String proposalID);
+
+    @GET("api/Proposal/AcceptAward")
+    Call<JGGPostAppResponse> acceptAward(@Query("AppointmentID") String appointmentID);
+
+    @GET("api/Proposal/RejectAward")
+    Call<JGGPostAppResponse> rejectAward(@Query("AppointmentID") String appointmentID);
 
     @GET("api/Proposal/GetProposalsByJob")
     Call<JGGProposalResponse> getProposalsByJob(@Query("JobID") String jobID,
@@ -239,8 +246,7 @@ public interface JGGAPIManager {
     /*
      * Contract
      */
-    @FormUrlEncoded
-    @POST("api/Contract/StartContract")
+    @GET("api/Contract/StartContract")
     Call<JGGPostAppResponse> startContract(@Query("ContractID") String contractID);
 
     @GET("api/Contract/GetContractByAppointment")
@@ -250,7 +256,19 @@ public interface JGGAPIManager {
      *  Report
     **/
     @POST("api/Contract/ReportResult")
-    Call<JGGReportResultResponse> reportResult(@Body JGGReportResultModel reportResultModel);
+    Call<JGGPostAppResponse> reportResult(@Body JGGReportResultModel reportResultModel);
+
+    @GET("api/Contract/GetReportByID")
+    Call<JGGGetReportResponse> getReportByID(@Query("ReportID") String reportID);
+
+    @GET("api/Contract/GetReportsByContract")
+    Call<JGGGetReportsResponse> getReportsByContract(@Query("ContractID") String contractID);
+
+    @GET("api/Contract/ApproveReport")
+    Call<JGGPostAppResponse> approveReport(@Query("ReportID") String reportID);
+
+    @GET("api/Contract/RejectReport")
+    Call<JGGPostAppResponse> rejectReport(@Query("ReportID") String reportID);
 
     /*
      * GoClubs

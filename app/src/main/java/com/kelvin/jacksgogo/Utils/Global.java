@@ -48,6 +48,7 @@ public class Global {
     public static final String DUPLICATE = "DUPLICATE";
     public static final String NONE = "NONE";
     public static final String JGG_USERTYPE = "JGG_USERTYPE";
+    public static final String REPORTID = "REPORT_ID";
 
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;
@@ -482,6 +483,7 @@ public class Global {
         job_deleted(105),
         job_reported(106),
         job_awarded(107),
+        job_rejected(108),
 
         service_created(200),
         service_edited(201),
@@ -521,6 +523,8 @@ public class Global {
         contract_held(503),
         contract_end(504),
         contract_flagged(505),
+        contract_award(506),
+        contract_confirmed(507),
 
         result_reported(600),
         result_accepted(601),

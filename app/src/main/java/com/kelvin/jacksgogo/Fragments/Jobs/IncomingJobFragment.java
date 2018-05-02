@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,31 +78,32 @@ public class IncomingJobFragment extends Fragment {
     private Context mContext;
     private IncomingJobActivity mActivity;
 
-    @BindView(R.id.lbl_posted_time) TextView lblPostedTime;
-    @BindView(R.id.lbl_next_step_title) TextView lblPostedJob;
-    @BindView(R.id.btn_posted_job) LinearLayout btnPostedJob;
+    @BindView(R.id.lbl_posted_time)                 TextView lblPostedTime;
+    @BindView(R.id.lbl_next_step_title)             TextView lblPostedJob;
+    @BindView(R.id.btn_posted_job)                  LinearLayout btnPostedJob;
 
-    @BindView(R.id.bottom_layout) LinearLayout bottomLayout;
-    @BindView(R.id.chat_layout) LinearLayout chatLayout;
-    @BindView(R.id.accept_layout) LinearLayout acceptLayout;
-    @BindView(R.id.btn_invite_reject) TextView btnReject;
-    @BindView(R.id.btn_invite_accept) TextView btnAccept;
+    @BindView(R.id.bottom_layout)                   LinearLayout bottomLayout;
+    @BindView(R.id.chat_layout)                     LinearLayout chatLayout;
+    @BindView(R.id.accept_layout)                   LinearLayout acceptLayout;
+    @BindView(R.id.btn_invite_reject)               TextView btnReject;
+    @BindView(R.id.btn_invite_accept)               TextView btnAccept;
 
-    @BindView(R.id.img_proposal) ImageView imgProposal;
-    @BindView(R.id.img_avatar) RoundedImageView imgClient;
-    @BindView(R.id.lbl_provider_name) TextView lblClientName;
-    @BindView(R.id.btn_view_proposal) LinearLayout btnViewProposal;
-    @BindView(R.id.btn_chat) RelativeLayout btnChat;
+    @BindView(R.id.img_proposal)                    ImageView imgProposal;
+    @BindView(R.id.img_avatar)                      RoundedImageView imgClient;
+    @BindView(R.id.lbl_provider_name)               TextView lblClientName;
+    @BindView(R.id.btn_view_proposal)               LinearLayout btnViewProposal;
+    @BindView(R.id.btn_chat)                        RelativeLayout btnChat;
 
-    @BindView(R.id.job_main_quotation_layout) LinearLayout quotationLayout;
-    @BindView(R.id.job_main_cancelled_layout) LinearLayout cancelledLayout;
-    @BindView(R.id.job_main_confirmed_layout) LinearLayout confirmedLayout;
-    @BindView(R.id.job_main_work_progress_layout) LinearLayout progressLayout;
-    @BindView(R.id.job_main_header_layout) LinearLayout headerLayout;
-    @BindView(R.id.job_main_tip_layout) LinearLayout tipLayout;
-    @BindView(R.id.job_main_payment_layout) LinearLayout paymentLayout;
-    @BindView(R.id.job_main_given_review_layout) LinearLayout givenReviewLayout;
-    @BindView(R.id.job_main_get_review_layout) LinearLayout getReviewLayout;
+    @BindView(R.id.job_main_quotation_layout)       LinearLayout quotationLayout;
+    @BindView(R.id.job_main_cancelled_layout)       LinearLayout cancelledLayout;
+    @BindView(R.id.job_main_confirmed_layout)       LinearLayout confirmedLayout;
+    @BindView(R.id.job_main_work_progress_layout)   LinearLayout progressLayout;
+    @BindView(R.id.job_main_header_layout)          LinearLayout headerLayout;
+    @BindView(R.id.job_main_tip_layout)             LinearLayout tipLayout;
+    @BindView(R.id.job_main_payment_layout)         LinearLayout paymentLayout;
+    @BindView(R.id.job_main_given_review_layout)    LinearLayout givenReviewLayout;
+    @BindView(R.id.job_main_get_review_layout)      LinearLayout getReviewLayout;
+    @BindView(R.id.swipeSearchContainer)            SwipeRefreshLayout swipeContainer;
 
     private JobStatusSummaryQuotationView quotationView;
     private JobStatusSummaryCancelled cancelledView;
@@ -140,6 +142,24 @@ public class IncomingJobFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_incoming_job, container, false);
         ButterKnife.bind(this, view);
 
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGCyan,
+                R.color.JGGCyan,
+                R.color.JGGCyan,
+                R.color.JGGCyan);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mActivity.getAppointmentActivities();
+                                        }
+                                    }
+                );
+            }
+        });
+
         initView(view);
         onRefreshView();
         return view;
@@ -150,6 +170,7 @@ public class IncomingJobFragment extends Fragment {
                                          JGGContractModel contract) {
         currentUser = JGGAppManager.getInstance().getCurrentUser();
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
+        clientName = mJob.getUserProfile().getUser().getFullName();
         mActivities = activities;
         mContract = contract;
         for (JGGProposalModel p : proposals) {
@@ -214,7 +235,7 @@ public class IncomingJobFragment extends Fragment {
                 JGGAppointmentActivityModel activity = mActivities.get(i);
                 // TODO - update required
                 //if (activity.getReferenceID().equals(mProposal.getID()))
-                if (activity.getReferenceID().equals(currentUser.getID()))
+                //if (activity.getReferenceID().equals(currentUser.getID()))
                     switch (activity.getStatus()) {
                         case none:
                             break;
@@ -222,13 +243,14 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case job_created:
                             break;
-                        case job_edited:
+                        case job_edited:    // TODO - Need to fix
                             showJobChanged(activity);
                             break;
                         case job_closed:
                             showJobClosed(activity);
                             break;
                         case job_confirmed:
+                            // TODO - need to check the activity status
                             showConfirmed(activity);
                             break;
                         case job_flagged:
@@ -240,9 +262,10 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case job_awarded: // 107
                             // Set More button
-                            mActivity.setStatus(mProposal);
-
+                            //mActivity.setStatus(mProposal);
                             showProposalAccepted(activity);
+                            break;
+                        case job_rejected:
                             break;
 
                         case service_created:
@@ -268,18 +291,14 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case proposal_sent: // 400
-                            if (activity.getReferenceID().equals(currentUser.getID())){
-                                showSentProposal(activity);
-                            }
+                            setClientData();
+                            showSentProposal(activity);
+                            setWaitingClientDecision();
                             break;
-                        case proposal_edited:  // TODO - when I sent proposal to invited project /////// or declined proposal
+                        case proposal_edited:  // 401
                             break;
                         case proposal_rejected: // 402
-                            if (mContract.getProposal() != null) {
-                                if (activity.getReferenceID().equals(mContract.getProposal())) {
-                                    showDeclineProposal(activity);
-                                }
-                            }
+                            showDeclineProposal(activity);
                             break;
                         case proposal_withdraw:
                             showDeletedJob();
@@ -294,20 +313,20 @@ public class IncomingJobFragment extends Fragment {
                         case invite_sent: // 407
                             showInvited(activity);
                             break;
-                        case invite_accepted:
-                            setWaitingClientDecision(activity);
+                        case invite_accepted: // 408
+                            setWaitingClientDecision();
                             break;
                         case invite_rejected:
                             showDeclineInvite(activity);
                             break;
 
                         case contract_created: // 500
-                            setReadyToStartStatus(activity);
+                            showProposalAccepted(activity);
                             break;
                         case contract_started: // 501
                             if (mContract.getStatus() == started) {
                                 showStartedWork(activity);
-                            }else{
+                            } else {
                                 showJobReport(activity);
                             }
                             break;
@@ -319,6 +338,13 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case contract_flagged:
                             break;
+                        case contract_award:
+
+                            break;
+                        case contract_confirmed:
+                            showConfirmed(activity);
+                            setReadyToStartStatus(activity);
+                            break;
 
                         case result_reported:  // 600
                             if (mContract.getReportStatus() != null) {
@@ -326,6 +352,7 @@ public class IncomingJobFragment extends Fragment {
                                     showWaitingComplete(activity);
                                 } else {
                                     showComplete(activity);
+                                    showHeaderView();
                                 }
                             }
                             break;
@@ -336,7 +363,9 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case invoice_sent:
+                            break;
                         case invoice_approved:
+                            break;
                         case give_tip:
                             showTipView();
                             break;
@@ -351,6 +380,14 @@ public class IncomingJobFragment extends Fragment {
             }
         }
 
+    }
+
+    // TODO - Client Info View
+    private void setClientData() {
+        lblClientName.setText(clientName);
+        Picasso.with(mContext).load(mJob.getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(imgClient);
     }
 
     // TODO - 1-1. You sent in a proposal to this job
@@ -369,9 +406,13 @@ public class IncomingJobFragment extends Fragment {
     }
 
     // TODO - 1-2. Awaiting client acceptance
-    private void setWaitingClientDecision(JGGAppointmentActivityModel activity) {
+    private void setWaitingClientDecision() {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
+
+        // update post view
+        imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
+        lblPostedJob.setText(R.string.sent_proposal_title);
 
         quotationLayout.removeAllViews();
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
@@ -384,6 +425,7 @@ public class IncomingJobFragment extends Fragment {
         quotationView.lblAwardTime.setVisibility(View.GONE);
         quotationView.llAwardQuote.setVisibility(View.GONE);
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+        quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
     }
@@ -412,8 +454,8 @@ public class IncomingJobFragment extends Fragment {
         // Quotation View
         quotationLayout.removeAllViews();
 
-        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
-        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
@@ -430,6 +472,20 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+        quotationView.ll_award.setVisibility(View.VISIBLE);
+
+        quotationView.btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAcceptAward();
+            }
+        });
+        quotationView.btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRejectAward();
+            }
+        });
 
         quotationLayout.addView(quotationView);
     }
@@ -467,6 +523,8 @@ public class IncomingJobFragment extends Fragment {
             }
         });
 
+        quotationView.ll_award.setVisibility(View.GONE);
+
         quotationLayout.addView(quotationView);
     }
 
@@ -476,7 +534,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
@@ -507,12 +564,20 @@ public class IncomingJobFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
     }
 
     // TODO - 2-4. decline invitation
     private void showDeclineInvite(JGGAppointmentActivityModel activity) {
+        chatLayout.setVisibility(View.VISIBLE);
+        acceptLayout.setVisibility(View.GONE);
+
+        // update post view
+        imgProposal.setImageResource(R.mipmap.icon_posted_inactive);
+        lblPostedJob.setText(R.string.sent_proposal_title);
+
         quotationLayout.removeAllViews();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
@@ -532,6 +597,7 @@ public class IncomingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.GONE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+        quotationView.ll_award.setVisibility(View.GONE);
 
         quotationLayout.addView(quotationView);
     }
@@ -539,8 +605,6 @@ public class IncomingJobFragment extends Fragment {
     // TODO - 2-5. Job Closed (quotation view)
     // TODO - Your proposal has been declined.
     private void showJobClosed(JGGAppointmentActivityModel activity) {
-
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
@@ -560,6 +624,10 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - 3-1. Appointment confirmed (confirm)
     private void showConfirmed(JGGAppointmentActivityModel activity) {
+        quotationView.ll_award.setVisibility(View.GONE);
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         // Confirmed View
         confirmedLayout.removeAllViews();
 
@@ -571,6 +639,7 @@ public class IncomingJobFragment extends Fragment {
         confirmedView.lblConfirmedTime.setText(submitTime);
         confirmedView.lblConfirmedTitle.setText(R.string.appointment_confirmed);
         confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
+        confirmedView.btnSetAppDate.setVisibility(View.GONE);
 
         confirmedLayout.addView(confirmedView);
     }
@@ -604,7 +673,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
@@ -708,6 +776,11 @@ public class IncomingJobFragment extends Fragment {
         chatLayout.setVisibility(View.VISIBLE);
         acceptLayout.setVisibility(View.GONE);
 
+        progressView.btnStart.setVisibility(View.GONE);
+        progressView.lblStartedWork.setText(R.string.started_work);
+        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
+        progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
@@ -734,8 +807,6 @@ public class IncomingJobFragment extends Fragment {
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
-        clientName = mJob.getUserProfile().getUser().getFullName();
-
         paymentLayout.removeAllViews();
 
         paymentView.imgDone.setImageResource(R.mipmap.icon_verified_orange);
@@ -759,7 +830,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         paymentView.txtSecondTime.setText(submitTime);
 
@@ -781,6 +851,7 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - show header view (job report, invoice)
     private void showHeaderView() {
+
         headerLayout.removeAllViews();
 
         headerView.reportLayout.setVisibility(View.VISIBLE);
@@ -799,6 +870,11 @@ public class IncomingJobFragment extends Fragment {
             }
         });
 
+        String verifyDay = "3";
+        String description = clientName + " will have "
+                + verifyDay + " days to verify the work done.";
+        headerView.txtHeader.setText(setBoldText(description));
+
         headerLayout.addView(headerView);
     }
 
@@ -808,7 +884,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         getReviewView.lblReviewDate.setText(submitTime);
         getReviewView.lblReviewTitle.setText("");
@@ -830,7 +905,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         givenReviewView.lblReviewDate.setText(submitTime);
         givenReviewView.lblReviewTitle.setText("");
@@ -867,6 +941,7 @@ public class IncomingJobFragment extends Fragment {
         mActivity.startActivity(intent);
     }
 
+    // TODO - Accept Invitation
     private void onAcceptInvitation() {
         mProposal.setStatus(JGGProposalStatus.open);
         Intent intent = new Intent(mContext, PostProposalActivity.class);
@@ -874,6 +949,7 @@ public class IncomingJobFragment extends Fragment {
         startActivity(intent);
     }
 
+    // TODO - Reject Invitation
     private void onRejectInvitation() {
         progressDialog = createProgressDialog(mContext);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
@@ -889,7 +965,6 @@ public class IncomingJobFragment extends Fragment {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -902,7 +977,63 @@ public class IncomingJobFragment extends Fragment {
         });
     }
 
-    // TODO - start contract
+    // TODO - Accept Offer
+    private void onAcceptAward() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = apiManager.acceptAward(mJob.getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // TODO - Reject Offer
+    private void onRejectAward() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = apiManager.rejectAward(mJob.getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // TODO - Ready to start work
     private void onStartContract() {
         progressDialog = createProgressDialog(mContext);
 

@@ -39,6 +39,9 @@ public class JobStatusSummaryQuotationView extends RelativeLayout {
     public TextView lblAwardTime;
     public LinearLayout llAwardQuote;
     public ImageView imgRightButton;
+    public LinearLayout ll_award;
+    public TextView btnReject;
+    public TextView btnAccept;
 
     public JobStatusSummaryQuotationView(Context context, JGGUserType userType) {
         super(context);
@@ -73,6 +76,11 @@ public class JobStatusSummaryQuotationView extends RelativeLayout {
         imgRightButton.setImageResource(mImage);
 
         btnViewQuotation = view.findViewById(R.id.btn_view_quotation);
+
+        ll_award = view.findViewById(R.id.ll_award);
+        btnReject = view.findViewById(R.id.btn_reject);
+        btnAccept = view.findViewById(R.id.btn_accept);
+        ll_award.setVisibility(GONE);
     }
 
     public void notifyDataChanged(boolean isDeleted, int count) {

@@ -1,13 +1,12 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +49,10 @@ import butterknife.OnClick;
 
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
+import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
-import static com.kelvin.jacksgogo.Utils.Global.JobReportStatus.pending;
+import static com.kelvin.jacksgogo.Utils.Global.JobReportStatus.approved;
+import static com.kelvin.jacksgogo.Utils.Global.REPORTID;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -79,8 +80,9 @@ public class OutgoingJobFragment extends Fragment {
     @BindView(R.id.job_main_header_layout)          LinearLayout headerLayout;
     @BindView(R.id.job_main_tip_layout)             LinearLayout tipLayout;
     @BindView(R.id.job_main_payment_layout)         LinearLayout paymentLayout;
-    @BindView(R.id.job_main_given_review_layout) LinearLayout givenReviewLayout;
-    @BindView(R.id.job_main_get_review_layout) LinearLayout getReviewLayout;
+    @BindView(R.id.job_main_given_review_layout)    LinearLayout givenReviewLayout;
+    @BindView(R.id.job_main_get_review_layout)      LinearLayout getReviewLayout;
+    @BindView(R.id.swipeSearchContainer)            SwipeRefreshLayout swipeContainer;
 
     private JobStatusSummaryQuotationView quotationView;
     private JobStatusSummaryConfirmedView confirmedView;
@@ -92,13 +94,10 @@ public class OutgoingJobFragment extends Fragment {
     private JobStatusSummaryReview givenReviewView;
     private JobStatusSummaryReview getReviewView;
 
-    private ProgressDialog progressDialog;
-    private View view;
-
     private JGGAppointmentModel mJob;
     private JGGUserProfileModel currentUser;
-    private JGGProposalModel mProposal;
     private JGGContractModel mContract;
+    private String providerName;
     private ArrayList<JGGProposalModel> mProposals = new ArrayList<>();
     private ArrayList<JGGAppointmentActivityModel> mActivities = new ArrayList<>();
     private String mReason;
@@ -135,11 +134,29 @@ public class OutgoingJobFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_outgoing_job, container, false);
+        View view = inflater.inflate(R.layout.fragment_outgoing_job, container, false);
         ButterKnife.bind(this, view);
 
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
         currentUser = JGGAppManager.getInstance().getCurrentUser();
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGGreen,
+                R.color.JGGGreen,
+                R.color.JGGGreen,
+                R.color.JGGGreen);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mActivity.getAppointmentActivities();
+                                        }
+                                    }
+                );
+            }
+        });
 
         initView();
         onRefreshView();
@@ -152,6 +169,10 @@ public class OutgoingJobFragment extends Fragment {
         mActivities = activities;
         mProposals = proposals;
         mContract = contract;
+        if (mContract == null)
+            providerName = "";
+        else
+            providerName = mContract.getProposal().getUserProfile().getUser().getFullName();
     }
 
     private void initView() {
@@ -212,6 +233,8 @@ public class OutgoingJobFragment extends Fragment {
                         break;
                     case job_awarded: // 107
                         break;
+                    case job_rejected:  // 108
+                        break;
 
                     case service_created:
                     case service_edited:
@@ -235,33 +258,35 @@ public class OutgoingJobFragment extends Fragment {
                     case quotation_reported:
                         break;
 
-                    case proposal_sent: // 400
+                    case proposal_sent:   // 400
+
                         break;
-                    case proposal_edited:  //
+                    case proposal_edited:   // 401
                         break;
-                    case proposal_rejected: // 402
+                    case proposal_rejected:   // 402
                         break;
                     case proposal_withdraw:
                         break;
-                    case proposal_approved: // 404
+                    case proposal_approved:   // 404
+                        setProviderData();
                         showAwardQuotation(activity);
                         break;
                     case proposal_flagged:
                     case proposal_deleted:
                         break;
 
-                    case invite_sent: // 407
+                    case invite_sent:   // 407
                         break;
                     case invite_accepted:
                         break;
                     case invite_rejected:
                         break;
 
-                    case contract_created: // 500
+                    case contract_created:  // 500
                         break;
-                    case contract_started: // 501
+                    case contract_started:  // 501
                         showStartedWork(activity);
-                        showReportInvoice();
+                        showHeaderView();
                         break;
                     case contract_paused:
                     case contract_held:
@@ -270,13 +295,18 @@ public class OutgoingJobFragment extends Fragment {
                         break;
                     case contract_flagged:
                         break;
+                    case contract_award:    // 506
+                        break;
+                    case contract_confirmed:    // 507
+                        showAppointmentConfirmed(activity);
+                        break;
 
                     case result_reported:  // 600
                         if (mContract.getReportStatus() != null) {
-                            if (mContract.getReportStatus() == pending) {
-                                showComplete(activity);
-                            } else {
+                            if (mContract.getReportStatus() == approved) {
                                 showCompleteAndVerify(activity);
+                            } else {
+                                showComplete(activity);
                             }
                         }
                         break;
@@ -306,9 +336,16 @@ public class OutgoingJobFragment extends Fragment {
             if (mProposals.size() == 0) {
                 showWaitingProvidersResponse();
             } else {
-                showNewQuoations();
+                showNewQuotations();
             }
         }
+    }
+
+    private void setProviderData() {
+        lblProviderName.setText(providerName);
+        Picasso.with(mContext).load(mContract.getProposal().getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(imgProvider);
     }
 
 
@@ -323,15 +360,16 @@ public class OutgoingJobFragment extends Fragment {
     // TODO - 1.2
     // TODO - 2.1 - You have awarded catherin the job
     private void showAwardQuotation(JGGAppointmentActivityModel activity) {
+        providerDetailLayout.setVisibility(View.VISIBLE);
+
         // Quotation View
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
 
         quotationLayout.removeAllViews();
 
-        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
-        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_green);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
 
         quotationView.lblTime.setVisibility(View.GONE);
         quotationView.lblTitle.setVisibility(View.GONE);
@@ -355,6 +393,7 @@ public class OutgoingJobFragment extends Fragment {
         quotationView.imgRightButton.setVisibility(View.VISIBLE);
 
         quotationView.btnViewQuotation.setVisibility(View.GONE);
+        quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
     // TODO - 2.2 - Waiting for service provider's to respond...
@@ -380,10 +419,11 @@ public class OutgoingJobFragment extends Fragment {
             }
         });
 
+        quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
     // TODO - 2.3 - You have received 1 new quotation
-    private void showNewQuoations() {
+    private void showNewQuotations() {
         quotationLayout.removeAllViews();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_green);
@@ -406,12 +446,16 @@ public class OutgoingJobFragment extends Fragment {
             }
         });
 
+        quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
     // TODO - 3.1 - Appointment confirmed
     private void showAppointmentConfirmed(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
         confirmedLayout.removeAllViews();
 
@@ -430,6 +474,9 @@ public class OutgoingJobFragment extends Fragment {
     private void showUpdateAppointment(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
+
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
         confirmedLayout.removeAllViews();
 
@@ -457,6 +504,9 @@ public class OutgoingJobFragment extends Fragment {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
 
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         confirmedLayout.removeAllViews();
 
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
@@ -468,15 +518,14 @@ public class OutgoingJobFragment extends Fragment {
         String description = "Pending setting appointment to ";
         String time = "18 Jul, 2017 10:00 AM - 12:30 PM";
         String end = ".\nWaiting for ";
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
-        String respone = "'s response";
+        String response = "'s response";
         confirmedView.lblConfirmedDesc.setVisibility(View.VISIBLE);
         confirmedView.lblConfirmedDesc.setText("");
         confirmedView.lblConfirmedDesc.append(description);
         confirmedView.lblConfirmedDesc.append(time);
         confirmedView.lblConfirmedDesc.append(end);
         confirmedView.lblConfirmedDesc.append(setBoldText(providerName));
-        confirmedView.lblConfirmedDesc.append(respone);
+        confirmedView.lblConfirmedDesc.append(response);
 
         confirmedView.btnSetAppDate.setVisibility(View.VISIBLE);
         confirmedView.btnSetAppDate.setText(R.string.set_appointment_date);
@@ -495,6 +544,9 @@ public class OutgoingJobFragment extends Fragment {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
 
+        quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_inactive);
+        quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         confirmedLayout.removeAllViews();
 
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGreen));
@@ -505,7 +557,6 @@ public class OutgoingJobFragment extends Fragment {
 
         String description = "We notice that ";
         String end = " did not complete her job. If you need help, we are a button tap away.";
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
         confirmedView.lblConfirmedDesc.setVisibility(View.VISIBLE);
         confirmedView.lblConfirmedDesc.setText("");
         confirmedView.lblConfirmedDesc.append(description);
@@ -525,7 +576,6 @@ public class OutgoingJobFragment extends Fragment {
     }
     // TODO - 4.1 - Job Cancelled
     private void showCancelled() {
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
         cancelledLayout.removeAllViews();
 
         // Cancelled View
@@ -542,7 +592,10 @@ public class OutgoingJobFragment extends Fragment {
     private void showStartedWork(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
+
+        confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+        confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
+        confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
 
         progressLayout.removeAllViews();
 
@@ -566,7 +619,6 @@ public class OutgoingJobFragment extends Fragment {
     private void showStartedWorkBillable(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
 
         progressLayout.removeAllViews();
 
@@ -592,7 +644,10 @@ public class OutgoingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
+        final String reportID = activity.getReferenceID();
+
+        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
+        progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
         paymentLayout.removeAllViews();
 
@@ -605,7 +660,6 @@ public class OutgoingJobFragment extends Fragment {
         paymentView.thirdLayout.setVisibility(View.VISIBLE);
         paymentView.txtThirdTime.setText(submitTime);
         paymentView.txtThirdDescription.setText("");
-
         paymentView.txtThirdDescription.append(setBoldText(providerName));
         paymentView.txtThirdDescription.append(" has completed the work. You have 3 days to verify the work.");
 
@@ -614,20 +668,23 @@ public class OutgoingJobFragment extends Fragment {
         paymentView.btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JobReportSummaryFragment frag = JobReportSummaryFragment.newInstance(Global.JGGUserType.PROVIDER.toString());
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.incoming_container, frag, frag.getTag());
-                ft.addToBackStack("report_fragment");
-                ft.commit();
+                Intent intent = new Intent(mContext, JobReportActivity.class);
+                intent.putExtra(JGG_USERTYPE, CLIENT.toString());
+                intent.putExtra(REPORTID, reportID);
+                intent.putExtra("work_start", false);
+                mActivity.startActivity(intent);
             }
         });
+        paymentLayout.addView(paymentView);
     }
 
-    // TODO - 6.2.1. catherin has completed the work.
+    // TODO - 6.2.1. Provider has completed the work.
     private void showCompleteAndVerify(JGGAppointmentActivityModel activity) {
+        progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
+        progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
+
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
 
         paymentLayout.removeAllViews();
 
@@ -644,6 +701,8 @@ public class OutgoingJobFragment extends Fragment {
         paymentView.txtThirdDescription.append(setBoldText(providerName));
         paymentView.txtThirdDescription.append(" has completed the work");
         paymentView.btnReport.setVisibility(View.GONE);
+
+        paymentLayout.addView(paymentView);
     }
 
     // TODO - 6.2.2. You have verified the work
@@ -665,6 +724,35 @@ public class OutgoingJobFragment extends Fragment {
 
         paymentView.txtFirstTime.setText(submitTime);
         paymentView.txtFirstDescription.setText(R.string.official_complete);
+    }
+
+    // TODO - show header view (job report, invoice)
+    private void showHeaderView() {
+
+        headerLayout.removeAllViews();
+
+        headerView.reportLayout.setVisibility(View.VISIBLE);
+        headerView.invoiceLayout.setVisibility(View.VISIBLE);
+        headerView.reviewLayout.setVisibility(View.GONE);
+        headerView.tipLayout.setVisibility(View.GONE);
+        headerView.rehireLayout.setVisibility(View.GONE);
+
+        String verifyDay = "3";
+        String description = providerName + " has completed the work. You have "
+                + verifyDay + " days to verify the work.";
+        //headerView.txtHeader.setText(setBoldText(description));
+        headerView.txtHeader.setVisibility(View.GONE);
+
+        headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, JobReportActivity.class);
+                intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra("work_start", false);
+                mActivity.startActivity(intent);
+            }
+        });
+        headerLayout.addView(headerView);
     }
 
     private void onShowReviewFragment() {
@@ -703,7 +791,6 @@ public class OutgoingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
 
         getReviewView.lblReviewDate.setText(submitTime);
         getReviewView.lblReviewTitle.setText("");
@@ -725,7 +812,6 @@ public class OutgoingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        String providerName = mContract.getProposal().getUserProfile().getUser().getEmail();
 
         givenReviewView.lblReviewDate.setText(submitTime);
         givenReviewView.lblReviewTitle.setText("");

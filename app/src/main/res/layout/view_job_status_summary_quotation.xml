@@ -107,6 +107,74 @@
                 android:textColor="@color/JGGWhite"
                 android:background="@drawable/green_background">
             </TextView>
+            <LinearLayout
+                android:id="@+id/ll_award"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:background="@color/JGGCyan10Percent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@mipmap/icon_info"/>
+                    <TextView
+                        android:text="You awarded in a job."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/JGGBlack"
+                        android:fontFamily="@font/mulibold"
+                        android:textSize="@dimen/list_title_font_size" />
+                </LinearLayout>
+                <TextView
+                    android:text="If you have interest this job, please accept award."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/JGGBlack"
+                    android:fontFamily="@font/muliregular"
+                    android:textSize="@dimen/list_title_font_size"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp">
+                    <TextView
+                        android:text="Reject"
+                        android:id="@+id/btn_reject"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/mulibold"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:textColor="@color/JGGWhite"
+                        android:background="@drawable/red_background"/>
+                    <TextView
+                        android:text="Accept"
+                        android:id="@+id/btn_accept"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="16dp"
+                        android:padding="@dimen/edit_text_padding_size"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/mulibold"
+                        android:textSize="@dimen/list_title_font_size"
+                        android:textColor="@color/JGGWhite"
+                        android:background="@drawable/cyan_background"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

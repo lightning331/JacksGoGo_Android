@@ -16,16 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
-import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
-import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView.PostJobTabName;
+import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView;
+import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView;
+import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateEventMainFragment;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateGoClubMainFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
-import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -127,15 +127,13 @@ public class PostJobCategoryFragment extends Fragment {
         adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (position > 0) {
 
-                    JGGCategoryModel categoryModel;
+                if (position >= 0) {
+                    JGGCategoryModel categoryModel = mCategories.get(position);
+                    JGGAppManager.getInstance().setSelectedCategory(categoryModel);
 
                     if (appType == AppointmentType.JOBS) {
-                        PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabName.DESCRIBE, PostStatus.POST);
-
-                        categoryModel = mCategories.get(position - 1);
-                        JGGAppManager.getInstance().setSelectedCategory(categoryModel);
+                        PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, Global.PostStatus.POST);
 
                         JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
                         appointmentModel.setCategory(categoryModel);
@@ -147,26 +145,27 @@ public class PostJobCategoryFragment extends Fragment {
                                 .replace(R.id.post_service_container, frag)
                                 .addToBackStack("post_job")
                                 .commit();
-                    } else if (appType == AppointmentType.GOCLUB) {
-                        categoryModel =  mCategories.get(position);
-                        JGGGoClubModel creatingClub = JGGAppManager.getInstance().getSelectedClub();
-                        creatingClub.setCategoryID(categoryModel.getID());
-                        creatingClub.setCategory(categoryModel);
-                        JGGAppManager.getInstance().setSelectedClub(creatingClub);
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.post_go_club_container, CreateGoClubMainFragment.newInstance(GoClubTabName.DESCRIBE, PostStatus.POST))
-                                .addToBackStack("post_go_club")
-                                .commit();
-                    } else if (appType == AppointmentType.EVENTS) {
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(EventTabName.DESCRIBE, PostStatus.POST))
-                                .addToBackStack("post_event")
-                                .commit();
                     } else {
-                         categoryModel = mCategories.get(position);
+                        if (appType == AppointmentType.GOCLUB) {
+                            JGGGoClubModel creatingClub = JGGAppManager.getInstance().getSelectedClub();
+                            creatingClub.setCategoryID(categoryModel.getID());
+                            creatingClub.setCategory(categoryModel);
+                            JGGAppManager.getInstance().setSelectedClub(creatingClub);
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.post_go_club_container, CreateGoClubMainFragment.newInstance(PostGoClubTabView.GoClubTabName.DESCRIBE, Global.PostStatus.POST))
+                                    .addToBackStack("post_go_club")
+                                    .commit();
+                        } else if (appType == AppointmentType.EVENTS) {
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(PostEventTabView.EventTabName.DESCRIBE, Global.PostStatus.POST))
+                                    .addToBackStack("post_event")
+                                    .commit();
+                        }
                     }
+                } else {
+                    // TODO - Quick Job
                 }
             }
         });
