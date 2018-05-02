@@ -586,28 +586,6 @@ public class OutgoingJobFragment extends Fragment {
 
         progressLayout.addView(progressView);
     }
-    // TODO - 5.3 - review header
-    private void showReportInvoice() {
-        headerLayout.removeAllViews();
-
-        headerView.reportLayout.setVisibility(View.VISIBLE);
-        headerView.invoiceLayout.setVisibility(View.VISIBLE);
-        headerView.reviewLayout.setVisibility(View.GONE);
-        headerView.tipLayout.setVisibility(View.GONE);
-        headerView.rehireLayout.setVisibility(View.GONE);
-
-        headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, JobReportActivity.class);
-                intent.putExtra(JGG_USERTYPE, CLIENT.toString());
-                intent.putExtra("work_start_status", false);
-                mActivity.startActivity(intent);
-            }
-        });
-
-        headerLayout.addView(headerView);
-    }
 
     // TODO - 6.1
     private void showComplete(JGGAppointmentActivityModel activity) {
@@ -694,6 +672,29 @@ public class OutgoingJobFragment extends Fragment {
                 .replace(R.id.app_detail_container, new JobReviewFragment())
                 .addToBackStack("review_fragment")
                 .commit();
+    }
+
+    // TODO - 7.1. review header
+    private void showReportInvoice() {
+        headerLayout.removeAllViews();
+
+        headerView.reportLayout.setVisibility(View.VISIBLE);
+        headerView.invoiceLayout.setVisibility(View.VISIBLE);
+        headerView.reviewLayout.setVisibility(View.GONE);
+        headerView.tipLayout.setVisibility(View.GONE);
+        headerView.rehireLayout.setVisibility(View.GONE);
+
+        headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, JobReportActivity.class);
+                intent.putExtra(JGG_USERTYPE, CLIENT.toString());
+                intent.putExtra("work_start_status", false);
+                mActivity.startActivity(intent);
+            }
+        });
+
+        headerLayout.addView(headerView);
     }
 
     // TODO - show get review
