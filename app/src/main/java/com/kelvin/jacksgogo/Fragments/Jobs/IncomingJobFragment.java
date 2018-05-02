@@ -758,6 +758,7 @@ public class IncomingJobFragment extends Fragment {
         acceptLayout.setVisibility(View.GONE);
 
         progressView.btnStart.setVisibility(View.GONE);
+        progressView.lblStartedWork.setText(R.string.started_work);
         progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
         progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
 
