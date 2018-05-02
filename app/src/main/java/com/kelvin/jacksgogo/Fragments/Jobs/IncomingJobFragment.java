@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,31 +78,32 @@ public class IncomingJobFragment extends Fragment {
     private Context mContext;
     private IncomingJobActivity mActivity;
 
-    @BindView(R.id.lbl_posted_time) TextView lblPostedTime;
-    @BindView(R.id.lbl_next_step_title) TextView lblPostedJob;
-    @BindView(R.id.btn_posted_job) LinearLayout btnPostedJob;
+    @BindView(R.id.lbl_posted_time)                 TextView lblPostedTime;
+    @BindView(R.id.lbl_next_step_title)             TextView lblPostedJob;
+    @BindView(R.id.btn_posted_job)                  LinearLayout btnPostedJob;
 
-    @BindView(R.id.bottom_layout) LinearLayout bottomLayout;
-    @BindView(R.id.chat_layout) LinearLayout chatLayout;
-    @BindView(R.id.accept_layout) LinearLayout acceptLayout;
-    @BindView(R.id.btn_invite_reject) TextView btnReject;
-    @BindView(R.id.btn_invite_accept) TextView btnAccept;
+    @BindView(R.id.bottom_layout)                   LinearLayout bottomLayout;
+    @BindView(R.id.chat_layout)                     LinearLayout chatLayout;
+    @BindView(R.id.accept_layout)                   LinearLayout acceptLayout;
+    @BindView(R.id.btn_invite_reject)               TextView btnReject;
+    @BindView(R.id.btn_invite_accept)               TextView btnAccept;
 
-    @BindView(R.id.img_proposal) ImageView imgProposal;
-    @BindView(R.id.img_avatar) RoundedImageView imgClient;
-    @BindView(R.id.lbl_provider_name) TextView lblClientName;
-    @BindView(R.id.btn_view_proposal) LinearLayout btnViewProposal;
-    @BindView(R.id.btn_chat) RelativeLayout btnChat;
+    @BindView(R.id.img_proposal)                    ImageView imgProposal;
+    @BindView(R.id.img_avatar)                      RoundedImageView imgClient;
+    @BindView(R.id.lbl_provider_name)               TextView lblClientName;
+    @BindView(R.id.btn_view_proposal)               LinearLayout btnViewProposal;
+    @BindView(R.id.btn_chat)                        RelativeLayout btnChat;
 
-    @BindView(R.id.job_main_quotation_layout) LinearLayout quotationLayout;
-    @BindView(R.id.job_main_cancelled_layout) LinearLayout cancelledLayout;
-    @BindView(R.id.job_main_confirmed_layout) LinearLayout confirmedLayout;
-    @BindView(R.id.job_main_work_progress_layout) LinearLayout progressLayout;
-    @BindView(R.id.job_main_header_layout) LinearLayout headerLayout;
-    @BindView(R.id.job_main_tip_layout) LinearLayout tipLayout;
-    @BindView(R.id.job_main_payment_layout) LinearLayout paymentLayout;
-    @BindView(R.id.job_main_given_review_layout) LinearLayout givenReviewLayout;
-    @BindView(R.id.job_main_get_review_layout) LinearLayout getReviewLayout;
+    @BindView(R.id.job_main_quotation_layout)       LinearLayout quotationLayout;
+    @BindView(R.id.job_main_cancelled_layout)       LinearLayout cancelledLayout;
+    @BindView(R.id.job_main_confirmed_layout)       LinearLayout confirmedLayout;
+    @BindView(R.id.job_main_work_progress_layout)   LinearLayout progressLayout;
+    @BindView(R.id.job_main_header_layout)          LinearLayout headerLayout;
+    @BindView(R.id.job_main_tip_layout)             LinearLayout tipLayout;
+    @BindView(R.id.job_main_payment_layout)         LinearLayout paymentLayout;
+    @BindView(R.id.job_main_given_review_layout)    LinearLayout givenReviewLayout;
+    @BindView(R.id.job_main_get_review_layout)      LinearLayout getReviewLayout;
+    @BindView(R.id.swipeSearchContainer)            SwipeRefreshLayout swipeContainer;
 
     private JobStatusSummaryQuotationView quotationView;
     private JobStatusSummaryCancelled cancelledView;
@@ -139,6 +141,24 @@ public class IncomingJobFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_incoming_job, container, false);
         ButterKnife.bind(this, view);
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGCyan,
+                R.color.JGGCyan,
+                R.color.JGGCyan,
+                R.color.JGGCyan);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mActivity.getAppointmentActivities();
+                                        }
+                                    }
+                );
+            }
+        });
 
         initView(view);
         onRefreshView();

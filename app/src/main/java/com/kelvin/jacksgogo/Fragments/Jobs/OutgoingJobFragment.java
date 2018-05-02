@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,9 @@ public class OutgoingJobFragment extends Fragment {
     @BindView(R.id.job_main_header_layout)          LinearLayout headerLayout;
     @BindView(R.id.job_main_tip_layout)             LinearLayout tipLayout;
     @BindView(R.id.job_main_payment_layout)         LinearLayout paymentLayout;
-    @BindView(R.id.job_main_given_review_layout) LinearLayout givenReviewLayout;
-    @BindView(R.id.job_main_get_review_layout) LinearLayout getReviewLayout;
+    @BindView(R.id.job_main_given_review_layout)    LinearLayout givenReviewLayout;
+    @BindView(R.id.job_main_get_review_layout)      LinearLayout getReviewLayout;
+    @BindView(R.id.swipeSearchContainer)            SwipeRefreshLayout swipeContainer;
 
     private JobStatusSummaryQuotationView quotationView;
     private JobStatusSummaryConfirmedView confirmedView;
@@ -137,6 +139,24 @@ public class OutgoingJobFragment extends Fragment {
 
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
         currentUser = JGGAppManager.getInstance().getCurrentUser();
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setColorSchemeResources(R.color.JGGGreen,
+                R.color.JGGGreen,
+                R.color.JGGGreen,
+                R.color.JGGGreen);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mActivity.getAppointmentActivities();
+                                        }
+                                    }
+                );
+            }
+        });
 
         initView();
         onRefreshView();
