@@ -251,6 +251,12 @@ public interface JGGAPIManager {
     @GET("api/Contract/GetContractByAppointment")
     Call<JGGGetContractResponse> getContractByAppointment(@Query("AppointmentID") String appointmentID);
 
+    @GET("api/Contract/GetReportByID")
+    Call<JGGPostAppResponse> getReportByID(@Query("ReportID") String reportID);
+
+    @GET("api/Contract/GetReportsByContract")
+    Call<JGGPostAppResponse> getReportsByContract(@Query("ContractID") String contractID);
+
     /**
      *  Report
     **/

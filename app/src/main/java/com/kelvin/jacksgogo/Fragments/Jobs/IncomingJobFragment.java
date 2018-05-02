@@ -150,6 +150,7 @@ public class IncomingJobFragment extends Fragment {
                                          JGGContractModel contract) {
         currentUser = JGGAppManager.getInstance().getCurrentUser();
         mJob = JGGAppManager.getInstance().getSelectedAppointment();
+        clientName = mJob.getUserProfile().getUser().getFullName();
         mActivities = activities;
         mContract = contract;
         for (JGGProposalModel p : proposals) {
@@ -241,7 +242,7 @@ public class IncomingJobFragment extends Fragment {
                             break;
                         case job_awarded: // 107
                             // Set More button
-                            //mActivity.setStatus(mProposal);s
+                            //mActivity.setStatus(mProposal);
                             showProposalAccepted(activity);
                             break;
                         case job_rejected:
@@ -270,6 +271,7 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case proposal_sent: // 400
+                            setClientData();
                             showSentProposal(activity);
                             setWaitingClientDecision();
                             break;
@@ -358,6 +360,14 @@ public class IncomingJobFragment extends Fragment {
             }
         }
 
+    }
+
+    // TODO - Client Info View
+    private void setClientData() {
+        lblClientName.setText(clientName);
+        Picasso.with(mContext).load(mJob.getUserProfile().getUser().getPhotoURL())
+                .placeholder(R.mipmap.icon_profile)
+                .into(imgClient);
     }
 
     // TODO - 1-1. You sent in a proposal to this job
@@ -504,7 +514,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
@@ -577,8 +586,6 @@ public class IncomingJobFragment extends Fragment {
     // TODO - Your proposal has been declined.
     private void showJobClosed(JGGAppointmentActivityModel activity) {
 
-        clientName = mJob.getUserProfile().getUser().getFullName();
-
         quotationView.imgQuotation.setImageResource(R.mipmap.icon_provider_cyan);
         quotationView.quotationLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
 
@@ -646,7 +653,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
@@ -780,8 +786,6 @@ public class IncomingJobFragment extends Fragment {
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
-        clientName = mJob.getUserProfile().getUser().getFullName();
-
         paymentLayout.removeAllViews();
 
         paymentView.imgDone.setImageResource(R.mipmap.icon_verified_orange);
@@ -805,7 +809,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         paymentView.txtSecondTime.setText(submitTime);
 
@@ -827,7 +830,6 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - show header view (job report, invoice)
     private void showHeaderView() {
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         headerLayout.removeAllViews();
 
@@ -861,7 +863,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         getReviewView.lblReviewDate.setText(submitTime);
         getReviewView.lblReviewTitle.setText("");
@@ -883,7 +884,6 @@ public class IncomingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
-        clientName = mJob.getUserProfile().getUser().getFullName();
 
         givenReviewView.lblReviewDate.setText(submitTime);
         givenReviewView.lblReviewTitle.setText("");

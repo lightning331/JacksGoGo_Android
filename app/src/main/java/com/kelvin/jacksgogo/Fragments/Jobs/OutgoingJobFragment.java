@@ -677,7 +677,7 @@ public class OutgoingJobFragment extends Fragment {
         paymentLayout.addView(paymentView);
     }
 
-    // TODO - 6.2.1. catherin has completed the work.
+    // TODO - 6.2.1. Provider has completed the work.
     private void showCompleteAndVerify(JGGAppointmentActivityModel activity) {
         progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
         progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
