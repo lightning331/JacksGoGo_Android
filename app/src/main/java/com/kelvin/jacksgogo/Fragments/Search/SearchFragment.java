@@ -239,8 +239,11 @@ public class SearchFragment extends Fragment {
                 if (view.getId() == R.id.btn_view_all || view.getId() == R.id.btn_post_new) {
                     onViewHolderItemClick(view);
                 } else if (view.getId() == R.id.btn_background) {
-                    Intent intent = new Intent(mContext, JobDetailActivity.class);
-                    mContext.startActivity(intent);
+                    if (JGGAppManager.getInstance().getCurrentUser() == null) {}
+                    else {
+                        Intent intent = new Intent(mContext, JobDetailActivity.class);
+                        mContext.startActivity(intent);
+                    }
                 }
             }
         });
@@ -272,22 +275,23 @@ public class SearchFragment extends Fragment {
         goClubAdapter.setOnGoClubClickListener(new SearchGoClubAdapter.OnGoClubHeaderViewClickListener() {
             @Override
             public void onItemClick(View view) {
-                if (view.getId() == R.id.btn_view_my_service) {
-                    mIntent = new Intent(mContext, JoinedGoClubsActivity.class);
-                } else if (view.getId() == R.id.btn_view_all) {
-                    mIntent = new Intent(mContext, AllGoClubsActivity.class);
-                    mIntent.putExtra("is_category", false);
-                } else if (view.getId() == R.id.btn_post_new) {
-                    if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+
+                if (JGGAppManager.getInstance().getCurrentUser() == null) {
+                    showAlertDialog();
+                    return;
+                } else {
+                    if (view.getId() == R.id.btn_view_my_service) {
+                        mIntent = new Intent(mContext, JoinedGoClubsActivity.class);
+                    } else if (view.getId() == R.id.btn_view_all) {
+                        mIntent = new Intent(mContext, AllGoClubsActivity.class);
+                        mIntent.putExtra("is_category", false);
+                    } else if (view.getId() == R.id.btn_post_new) {
                         mIntent = new Intent(mContext, CreateGoClubActivity.class);
                         mIntent.putExtra(EDIT_STATUS, POST);
                         mIntent.putExtra(APPOINTMENT_TYPE, GOCLUB);
-                    } else {
-                        showAlertDialog();
-                        return;
                     }
+                    mContext.startActivity(mIntent);
                 }
-                mContext.startActivity(mIntent);
             }
         });
         onLoadGoClubs();
@@ -296,29 +300,34 @@ public class SearchFragment extends Fragment {
         goClubAdapter.setOnEventClickListener(new SearchGoClubAdapter.OnEventHeaderViewClickListener() {
             @Override
             public void onItemClick(View view) {
-                if (view.getId() == R.id.btn_view_my_service) {
-                    mIntent = new Intent(mContext, ActiveServiceActivity.class);
-                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                    mIntent.putExtra(EDIT_STATUS, EDIT);
-                    mIntent.putExtra("active_status", 2);
-
-                } else if (view.getId() == R.id.btn_view_all) {
-                    mIntent = new Intent(mContext, ActiveServiceActivity.class);
-                    mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                    mIntent.putExtra(EDIT_STATUS, POST);
-                    mIntent.putExtra("active_status", 1);
-
-                } else if (view.getId() == R.id.btn_post_new) {
-                    if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
-                        mIntent = new Intent(mContext, CreateGoClubActivity.class);
-                        mIntent.putExtra(EDIT_STATUS, POST);
+                if (JGGAppManager.getInstance().getCurrentUser() == null) {
+                    showAlertDialog();
+                    return;
+                } else {
+                    if (view.getId() == R.id.btn_view_my_service) {
+                        mIntent = new Intent(mContext, ActiveServiceActivity.class);
                         mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
-                    } else {
-                        showAlertDialog();
-                        return;
+                        mIntent.putExtra(EDIT_STATUS, EDIT);
+                        mIntent.putExtra("active_status", 2);
+
+                    } else if (view.getId() == R.id.btn_view_all) {
+                        mIntent = new Intent(mContext, ActiveServiceActivity.class);
+                        mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                        mIntent.putExtra(EDIT_STATUS, POST);
+                        mIntent.putExtra("active_status", 1);
+
+                    } else if (view.getId() == R.id.btn_post_new) {
+                        if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                            mIntent = new Intent(mContext, CreateGoClubActivity.class);
+                            mIntent.putExtra(EDIT_STATUS, POST);
+                            mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);
+                        } else {
+                            showAlertDialog();
+                            return;
+                        }
                     }
+                    mContext.startActivity(mIntent);
                 }
-                mContext.startActivity(mIntent);
             }
         });
         if (mEvents.size() > 0)
@@ -330,7 +339,7 @@ public class SearchFragment extends Fragment {
                         @Override
                         public void run() {
                             int index = mEvents.size() - 1;
-                            onLoadMoreEvents(index);
+                            onLoadMoreEvents();
                         }
                     });
                 }
@@ -510,7 +519,6 @@ public class SearchFragment extends Fragment {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     //Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -560,7 +568,7 @@ public class SearchFragment extends Fragment {
     }
 
     // TODO : Get Recommended Events
-    private void onLoadMoreEvents(int index) {
+    private void onLoadMoreEvents() {
 
     }
 
@@ -638,7 +646,7 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
-        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
     }
 

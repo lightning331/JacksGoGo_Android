@@ -38,8 +38,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
@@ -118,11 +118,13 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position));
-
-                    Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
-                    intent.putExtra("is_post", false);
-                    startActivity(intent);
+                    if(JGGAppManager.getInstance().getCurrentUser() == null) {}
+                    else {
+                        JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position));
+                        Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
+                        intent.putExtra("is_post", false);
+                        startActivity(intent);
+                    }
                 }
             });
             recyclerView.setAdapter(serviceAdapter);
@@ -132,10 +134,12 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    JGGAppManager.getInstance().setSelectedAppointment(mJobs.get(position));
-
-                    Intent intent = new Intent(mContext, PostedJobActivity.class);
-                    startActivity(intent);
+                    if(JGGAppManager.getInstance().getCurrentUser() == null) {}
+                    else {
+                        JGGAppManager.getInstance().setSelectedAppointment(mJobs.get(position));
+                        Intent intent = new Intent(mContext, PostedJobActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
             recyclerView.setAdapter(jobAdapter);
@@ -144,7 +148,9 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             eventAdapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+                    if(JGGAppManager.getInstance().getCurrentUser() == null) {}
+                    else
+                        mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
                 }
             });
             recyclerView.setAdapter(eventAdapter);
