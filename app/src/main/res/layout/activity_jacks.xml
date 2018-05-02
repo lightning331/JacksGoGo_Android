@@ -44,7 +44,7 @@
                 android:textSize="@dimen/list_text_font_size"
                 android:fontFamily="@font/mulibold"
                 android:textColor="@android:color/black"
-                android:text="@string/jacks_doallars"/>
+                android:text="@string/jacks_dollars"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
