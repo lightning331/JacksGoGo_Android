@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,16 +16,27 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
+import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.yanzhenjie.album.AlbumFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class JobReportSummaryFragment extends Fragment implements View.OnClickListener {
 
@@ -41,11 +53,13 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
     private TextView btnVerify;
     private TextView btnDispute;
 
+    private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
+
     private List<AlbumFile> startJobImage;
     private AlbumFile startJob;
-
-    private AlertDialog alertDialog;
     private String mUserType;
+    private ArrayList<JGGReportResultModel> mReportResults;
 
     public JobReportSummaryFragment() {
         // Required empty public constructor
@@ -65,6 +79,10 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
         if (getArguments() != null) {
 
         }
+    }
+
+    public void setReportResult(ArrayList<JGGReportResultModel> reportResults) {
+        mReportResults = reportResults;
     }
 
     @Override
@@ -113,12 +131,68 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
         startRecyclerView.setAdapter(mAdapter);
     }
 
-    private void onShowVerifyJobDialog() {
+    private void onApproveReportResult() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = apiManager.approveReport(mReportResults.get(0).getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        String reportID = response.body().getValue();
+                        mActivity.finish();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onDisputeReportResult() {
+        progressDialog = createProgressDialog(mContext);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGPostAppResponse> call = apiManager.rejectReport(mReportResults.get(0).getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        String reportID = response.body().getValue();
+                        mActivity.finish();
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onShowVerifyReportDialog() {
         JGGAlertView builder = new JGGAlertView(mContext,
                 mContext.getResources().getString(R.string.alert_verify_job_completed_title),
                 mContext.getResources().getString(R.string.alert_verify_job_completed_desc),
                 false,
-                "",
+                mContext.getResources().getString(R.string.alert_cancel),
                 R.color.JGGGreen,
                 R.color.JGGGreen10Percent,
                 mContext.getResources().getString(R.string.alert_verify_job_completed_ok),
@@ -131,7 +205,7 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
                     alertDialog.dismiss();
                 else {
                     alertDialog.dismiss();
-                    mActivity.finish();
+                    onApproveReportResult();
                 }
             }
         });
@@ -142,7 +216,7 @@ public class JobReportSummaryFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_verify_completed) {
-            onShowVerifyJobDialog();
+            onShowVerifyReportDialog();
         } else if (view.getId() == R.id.btn_dispute) {
 
         }

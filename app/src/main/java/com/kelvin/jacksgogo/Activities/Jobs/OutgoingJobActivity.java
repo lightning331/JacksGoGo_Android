@@ -124,7 +124,6 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
 
     public void deleteJob(final String reason) {
 
-
         String jobID = mJob.getID();
 
         progressDialog = createProgressDialog(this);

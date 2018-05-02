@@ -2,22 +2,23 @@ package com.kelvin.jacksgogo.Utils.Responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
 
 /**
  * Created by PUMA on 1/25/2018.
  */
 
-public class JGGReportResultResponse extends JGGBaseResponse {
+public class JGGGetReportResponse extends JGGBaseResponse {
 
     @SerializedName("Value")
     @Expose
-    private String Value;
+    private JGGReportResultModel Value;
 
-    public String getValue() {
+    public JGGReportResultModel getValue() {
         return Value;
     }
 
-    public void setValue(String value) {
+    public void setValue(JGGReportResultModel value) {
         Value = value;
     }
 }

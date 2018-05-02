@@ -17,12 +17,13 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobInfoResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetReportResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetReportsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGoclubusersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGInviteUsersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGRegionResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGReportResultResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGSendInviteResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGUserProfileResponse;
 
@@ -251,17 +252,23 @@ public interface JGGAPIManager {
     @GET("api/Contract/GetContractByAppointment")
     Call<JGGGetContractResponse> getContractByAppointment(@Query("AppointmentID") String appointmentID);
 
-    @GET("api/Contract/GetReportByID")
-    Call<JGGPostAppResponse> getReportByID(@Query("ReportID") String reportID);
-
-    @GET("api/Contract/GetReportsByContract")
-    Call<JGGPostAppResponse> getReportsByContract(@Query("ContractID") String contractID);
-
     /**
      *  Report
     **/
     @POST("api/Contract/ReportResult")
-    Call<JGGReportResultResponse> reportResult(@Body JGGReportResultModel reportResultModel);
+    Call<JGGPostAppResponse> reportResult(@Body JGGReportResultModel reportResultModel);
+
+    @GET("api/Contract/GetReportByID")
+    Call<JGGGetReportResponse> getReportByID(@Query("ReportID") String reportID);
+
+    @GET("api/Contract/GetReportsByContract")
+    Call<JGGGetReportsResponse> getReportsByContract(@Query("ContractID") String contractID);
+
+    @GET("api/Contract/ApproveReport")
+    Call<JGGPostAppResponse> approveReport(@Query("ReportID") String reportID);
+
+    @GET("api/Contract/RejectReport")
+    Call<JGGPostAppResponse> rejectReport(@Query("ReportID") String reportID);
 
     /*
      * GoClubs

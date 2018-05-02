@@ -48,6 +48,7 @@ public class Global {
     public static final String DUPLICATE = "DUPLICATE";
     public static final String NONE = "NONE";
     public static final String JGG_USERTYPE = "JGG_USERTYPE";
+    public static final String REPORTID = "REPORT_ID";
 
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;

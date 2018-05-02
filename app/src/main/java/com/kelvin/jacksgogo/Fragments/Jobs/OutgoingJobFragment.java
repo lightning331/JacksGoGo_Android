@@ -51,6 +51,7 @@ import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.CLIENT;
 import static com.kelvin.jacksgogo.Utils.Global.JGGUserType.PROVIDER;
 import static com.kelvin.jacksgogo.Utils.Global.JGG_USERTYPE;
 import static com.kelvin.jacksgogo.Utils.Global.JobReportStatus.approved;
+import static com.kelvin.jacksgogo.Utils.Global.REPORTID;
 import static com.kelvin.jacksgogo.Utils.Global.setBoldText;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -645,6 +646,7 @@ public class OutgoingJobFragment extends Fragment {
 
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
+        final String reportID = activity.getReferenceID();
 
         progressView.imgStartWork.setImageResource(R.mipmap.icon_startwork_inactive);
         progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
@@ -670,6 +672,7 @@ public class OutgoingJobFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, JobReportActivity.class);
                 intent.putExtra(JGG_USERTYPE, CLIENT.toString());
+                intent.putExtra(REPORTID, reportID);
                 intent.putExtra("work_start", false);
                 mActivity.startActivity(intent);
             }
