@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,21 +48,22 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
-    private ImageView imgCategory;
-    private TextView lblCategory;
-    private TextView lblTime;
-    private TextView lblDesc;
-    private TextView lblBudgetType;
-    private TextView lblBidBudget;
-    private TextView lblSupplies;
-    private TextView lblRescheduling;
-    private TextView lblCancellation;
-    private LinearLayout btnDesc;
-    private LinearLayout btnBudget;
-    private LinearLayout btnRescheduling;
-    private LinearLayout btnCancellation;
-    private TextView btnSubmit;
-    private TextView btnDelete;
+    @BindView(R.id.img_category) ImageView imgCategory;
+    @BindView(R.id.lbl_category_name)  TextView lblCategory;
+    @BindView(R.id.lbl_date)  TextView lblTime;
+    @BindView(R.id.lbl_proposal_desc)  TextView lblDesc;
+    @BindView(R.id.lbl_budget_type)  TextView lblBudgetType;
+    @BindView(R.id.lbl_bid_budget)  TextView lblBidBudget;
+    @BindView(R.id.lbl_breakdown)  TextView lblBreakdown;
+    @BindView(R.id.lbl_proposal_rescheduling)  TextView lblRescheduling;
+    @BindView(R.id.lbl_proposal_cancellation) TextView lblCancellation;
+    @BindView(R.id.btn_proposal_describe) LinearLayout btnDesc;
+    @BindView(R.id.btn_proposal_price) LinearLayout btnBudget;
+    @BindView(R.id.btn_proposal_rescheduling) LinearLayout btnRescheduling;
+    @BindView(R.id.btn_proposal_cancellation) LinearLayout btnCancellation;
+    @BindView(R.id.btn_post_proposal) TextView btnSubmit;
+    @BindView(R.id.btn_delete_proposal) TextView btnDelete;
+    @BindView(R.id.ll_breakdown) LinearLayout ll_breakdown;
 
     private JGGAppointmentModel selectedAppointment;
     private ProposalStatus proposalStatus;
@@ -96,7 +99,6 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         if (getArguments() != null) {
 
         }
-        ButterKnife.bind(mActivity);
     }
 
     @Override
@@ -104,6 +106,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_proposal_summary, container, false);
+        ButterKnife.bind(this, view);
 
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
 
@@ -113,29 +116,12 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         proposalModel.setPostOn(postTime);
         JGGAppManager.getInstance().setSelectedProposal(proposalModel);
 
-        initView(view);
+        initView();
         setData();
         return view;
     }
 
-    private void initView(View view) {
-
-        imgCategory = (ImageView) view.findViewById(R.id.img_category);
-        lblCategory = (TextView) view.findViewById(R.id.lbl_category_name);
-        lblTime = (TextView) view.findViewById(R.id.lbl_date);
-
-        lblDesc = view.findViewById(R.id.lbl_proposal_desc);
-        lblBudgetType = view.findViewById(R.id.lbl_budget_type);
-        lblBidBudget = view.findViewById(R.id.lbl_bid_budget);
-        lblSupplies = view.findViewById(R.id.lbl_supplies);
-        lblRescheduling = view.findViewById(R.id.lbl_proposal_rescheduling);
-        lblCancellation = view.findViewById(R.id.lbl_proposal_cancellation);
-        btnDesc = view.findViewById(R.id.btn_proposal_describe);
-        btnBudget = view.findViewById(R.id.btn_proposal_price);
-        btnRescheduling = view.findViewById(R.id.btn_proposal_rescheduling);
-        btnCancellation = view.findViewById(R.id.btn_proposal_cancellation);
-        btnSubmit = view.findViewById(R.id.btn_post_proposal);
-        btnDelete = view.findViewById(R.id.btn_delete_proposal);
+    private void initView() {
 
         btnDesc.setOnClickListener(this);
         btnBudget.setOnClickListener(this);
@@ -154,6 +140,7 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
         }
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void setData() {
 
         Picasso.with(mContext)
@@ -169,25 +156,30 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             lblDesc.setText(selectedProposal.getDescription());
             // Budget Type
             //lblBudgetType.setText();
+            // TODO - Need to fix when user view the invited proposal
             // Budget
-            lblBidBudget.setText(String.valueOf(selectedProposal.getBudget()) + "/month");
+            lblBidBudget.setText(String.format("%.2f", selectedProposal.getBudget()) + "/month");
             // Supplies
-            //lblSupplies.setText("Our own supplies - $ ");
+            String breakdown = selectedProposal.getBreakdown();
+            if (breakdown == null)
+                ll_breakdown.setVisibility(View.GONE);
+            else
+                lblBreakdown.setText(breakdown);
             // Rescheduling
-            if (selectedProposal.isRescheduleAllowed())
-                lblRescheduling.setText(getDaysString(Long.valueOf(selectedProposal.getRescheduleTime())));
-            else
+            if (selectedProposal.isRescheduleAllowed() == null)
                 lblRescheduling.setText("No rescheduling allowed.");
-            // Cancellation
-            if (selectedProposal.isCancellationAllowed())
-                lblCancellation.setText(getDaysString(Long.valueOf(selectedProposal.getCancellationTime())));
             else
+                lblRescheduling.setText(getDaysString(Long.valueOf(selectedProposal.getRescheduleTime())));
+            // Cancellation
+            if (selectedProposal.isCancellationAllowed() == null)
                 lblCancellation.setText("No cancellation allowed.");
+            else
+                lblCancellation.setText(getDaysString(Long.valueOf(selectedProposal.getCancellationTime())));
         } else {
             lblDesc.setText("");
             lblBudgetType.setText("No set");
             lblBidBudget.setText("No set");
-            lblSupplies.setText("No set");
+            lblBreakdown.setText("No set");
             lblRescheduling.setText("No set");
             lblCancellation.setText("No set");
         }

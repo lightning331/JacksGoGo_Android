@@ -8,7 +8,7 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDateStri
 public class JGGJobInfoModel {
 
     private Integer ProposalCount;
-    private Integer AveragePrice;
+    private Double AveragePrice;
     private String LastRespondOn;
 
     public Integer getProposalCount() {
@@ -19,11 +19,11 @@ public class JGGJobInfoModel {
         ProposalCount = proposalCount;
     }
 
-    public Integer getAveragePrice() {
+    public Double getAveragePrice() {
         return AveragePrice;
     }
 
-    public void setAveragePrice(Integer averagePrice) {
+    public void setAveragePrice(Double averagePrice) {
         AveragePrice = averagePrice;
     }
 

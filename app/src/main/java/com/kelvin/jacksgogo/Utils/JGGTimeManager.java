@@ -7,6 +7,7 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 
@@ -23,6 +24,7 @@ public class JGGTimeManager {
     public static String getAppointmentDay(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String day = dayFormat.format(date);
             return day;
         }
@@ -32,6 +34,7 @@ public class JGGTimeManager {
     public static String getAppointmentMonth(Date date) {
         if (date != null) {
             SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+            monthFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String month = monthFormat.format(date);
             return month;
         }
@@ -41,6 +44,7 @@ public class JGGTimeManager {
     public static String getAppointmentYear(Date date) {
         if (date != null) {
             SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+            yearFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String year = yearFormat.format(date);
             return year;
         }
@@ -49,6 +53,7 @@ public class JGGTimeManager {
 
     public static Date appointmentDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
 
             if (dateString != null) {
@@ -64,6 +69,7 @@ public class JGGTimeManager {
 
     public static Date appointmentMonthDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
 
             if (dateString != null) {
@@ -79,6 +85,7 @@ public class JGGTimeManager {
 
     public static String appointmentDateString(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (date != null) {
             String dateString = dateFormat.format(date);
             return dateString;
@@ -88,6 +95,7 @@ public class JGGTimeManager {
 
     public static String appointmentMonthDateString(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (date != null) {
             String dateString = dateFormat.format(date);
             return dateString;
@@ -97,6 +105,7 @@ public class JGGTimeManager {
 
     public static String appointmentNewDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String newTime = "";
         try {
             Date varDate = dateFormat.parse(appointmentDateString(date));
@@ -113,6 +122,7 @@ public class JGGTimeManager {
 
     public static String convertCalendarDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String month = "";
         try {
             Date varDate = dateFormat.parse(appointmentDateString(date));
@@ -128,7 +138,9 @@ public class JGGTimeManager {
     public static String getDayMonthString(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+            dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+            monthFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String day = dayFormat.format(date);
             String month = monthFormat.format(date);
             try {
@@ -148,6 +160,7 @@ public class JGGTimeManager {
     public static String getDayMonthYear(Date date) {
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String dateString = dateFormat.format(date);
             return dateString;
         }
@@ -157,7 +170,9 @@ public class JGGTimeManager {
     public static String getTimePeriodString(Date date) {
         if (date != null) {
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+            hourFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
+            minuteFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             boolean period = true;
             String hour = hourFormat.format(date);
             if (Integer.parseInt(hour) > 12) {
@@ -180,8 +195,11 @@ public class JGGTimeManager {
     public static String getTimeString(Date date) {
         if (date != null) {
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+            hourFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
+            minuteFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat secondFormat = new SimpleDateFormat("ss");
+            secondFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             //SimpleDateFormat mSecondFormat = new SimpleDateFormat("SSS");
             String hour = hourFormat.format(date);
             String minute = minuteFormat.format(date);

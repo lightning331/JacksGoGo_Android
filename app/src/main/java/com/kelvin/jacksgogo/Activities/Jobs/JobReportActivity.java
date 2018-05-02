@@ -88,7 +88,7 @@ public class JobReportActivity extends AppCompatActivity {
         });
 
         setCategory();
-        getReportByID();
+        initFragment();
     }
 
     private void setCategory() {
@@ -170,6 +170,7 @@ public class JobReportActivity extends AppCompatActivity {
                     .addToBackStack("report_main")
                     .commit();
         } else {
+            getReportByID();
             JobReportSummaryFragment sumFrag = JobReportSummaryFragment.newInstance(mUserType);
             sumFrag.setReportResult(mReportResults);
             getSupportFragmentManager()

@@ -7,7 +7,7 @@ android {
         applicationId "com.kelvin.jacksgogo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 33
+        versionCode 34
         versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -67,8 +67,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:15.0.0'
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.hbb20:ccp:2.1.1'
     implementation 'com.bigkoo:alertview:1.0.3'
     implementation 'com.makeramen:roundedimageview:2.3.0'

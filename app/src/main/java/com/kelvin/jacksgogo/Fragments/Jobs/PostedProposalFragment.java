@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,21 +47,22 @@ public class PostedProposalFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context mContext;
 
-    private ImageView imgCategory;
-    private TextView lblCategory;
-    private TextView lblTime;
-    private RoundedImageView imgAvatar;
-    private TextView lblUserName;
-    private MaterialRatingBar ratingBar;
-    private TextView lblDesc;
-    private TextView lblBudgetType;
-    private TextView lblBudget;
-    private TextView lblSupplies;
-    private TextView lblRescheduling;
-    private TextView lblCancellation;
-    private TextView lblReferenceNo;
-    private TextView lblPostedTime;
-    private TextView btnDeleteProposal;
+    @BindView(R.id.img_category) ImageView imgCategory;
+    @BindView(R.id.lbl_category_name)  TextView lblCategory;
+    @BindView(R.id.lbl_date)  TextView lblTime;
+    @BindView(R.id.img_user_avatar) RoundedImageView imgAvatar;
+    @BindView(R.id.lbl_username) TextView lblUserName;
+    @BindView(R.id.user_rating) MaterialRatingBar ratingBar;
+    @BindView(R.id.lbl_description) TextView lblDesc;
+    @BindView(R.id.lbl_budget_type) TextView lblBudgetType;
+    @BindView(R.id.lbl_bid_budget) TextView lblBudget;
+    @BindView(R.id.lbl_breakdown) TextView lblBreakDown;
+    @BindView(R.id.lbl_rescheduling) TextView lblRescheduling;
+    @BindView(R.id.lbl_cancellation) TextView lblCancellation;
+    @BindView(R.id.lbl_reference_no) TextView lblReferenceNo;
+    @BindView(R.id.lbl_reference_posted_date) TextView lblPostedTime;
+    @BindView(R.id.btn_delete_proposal) TextView btnDeleteProposal;
+    @BindView(R.id.ll_breakdown) LinearLayout ll_breakdown;
 
     private PostProposalActivity mActivity;
     private ProgressDialog progressDialog;
@@ -92,6 +96,7 @@ public class PostedProposalFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posted_proposal, container, false);
+        ButterKnife.bind(this, view);
 
         selectedAppointment = JGGAppManager.getInstance().getSelectedAppointment();
         mProposal = JGGAppManager.getInstance().getSelectedProposal();
@@ -103,21 +108,6 @@ public class PostedProposalFragment extends Fragment {
     }
 
     private void initView(View view) {
-        imgCategory = view.findViewById(R.id.img_category);
-        lblCategory = view.findViewById(R.id.lbl_category_name);
-        lblTime = view.findViewById(R.id.lbl_date);
-        imgAvatar = view.findViewById(R.id.img_user_avatar);
-        lblUserName = view.findViewById(R.id.lbl_username);
-        ratingBar = view.findViewById(R.id.user_rating);
-        lblDesc = view.findViewById(R.id.lbl_description);
-        lblBudgetType = view.findViewById(R.id.lbl_budget_type);
-        lblBudget = view.findViewById(R.id.lbl_bid_budget);
-        lblSupplies = view.findViewById(R.id.lbl_supplies);
-        lblRescheduling = view.findViewById(R.id.lbl_rescheduling);
-        lblCancellation = view.findViewById(R.id.lbl_cancellation);
-        lblReferenceNo = view.findViewById(R.id.lbl_reference_no);
-        lblPostedTime = view.findViewById(R.id.lbl_reference_posted_date);
-        btnDeleteProposal = view.findViewById(R.id.btn_delete_proposal);
 
         if (editStatus.equals(MY_PROPOSAL))
             btnDeleteProposal.setVisibility(View.VISIBLE);
@@ -158,16 +148,17 @@ public class PostedProposalFragment extends Fragment {
                 ratingBar.setRating(0);
             else
                 ratingBar.setRating(rating.floatValue());
-            // Description
-            lblDesc.setText(mProposal.getDescription());
             // Budget Type
             //lblBudgetType.setText();
             // Budget
             String budget = getProposalBudget(mProposal) + "/month";
             lblBudget.setText(budget);
             // Supplies
-            String supplies = "Our own supplies - $ ";
-            //lblSupplies.setText(supplies);
+            String breakdown = mProposal.getBreakdown();
+            if (breakdown == null)
+                ll_breakdown.setVisibility(View.GONE);
+            else
+                lblBreakDown.setText(breakdown);
             // Rescheduling
             String noReschedule = "No rescheduling allowed.";
             if (mProposal.isRescheduleAllowed() == null)
@@ -188,13 +179,22 @@ public class PostedProposalFragment extends Fragment {
                     lblCancellation.setText(noCancellation);
             String proposalNo = "Proposal reference no: " + mProposal.getID();
             lblReferenceNo.setText(proposalNo);
-            String postedTime = "Posted on " + getDayMonthYear(appointmentMonthDate(mProposal.getPostOn()));
+            String postedTime = "Posted on ";
+            if (mProposal.isInvited() == null) {
+                postedTime = postedTime + getDayMonthYear(appointmentMonthDate(mProposal.getPostOn()));
+                // Description
+                lblDesc.setText(mProposal.getDescription());
+            } else {
+                postedTime = postedTime + getDayMonthYear(mProposal.getSubmitOn());
+                // Description
+                lblDesc.setText(mProposal.getNote());
+            }
             lblPostedTime.setText(postedTime);
         } else {
             lblDesc.setText("");
             lblBudgetType.setText("No set");
             lblBudget.setText("No set");
-            lblSupplies.setText("No set");
+            lblBreakDown.setText("No set");
             lblRescheduling.setText("No set");
             lblCancellation.setText("No set");
         }
