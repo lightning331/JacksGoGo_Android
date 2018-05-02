@@ -267,7 +267,7 @@
     <string name="back_credit">Back To Credit</string>
     <string name="jacks_added">Added (J$)</string>
     <string name="jacks_used">Used (J$)</string>
-    <string name="jacks_doallars">Jacks Dollars</string>
+    <string name="jacks_dollars">Jacks Dollars</string>
 
     <!--TODO : Settings-->
     <string name="title_settings">Settings</string>
@@ -294,6 +294,21 @@
     <string name="title_show_jobs">Show Only Jobs With The Keywords</string>
     <string name="title_show_go_club">Show Only GoClubs With The Keywords</string>
     <string name="title_show_event">Show Only Events With The Keywords</string>
+
+    <!-- TODO: Review and Tip -->
+    <string name="title_post_review">Review</string>
+    <string name="post_review_follow">Post Follow-up Review</string>
+    <string name="post_review">Post Review</string>
+    <string name="post_review_hint">e.g. Phenomenal work!</string>
+    <string name="review_complete_title">Congratulations an the completed job!</string>
+    <string name="review_complete_desc">Please leave a review or feedback for the service provider.</string>
+    <string name="post_review_provider">Post a Follow-up review for the service provider.</string>
+
+    <string name="title_tip">Tip</string>
+    <string name="give_tip">Give Tip</string>
+    <string name="tip_hint">Tip amount</string>
+    <string name="jacks_dollar_available">Jacks Dollar available</string>
+    <string name="tip_description">If the service provider has given superb service, you may reward them with a tip.</string>
 
     <!-- TODO: GoClub -->
     <string name="title_joined_go_club">Joined GoClubs</string>
