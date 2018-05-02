@@ -201,11 +201,11 @@
                             android:src="@mipmap/icon_time"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
                         android:gravity="center"
                         android:orientation="vertical">
                         <LinearLayout
@@ -231,20 +231,27 @@
                                 android:fontFamily="@font/mulibold"
                                 android:textSize="@dimen/button_font_size"/>
                         </LinearLayout>
-                        <TextView
-                            android:text="Breakdown:"
+                        <LinearLayout
+                            android:id="@+id/ll_breakdown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/JGGGrey2"
-                            android:fontFamily="@font/muliregular"
-                            android:textSize="@dimen/badge_font_size"/>
-                        <TextView
-                            android:id="@+id/lbl_supplies"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/JGGBlack"
-                            android:fontFamily="@font/muliregular"
-                            android:textSize="@dimen/button_font_size"/>
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="Breakdown:"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/JGGGrey2"
+                                android:fontFamily="@font/muliregular"
+                                android:textSize="@dimen/badge_font_size"/>
+                            <TextView
+                                android:text="Breakdown:"
+                                android:id="@+id/lbl_breakdown"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/JGGBlack"
+                                android:fontFamily="@font/muliregular"
+                                android:textSize="@dimen/button_font_size"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout

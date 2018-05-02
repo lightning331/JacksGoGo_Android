@@ -66,6 +66,7 @@
             android:id="@+id/ll_second"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/txt_second_time"
@@ -95,6 +96,7 @@
             android:id="@+id/ll_third"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/txt_third_time"
@@ -127,6 +129,7 @@
             android:text="View Job Report To Verify"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="8dp"
             android:padding="@dimen/edit_text_padding_size"
             android:textAllCaps="false"
             android:textAlignment="center"

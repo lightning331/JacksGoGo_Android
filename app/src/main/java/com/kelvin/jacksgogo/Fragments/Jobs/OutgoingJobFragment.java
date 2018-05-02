@@ -286,7 +286,7 @@ public class OutgoingJobFragment extends Fragment {
                         break;
                     case contract_started:  // 501
                         showStartedWork(activity);
-                        showHeaderView();
+                        showHeaderView(activity.getReferenceID());
                         break;
                     case contract_paused:
                     case contract_held:
@@ -593,9 +593,11 @@ public class OutgoingJobFragment extends Fragment {
         Date postOn = activity.getActiveOn();
         String postedTime = getDayMonthYear(postOn) + " " + getTimePeriodString(postOn);
 
+        confirmedLayout.removeAllViews();
         confirmedView.confirmedLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGGrey3));
         confirmedView.imgConfirmed.setImageResource(R.mipmap.icon_appointment_inactive);
         confirmedView.lblConfirmedDesc.setVisibility(View.GONE);
+        confirmedLayout.addView(confirmedView);
 
         progressLayout.removeAllViews();
 
@@ -710,9 +712,52 @@ public class OutgoingJobFragment extends Fragment {
         Date submitOn = activity.getActiveOn();
         String submitTime = getDayMonthYear(submitOn) + " " + getTimePeriodString(submitOn);
 
+        headerLayout.removeAllViews();
+
+        headerView.reportLayout.setVisibility(View.VISIBLE);
+        headerView.invoiceLayout.setVisibility(View.VISIBLE);
+        headerView.reviewLayout.setVisibility(View.VISIBLE);
+        headerView.tipLayout.setVisibility(View.GONE);
+        headerView.rehireLayout.setVisibility(View.GONE);
+
+        String verifyDay = "7";
+        String description = "You have "
+                + verifyDay + " days left for after sales service.";
+        headerView.txtHeader.setText(setBoldText(description));
+        headerView.txtHeader.setVisibility(View.VISIBLE);
+
+        headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, JobReportActivity.class);
+                intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra("work_start", false);
+                mActivity.startActivity(intent);
+            }
+        });
+        headerView.reviewLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShowReviewFragment();
+            }
+        });
+        headerView.invoiceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        headerLayout.addView(headerView);
+
         paymentView.secondLayout.setVisibility(View.VISIBLE);
         paymentView.txtSecondTime.setText(submitTime);
         paymentView.txtSecondDescription.setText(R.string.verified_work);
+
+        paymentView.txtThirdDescription.setText("");
+        paymentView.txtThirdDescription.append(setBoldText(providerName));
+        paymentView.txtThirdDescription.append(" has completed the work.");
+
+        paymentView.btnReport.setVisibility(View.GONE);
     }
 
     // TODO - 6.2.3. You officially completed.
@@ -727,7 +772,7 @@ public class OutgoingJobFragment extends Fragment {
     }
 
     // TODO - show header view (job report, invoice)
-    private void showHeaderView() {
+    private void showHeaderView(final String reportID) {
 
         headerLayout.removeAllViews();
 
@@ -737,10 +782,6 @@ public class OutgoingJobFragment extends Fragment {
         headerView.tipLayout.setVisibility(View.GONE);
         headerView.rehireLayout.setVisibility(View.GONE);
 
-        String verifyDay = "3";
-        String description = providerName + " has completed the work. You have "
-                + verifyDay + " days to verify the work.";
-        //headerView.txtHeader.setText(setBoldText(description));
         headerView.txtHeader.setVisibility(View.GONE);
 
         headerView.reportLayout.setOnClickListener(new View.OnClickListener() {
@@ -748,6 +789,7 @@ public class OutgoingJobFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, JobReportActivity.class);
                 intent.putExtra(JGG_USERTYPE, PROVIDER.toString());
+                intent.putExtra(REPORTID, reportID);
                 intent.putExtra("work_start", false);
                 mActivity.startActivity(intent);
             }

@@ -92,8 +92,11 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onClick(View view) {
                     JGGAppManager.getInstance().setSelectedAppointment(mServices.get(position - 2));
 
-                    Intent intent = new Intent(mContext, ServiceDetailActivity.class);
-                    mContext.startActivity(intent);
+                    if(JGGAppManager.getInstance().getCurrentUser() == null) {}
+                    else {
+                        Intent intent = new Intent(mContext, ServiceDetailActivity.class);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }
