@@ -33,10 +33,12 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -82,6 +84,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     private JGGUserProfileModel groupOwner;
     private EventUserStatus joinGoClubStatus;
     private ArrayList<JGGGoClubUserModel> clubUsers;
+    private ArrayList<JGGEventModel> clubEvents;
     private JGGUserProfileModel currentUser;
 
     @Override
@@ -138,6 +141,17 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         getClubByID();
     }
 
+    /**
+     * Update detail RecyclerView
+     */
+    private void updateRecyclerView() {
+        adapter = new GoClubDetailAdapter(this);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Get GoClub detail by ClubID
+     */
     private void getClubByID() {
         swipeContainer.setRefreshing(true);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
@@ -145,25 +159,25 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         call.enqueue(new Callback<JGGGetGoClubResponse>() {
             @Override
             public void onResponse(Call<JGGGetGoClubResponse> call, Response<JGGGetGoClubResponse> response) {
-                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         // Todo - Set GoClub Data
                         mClub = response.body().getValue();
                         groupOwner = mClub.getUserProfile();
                         clubUsers = mClub.getClubUsers();
-                        JGGAppManager.getInstance().setSelectedClub(mClub);
 
-                        // Todo - Update Detail RecyclerView
-                        updateRecyclerView();
+                        // Todo - Get Events of the GoCLub
+                        getEventsByClub();
 
                         // Todo - Set Bottom View
                         setJoinToGoClubStatus();
 
                     } else {
+                        swipeContainer.setRefreshing(false);
                         Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    swipeContainer.setRefreshing(false);
                     Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -176,9 +190,135 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    private void updateRecyclerView() {
-        adapter = new GoClubDetailAdapter(this);
-        mRecyclerView.setAdapter(adapter);
+    private void getEventsByClub() {
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGGetEventsResponse> call = manager.getEventsByClub(mClub.getID(), 0, 30);
+        call.enqueue(new Callback<JGGGetEventsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetEventsResponse> call, Response<JGGGetEventsResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Set Events Data
+                        clubEvents = response.body().getValue();
+                        mClub.setEvents(clubEvents);
+                        JGGAppManager.getInstance().setSelectedClub(mClub);
+
+                        // Todo - Update Detail RecyclerView
+                        updateRecyclerView();
+
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetEventsResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Send GoClub join request
+     */
+    private void onSendJoinRequest() {
+        alertDialog.dismiss();
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGPostAppResponse> call = apiManager.sendJoinRequestToClub(mClub.getID(), currentUser.getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        String clubUserID = response.body().getValue();
+                        onJoinToGoClubDialog(true);
+                        getClubByID();
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Leave from GoClub
+     */
+    private void onLeaveGoClub(String reason) {
+        alertDialog.dismiss();
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = apiManager.leaveGoClub(mClub.getID(), currentUser.getID(),reason);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        getClubByID();
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Delete GoClub
+     */
+    private void onDeleteGoClub(String reason) {
+        alertDialog.dismiss();
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = apiManager.deleteGoClub(mClub.getID());
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        GoClubDetailActivity.super.finish();
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setJoinToGoClubStatus() {
@@ -260,98 +400,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     private void onSendReport() {
         alertDialog.dismiss();
         onReportDialog(true);
-    }
-
-    // Todo - Send GoClub join request
-    private void onSendJoinRequest() {
-        alertDialog.dismiss();
-        progressDialog = createProgressDialog(this);
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGPostAppResponse> call = apiManager.sendJoinRequestToClub(mClub.getID(), currentUser.getID());
-        call.enqueue(new Callback<JGGPostAppResponse>() {
-            @Override
-            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        // Todo - Refresh View
-                        String clubUserID = response.body().getValue();
-                        onJoinToGoClubDialog(true);
-                        getClubByID();
-                    } else {
-                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // Todo - Leave from GoClub
-    private void onLeaveGoClub(String reason) {
-        alertDialog.dismiss();
-        progressDialog = createProgressDialog(this);
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGBaseResponse> call = apiManager.leaveGoClub(mClub.getID(), currentUser.getID(),reason);
-        call.enqueue(new Callback<JGGBaseResponse>() {
-            @Override
-            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        // Todo - Refresh View
-                        getClubByID();
-                    } else {
-                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // Todo - Delete GoClub
-    private void onDeleteGoClub(String reason) {
-        alertDialog.dismiss();
-        progressDialog = createProgressDialog(this);
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGBaseResponse> call = apiManager.deleteGoClub(mClub.getID());
-        call.enqueue(new Callback<JGGBaseResponse>() {
-            @Override
-            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        // Todo - Refresh View
-                        GoClubDetailActivity.super.finish();
-                    } else {
-                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void actionbarItemClick(View view) {
