@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostedJobActivity;
+import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
@@ -25,7 +27,6 @@ import com.kelvin.jacksgogo.CustomView.Views.ActiveServiceTabView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -34,6 +35,8 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,9 +50,10 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private ActiveServiceActivity mActivity;
 
-    private JGGCategoryModel selectedCategory;
-    private RecyclerView recyclerView;
+    @BindView(R.id.active_service_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.swipeSearchContainer) SwipeRefreshLayout swipeContainer;
     private ActiveServiceTabView tabView;
 
     private JobsListingAdapter jobAdapter;
@@ -57,6 +61,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     private EventsListingAdapter eventAdapter;
     private ProgressDialog progressDialog;
 
+    private JGGCategoryModel selectedCategory;
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
     private String appType;
@@ -90,6 +95,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_active_service_main, container, false);
+        ButterKnife.bind(this, view);
 
         selectedCategory = JGGAppManager.getInstance().getSelectedCategory();
 
@@ -105,7 +111,6 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     }
 
     private void initRecyclerView(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.active_service_recycler_view);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         }
@@ -113,6 +118,24 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         view.setLayoutParams(lp);
 
         if (appType.equals(SERVICES)) {
+
+            // Setup refresh listener which triggers new data loading
+            swipeContainer.setColorSchemeResources(R.color.JGGGreen,
+                    R.color.JGGGreen,
+                    R.color.JGGGreen,
+                    R.color.JGGGreen);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeContainer.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                searchServices();
+                                            }
+                                        }
+                    );
+                }
+            });
             serviceAdapter = new ActiveServiceAdapter(mContext);
             searchServices();
             serviceAdapter.setOnItemClickListener(new ActiveServiceAdapter.OnItemClickListener() {
@@ -129,6 +152,24 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             });
             recyclerView.setAdapter(serviceAdapter);
         } else if (appType.equals(JOBS)) {
+
+            // Setup refresh listener which triggers new data loading
+            swipeContainer.setColorSchemeResources(R.color.JGGCyan,
+                    R.color.JGGCyan,
+                    R.color.JGGCyan,
+                    R.color.JGGCyan);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeContainer.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                searchJobs();
+                                            }
+                                        }
+                    );
+                }
+            });
             jobAdapter = new JobsListingAdapter(mContext);
             searchJobs();
             jobAdapter.setOnItemClickListener(new JobsListingAdapter.OnItemClickListener() {
@@ -144,7 +185,26 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             });
             recyclerView.setAdapter(jobAdapter);
         } else if (appType.equals(EVENTS)) {
+
+            // Setup refresh listener which triggers new data loading
+            swipeContainer.setColorSchemeResources(R.color.JGGPurple,
+                    R.color.JGGPurple,
+                    R.color.JGGPurple,
+                    R.color.JGGPurple);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeContainer.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getEvents();
+                                            }
+                                        }
+                    );
+                }
+            });
             eventAdapter = new EventsListingAdapter(mContext, new ArrayList<JGGEventModel>());
+            getEvents();
             eventAdapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
@@ -157,8 +217,21 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         }
     }
 
+    private void getEvents() {
+        swipeContainer.setRefreshing(false);
+        if (mActivity.getStatus() == 0)
+            // Get Events by Category
+            getEventsByCategory();
+        else if (mActivity.getStatus() == 1)
+            // Get All Events
+            getAllEvent();
+        else
+            // Get Events by User
+            getEventsByUser();
+    }
+
     private void searchJobs() {
-        progressDialog = Global.createProgressDialog(mContext);
+        swipeContainer.setRefreshing(true);
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null,
@@ -166,7 +239,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mJobs = response.body().getValue();
@@ -177,21 +250,20 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void searchServices() {
-        progressDialog = Global.createProgressDialog(mContext);
+        swipeContainer.setRefreshing(true);
         final JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, mContext);
         Call<JGGGetAppsResponse> call = apiManager.searchAppointment(null, null,
                 null, null, null, null, null,
@@ -199,7 +271,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
         call.enqueue(new Callback<JGGGetAppsResponse>() {
             @Override
             public void onResponse(Call<JGGGetAppsResponse> call, Response<JGGGetAppsResponse> response) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mServices = response.body().getValue();
@@ -210,17 +282,28 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JGGGetAppsResponse> call, Throwable t) {
-                progressDialog.dismiss();
+                swipeContainer.setRefreshing(false);
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getEventsByCategory() {
+
+    }
+
+    private void getAllEvent() {
+
+    }
+
+    private void getEventsByUser() {
+
     }
 
     private void initTabView(View view) {
@@ -267,6 +350,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mActivity = ((ActiveServiceActivity) context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
 

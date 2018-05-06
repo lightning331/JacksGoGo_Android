@@ -110,6 +110,7 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
+                    // TODO - Need to fix
                     JGGAppManager.getInstance().setSelectedClub(filteredClubs.get(position));
                     mContext.startActivity(new Intent(mContext, GoClubDetailActivity.class));
                 }

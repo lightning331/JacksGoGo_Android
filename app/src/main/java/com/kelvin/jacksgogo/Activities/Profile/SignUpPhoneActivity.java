@@ -77,7 +77,6 @@ public class SignUpPhoneActivity extends AppCompatActivity implements View.OnCli
                     else
                         Toast.makeText(SignUpPhoneActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(SignUpPhoneActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

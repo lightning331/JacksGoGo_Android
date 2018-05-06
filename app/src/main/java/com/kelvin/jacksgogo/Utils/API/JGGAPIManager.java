@@ -309,6 +309,14 @@ public interface JGGAPIManager {
     @GET("api/Event/GetClubByID")
     Call<JGGGetGoClubResponse> getClubByID(@Query("ClubID") String clubID);
 
+    @GET("api/Event/SendJoinRequestToClub")
+    Call<JGGPostAppResponse> sendJoinRequestToClub(@Query("ClubID") String clubID,
+                                                   @Query("UserProfileID") String userProfileID);
+
+    @GET("api/Event/ApproveJoinRequestInClub")
+    Call<JGGPostAppResponse> approveJoinRequestInClub(@Query("ClubID") String clubID,
+                                                      @Query("UserProfileID") String userProfileID);
+
     @FormUrlEncoded
     @POST("api/Event/LeaveGoClub")
     Call<JGGBaseResponse> leaveGoClub(@Field("ClubID") String clubID,

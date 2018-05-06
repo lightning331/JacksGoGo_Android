@@ -136,6 +136,10 @@ public class ActiveServiceActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.active_service_navigation) {

@@ -155,6 +155,8 @@ public class AllGoClubsActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                JGGGoClubModel club = mClubs.get(position);
+                JGGAppManager.getInstance().setSelectedClub(club);
                 startActivity(new Intent(AllGoClubsActivity.this, GoClubDetailActivity.class));
             }
         });
