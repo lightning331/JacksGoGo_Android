@@ -237,7 +237,10 @@ public class JGGMapViewActivity extends AppCompatActivity implements View.OnClic
                     if (featureName.equals(thoroughfare))
                         street = thoroughfare + ", " + subLocality + ", " + city;
                     else
-                        street = featureName + ", " + thoroughfare + ", " + subLocality + ", " + city;
+                        if (subLocality == null)
+                            street = featureName + ", " + thoroughfare + ", " + city;
+                        else
+                            street = featureName + ", " + thoroughfare + ", " + subLocality + ", " + city;
                 }
 
                 mAddress.setAddress(address);

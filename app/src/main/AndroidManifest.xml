@@ -231,7 +231,8 @@
             android:name=".Activities.GoClub_Event.GcAddAdminActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activities.Jobs.JobTipActivity" />
-        <activity android:name=".Activities.Jobs.PostReviewActivity"></activity>
+        <activity android:name=".Activities.Jobs.PostReviewActivity" />
+        <activity android:name=".Activities.GoClub_Event.AllEventsActivity"></activity>
     </application>
 
 </manifest>

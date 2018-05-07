@@ -38,6 +38,7 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -264,7 +265,33 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     // Todo - Send GoClub join request
     private void onSendJoinRequest() {
         alertDialog.dismiss();
-        onJoinToGoClubDialog(true);
+        progressDialog = createProgressDialog(this);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGPostAppResponse> call = apiManager.sendJoinRequestToClub(mClub.getID(), currentUser.getID());
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        String clubUserID = response.body().getValue();
+                        onJoinToGoClubDialog(true);
+                        getClubByID();
+                    } else {
+                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Todo - Leave from GoClub
@@ -497,7 +524,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(View v) {
                     alertDialog.dismiss();
-                    setBottomNavHideStatus(EventUserStatus.approved);
                 }
             });
         }

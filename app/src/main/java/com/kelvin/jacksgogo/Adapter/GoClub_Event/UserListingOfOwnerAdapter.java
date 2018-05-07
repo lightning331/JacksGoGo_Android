@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
     public UserListingOfOwnerAdapter(Context context, ArrayList<JGGGoClubUserModel> users) {
         this.mContext = context;
 
-        sortMembers(users);
+        sortClubUserByStatus(users);
     }
 
-    private void sortMembers(ArrayList<JGGGoClubUserModel> users) {
+    private void sortClubUserByStatus(ArrayList<JGGGoClubUserModel> users) {
         if (users.size() > 0) {
             ArrayList<JGGGoClubUserModel> tmpUsers = new ArrayList<>();
             for (JGGGoClubUserModel user : users) {
@@ -45,10 +46,26 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
                         break;
                 }
             }
-            approvedUsers = getClubAllUsers(tmpUsers);
+            sortClubUserByUserType(tmpUsers);
         } else {
-            approvedUsers = getClubAllUsers(users);
+            sortClubUserByUserType(users);
         }
+    }
+
+    // Todo - Sort Admin and General Users
+    private void sortClubUserByUserType(ArrayList<JGGGoClubUserModel> users) {
+        approvedUsers.clear();
+        ArrayList<JGGGoClubUserModel> adminUsers = new ArrayList<>();
+        ArrayList<JGGGoClubUserModel> generalUsers = new ArrayList<>();
+        for (JGGGoClubUserModel user : users) {
+            if (user.getUserType() == Global.EventUserType.admin)
+                adminUsers.add(user);
+            else
+                generalUsers.add(user);
+        }
+        approvedUsers = getClubAllUsers(approvedUsers);
+        approvedUsers.addAll(adminUsers);
+        approvedUsers.addAll(generalUsers);
     }
 
     @NonNull
@@ -75,7 +92,7 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof UserNameRatingCell) {
             final UserNameRatingCell viewHolder = (UserNameRatingCell) holder;
-            JGGGoClubUserModel user;
+            final JGGGoClubUserModel user;
             final int index;
             if (pendingUsers.size() > 0)
                 index = position - 1;
@@ -87,13 +104,13 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
             viewHolder.lblDecline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pendingListener.onItemClick(v, index);
+                    approveListener.onItemClick(v, user.getUserProfileID());
                 }
             });
             viewHolder.lblReviews.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pendingListener.onItemClick(v, index);
+                    approveListener.onItemClick(v, user.getUserProfileID());
                 }
             });
         }
@@ -113,7 +130,7 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnPendingItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, String userID);
     }
 
     public void setPendingItemClickListener(OnPendingItemClickListener listener) {
@@ -121,7 +138,7 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnApproveItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, String userID);
     }
 
     public void setApproveItemClickListener(OnApproveItemClickListener listener) {
@@ -160,18 +177,18 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
             UserNameRatingCell viewHolder = (UserNameRatingCell) holder;
-            JGGGoClubUserModel user = pendingUsers.get(position);
+            final JGGGoClubUserModel user = pendingUsers.get(position);
             viewHolder.setPendingUser(user);
             viewHolder.lblReviews.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    approveListener.onItemClick(v, position);
+                    pendingListener.onItemClick(v, user.getUserProfileID());
                 }
             });
             viewHolder.lblDecline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    approveListener.onItemClick(v, position);
+                    pendingListener.onItemClick(v, user.getUserProfileID());
                 }
             });
         }
