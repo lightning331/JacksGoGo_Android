@@ -1,7 +1,10 @@
 package com.kelvin.jacksgogo.Utils.Models.GoClub_Event;
 
+import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Global.EventStatus;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.yanzhenjie.album.AlbumFile;
@@ -31,9 +34,14 @@ public class JGGEventModel {
     private ArrayList<String> AttachmentURLs = new ArrayList<>();
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
 
+    private JGGCategoryModel Category = new JGGCategoryModel();
+    private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
+    private JGGRegionModel Region = new JGGRegionModel();
+
     // Dummy data
     private ArrayList<JGGUserProfileModel> Users = new ArrayList<>();
     private ArrayList<AlbumFile> albumFiles;
+    private Integer timeSlotType;
 
     public String getID() {
         return ID;
@@ -209,5 +217,38 @@ public class JGGEventModel {
 
     public void setAlbumFiles(ArrayList<AlbumFile> albumFiles) {
         this.albumFiles = albumFiles;
+    }
+
+
+    public TimeSlotSelectionStatus getTimeSlotType() {
+        return TimeSlotSelectionStatus.valueOf(timeSlotType);
+    }
+
+    public void setTimeSlotType(TimeSlotSelectionStatus timeSlotType) {
+        this.timeSlotType = timeSlotType.getValue();
+    }
+
+    public JGGCategoryModel getCategory() {
+        return Category;
+    }
+
+    public void setCategory(JGGCategoryModel category) {
+        Category = category;
+    }
+
+    public JGGUserProfileModel getUserProfile() {
+        return UserProfile;
+    }
+
+    public void setUserProfile(JGGUserProfileModel userProfile) {
+        UserProfile = userProfile;
+    }
+
+    public JGGRegionModel getRegion() {
+        return Region;
+    }
+
+    public void setRegion(JGGRegionModel region) {
+        Region = region;
     }
 }

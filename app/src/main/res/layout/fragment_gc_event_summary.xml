@@ -71,16 +71,15 @@
                     android:orientation="horizontal"
                     android:background="@color/JGGWhite">
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="25"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/counter_purpleactive"/>
+                            android:background="@mipmap/button_edit_purple"/>
                         <TextView
                             android:id="@+id/lbl_edit_job_tag_title"
                             android:text="Describe"
@@ -96,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="75">
+                        android:layout_weight="1">
                         <TextView
                             android:id="@+id/txt_describe_title"
                             android:text="Gardening"
@@ -163,8 +162,7 @@
                     android:orientation="horizontal"
                     android:background="@color/JGGWhite">
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="25"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -172,7 +170,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/counter_purpleactive"/>
+                            android:background="@mipmap/button_edit_purple"/>
                         <TextView
                             android:text="Time"
                             android:layout_width="wrap_content"
@@ -187,7 +185,7 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center_vertical"
-                        android:layout_weight="75">
+                        android:layout_weight="1">
                         <TextView
                             android:id="@+id/txt_schedule"
                             android:text="View Schedule"
@@ -208,14 +206,13 @@
                 <LinearLayout
                     android:id="@+id/ll_address"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
                     android:background="@color/JGGWhite">
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="25"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -223,7 +220,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/counter_purpleactive"/>
+                            android:background="@mipmap/button_edit_purple"/>
                         <TextView
                             android:text="Address"
                             android:layout_width="wrap_content"
@@ -235,12 +232,14 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="vertical"
                         android:gravity="center_vertical"
-                        android:layout_weight="75">
+                        android:layout_weight="1">
                         <TextView
-                            android:id="@+id/txt_title_address"
+                            android:id="@+id/txt_place_name"
                             android:text="Jurong Sports Complex,"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -249,7 +248,7 @@
                             android:fontFamily="@font/mulibold"
                             android:textSize="@dimen/list_text_font_size" />
                         <TextView
-                            android:id="@+id/txt_sub_address"
+                            android:id="@+id/txt_address"
                             android:text="3, Jurong West Avenue 6 649482"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -274,8 +273,7 @@
                     android:orientation="horizontal"
                     android:background="@color/JGGWhite">
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="25"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -283,7 +281,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/counter_purpleactive"/>
+                            android:background="@mipmap/button_edit_purple"/>
                         <TextView
                             android:id="@+id/lbl_edit_job_tag_title1"
                             android:text="Limit"
@@ -299,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="75">
+                        android:layout_weight="1">
                         <TextView
                             android:id="@+id/txt_pax"
                             android:text="@string/no_pax_limit"
@@ -327,8 +325,7 @@
                     android:orientation="horizontal"
                     android:background="@color/JGGWhite">
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="25"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -336,7 +333,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/counter_purpleactive"/>
+                            android:background="@mipmap/button_edit_purple"/>
                         <TextView
                             android:text="Cost"
                             android:layout_width="wrap_content"
@@ -351,7 +348,7 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center_vertical"
-                        android:layout_weight="75">
+                        android:layout_weight="1">
                         <TextView
                             android:id="@+id/txt_cost"
                             android:text="$ 12.00 /pax"

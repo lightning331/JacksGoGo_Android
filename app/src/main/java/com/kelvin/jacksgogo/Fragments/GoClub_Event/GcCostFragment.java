@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +36,11 @@ public class GcCostFragment extends Fragment implements TextWatcher {
     private Context mContext;
     private boolean isPaid = false;
 
+    private JGGEventModel mEvent;
+
     public GcCostFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +48,8 @@ public class GcCostFragment extends Fragment implements TextWatcher {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gc_cost, container, false);
         ButterKnife.bind(this, view);
+
+        mEvent = JGGAppManager.getInstance().getSelectedEvent();
 
         initView();
 
@@ -57,6 +62,13 @@ public class GcCostFragment extends Fragment implements TextWatcher {
         ll_amount.setVisibility(View.GONE);
         btnNext.setClickable(false);
         btnNext.setVisibility(View.GONE);
+
+        if (mEvent.getBudget() == null) {}
+        else {
+            isPaid = false;
+            onClickPaid();
+            editAmount.setText(String.valueOf(mEvent.getBudget()));
+        }
     }
 
     private void onYellowButtonColor(Button button) {
@@ -71,6 +83,7 @@ public class GcCostFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_free)
     public void onClickFree() {
+        mEvent.setBudget(null);
         listener.onNextButtonClick();
     }
 
@@ -79,12 +92,12 @@ public class GcCostFragment extends Fragment implements TextWatcher {
         isPaid = !isPaid;
         if (isPaid) {
             btnFree.setVisibility(View.GONE);
-            this.onYellowButtonColor(btnFree);
+            this.onYellowButtonColor(btnPaid);
             ll_amount.setVisibility(View.VISIBLE);
             btnNext.setVisibility(View.VISIBLE);
         } else {
             btnFree.setVisibility(View.VISIBLE);
-            this.onPurpleButtonColor(btnFree);
+            this.onPurpleButtonColor(btnPaid);
             ll_amount.setVisibility(View.GONE);
             btnNext.setVisibility(View.GONE);
         }
@@ -92,6 +105,7 @@ public class GcCostFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_next)
     public void onClickNext() {
+        mEvent.setBudget(Double.valueOf(editAmount.getText().toString()));
         listener.onNextButtonClick();
     }
 

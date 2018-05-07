@@ -20,9 +20,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.JGGMapViewActivity;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 import butterknife.BindView;
@@ -30,10 +29,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
-import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
-import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.REQUEST_CODE;
-import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,9 +56,7 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
     @BindView(R.id.lbl_coordinate)                  TextView lblCoordinate;
     @BindView(R.id.btn_next)                        Button btnNext;
 
-    private Global.AppointmentType mType;
-    private String type;
-    private JGGAppointmentModel creatingJob;
+    private JGGEventModel creatingEvent;
     private JGGAddressModel mAddress;
 
     private boolean isTypeAddress = false;
@@ -83,13 +78,7 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            type = getArguments().getString(APPOINTMENT_TYPE);
-            if (type.equals(SERVICES))
-                mType = Global.AppointmentType.SERVICES;
-            else if (type.equals(JOBS))
-                mType = Global.AppointmentType.JOBS;
-            else if (type.equals(GOCLUB))
-                mType = Global.AppointmentType.GOCLUB;
+
         }
     }
 
@@ -101,11 +90,11 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         View view = inflater.inflate(R.layout.fragment_gc_address, container, false);
         ButterKnife.bind(this, view);
 
-//        creatingJob = JGGAppManager.getSelectedAppointment();
-//        mAddress = creatingJob.getAddress();
+        creatingEvent = JGGAppManager.getInstance().getSelectedEvent();
+        mAddress = creatingEvent.getAddress();
 
         initView();
-//        setData();
+        setData();
 
         return view;
     }
@@ -128,16 +117,16 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
     }
 
     private void setData() {
-        txtPlaceName.setText("");
-        txtUnit.setText("2");
-        txtStreet.setText("Jurong West Avenue 5");
-        txtPostCode.setText("638657");
-
-        txtPlaceName.setText(mAddress.getFloor());
-        txtUnit.setText(mAddress.getUnit());
-        txtStreet.setText(mAddress.getStreet());
-        txtPostCode.setText(mAddress.getPostalCode());
-        lblCoordinate.setText(String.valueOf(mAddress.getLat()) + "° N, " + String.valueOf(mAddress.getLon()) + "° E");
+        if (mAddress == null) {}
+        else {
+            isTypeAddress = false;
+            onClickTypeAddress();
+            txtPlaceName.setText(mAddress.getPlaceName());
+            txtUnit.setText(mAddress.getUnit());
+            txtStreet.setText(mAddress.getStreet());
+            txtPostCode.setText(mAddress.getPostalCode());
+            lblCoordinate.setText(String.valueOf(mAddress.getLat()) + "° N, " + String.valueOf(mAddress.getLon()) + "° E");
+        }
     }
 
     private void onYellowButtonColor(Button button) {
@@ -186,19 +175,19 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
     @OnClick(R.id.btn_location)
     public void onClickLocation() {
         Intent intent = new Intent(mContext, JGGMapViewActivity.class);
-        intent.putExtra(APPOINTMENT_TYPE, type);
+        intent.putExtra(APPOINTMENT_TYPE, EVENTS);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
     @OnClick(R.id.btn_next)
     public void onClickNext() {
-        /*mAddress.setFloor(txtPlaceName.getText().toString());
+        mAddress.setPlaceName(txtPlaceName.getText().toString());
         mAddress.setUnit(txtUnit.getText().toString());
         mAddress.setStreet(txtStreet.getText().toString());
         mAddress.setPostalCode(txtPostCode.getText().toString());
 
-        creatingJob.setAddress(mAddress);
-        selectedAppointment = creatingJob;*/
+        creatingEvent.setAddress(mAddress);
+        JGGAppManager.getInstance().setSelectedEvent(creatingEvent);
 
         listener.onNextButtonClick();
     }
@@ -218,7 +207,6 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
             }
         }
     }
-
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

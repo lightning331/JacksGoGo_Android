@@ -27,7 +27,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
-import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.jggcalendarview.CalendarDay;
 import com.prolificinteractive.jggcalendarview.MaterialCalendarView;
@@ -76,7 +76,7 @@ public class GcTimeFragment extends Fragment implements
     @BindView(R.id.ll_set_time)                 LinearLayout ll_set_time;
     @BindView(R.id.btn_duplicate)               Button btnDuplicate;
     @BindView(R.id.btn_done)                    Button btnDone;
-    @BindView(R.id.btn_view_timeslot)           Button btnViewTimeslot;
+    @BindView(R.id.btn_view_timeslot)           Button btnViewTimeSlot;
 
     private Context mContext;
     private AlertDialog alertDialog;
@@ -92,10 +92,10 @@ public class GcTimeFragment extends Fragment implements
 
     private String selectedDay;
 
-    private JGGAppointmentModel mService;
+    private JGGEventModel mEvent;
     private ArrayList<JGGTimeSlotModel> mTimeSlots = new ArrayList<JGGTimeSlotModel>();
 
-    private JGGTimeSlotModel mSelectedTimeSlot; // use this variable when duplicate
+    private JGGTimeSlotModel mSelectedTimeSlot = new JGGTimeSlotModel(); // use this variable when duplicate
     private ArrayList<CalendarDay> calendarDays = new ArrayList<>();
     private CalendarDay mSelectedCaledarDay;
     private boolean isEditTimeSlot;
@@ -128,16 +128,16 @@ public class GcTimeFragment extends Fragment implements
         ll_calendar_bg.setVisibility(View.GONE);
         ll_schedule_bg.setVisibility(View.GONE);
         btnDone.setVisibility(View.GONE);
-        btnViewTimeslot.setVisibility(View.GONE);
+        btnViewTimeSlot.setVisibility(View.GONE);
 
         btnNext.setClickable(false);
 
-        mService = JGGAppManager.getInstance().getSelectedAppointment();
-        if (mService != null
-                && mService.getSessions() != null
-                && mService.getSessions().size() > 0) {
-            mTimeSlots = mService.getSessions();
-            mSelectedTimeSlot = mService.getSessions().get(0);
+        mEvent = JGGAppManager.getInstance().getSelectedEvent();
+        if (mEvent != null
+                && mEvent.getSessions() != null
+                && mEvent.getSessions().size() > 0) {
+            mTimeSlots = mEvent.getSessions();
+            mSelectedTimeSlot = mEvent.getSessions().get(0);
 
             Date date = appointmentMonthDate(mSelectedTimeSlot.getStartOn());
             calendarView.setSelectedDate(date);
@@ -213,8 +213,36 @@ public class GcTimeFragment extends Fragment implements
         alertDialog.show();
     }
 
+    private void onShowAddTimeClickDialog() {
+        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, Global.AppointmentType.GOCLUB, null, null);
+        builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
+                if (view.getId() == R.id.btn_add_time_cancel) {
+                    alertDialog.dismiss();
+                } else if (view.getId() == R.id.btn_add_time_ok) {
+                    alertDialog.dismiss();
+                    startTime = getTimePeriodString(start);
+                    startOn = start;
+                    if (end != null) {
+                        endTime = getTimePeriodString(end);
+                        endOn = end;
+                        txtTime.setText(startTime + " - " + endTime);
+                    } else {
+                        txtTime.setText(startTime);
+                    }
+                    if (txtTime.getText().length() > 0 && txtDate.getText().length() > 0)
+                        onNextButtonEnable();
+                }
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
+
     private boolean isValidEndTime(Date selectedDate, Date endDate) {
-        ArrayList<JGGTimeSlotModel> slotModels = getSeletedDateTimeSlot(selectedDate);
+        ArrayList<JGGTimeSlotModel> slotModels = getSelectedDateTimeSlot(selectedDate);
         String yearMonthDay = convertCalendarDate(selectedDate);
         String dateStr = yearMonthDay + "T" + getTimeString(endDate);
         Date newDate = appointmentMonthDate(dateStr);
@@ -231,8 +259,8 @@ public class GcTimeFragment extends Fragment implements
         return true;
     }
 
-    private boolean isVaildEndTimeForEditing(Date seletedDate, Date endDate) {
-        ArrayList<JGGTimeSlotModel> slotModels = getSeletedDateTimeSlot(seletedDate);
+    private boolean isValidEndTimeForEditing(Date seletedDate, Date endDate) {
+        ArrayList<JGGTimeSlotModel> slotModels = getSelectedDateTimeSlot(seletedDate);
         // remove mEditingTimeSlot object from slotModel - to avoid time overlap of mEditingTimeSlot
         slotModels.remove(mEditingTimeSlot);
         String yearMonthDay = convertCalendarDate(seletedDate);
@@ -268,7 +296,7 @@ public class GcTimeFragment extends Fragment implements
                         // TODO - update corresponding item from mTimeSlots array
                         // get index of mEditingTimeSlot index from mTimeSlots
                         int index = mTimeSlots.indexOf(mEditingTimeSlot);
-                        if (isVaildEndTimeForEditing(selectedDate, end)) {
+                        if (isValidEndTimeForEditing(selectedDate, end)) {
                             alertDialog.dismiss();
 
                             JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
@@ -281,8 +309,8 @@ public class GcTimeFragment extends Fragment implements
                             mSelectedTimeSlot = timeSlotModel;
                             mTimeSlots.set(index, timeSlotModel);
 
-                            ArrayList<JGGTimeSlotModel> seletedSlotModels = getSeletedDateTimeSlot(selectedDate);
-                            updateRecyclerView(seletedSlotModels);
+                            ArrayList<JGGTimeSlotModel> selectedSlotModels = getSelectedDateTimeSlot(selectedDate);
+                            updateRecyclerView(selectedSlotModels);
                         } else {
                             Toast.makeText(mContext, "Time could not overlap", Toast.LENGTH_SHORT).show();
                         }
@@ -290,6 +318,9 @@ public class GcTimeFragment extends Fragment implements
                     } else {
                         if (isValidEndTime(selectedDate, end)) {
                             alertDialog.dismiss();
+
+                            mTimeSlots.clear();
+
                             JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
                             timeSlotModel.setStartOn(yearMonthDay + "T" + getTimeString(start));
                             timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
@@ -300,8 +331,8 @@ public class GcTimeFragment extends Fragment implements
 
                             mTimeSlots.add(timeSlotModel);
 
-                            ArrayList<JGGTimeSlotModel> seletedSlotModels = getSeletedDateTimeSlot(selectedDate);
-                            updateRecyclerView(seletedSlotModels);
+                            ArrayList<JGGTimeSlotModel> selectedSlotModels = getSelectedDateTimeSlot(selectedDate);
+                            updateRecyclerView(selectedSlotModels);
 
                             // To display days containing any time slots
                             if (!calendarDays.contains(mSelectedCaledarDay)) {
@@ -381,35 +412,6 @@ public class GcTimeFragment extends Fragment implements
         alertDialog.show();
     }
 
-    private void onShowAddTimeClickDialog() {
-        JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, Global.AppointmentType.GOCLUB, null, null);
-        builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
-            @Override
-            public void onDoneButtonClick(View view, Date start, Date end, Integer number) {
-                if (view.getId() == R.id.btn_add_time_cancel) {
-                    alertDialog.dismiss();
-                } else if (view.getId() == R.id.btn_add_time_ok) {
-                    alertDialog.dismiss();
-                    startTime = getTimePeriodString(start);
-                    startOn = start;
-                    if (end != null) {
-                        endTime = getTimePeriodString(end);
-                        endOn = end;
-                        txtTime.setText(startTime + " - " + endTime);
-                    } else {
-                        txtTime.setText(startTime);
-                    }
-                    if (txtTime.getText().length() > 0 && txtDate.getText().length() > 0)
-                        onNextButtonEnable();
-                }
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
-
-
     private void setCurrentDateDot() {
         List<CalendarDay> currentDateList = new ArrayList<>();
         currentDateList.add(new CalendarDay(new Date()));
@@ -422,7 +424,7 @@ public class GcTimeFragment extends Fragment implements
         calendarView.addDecorator(new JGGCalendarDecorator(mContext, selectedDateList, Global.AppointmentType.GOCLUB));
     }
 
-    private ArrayList<JGGTimeSlotModel> getSeletedDateTimeSlot(Date seletedDate) {
+    private ArrayList<JGGTimeSlotModel> getSelectedDateTimeSlot(Date seletedDate) {
         ArrayList<JGGTimeSlotModel> slotModels = new ArrayList<JGGTimeSlotModel>();
         for (int i=0;i<mTimeSlots.size(); i++) {
             JGGTimeSlotModel slotModel = mTimeSlots.get(i);
@@ -434,17 +436,28 @@ public class GcTimeFragment extends Fragment implements
     }
 
     private void onSaveCreatingService() {
-//        if (peopleType == 0) {  // No time slots
-            mService.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+        if (bOneTime) {     // One-time Event
             mTimeSlots.clear();
-            listener.onNextButtonClick();
-//        }
-        mService.setSessions(mTimeSlots);
-        JGGAppManager.getInstance().setSelectedAppointment(mService);
+            if (startOn != null) {
+                String startTime = selectedDay + "T" + getTimeString(startOn);
+                mSelectedTimeSlot.setStartOn(startTime);
+            }
+            if (endOn != null) {
+                String endTime = selectedDay + "T" + getTimeString(endOn);
+                mSelectedTimeSlot.setEndOn(endTime);
+            }
+            mTimeSlots.add(mSelectedTimeSlot);
+        }
+        mEvent.setOnetime(bOneTime);
+        mEvent.setSessions(mTimeSlots);
+        JGGAppManager.getInstance().setSelectedEvent(mEvent);
+
+        //listener.onNextButtonClick();
     }
-    private void updateRecyclerView(final ArrayList<JGGTimeSlotModel> seletedSlotModels) {
+
+    private void updateRecyclerView(final ArrayList<JGGTimeSlotModel> selectedSlotModels) {
         recyclerView.setVisibility(View.VISIBLE);
-        if (seletedSlotModels.size() > 0) {
+        if (selectedSlotModels.size() > 0) {
             btnDuplicate.setVisibility(View.VISIBLE);
         } else {
             btnDuplicate.setVisibility(View.GONE);
@@ -452,19 +465,19 @@ public class GcTimeFragment extends Fragment implements
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         }
-        final GcTimeSlotAdapter adapter = new GcTimeSlotAdapter(mContext, seletedSlotModels);
+        final GcTimeSlotAdapter adapter = new GcTimeSlotAdapter(mContext, selectedSlotModels);
         // TODO - OnPostServiceTimeSlotItemClickListener
         adapter.setOnItemClickListener(new PostServiceTimeSlotAdapter.OnPostServiceTimeSlotItemClickListener() {
             @Override
             public void onPostServiceTimeSlotItemClick(boolean isDelete, int position) {
-                JGGTimeSlotModel selectedTimeSlot = seletedSlotModels.get(position);
+                JGGTimeSlotModel selectedTimeSlot = selectedSlotModels.get(position);
                 if (isDelete) {
                     isEditTimeSlot = false;
                     mTimeSlots.remove(selectedTimeSlot);
 
                     if (mTimeSlots.size() == 0)
                         btnDuplicate.setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataChanged(mTimeSlots);
                     recyclerView.setAdapter(adapter);
                 } else {
                     // TODO - show dialog to confirm delete
@@ -503,7 +516,7 @@ public class GcTimeFragment extends Fragment implements
             setSelectedDateCircle();
 
             Log.d("onDateSelected", convertCalendarDate(date.getDate()));
-            ArrayList<JGGTimeSlotModel> seletedSlotModels = getSeletedDateTimeSlot(date.getDate());
+            ArrayList<JGGTimeSlotModel> seletedSlotModels = getSelectedDateTimeSlot(date.getDate());
             if (seletedSlotModels.size() > 0) {
                 List<CalendarDay> selectedDateList = new ArrayList<>();
                 selectedDateList.add(date);
@@ -542,7 +555,8 @@ public class GcTimeFragment extends Fragment implements
         if (bRepeatingTime) {
             btnOneTimeEvent.setVisibility(View.GONE);
             this.onYellowButtonColor(btnRepeatingEvent);
-            txtWhen.setVisibility(View.VISIBLE);
+            txtWhen.setVisibility(View.GONE);
+            txtTimeLater.setVisibility(View.VISIBLE);
             btnNow.setVisibility(View.VISIBLE);
             btnLater.setVisibility(View.VISIBLE);
         } else {
@@ -551,6 +565,7 @@ public class GcTimeFragment extends Fragment implements
             txtWhen.setVisibility(View.GONE);
             btnNow.setVisibility(View.GONE);
             btnLater.setVisibility(View.GONE);
+            txtTimeLater.setVisibility(View.GONE);
         }
     }
 
@@ -579,6 +594,9 @@ public class GcTimeFragment extends Fragment implements
 
     @OnClick(R.id.btn_later)
     public void onClickLater() {
+        mEvent.setTimeSlotType(Global.TimeSlotSelectionStatus.none);
+        mTimeSlots.clear();
+
         listener.onNextButtonClick();
     }
 
@@ -594,7 +612,7 @@ public class GcTimeFragment extends Fragment implements
         this.onYellowButtonColor(btnRepeatingEvent);
         btnRepeatingEvent.setVisibility(View.VISIBLE);
         btnDone.setVisibility(View.GONE);
-        btnViewTimeslot.setVisibility(View.VISIBLE);
+        btnViewTimeSlot.setVisibility(View.VISIBLE);
 
         ll_calendar_bg.setVisibility(View.GONE);
         ll_schedule_bg.setVisibility(View.GONE);
@@ -605,10 +623,8 @@ public class GcTimeFragment extends Fragment implements
         this.onNextButtonEnable();
         btnNext.setVisibility(View.VISIBLE);
 
-        ///////
-
-//        mService.setTimeSlotType(Global.TimeSlotSelectionStatus.done);
-//        onSaveCreatingService();
+        //mEvent.setTimeSlotType(Global.TimeSlotSelectionStatus.done);
+        //onSaveCreatingService();
     }
 
     @OnClick(R.id.txt_date)
@@ -623,13 +639,14 @@ public class GcTimeFragment extends Fragment implements
 
     @OnClick(R.id.btn_next)
     public void onClickNext() {
+        onSaveCreatingService();
         listener.onNextButtonClick();
     }
 
     @OnClick(R.id.btn_view_timeslot)
-    public void onClickViewTimeslot() {
-//        mService.setTimeSlotType(Global.TimeSlotSelectionStatus.now);
-//        updateRecyclerView(mTimeSlots);
+    public void onClickViewTimeSlot() {
+        mEvent.setTimeSlotType(Global.TimeSlotSelectionStatus.now);
+        updateRecyclerView(mTimeSlots);
         txtKindEvent.setVisibility(View.GONE);
         btnRepeatingEvent.setVisibility(View.GONE);
         txtTimeLater.setVisibility(View.GONE);
@@ -647,13 +664,13 @@ public class GcTimeFragment extends Fragment implements
             btnDuplicate.setVisibility(View.GONE);
         }
 
-        btnViewTimeslot.setVisibility(View.GONE);
+        btnViewTimeSlot.setVisibility(View.GONE);
         btnDone.setVisibility(View.VISIBLE);
         btnNext.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.ll_set_time)
-    public void onClickAddTimeslot() {
+    public void onClickAddTimeSlot() {
         Date selectedDate = calendarView.getSelectedDate().getDate();
         if (selectedDate.before(new Date())) {
             Toast.makeText(mContext, getString(R.string.date_alert), Toast.LENGTH_SHORT).show();
@@ -661,7 +678,6 @@ public class GcTimeFragment extends Fragment implements
         }
         onAddTimeClick(null, null);
     }
-
 
     // TODO : Next Click Listener
     private OnItemClickListener listener;

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils;
 
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
@@ -33,8 +34,13 @@ public class JGGAppManager {
     private JGGCategoryModel selectedCategory;
     private JGGAppointmentModel selectedAppointment;
     private JGGQuotationModel selectedQuotation;
-    private JGGGoClubModel selectedClub;
     private JGGProposalModel selectedProposal;
+
+    /**
+     * GoClub & Event
+     */
+    private JGGGoClubModel selectedClub;
+    private JGGEventModel selectedEvent;
 
     /**
      * Report Result
@@ -123,6 +129,14 @@ public class JGGAppManager {
 
     public void setSelectedClub(JGGGoClubModel selectedClub) {
         this.selectedClub = selectedClub;
+    }
+
+    public JGGEventModel getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    public void setSelectedEvent(JGGEventModel selectedEvent) {
+        this.selectedEvent = selectedEvent;
     }
 
     public JGGReportResultModel getReportResultModel() {

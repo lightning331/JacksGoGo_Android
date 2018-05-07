@@ -190,6 +190,9 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /**
+     * Get GoClub events by ClubID
+     */
     private void getEventsByClub() {
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGGetEventsResponse> call = manager.getEventsByClub(mClub.getID(), 0, 30);

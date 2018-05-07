@@ -15,6 +15,7 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
@@ -90,21 +91,36 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
     private void initFragment() {
 
         if (status.equals(POST)) {
-            // Create New Goclub Model
-            goclubModel = new JGGGoClubModel();
-            goclubModel.setUserProfile(currentUser);
-            goclubModel.setUserProfileID(currentUser.getID());
-            JGGRegionModel currentRegion = JGGAppManager.getInstance().getCurrentRegion();
-            goclubModel.setRegion(currentRegion);
-            goclubModel.setRegionID(currentRegion.getID());
+            switch (appType) {
+                case GOCLUB:
+                    // Create New GoClub Model
+                    goclubModel = new JGGGoClubModel();
+                    goclubModel.setUserProfile(currentUser);
+                    goclubModel.setUserProfileID(currentUser.getID());
+                    JGGRegionModel currentRegion = JGGAppManager.getInstance().getCurrentRegion();
+                    goclubModel.setRegion(currentRegion);
+                    goclubModel.setRegionID(currentRegion.getID());
 
-            JGGAppManager.getInstance().setSelectedClub(goclubModel);
+                    JGGAppManager.getInstance().setSelectedClub(goclubModel);
 
+                    break;
+                case EVENTS:
+                    JGGEventModel event = new JGGEventModel();
+                    event.setUserProfile(currentUser);
+                    event.setUserProfileID(currentUser.getID());
+                    event.setRegion(JGGAppManager.getInstance().getCurrentRegion());
+                    event.setRegionID(JGGAppManager.getInstance().getCurrentRegion().getID());
+
+                    JGGAppManager.getInstance().setSelectedEvent(event);
+
+                    break;
+                default:
+                    break;
+            }
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.post_go_club_container, PostJobCategoryFragment.newInstance(appType.toString()))
                     .commit();
-
         } else if (status.equals(EDIT) || status.equals(DUPLICATE)) {
             switch (appType) {
                 case GOCLUB:
@@ -164,6 +180,14 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
                     alertDialog.dismiss();
                 else {
                     alertDialog.dismiss();
+                    switch (appType) {
+                        case GOCLUB:
+                            JGGAppManager.getInstance().setSelectedClub(null);
+                            break;
+                        case EVENTS:
+                            JGGAppManager.getInstance().setSelectedEvent(null);
+                            break;
+                    }
                     onBackPressed();
                 }
             }
