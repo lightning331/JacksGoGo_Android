@@ -621,11 +621,11 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
         } else {
             mReportResultModel.setAfterAlbumFiles(afterPhotoAlbums);
         }
-
+        // TODO - Need to create new fragment
         mActivity.setActionbarView(ADD_TOOLS);
         mActivity.getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.job_report_container, new JobReportAddToolsFragment())
+                .replace(R.id.job_report_container, new JobReportEditToolsFragment())
                 .commit();
     }
 
