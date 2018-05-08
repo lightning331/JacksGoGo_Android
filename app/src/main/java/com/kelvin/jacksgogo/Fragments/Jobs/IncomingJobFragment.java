@@ -23,6 +23,7 @@ import com.kelvin.jacksgogo.Activities.Jobs.IncomingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobReportActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.PostReviewActivity;
+import com.kelvin.jacksgogo.Activities.Profile.PublickProfileActivity;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryCancelled;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryConfirmedView;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.JobStatusSummaryHeaderView;
@@ -310,7 +311,8 @@ public class IncomingJobFragment extends Fragment {
                         case proposal_approved: // 404
                             break;
                         case proposal_flagged:
-                        case proposal_deleted:
+                            break;
+                        case proposal_deleted: // 406
                             break;
 
                         case invite_sent: // 407
@@ -388,6 +390,8 @@ public class IncomingJobFragment extends Fragment {
 
     // TODO - Client Info View
     private void setClientData() {
+        bottomLayout.setVisibility(View.VISIBLE);
+        chatLayout.setVisibility(View.VISIBLE);
         lblClientName.setText(clientName);
         Picasso.with(mContext).load(mJob.getUserProfile().getUser().getPhotoURL())
                 .placeholder(R.mipmap.icon_profile)
@@ -1032,7 +1036,8 @@ public class IncomingJobFragment extends Fragment {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-
+                        // TODO - Refresh Activities after success
+                        mActivity.getAppointmentActivities();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -1060,7 +1065,8 @@ public class IncomingJobFragment extends Fragment {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
-
+                        // TODO - Refresh Activities after api call success
+                        mActivity.getAppointmentActivities();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -1147,6 +1153,13 @@ public class IncomingJobFragment extends Fragment {
     public void onClickViewProposal() {
         Intent intent = new Intent(mContext, PostProposalActivity.class);
         intent.putExtra(EDIT_STATUS, MY_PROPOSAL);
+        startActivity(intent);
+    }
+
+    @OnClick({R.id.img_avatar, R.id.lbl_provider_name})
+    public void onClickViewClientInfo() {
+        JGGAppManager.getInstance().setCurrentUser(mJob.getUserProfile());
+        Intent intent = new Intent(mContext, PublickProfileActivity.class);
         startActivity(intent);
     }
 
