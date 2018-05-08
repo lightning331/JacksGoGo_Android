@@ -16,7 +16,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.R;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class JGGFireBaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     private String title;
     private String message_body;
