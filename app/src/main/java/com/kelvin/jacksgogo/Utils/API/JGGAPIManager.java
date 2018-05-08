@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Utils.API;
 
 import com.kelvin.jacksgogo.Utils.Global.JGGDeviceType;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGReportResultModel;
@@ -342,6 +343,11 @@ public interface JGGAPIManager {
     /**
      * Event
      */
+    @POST("api/Event/CreateClubs")
+    Call<JGGPostAppResponse> createEvent(@Body JGGEventModel event);
+
+    @POST("api/Event/EditClubs")
+    Call<JGGPostAppResponse> editEvent(@Body JGGEventModel event);
 
     @GET("api/Event/GetEventsByClub")
     Call<JGGGetEventsResponse> getEventsByClub(@Query("ClubID") String clubID,
