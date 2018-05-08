@@ -18,7 +18,6 @@ import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGContractModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
-import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -33,6 +32,7 @@ import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.REVIEW;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class PostReviewActivity extends AppCompatActivity {
 
@@ -90,6 +90,15 @@ public class PostReviewActivity extends AppCompatActivity {
     }
 
     private void initUserView() {
+        // Category
+        Picasso.with(this)
+                .load(mContract.getAppointment().getCategory().getImage())
+                .placeholder(null)
+                .into(imgCategory);
+        lblCategory.setText(mContract.getAppointment().getCategory().getName());
+        // Time
+        lblTime.setText(getAppointmentTime(mContract.getAppointment()));
+        // User info
         JGGUserBaseModel userBaseModel = mContract.getProposal().getUserProfile().getUser();
         Picasso.with(this).load(userBaseModel.getPhotoURL())
                 .placeholder(R.mipmap.icon_profile)
@@ -135,7 +144,6 @@ public class PostReviewActivity extends AppCompatActivity {
                         Toast.makeText(PostReviewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode  = response.code();
                     Toast.makeText(PostReviewActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

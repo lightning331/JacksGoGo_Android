@@ -295,18 +295,23 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case proposal_sent: // 400
-                            setClientData();
-                            showSentProposal(activity);
-                            setWaitingClientDecision();
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
+                                setClientData();
+                                showSentProposal(activity);
+                                setWaitingClientDecision();
+                            }
                             break;
                         case proposal_edited:  // 401
                             break;
                         case proposal_rejected: // 402
-                            showDeclineProposal(activity);
+                            if (activity.getReferenceID().equals(currentUser.getID()))
+                                showDeclineProposal(activity);
                             break;
                         case proposal_withdraw:
-                            showDeletedJob();
-                            mActivity.setStatus(mProposal);
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
+                                showDeletedJob();
+                                mActivity.setStatus(mProposal);
+                            }
                             break;
                         case proposal_approved: // 404
                             break;
@@ -316,13 +321,16 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case invite_sent: // 407
-                            showInvited(activity);
+                            if (activity.getReferenceID().equals(currentUser.getID()))
+                                showInvited(activity);
                             break;
                         case invite_accepted: // 408
-                            setWaitingClientDecision();
+                            if (activity.getReferenceID().equals(currentUser.getID()))
+                                setWaitingClientDecision();
                             break;
                         case invite_rejected:
-                            showDeclineInvite(activity);
+                            if (activity.getReferenceID().equals(currentUser.getID()))
+                                showDeclineInvite(activity);
                             break;
 
                         case contract_created: // 500
@@ -385,7 +393,6 @@ public class IncomingJobFragment extends Fragment {
                     }
             }
         }
-
     }
 
     // TODO - Client Info View

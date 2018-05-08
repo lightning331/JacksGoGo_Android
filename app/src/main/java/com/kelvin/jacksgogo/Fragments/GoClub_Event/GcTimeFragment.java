@@ -451,8 +451,6 @@ public class GcTimeFragment extends Fragment implements
         mEvent.setOnetime(bOneTime);
         mEvent.setSessions(mTimeSlots);
         JGGAppManager.getInstance().setSelectedEvent(mEvent);
-
-        //listener.onNextButtonClick();
     }
 
     private void updateRecyclerView(final ArrayList<JGGTimeSlotModel> selectedSlotModels) {
@@ -520,7 +518,6 @@ public class GcTimeFragment extends Fragment implements
             if (seletedSlotModels.size() > 0) {
                 List<CalendarDay> selectedDateList = new ArrayList<>();
                 selectedDateList.add(date);
-//                calendarView.removeDecorators();
                 calendarView.addDecorator(new JGGCalendarDecorator(mContext, selectedDateList, Global.AppointmentType.GOCLUB));
             }
 

@@ -25,7 +25,7 @@
     <dimen name="badge_number_size">19dp</dimen>
     <dimen name="badge_number_radius">9dp</dimen>
 
-    // Bottom Navigation Title
+    <!--Bottom Navigation Title-->
     <dimen name="design_bottom_navigation_text_size" tools:override="true">11sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">11sp</dimen>
     <dimen name="text_margin">15dp</dimen>
