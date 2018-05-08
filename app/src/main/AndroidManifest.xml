@@ -232,7 +232,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".Activities.Jobs.JobTipActivity" />
         <activity android:name=".Activities.Jobs.PostReviewActivity" />
-        <activity android:name=".Activities.GoClub_Event.AllEventsActivity"></activity>
+        <activity android:name=".Activities.GoClub_Event.AllEventsActivity" />
+        <activity android:name=".Activities.Jobs.RescheduleActivity"></activity>
     </application>
 
 </manifest>

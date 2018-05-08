@@ -109,6 +109,8 @@ public class AppointmentMainAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     .into(cellView.img_Profile);
 
             if (appointment.getStatus() == closed) {
+                // TODO- need to fix
+                cellView.lbl_Status.setVisibility(View.GONE);
                 //cellView.lbl_Status.setText("Cancelled");
             } else if (appointment.getStatus() == flagged) {
                 //cellView.lbl_Status.setText("Withdrawn");

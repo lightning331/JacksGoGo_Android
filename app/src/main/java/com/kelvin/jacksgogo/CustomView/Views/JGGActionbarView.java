@@ -82,7 +82,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         GO_CLUB_ATTENDEES,
         GO_CLUB_POST_UPDATE,
         GO_CLUB_SCHEDULE,
-        REVIEW
+        REVIEW,
+        RESCHEDULE
     }
 
     public JGGActionbarView(Context context) {
@@ -356,6 +357,9 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mTitleTextView.setText("Review");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
                 break;
+            case RESCHEDULE:
+                mTitleTextView.setText("Reschedule");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
             default:
                 break;
         }

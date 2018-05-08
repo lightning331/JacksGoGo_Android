@@ -245,6 +245,18 @@ public interface JGGAPIManager {
                                              @Field("CurrencyCode") String postalCode);
 
     /**
+     * Reschedule Appointment
+     * */
+    @GET("api/Appointment/SendReschedulingRequest")
+    Call<JGGBaseResponse> sendReschedulingRequest(@Query("ServiceID") String serviceID);
+
+    @GET("api/Appointment/DeclineReschedulingRequest")
+    Call<JGGBaseResponse> declineReschedulingRequest(@Query("ServiceID") String serviceID);
+
+    @GET("api/Appointment/AgreeReschedulingRequest")
+    Call<JGGBaseResponse> agreeReschedulingRequest(@Query("ServiceID") String serviceID);
+
+    /**
      * Contract
      */
     @GET("api/Contract/StartContract")

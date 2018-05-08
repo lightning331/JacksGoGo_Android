@@ -223,6 +223,8 @@
     <string name="completed_work">You completed the work.</string>
     <string name="official_complete">Job is officially completed. Payment is released.</string>
 
+    <string name="request_reschedule">Request Rescheduling</string>
+    <string name="alert_request_sent">Request Sent!</string>
 
     <!-- TODO: Reject Bid -->
     <string name="title_bid">Bid</string>

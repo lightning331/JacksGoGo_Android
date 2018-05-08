@@ -300,6 +300,9 @@ public class OutgoingJobFragment extends Fragment {
                     case contract_award:    // 506
                         break;
                     case contract_confirmed:    // 507
+                        // TODO - set reschedule action bar
+                        boolean isRescheduled = mContract.getProposal().getAppointment().isRescheduled();
+                        ((OutgoingJobActivity)mContext).setRescheduleActionBar(isRescheduled);
                         showAppointmentConfirmed(activity);
                         break;
 
