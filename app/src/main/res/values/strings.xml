@@ -194,6 +194,8 @@
     <string name="btn_delete_proposal">Delete Proposal And Remove Bid</string>
     <string name="alert_delete_proposal_title">Delete Proposal And Remove Bid?</string>
     <string name="alert_delete_proposal_desc">This action cannot be undone.</string>
+    <string name="delete_proposal">Delete Proposal?</string>
+    <string name="del_proposal_desc">Your bid will removed from this job.</string>
     <string name="accepted_bid_title">Accepted Bid</string>
     <string name="my_proposal_title">Your Proposal</string>
     <string name="invited_proposal_title">You were invited to send a proposal to this job.</string>
@@ -223,6 +225,8 @@
     <string name="completed_work">You completed the work.</string>
     <string name="official_complete">Job is officially completed. Payment is released.</string>
 
+    <string name="request_reschedule">Request Rescheduling</string>
+    <string name="alert_request_sent">Request Sent!</string>
 
     <!-- TODO: Reject Bid -->
     <string name="title_bid">Bid</string>

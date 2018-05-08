@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Fragments.Jobs;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.Jobs.PostProposalActivity;
+import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -66,6 +68,7 @@ public class PostedProposalFragment extends Fragment {
 
     private PostProposalActivity mActivity;
     private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
 
     private JGGAppointmentModel selectedAppointment;
     private JGGProposalModel mProposal;
@@ -117,9 +120,35 @@ public class PostedProposalFragment extends Fragment {
         btnDeleteProposal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDeleteProposal();
+                showDeleteAlertDialog();
             }
         });
+    }
+
+    private void showDeleteAlertDialog() {
+        JGGAlertView builder = new JGGAlertView(mContext,
+                mContext.getResources().getString(R.string.delete_proposal),
+                mContext.getResources().getString(R.string.del_proposal_desc),
+                false,
+                mContext.getResources().getString(R.string.alert_cancel),
+                R.color.JGGCyan,
+                R.color.JGGCyan10Percent,
+                mContext.getResources().getString(R.string.menu_option_delete),
+                R.color.JGGRed);
+        alertDialog = builder.create();
+        builder.setOnItemClickListener(new JGGAlertView.OnItemClickListener() {
+            @Override
+            public void onDoneButtonClick(View view) {
+                if (view.getId() == R.id.btn_alert_cancel)
+                    alertDialog.dismiss();
+                else {
+                    alertDialog.dismiss();
+                    onDeleteProposal();
+                }
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     private void setData() {

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.Jobs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -276,7 +277,9 @@ public class IncomingJobActivity extends AppCompatActivity implements TextWatche
     }
 
     private void onReschedule() {
-
+        Intent intent = new Intent(this, RescheduleActivity.class);
+        intent.putExtra("isIncoming", true);
+        startActivity(intent);
     }
 
     private void withDrawDialog() {

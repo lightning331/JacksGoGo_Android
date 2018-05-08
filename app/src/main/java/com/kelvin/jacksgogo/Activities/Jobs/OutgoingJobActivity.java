@@ -94,6 +94,57 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
         });
     }
 
+    public void setRescheduleActionBar(final boolean isRescheduled) {
+        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
+        actionbarView.setActionbarItemClickListener(new JGGActionbarView.OnActionbarItemClickListener() {
+            @Override
+            public void onActionbarItemClick(View view) {
+                rescheduleActionbarViewItemClick(view, isRescheduled);
+            }
+        });
+    }
+
+    private void rescheduleActionbarViewItemClick(View view, boolean isRescheduled) {
+        if (view.getId() == R.id.btn_more) {
+            /* ---------    More button pressed     --------- */
+            switch (actionbarView.getEditStatus()) {
+                case APPOINTMENT:
+                    onShowReshcedulePopUpMenu(view, isRescheduled);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void onShowReshcedulePopUpMenu(View view, boolean isRescheduled) {
+        actionbarView.setEditMoreButtonClicked(true);
+
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        if (isRescheduled) {
+            popupMenu.inflate(R.menu.reschedule_menu);
+        } else {
+            popupMenu.inflate(R.menu.delete_menu);
+        }
+        popupMenu.setOnDismissListener(new OnDismissListener());
+        popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
+
+        // Force icons to show in Custom Overflow Menu
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popupMenu);
+            argTypes = new Class[] { boolean.class };
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+            popupMenu.show();
+            return;
+        }
+        popupMenu.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -255,6 +306,12 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
         intent.putExtra(APPOINTMENT_TYPE, JOBS);
         startActivity(intent);
     }
+    // TODO - Reschedule Job
+    private void onRescheduleJob() {
+        Intent intent = new Intent(this, RescheduleActivity.class);
+        intent.putExtra("isIncoming", false);
+        startActivity(intent);
+    }
 
     private void actionbarViewItemClick(View view) {
         if (view.getId() == R.id.btn_more) {
@@ -363,6 +420,8 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                 showDeleteJobDialog();
             } else if (menuItem.getItemId() == R.id.menu_option_edit) {    // Edit Job
                 onEditJob();
+            } else if (menuItem.getItemId() == R.id.menu_option_reschedule) { // Reschedule Job
+                onRescheduleJob();
             }
             return true;
         }
