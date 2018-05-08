@@ -27,6 +27,7 @@ import com.kelvin.jacksgogo.Activities.Search.JGGImageCropActivity;
 import com.kelvin.jacksgogo.Adapter.Services.JGGImageGalleryAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.yanzhenjie.album.Action;
@@ -73,6 +74,7 @@ public class PostServiceDescribeFragment extends Fragment
     private String appType;
     private JGGAppointmentModel creatingApp;
     private JGGGoClubModel creatingClub;
+    private JGGEventModel creatingEvent;
     private int nextButton;
     private int imageSelectionColor;
 
@@ -104,6 +106,7 @@ public class PostServiceDescribeFragment extends Fragment
 
         creatingApp = JGGAppManager.getInstance().getSelectedAppointment();
         creatingClub = JGGAppManager.getInstance().getSelectedClub();
+        creatingEvent = JGGAppManager.getInstance().getSelectedEvent();
 
         initView(view);
         initRecyclerView();
@@ -177,6 +180,11 @@ public class PostServiceDescribeFragment extends Fragment
             txtServiceTitle.setText(creatingClub.getName());
             txtServiceDesc.setText(creatingClub.getDescription());
             txtServiceTag.setText(creatingClub.getTags());
+        }
+        if (appType.equals(EVENTS)) {
+            txtServiceTitle.setText(creatingEvent.getTitle());
+            txtServiceDesc.setText(creatingEvent.getDescription());
+            txtServiceTag.setText(creatingEvent.getTags());
         }
     }
 
@@ -283,38 +291,40 @@ public class PostServiceDescribeFragment extends Fragment
     }
 
     private void setAppointmentData() {
-        strTitle = txtServiceTitle.getText().toString();
-        strDesc = txtServiceDesc.getText().toString();
-        strTags = txtServiceTag.getText().toString();
         creatingApp.setTitle(strTitle);
         creatingApp.setDescription(strDesc);
         creatingApp.setTags(strTags);
         creatingApp.setAlbumFiles(mAlbumFiles);
-
         JGGAppManager.getInstance().setSelectedAppointment(creatingApp);
+
         listener.onNextButtonClick();
     }
 
     private void setGoClubData() {
-        strTitle = txtServiceTitle.getText().toString();
-        strDesc = txtServiceDesc.getText().toString();
-        strTags = txtServiceTag.getText().toString();
         creatingClub.setName(strTitle);
         creatingClub.setDescription(strDesc);
         creatingClub.setTags(strTags);
         creatingClub.setAlbumFiles(mAlbumFiles);
-
         JGGAppManager.getInstance().setSelectedClub(creatingClub);
 
         listener.onNextButtonClick();
     }
 
     private void setEventData() {
+        creatingEvent.setTitle(strTitle);
+        creatingEvent.setDescription(strDesc);
+        creatingEvent.setTags(strTags);
+        creatingEvent.setAlbumFiles(mAlbumFiles);
+        JGGAppManager.getInstance().setSelectedClub(creatingClub);
+
         listener.onNextButtonClick();
     }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        strTitle = txtServiceTitle.getText().toString();
+        strDesc = txtServiceDesc.getText().toString();
+        strTags = txtServiceTag.getText().toString();
         if (txtServiceTitle.length() > 0
                 && txtServiceDesc.length() > 0) {
 

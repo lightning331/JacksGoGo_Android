@@ -16,17 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
-import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView;
-import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView;
-import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView;
+import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
+import com.kelvin.jacksgogo.CustomView.Views.PostGoClubTabView.GoClubTabName;
+import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView.PostJobTabName;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateEventMainFragment;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateGoClubMainFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.Global.PostStatus;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
@@ -133,7 +134,8 @@ public class PostJobCategoryFragment extends Fragment {
                     JGGAppManager.getInstance().setSelectedCategory(categoryModel);
 
                     if (appType == AppointmentType.JOBS) {
-                        PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabView.PostJobTabName.DESCRIBE, Global.PostStatus.POST);
+                        // Todo - Create a new Job
+                        PostJobMainTabFragment frag = PostJobMainTabFragment.newInstance(PostJobTabName.DESCRIBE, PostStatus.POST);
 
                         JGGAppointmentModel appointmentModel = JGGAppManager.getInstance().getSelectedAppointment();
                         appointmentModel.setCategory(categoryModel);
@@ -147,19 +149,27 @@ public class PostJobCategoryFragment extends Fragment {
                                 .commit();
                     } else {
                         if (appType == AppointmentType.GOCLUB) {
+                            // Todo - Create a new GoCLub
                             JGGGoClubModel creatingClub = JGGAppManager.getInstance().getSelectedClub();
                             creatingClub.setCategoryID(categoryModel.getID());
                             creatingClub.setCategory(categoryModel);
                             JGGAppManager.getInstance().setSelectedClub(creatingClub);
+
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.post_go_club_container, CreateGoClubMainFragment.newInstance(PostGoClubTabView.GoClubTabName.DESCRIBE, Global.PostStatus.POST))
+                                    .replace(R.id.post_go_club_container, CreateGoClubMainFragment.newInstance(GoClubTabName.DESCRIBE, PostStatus.POST))
                                     .addToBackStack("post_go_club")
                                     .commit();
                         } else if (appType == AppointmentType.EVENTS) {
+                            // Todo - Create a new Event
+                            JGGEventModel creatingEvent = JGGAppManager.getInstance().getSelectedEvent();
+                            creatingEvent.setCategoryID(categoryModel.getID());
+                            creatingEvent.setCategory(categoryModel);
+                            JGGAppManager.getInstance().setSelectedEvent(creatingEvent);
+
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(PostEventTabView.EventTabName.DESCRIBE, Global.PostStatus.POST))
+                                    .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(EventTabName.DESCRIBE, PostStatus.POST))
                                     .addToBackStack("post_event")
                                     .commit();
                         }

@@ -23,11 +23,15 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
+import com.squareup.picasso.Picasso;
 import com.yanzhenjie.album.AlbumFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -68,8 +72,8 @@ public class GcEventSummaryFragment extends Fragment {
     @BindView(R.id.ll_time_schedule)                    LinearLayout ll_time_schedule;
 
     @BindView(R.id.ll_address)                          LinearLayout ll_address;
-    @BindView(R.id.txt_title_address)                   TextView txtTitleAddress;
-    @BindView(R.id.txt_sub_address)                     TextView txtSubAddress;
+    @BindView(R.id.txt_place_name)                      TextView txtPlaceName;
+    @BindView(R.id.txt_address)                         TextView txtAddress;
 
     @BindView(R.id.ll_limit)                            LinearLayout ll_limit;
     @BindView(R.id.txt_pax)                             TextView txtPax;
@@ -79,15 +83,15 @@ public class GcEventSummaryFragment extends Fragment {
 
     @BindView(R.id.ll_post_event)                       LinearLayout ll_post_event;
 
-    AlertDialog alertDialog;
-
-    private PostStatus editStatus;
-    private String postedServiceID;
-    private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
-    private ArrayList<String> attachmentURLs = new ArrayList<>();
-
     private ProgressDialog progressDialog;
     private CreateEventMainFragment fragment;
+    private AlertDialog alertDialog;
+
+    private JGGEventModel mEvent;
+    private PostStatus editStatus;
+    private String postedEventID;
+    private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
+    private ArrayList<String> attachmentURLs = new ArrayList<>();
 
     public void setEditStatus(PostStatus editStatus) {
         this.editStatus = editStatus;
@@ -117,18 +121,57 @@ public class GcEventSummaryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gc_event_summary, container, false);
         ButterKnife.bind(this, view);
 
-        initView(view);
-        setDatas();
+        mEvent = JGGAppManager.getInstance().getSelectedEvent();
+        mAlbumFiles = mEvent.getAlbumFiles();
+        attachmentURLs = mEvent.getAttachmentURLs();
+
+        setEventData();
 
         return view;
     }
 
-    private void initView(View view) {
-
+    private void setEventData() {
         if (editStatus == EDIT) txtPax.setText("Save Changes");
-    }
 
-    private void setDatas() {
+        if (mEvent == null) {
+            txtDescribeTitle.setText("No title");
+            txtDescribeDesc.setText("");
+            describeTagView.removeAllTags();
+            txtPax.setText("No pax Limit");
+            txtCost.setText("Free event. No payment needed.");
+        } else {
+            // Category
+            Picasso.with(mContext)
+                    .load(mEvent.getCategory().getImage())
+                    .placeholder(null)
+                    .into(imgCategory);
+            lblCategory.setText(mEvent.getCategory().getName());
+            // Describe
+            txtDescribeTitle.setText(mEvent.getTitle());
+            txtDescribeDesc.setText(mEvent.getDescription());
+            String tags = mEvent.getTags();
+            if (tags != null && tags.length() > 0) {
+                String[] strings = tags.split(",");
+                describeTagView.setTags(Arrays.asList(strings));
+            }
+            // Place Name
+            if (mEvent.getAddress().getPlaceName() == null)
+                txtPlaceName.setVisibility(View.GONE);
+            else
+                txtPlaceName.setText(mEvent.getAddress().getPlaceName());
+            // Address
+            txtAddress.setText(mEvent.getAddress().getFullAddress());
+            // Limit
+            if (mEvent.getLimit() == null)
+                txtPax.setText("No pax Limit");
+            else
+                txtPax.setText(String.valueOf(mEvent.getLimit()) + " pax");
+            // Cost
+            if (mEvent.getBudget() == null)
+                txtCost.setText("Free event. No payment needed.");
+            else
+                txtCost.setText("$ " + String.valueOf(mEvent.getBudget()) + " / pax");
+        }
     }
 
     private void onPostButtonClicked() {
@@ -136,16 +179,16 @@ public class GcEventSummaryFragment extends Fragment {
             progressDialog = Global.createProgressDialog(mContext);
             uploadImage(0);
         } else {
-            onPostService();
+            onPostEvent();
         }
     }
 
     private void uploadImage(final int index) {
         if (mAlbumFiles == null) {
             if (editStatus == POST)
-                onPostService();
+                onPostEvent();
             else if (editStatus == EDIT)
-                onEditService();
+                onEditEvent();
         } else {
             if (index < mAlbumFiles.size()) {
                 String name = (String) mAlbumFiles.get(index).getPath();
@@ -187,14 +230,14 @@ public class GcEventSummaryFragment extends Fragment {
             } else {
                 progressDialog.dismiss();
                 if (editStatus == POST)
-                    onPostService();
+                    onPostEvent();
                 else if (editStatus == EDIT)
-                    onEditService();
+                    onEditEvent();
             }
         }
     }
 
-    private void onPostService() {
+    private void onPostEvent() {
 //        selectedAppointment.setAttachmentURLs(attachmentURLs);
 //        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
 //        Call<JGGPostAppResponse> call = manager.postNewService(selectedAppointment);
@@ -222,12 +265,39 @@ public class GcEventSummaryFragment extends Fragment {
 //        });
     }
 
+    private void onEditEvent() {
+//        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+//        Call<JGGPostAppResponse> call = manager.editService(selectedAppointment);
+//        call.enqueue(new Callback<JGGPostAppResponse>() {
+//            @Override
+//            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+//                if (response.isSuccessful()) {
+//                    if (response.body().getSuccess()) {
+//                        postedServiceID = response.body().getValue();
+//                        selectedAppointment.setID(postedServiceID);
+//                        showAlertDialog();
+//                    } else {
+//                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    int statusCode  = response.code();
+//                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+//                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
+
     private void onEditButtonClicked() {
         if (attachmentURLs.size() == 0) {
             progressDialog = Global.createProgressDialog(mContext);
             uploadImage(0);
         } else {
-            onEditService();
+            onEditEvent();
         }
     }
 
@@ -235,7 +305,7 @@ public class GcEventSummaryFragment extends Fragment {
         String message = '\n'
                 + "Event reference no.: "
                 + '\n'
-                + postedServiceID
+                + postedEventID
                 + '\n'
                 + "Good luck!";
         JGGAlertView builder = new JGGAlertView(mContext,
@@ -264,34 +334,6 @@ public class GcEventSummaryFragment extends Fragment {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
-
-    private void onEditService() {
-//        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-//        Call<JGGPostAppResponse> call = manager.editService(selectedAppointment);
-//        call.enqueue(new Callback<JGGPostAppResponse>() {
-//            @Override
-//            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
-//                if (response.isSuccessful()) {
-//                    if (response.body().getSuccess()) {
-//                        postedServiceID = response.body().getValue();
-//                        selectedAppointment.setID(postedServiceID);
-//                        showAlertDialog();
-//                    } else {
-//                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    int statusCode  = response.code();
-//                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
-//                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    }
-
 
     @OnClick(R.id.ll_main_describe)
     public void onClickDescribe() {
@@ -344,7 +386,7 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_post_event)
     public void onClickPostEvent() {
-        /*switch (editStatus) {
+        switch (editStatus) {
             case POST:
                 onPostButtonClicked();
                 break;
@@ -356,7 +398,7 @@ public class GcEventSummaryFragment extends Fragment {
                 break;
             default:
                 break;
-        }*/
+        }
 
         this.showAlertDialog();
     }

@@ -24,7 +24,7 @@ public class JGGTimeManager {
     public static String getAppointmentDay(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            //dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String day = dayFormat.format(date);
             return day;
         }
@@ -34,7 +34,7 @@ public class JGGTimeManager {
     public static String getAppointmentMonth(Date date) {
         if (date != null) {
             SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
-            monthFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            //monthFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String month = monthFormat.format(date);
             return month;
         }
@@ -44,7 +44,7 @@ public class JGGTimeManager {
     public static String getAppointmentYear(Date date) {
         if (date != null) {
             SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-            yearFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            //yearFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String year = yearFormat.format(date);
             return year;
         }

@@ -42,10 +42,9 @@
                 android:background="@drawable/purple_border_background"
                 android:gravity="start"/>
             <TextView
-                android:visibility="visible"
                 android:id="@+id/txt_when"
                 android:text="@string/event_when"
-                android:fontFamily="@font/muliregular"
+                android:fontFamily="@font/mulibold"
                 android:textSize="@dimen/list_title_font_size"
                 android:textColor="@color/JGGBlack"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
@@ -68,13 +67,13 @@
                     android:gravity="center_vertical">
                     <TextView
                         android:id="@+id/txt_date"
-                        android:text="Date"
+                        android:hint="Date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:fontFamily="@font/mulibold"
+                        android:fontFamily="@font/muliregular"
                         android:textSize="@dimen/list_title_font_size"
-                        android:textColor="@color/JGGGrey3"/>
+                        android:textColor="@color/JGGBlack"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -83,13 +82,13 @@
                     android:gravity="center_vertical">
                     <TextView
                         android:id="@+id/txt_time"
-                        android:text="Time"
+                        android:hint="Time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:fontFamily="@font/mulibold"
+                        android:fontFamily="@font/muliregular"
                         android:textSize="@dimen/list_title_font_size"
-                        android:textColor="@color/JGGGrey3"/>
+                        android:textColor="@color/JGGBlack"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -109,7 +108,6 @@
                 android:background="@drawable/purple_border_background"
                 android:gravity="start"/>
             <TextView
-                android:visibility="visible"
                 android:id="@+id/txt_post_service_set_time"
                 android:text="@string/time_later"
                 android:fontFamily="@font/mulibold"

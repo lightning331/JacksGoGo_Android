@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.kelvin.jacksgogo.R;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +34,8 @@ public class GcEventLimitFragment extends Fragment implements TextWatcher {
     private Context mContext;
     private boolean isLimit = false;
 
+    private JGGEventModel mEvent;
+
     public GcEventLimitFragment() {
         // Required empty public constructor
     }
@@ -43,6 +47,8 @@ public class GcEventLimitFragment extends Fragment implements TextWatcher {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gc_event_limit, container, false);
         ButterKnife.bind(this, view);
+
+        mEvent = JGGAppManager.getInstance().getSelectedEvent();
 
         initView();
 
@@ -61,6 +67,13 @@ public class GcEventLimitFragment extends Fragment implements TextWatcher {
         editPax.setVisibility(View.GONE);
         btnNext.setClickable(false);
         btnNext.setVisibility(View.GONE);
+
+        if (mEvent.getLimit() == null) {}   // No limit Event
+        else {
+            editPax.setText(String.valueOf(mEvent.getLimit()));     // Limit
+            isLimit = false;
+            onClickLimitTo();
+        }
     }
 
     private void onYellowButtonColor(Button button) {
@@ -75,6 +88,7 @@ public class GcEventLimitFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_no_limit)
     public void onClickNoLimit() {
+        mEvent.setLimit(null);
         this.listener.onNextButtonClick();
     }
 
@@ -96,6 +110,7 @@ public class GcEventLimitFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.btn_next)
     public void onClickNext() {
+        mEvent.setLimit(Integer.valueOf(editPax.getText().toString()));
         this.listener.onNextButtonClick();
     }
 

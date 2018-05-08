@@ -42,6 +42,12 @@ public class GcTimeSlotAdapter extends RecyclerView.Adapter {
         mList = list;
     }
 
+    public void notifyDataChanged(List<JGGTimeSlotModel> list) {
+        mList = list;
+
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_gc_time_slot, parent, false);

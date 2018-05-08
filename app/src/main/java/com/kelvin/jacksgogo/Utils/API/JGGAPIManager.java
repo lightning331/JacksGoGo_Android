@@ -14,6 +14,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetJobInfoResponse;
@@ -45,7 +46,7 @@ import retrofit2.http.Query;
 
 public interface JGGAPIManager {
 
-    /*
+    /**
      *  ACCOUNT
      */
     @FormUrlEncoded
@@ -81,7 +82,7 @@ public interface JGGAPIManager {
                                                    @Field("Provider") String provider,
                                                    @Field("Code") String code);
 
-    /*
+    /**
      *  System
      */
     @GET("api/Category/GetAllCategories")
@@ -91,13 +92,13 @@ public interface JGGAPIManager {
     @POST("api/UpLoad/UploadAttachmentFile")
     Call<JGGPostAppResponse> uploadAttachmentFile(@Part MultipartBody.Part file);
 
-    /*
+    /**
      * User
      */
     @POST("api/User/EditProfile")
     Call<JGGUserProfileResponse> editProfile(@Body JGGUserProfileModel user);
 
-    /*
+    /**
      *  Appointment Job
      */
     @POST("api/Appointment/PostJob")
@@ -110,7 +111,7 @@ public interface JGGAPIManager {
     Call<JGGBaseResponse> deleteJob(@Query("JobID") String jobID,
                                     @Query("Reason") String reason);
 
-    /*
+    /**
      *  Appointment Service
      */
     @POST("api/Appointment/PostService")
@@ -127,13 +128,13 @@ public interface JGGAPIManager {
                                                    @Query("PageIndex") Integer pageIndex,
                                                    @Query("PageSize") Integer pageSize);
 
-    /*
+    /**
      *  Appointment Quotation
      */
     @POST("api/Appointment/SendQuotation")
     Call<JGGPostAppResponse> sendQuotation(@Body JGGQuotationModel quotation);
 
-    /*
+    /**
      *  Appointment
      */
     @GET("api/Appointment/GetPendingAppointments")
@@ -179,7 +180,7 @@ public interface JGGAPIManager {
     @GET("api/Appointment/GetInformationOfAppointment")
     Call<JGGGetJobInfoResponse> getInformationOfAppointment(@Query("AppointmentID") String appointmentID);
 
-    /*
+    /**
      *  Proposal
      */
     @POST("api/Proposal/PostProposal")
@@ -243,7 +244,7 @@ public interface JGGAPIManager {
                                              @Field("GrossAmt") Double grossAmt,
                                              @Field("CurrencyCode") String postalCode);
 
-    /*
+    /**
      * Contract
      */
     @GET("api/Contract/StartContract")
@@ -281,7 +282,7 @@ public interface JGGAPIManager {
                                             @Field("Score") float score,
                                             @Field("Comment") String Comment);
 
-    /*
+    /**
      * GoClubs
      */
     @POST("api/Event/CreateClubs")
@@ -325,4 +326,13 @@ public interface JGGAPIManager {
 
     @DELETE("api/Event/DeleteGoClub")
     Call<JGGBaseResponse> deleteGoClub(@Query("ClubID") String clubID);
+
+    /**
+     * Event
+     */
+
+    @GET("api/Event/GetEventsByClub")
+    Call<JGGGetEventsResponse> getEventsByClub(@Query("ClubID") String clubID,
+                                               @Query("PageIndex") Integer pageIndex,
+                                               @Query("PageSize") Integer pageSize);
 }
