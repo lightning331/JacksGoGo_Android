@@ -73,7 +73,7 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
     private Integer endHour = 11;
     private Integer endMinute = 0;
     private boolean endAM = true;
-    private boolean endTimeEnable;
+    private boolean endTimeEnable = false;
     private Integer paxNo = 2;
     private boolean isPax;
 
@@ -117,6 +117,7 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
 
         switch (mType) {
             case SERVICES:
+                endTimeEnable = true;
                 okButtonColor = ContextCompat.getColor(mContext, R.color.JGGGreen);
                 cancelButtonColor = ContextCompat.getColor(mContext, R.color.JGGGreen10Percent);
                 imgActiveAM = R.mipmap.button_am_active_green;
@@ -246,8 +247,8 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
 
     public void onShowPaxLayout(boolean status) {
         isPax = status;
-        endTimeEnable = true;
         if (status) {
+            endTimeEnable = true;
             paxLayout.setVisibility(View.VISIBLE);
             btnPaxLeft.setAlpha((float) 0.3);
             btnPaxLeft.setClickable(false);
@@ -293,10 +294,14 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         else if (startHour > 12) startHour = 1;
         if (startMinute < 0) startMinute = 45;
         else if (startMinute > 45) startMinute = 0;
-        if (startHour < 10) txtStartTime.setText("0" + startHour);
-        else txtStartTime.setText("" + startHour);
-        if (startMinute == 0) txtStartMinute.setText("0" + startMinute);
-        else txtStartMinute.setText("" + startMinute);
+        if (startAM && startHour < 10)
+            txtStartTime.setText("0" + startHour);
+        else
+            txtStartTime.setText("" + startHour);
+        if (startMinute == 0)
+            txtStartMinute.setText("0" + startMinute);
+        else
+            txtStartMinute.setText("" + startMinute);
     }
 
     private void onEndTimeChange(View view) {
@@ -317,10 +322,14 @@ public class JGGAddTimeSlotDialog extends android.app.AlertDialog.Builder implem
         else if (endHour > 12) endHour = 1;
         if (endMinute < 0) endMinute = 45;
         else if (endMinute > 45) endMinute = 0;
-        if (endHour < 10) txtEndTime.setText("0" + endHour);
-        else txtEndTime.setText("" + endHour);
-        if (endMinute == 0) txtEndMinute.setText("0" + endMinute);
-        else txtEndMinute.setText("" + endMinute);
+        if (endAM && endHour < 10)
+            txtEndTime.setText("0" + endHour);
+        else
+            txtEndTime.setText("" + endHour);
+        if (endMinute == 0)
+            txtEndMinute.setText("0" + endMinute);
+        else
+            txtEndMinute.setText("" + endMinute);
     }
 
     private void onPaxNoChange(View view) {

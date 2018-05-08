@@ -343,10 +343,10 @@ public interface JGGAPIManager {
     /**
      * Event
      */
-    @POST("api/Event/CreateClubs")
+    @POST("api/Event/CreateEvent")
     Call<JGGPostAppResponse> createEvent(@Body JGGEventModel event);
 
-    @POST("api/Event/EditClubs")
+    @POST("api/Event/EditEvent")
     Call<JGGPostAppResponse> editEvent(@Body JGGEventModel event);
 
     @GET("api/Event/GetEventsByClub")
