@@ -29,7 +29,18 @@ public class ServiceDetailTagListCell extends RecyclerView.ViewHolder {
     public void setTagList(String tag) {
         if (tag != null && tag.length() > 0) {
             String [] strings = tag.split(",");
-            tagList.setTags(Arrays.asList(strings));
+            List<String> list = new ArrayList<>();
+            for (String str : strings) {
+                if (str.contains("\n")) {
+                    String[] subStrs = str.split("\n");
+                    for (String substr : subStrs) {
+                        list.add(substr);
+                    }
+                } else {
+                    list.add(str);
+                }
+            }
+            tagList.setTags(list);
         }
 
         Typeface typeface = Typeface.create("muliregular", Typeface.NORMAL);
