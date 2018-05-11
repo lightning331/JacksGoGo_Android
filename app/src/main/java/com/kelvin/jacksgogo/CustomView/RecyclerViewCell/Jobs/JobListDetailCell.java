@@ -57,11 +57,11 @@ public class JobListDetailCell extends RecyclerView.ViewHolder {
         if (job.getAttachmentURLs().size() > 0)
             Picasso.with(mContext)
                     .load(job.getAttachmentURLs().get(0))
-                    .placeholder(R.mipmap.appointment_placeholder)
+                    .placeholder(R.mipmap.placeholder)
                     .into(carouselView);
         else
             Picasso.with(mContext)
-                    .load(R.mipmap.appointment_placeholder)
+                    .load(R.mipmap.placeholder)
                     .placeholder(null)
                     .into(carouselView);
         // Category

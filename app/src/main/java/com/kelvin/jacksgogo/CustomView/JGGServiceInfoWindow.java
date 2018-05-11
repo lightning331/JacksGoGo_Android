@@ -68,7 +68,7 @@ public class JGGServiceInfoWindow implements GoogleMap.InfoWindowAdapter {
         if (service.getAttachmentURLs().size() != 0) {
             Picasso.with(mContext)
                     .load(service.getAttachmentURLs().get(0))
-                    .placeholder(R.mipmap.appointment_placeholder)
+                    .placeholder(R.mipmap.placeholder)
                     .into(imgPhoto);
         }
         // Category

@@ -88,12 +88,12 @@ public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (goClub.getAttachmentURLs().size() > 0)
                 Picasso.with(mContext)
                         .load(goClub.getAttachmentURLs().get(0))
-                        .placeholder(R.mipmap.appointment_placeholder)
+                        .placeholder(R.mipmap.placeholder)
                         .into(imgGoClub);
             else
                 Picasso.with(mContext)
-                        .load(R.mipmap.appointment_placeholder)
-                        .placeholder(R.mipmap.appointment_placeholder)
+                        .load(R.mipmap.placeholder)
+                        .placeholder(R.mipmap.placeholder)
                         .into(imgGoClub);
             // Category
             Picasso.with(mContext)
