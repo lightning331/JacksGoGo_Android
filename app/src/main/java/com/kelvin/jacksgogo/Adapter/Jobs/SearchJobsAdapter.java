@@ -123,9 +123,10 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    /* notifyDataSetChanged is final method so we can't override it
-         call adapter.notifyDataChanged(); after update the list
-         */
+    /**
+     *  notifyDataSetChanged is final method so we can't override it
+     *  call adapter.notifyDataChanged(); after update the list
+     */
     public void notifyDataChanged(ArrayList<JGGAppointmentModel> jobs) {
         mJobs = jobs;
 
