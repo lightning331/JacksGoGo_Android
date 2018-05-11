@@ -38,6 +38,7 @@ public class PostServiceMainTabFragment extends Fragment {
     private JGGAppointmentModel selectedAppointment;
     private PostServiceSummaryFragment.PostEditStatus editStatus;
     private String tabName;
+    private int tabIndex = 0;
 
     public void setEditStatus(PostServiceSummaryFragment.PostEditStatus editStatus) {
         this.editStatus = editStatus;
@@ -88,45 +89,64 @@ public class PostServiceMainTabFragment extends Fragment {
         tabbarView.mReportText.setText(TAB_MENU4);
         tabbarLayout.addView(tabbarView);
 
-        initTabbarView();
-
         tabbarView.setTabItemClickListener(new PostServiceTabView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabbarViewClick(view);
             }
         });
-        refreshFragment();
 
+        initTabbarView();
         return view;
     }
 
-    private void initTabbarView() {
+    public int getTabIndex() {
+        return this.tabIndex;
+    }
 
-        if (tabName == "DESCRIBE") {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.DESCRIBE, true);
-        } else if (tabName == "TIME") {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, true);
-        } else if (tabName == "ADDRESS") {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, true);
-        } else if (tabName == "REPORT") {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, true);
+    public void setTabIndex(int index) {
+        this.tabIndex = index;
+        switch (index) {
+            case 0:
+                tabbarView.setTabName(PostServiceTabView.PostServiceTabName.DESCRIBE, true);
+                break;
+            case 1:
+                tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, true);
+                break;
+            case 2:
+                tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, true);
+                break;
+            case 3:
+                tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, true);
+                break;
         }
+
         refreshFragment();
+    }
+
+    private void initTabbarView() {
+        if (tabName == "DESCRIBE") {
+            setTabIndex(0);
+        } else if (tabName == "TIME") {
+            setTabIndex(1);
+        } else if (tabName == "ADDRESS") {
+            setTabIndex(2);
+        } else if (tabName == "REPORT") {
+            setTabIndex(3);
+        }
     }
 
     private void onTabbarViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.DESCRIBE, true);
+            setTabIndex(0);
         } else if (view.getId() == R.id.btn_time) {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, true);
+            setTabIndex(1);
         } else if (view.getId() == R.id.btn_address) {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, true);
+            setTabIndex(2);
         } else if (view.getId() == R.id.btn_report) {
-            tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, true);
+            setTabIndex(3);
         }
-        refreshFragment();
     }
 
     private void refreshFragment() {
@@ -137,8 +157,7 @@ public class PostServiceMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostServiceTabView.PostServiceTabName.TIME, true);
-                    refreshFragment();
+                    setTabIndex(1);
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
@@ -147,8 +166,7 @@ public class PostServiceMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostServicePriceFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostServiceTabView.PostServiceTabName.ADDRESS, true);
-                    refreshFragment();
+                    setTabIndex(2);
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());
@@ -157,8 +175,7 @@ public class PostServiceMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceTimeSlotFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostServiceTabView.PostServiceTabName.REPORT, true);
-                    refreshFragment();
+                    setTabIndex(3);
                 }
             });
             ft.replace(R.id.post_service_detail_container, frag, frag.getTag());

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView;
 import com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName;
+import com.kelvin.jacksgogo.CustomView.Views.PostJobTabView;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceDescribeFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.PostStatus;
@@ -36,6 +37,7 @@ public class CreateEventMainFragment extends Fragment {
 
     private String tabName;
     private String postStatus;
+    private int tabIndex = 0;
 
     public CreateEventMainFragment() {
         // Required empty public constructor
@@ -76,50 +78,75 @@ public class CreateEventMainFragment extends Fragment {
                 .into(imgCategory);
         lblCategory.setText(selectedCategory.getName());
 
-        initTabView(view);
-
-        return view;
-    }
-
-    private void initTabView(View view) {
-
         tabView = new PostEventTabView(mContext);
         LinearLayout tabViewLayout = view.findViewById(R.id.post_go_club_tab_view);
         tabViewLayout.addView(tabView);
-        if (tabName.equals("DESCRIBE")) {
-            tabView.setTabName(EventTabName.DESCRIBE);
-        } else if (tabName.equals("TIME")) {
-            tabView.setTabName(EventTabName.TIME);
-        } else if (tabName.equals("ADDRESS")) {
-            tabView.setTabName(EventTabName.ADDRESS);
-        } else if (tabName.equals("LIMIT")) {
-            tabView.setTabName(EventTabName.LIMIT);
-        } else if (tabName.equals("COST")) {
-            tabView.setTabName(EventTabName.COST);
-        }
         tabView.setTabItemClickListener(new PostEventTabView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabViewClick(view);
             }
         });
+
+        initTabView(view);
+
+        return view;
+    }
+
+    public int getTabIndex() {
+        return this.tabIndex;
+    }
+
+    public void setTabIndex(int index) {
+        this.tabIndex = index;
+        switch (index) {
+            case 0:
+                tabView.setTabName(EventTabName.DESCRIBE);
+                break;
+            case 1:
+                tabView.setTabName(EventTabName.TIME);
+                break;
+            case 2:
+                tabView.setTabName(EventTabName.ADDRESS);
+                break;
+            case 3:
+                tabView.setTabName(EventTabName.LIMIT);
+                break;
+            case 4:
+                tabView.setTabName(EventTabName.COST);
+                break;
+        }
+
         refreshFragment();
     }
 
-    private void onTabViewClick(View view) {
+    private void initTabView(View view) {
 
-        if (view.getId() == R.id.btn_describe) {
-            tabView.setTabName(EventTabName.DESCRIBE);
-        } else if (view.getId() == R.id.btn_time) {
-            tabView.setTabName(EventTabName.TIME);
-        } else if (view.getId() == R.id.btn_address) {
-            tabView.setTabName(EventTabName.ADDRESS);
-        } else if (view.getId() == R.id.btn_budget) {
-            tabView.setTabName(EventTabName.LIMIT);
-        } else if (view.getId() == R.id.btn_report) {
-            tabView.setTabName(EventTabName.COST);
+        if (tabName.equals("DESCRIBE")) {
+            setTabIndex(0);
+        } else if (tabName.equals("TIME")) {
+            setTabIndex(1);
+        } else if (tabName.equals("ADDRESS")) {
+            setTabIndex(2);
+        } else if (tabName.equals("LIMIT")) {
+            setTabIndex(3);
+        } else if (tabName.equals("COST")) {
+            setTabIndex(4);
         }
-        refreshFragment();
+    }
+
+    private void onTabViewClick(View view) {
+        if (view.getId() == R.id.btn_describe) {
+            setTabIndex(0);
+        } else if (view.getId() == R.id.btn_time) {
+            setTabIndex(1);
+        } else if (view.getId() == R.id.btn_address) {
+            setTabIndex(2);
+        } else if (view.getId() == R.id.btn_budget) {
+            setTabIndex(3);
+        } else if (view.getId() == R.id.btn_report) {
+            setTabIndex(4);
+        }
     }
 
     private void refreshFragment() {
@@ -130,8 +157,7 @@ public class CreateEventMainFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(EventTabName.TIME);
-                    refreshFragment();
+                    setTabIndex(1);
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
@@ -140,8 +166,7 @@ public class CreateEventMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(EventTabName.ADDRESS);
-                    refreshFragment();
+                    setTabIndex(2);
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
@@ -150,8 +175,7 @@ public class CreateEventMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(EventTabName.LIMIT);
-                    refreshFragment();
+                    setTabIndex(3);
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
@@ -160,8 +184,7 @@ public class CreateEventMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcTimeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(EventTabName.COST);
-                    refreshFragment();
+                    setTabIndex(4);
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());

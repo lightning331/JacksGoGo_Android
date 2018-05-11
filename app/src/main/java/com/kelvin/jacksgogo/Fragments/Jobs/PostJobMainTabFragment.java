@@ -57,6 +57,7 @@ public class PostJobMainTabFragment extends Fragment {
     private List<Integer> selectedIds = new ArrayList<>();
     private boolean isMultiSelect = false;
     private int reportType = 0;
+    private int tabIndex = 0;
 
     public PostJobMainTabFragment() {
         // Required empty public constructor
@@ -101,50 +102,74 @@ public class PostJobMainTabFragment extends Fragment {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
-        initTabbarView(view);
-
-        return view;
-    }
-
-    private void initTabbarView(View view) {
-
         tabbarLayout = (LinearLayout)view.findViewById(R.id.post_job_tabbar_view);
         tabbarView = new PostJobTabView(mContext);
         tabbarLayout.addView(tabbarView);
-        if (tabName == "DESCRIBE") {
-            tabbarView.setTabName(PostJobTabName.DESCRIBE, true);
-        } else if (tabName == "TIME") {
-            tabbarView.setTabName(PostJobTabName.TIME, true);
-        } else if (tabName == "ADDRESS") {
-            tabbarView.setTabName(PostJobTabName.ADDRESS, true);
-        } else if (tabName == "BUDGET") {
-            tabbarView.setTabName(PostJobTabName.BUDGET, true);
-        } else if (tabName == "REPORT") {
-            tabbarView.setTabName(PostJobTabName.REPORT, true);
-        }
         tabbarView.setTabItemClickListener(new PostJobTabView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabbarViewClick(view);
             }
         });
+
+        initTabbarView(view);
+
+        return view;
+    }
+
+    public int getTabIndex() {
+        return this.tabIndex;
+    }
+
+    public void setTabIndex(int index) {
+        this.tabIndex = index;
+        switch (index) {
+            case 0:
+                tabbarView.setTabName(PostJobTabName.DESCRIBE, true);
+                break;
+            case 1:
+                tabbarView.setTabName(PostJobTabName.TIME, true);
+                break;
+            case 2:
+                tabbarView.setTabName(PostJobTabName.ADDRESS, true);
+                break;
+            case 3:
+                tabbarView.setTabName(PostJobTabName.BUDGET, true);
+                break;
+            case 4:
+                tabbarView.setTabName(PostJobTabName.REPORT, true);
+                break;
+        }
+
         refreshFragment();
     }
 
-    private void onTabbarViewClick(View view) {
-
-        if (view.getId() == R.id.btn_describe) {
-            tabbarView.setTabName(PostJobTabName.DESCRIBE, true);
-        } else if (view.getId() == R.id.btn_time) {
-            tabbarView.setTabName(PostJobTabName.TIME, true);
-        } else if (view.getId() == R.id.btn_address) {
-            tabbarView.setTabName(PostJobTabName.ADDRESS, true);
-        } else if (view.getId() == R.id.btn_budget) {
-            tabbarView.setTabName(PostJobTabName.BUDGET, true);
-        } else if (view.getId() == R.id.btn_report) {
-            tabbarView.setTabName(PostJobTabName.REPORT, true);
+    private void initTabbarView(View view) {
+        if (tabName == "DESCRIBE") {
+            setTabIndex(0);
+        } else if (tabName == "TIME") {
+            setTabIndex(1);
+        } else if (tabName == "ADDRESS") {
+            setTabIndex(2);
+        } else if (tabName == "BUDGET") {
+            setTabIndex(3);
+        } else if (tabName == "REPORT") {
+            setTabIndex(4);
         }
-        refreshFragment();
+    }
+
+    private void onTabbarViewClick(View view) {
+        if (view.getId() == R.id.btn_describe) {
+            setTabIndex(0);
+        } else if (view.getId() == R.id.btn_time) {
+            setTabIndex(1);
+        } else if (view.getId() == R.id.btn_address) {
+            setTabIndex(2);
+        } else if (view.getId() == R.id.btn_budget) {
+            setTabIndex(3);
+        } else if (view.getId() == R.id.btn_report) {
+            setTabIndex(4);
+        }
     }
 
     private void refreshFragment() {
@@ -158,8 +183,7 @@ public class PostJobMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostJobTabName.TIME, true);
-                    refreshFragment();
+                    setTabIndex(1);
                 }
             });
             ft.replace(R.id.post_job_detail_container, frag, frag.getTag());
@@ -168,8 +192,7 @@ public class PostJobMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostJobTimeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostJobTabName.ADDRESS, true);
-                    refreshFragment();
+                    setTabIndex(2);
                 }
             });
             ft.replace(R.id.post_job_detail_container, frag, frag.getTag());
@@ -178,8 +201,7 @@ public class PostJobMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceAddressFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostJobTabName.BUDGET, true);
-                    refreshFragment();
+                    setTabIndex(3);
                 }
             });
             ft.replace(R.id.post_job_detail_container, frag, frag.getTag());
@@ -188,8 +210,7 @@ public class PostJobMainTabFragment extends Fragment {
             frag.setOnItemClickListener(new PostJobPriceFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabbarView.setTabName(PostJobTabName.REPORT, true);
-                    refreshFragment();
+                    setTabIndex(4);
                 }
             });
             ft.replace(R.id.post_job_detail_container, frag, frag.getTag());

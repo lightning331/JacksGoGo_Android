@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,8 @@ import android.view.View;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
+import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateEventMainFragment;
+import com.kelvin.jacksgogo.Fragments.GoClub_Event.CreateGoClubMainFragment;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.GcEventSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.GoClub_Event.GcSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
@@ -157,7 +160,25 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
             if (manager.getBackStackEntryCount() == 0) {
                 showAlertDialog();
             } else {
-                manager.popBackStack();
+                Fragment fragment = manager.findFragmentById(R.id.post_go_club_container);
+                if (fragment instanceof CreateGoClubMainFragment) {
+                    CreateGoClubMainFragment frag = (CreateGoClubMainFragment) fragment;
+                    if (frag.getTabIndex() > 0) {
+                        frag.setTabIndex(frag.getTabIndex() - 1);
+                    } else {
+                        manager.popBackStack();
+                    }
+                } else if (fragment instanceof CreateEventMainFragment) {
+                    CreateEventMainFragment frag = (CreateEventMainFragment) fragment;
+                    if (frag.getTabIndex() > 0) {
+                        frag.setTabIndex(frag.getTabIndex() - 1);
+                    } else {
+                        manager.popBackStack();
+                    }
+                }
+                else {
+                    manager.popBackStack();
+                }
             }
         }
     }
