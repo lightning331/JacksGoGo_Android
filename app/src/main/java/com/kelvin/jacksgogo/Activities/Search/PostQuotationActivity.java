@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -86,7 +87,18 @@ public class PostQuotationActivity extends AppCompatActivity implements View.OnC
             if (manager.getBackStackEntryCount() == 0) {
                 showAlertDialog();
             } else {
-                manager.popBackStack();
+                Fragment fragment = manager.findFragmentById(R.id.request_quotation_container);
+                if (fragment instanceof PostQuotationMainTabFragment) {
+                    PostQuotationMainTabFragment frag = (PostQuotationMainTabFragment) fragment;
+                    if (frag.getTabIndex() > 0) {
+                        frag.setTabIndex(frag.getTabIndex() - 1);
+                    } else {
+                        manager.popBackStack();
+                    }
+                }
+                else {
+                    manager.popBackStack();
+                }
             }
         }
     }
