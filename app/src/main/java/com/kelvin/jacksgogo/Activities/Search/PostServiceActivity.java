@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobCategoryFragment;
+import com.kelvin.jacksgogo.Fragments.Jobs.PostJobMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostJobSummaryFragment;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillNotVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSkillVerifiedFragment;
 import com.kelvin.jacksgogo.Fragments.Search.PostServiceSummaryFragment;
@@ -157,7 +160,27 @@ public class PostServiceActivity extends AppCompatActivity implements View.OnCli
             if (manager.getBackStackEntryCount() == 0) {
                 showAlertDialog();
             } else {
-                manager.popBackStack();
+                Fragment fragment = manager.findFragmentById(R.id.post_service_container);
+                if (fragment instanceof PostJobMainTabFragment) {
+                    PostJobMainTabFragment frag = (PostJobMainTabFragment) fragment;
+                    if (frag.getTabIndex() > 0) {
+                        frag.setTabIndex(frag.getTabIndex() - 1);
+                    } else {
+                        manager.popBackStack();
+                    }
+                }
+                else if (fragment instanceof PostServiceMainTabFragment) {
+                    PostServiceMainTabFragment frag = (PostServiceMainTabFragment) fragment;
+                    if (frag.getTabIndex() > 0) {
+                        frag.setTabIndex(frag.getTabIndex() - 1);
+                    } else {
+                        manager.popBackStack();
+                    }
+                }
+                else {
+                    manager.popBackStack();
+                }
+
             }
         }
     }
