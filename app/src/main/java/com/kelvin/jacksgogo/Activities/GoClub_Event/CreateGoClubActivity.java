@@ -113,6 +113,10 @@ public class CreateGoClubActivity extends AppCompatActivity implements View.OnCl
                     event.setUserProfileID(currentUser.getID());
                     event.setRegion(JGGAppManager.getInstance().getCurrentRegion());
                     event.setRegionID(JGGAppManager.getInstance().getCurrentRegion().getID());
+                    JGGGoClubModel club = JGGAppManager.getInstance().getSelectedClub();
+                    if (club.getID() == null) {}
+                    else
+                        event.setClubID(JGGAppManager.getInstance().getSelectedClub().getID());
 
                     JGGAppManager.getInstance().setSelectedEvent(event);
 

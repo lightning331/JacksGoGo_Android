@@ -43,6 +43,7 @@ import static com.kelvin.jacksgogo.Utils.Global.APPOINTMENT_TYPE;
 import static com.kelvin.jacksgogo.Utils.Global.EVENTS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
+import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 
 public class PostJobCategoryFragment extends Fragment {
@@ -167,9 +168,11 @@ public class PostJobCategoryFragment extends Fragment {
                             creatingEvent.setCategory(categoryModel);
                             JGGAppManager.getInstance().setSelectedEvent(creatingEvent);
 
+                            CreateEventMainFragment fragment = CreateEventMainFragment.newInstance(EventTabName.DESCRIBE);
+                            fragment.setPostStatus(POST);
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.post_go_club_container, CreateEventMainFragment.newInstance(EventTabName.DESCRIBE, PostStatus.POST))
+                                    .replace(R.id.post_go_club_container, fragment)
                                     .addToBackStack("post_event")
                                     .commit();
                         }

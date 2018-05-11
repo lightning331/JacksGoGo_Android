@@ -36,20 +36,24 @@ public class CreateEventMainFragment extends Fragment {
     private TextView lblCategory;
 
     private String tabName;
-    private String postStatus;
+
     private int tabIndex = 0;
+    private PostStatus postStatus;
 
     public CreateEventMainFragment() {
         // Required empty public constructor
     }
 
-    public static CreateEventMainFragment newInstance(EventTabName name, PostStatus status) {
+    public static CreateEventMainFragment newInstance(EventTabName name) {
         CreateEventMainFragment fragment = new CreateEventMainFragment();
         Bundle args = new Bundle();
         args.putString("tabName", name.toString());
-        args.putString("postStatus", status.toString());
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setPostStatus(PostStatus status) {
+        postStatus = status;
     }
 
     @Override
@@ -57,7 +61,6 @@ public class CreateEventMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             tabName = getArguments().getString("tabName");
-            postStatus = getArguments().getString("postStatus");
         }
     }
 
@@ -194,7 +197,7 @@ public class CreateEventMainFragment extends Fragment {
                 @Override
                 public void onNextButtonClick() {
                     GcEventSummaryFragment fragment = new GcEventSummaryFragment();
-//                    fragment.setEditStatus(editStatus);
+                    fragment.setEditStatus(postStatus);
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.post_go_club_container, fragment, fragment.getTag())

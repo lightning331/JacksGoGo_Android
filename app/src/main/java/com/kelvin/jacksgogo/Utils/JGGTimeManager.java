@@ -176,7 +176,7 @@ public class JGGTimeManager {
             boolean period = true;
             String hour = hourFormat.format(date);
             if (Integer.parseInt(hour) > 12) {
-                hour = "0" + Integer.toString(Integer.parseInt(hour) - 12);
+                hour = Integer.toString(Integer.parseInt(hour) - 12);
                 period = false;
             }
             if (Integer.parseInt(hour) == 12)

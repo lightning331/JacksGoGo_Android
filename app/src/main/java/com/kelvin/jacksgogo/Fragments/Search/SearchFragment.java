@@ -318,6 +318,7 @@ public class SearchFragment extends Fragment {
 
                     } else if (view.getId() == R.id.btn_post_new) {
                         if (!JGGSharedPrefs.getInstance(mContext).getUsernamePassword()[0].equals("")) {
+                            JGGAppManager.getInstance().setSelectedClub(new JGGGoClubModel());
                             mIntent = new Intent(mContext, CreateGoClubActivity.class);
                             mIntent.putExtra(EDIT_STATUS, POST);
                             mIntent.putExtra(APPOINTMENT_TYPE, EVENTS);

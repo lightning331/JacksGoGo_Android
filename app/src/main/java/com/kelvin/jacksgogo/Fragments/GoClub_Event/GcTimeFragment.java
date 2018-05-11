@@ -138,10 +138,20 @@ public class GcTimeFragment extends Fragment implements
                 && mEvent.getSessions().size() > 0) {
             mTimeSlots = mEvent.getSessions();
             mSelectedTimeSlot = mEvent.getSessions().get(0);
-
+            bOneTime = mEvent.getOnetime();
             Date date = appointmentMonthDate(mSelectedTimeSlot.getStartOn());
-            calendarView.setSelectedDate(date);
-            updateRecyclerView(mTimeSlots);
+            Date endDate = appointmentMonthDate(mSelectedTimeSlot.getEndOn());
+
+            if (bOneTime) {
+                bOneTime = false;
+                onClickOneTimeEvent();
+                setOneTimeDate(date);
+                setOneTimePeriod(date, endDate);
+            } else {
+                onClickDone();
+                calendarView.setSelectedDate(date);
+                updateRecyclerView(mTimeSlots);
+            }
         } else {
             calendarView.setSelectedDate(new Date());
         }
@@ -189,19 +199,8 @@ public class GcTimeFragment extends Fragment implements
                 } else if (view.getId() == R.id.btn_add_time_duplicate_ok) {
                     alertDialog.dismiss();
                     if (dates.size() > 0) {
-                        String year = getAppointmentYear(dates.get(0).getDate());
-                        String month = getAppointmentMonth(dates.get(0).getDate());
-                        String day = getAppointmentDay(dates.get(0).getDate());
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-                        try {
-                            Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
-                            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            selectedDay = dateFormat.format(varDate);
-                        } catch (Exception e) {
-                            // TODO: handle exception
-                            e.printStackTrace();
-                        }
-                        txtDate.setText(day + " " + month);
+                        Date date = dates.get(0).getDate();
+                        setOneTimeDate(date);
                         if (txtTime.getText().length() > 0 && txtDate.getText().length() > 0)
                             onNextButtonEnable();
                     }
@@ -213,6 +212,34 @@ public class GcTimeFragment extends Fragment implements
         alertDialog.show();
     }
 
+    private void setOneTimeDate(Date date) {
+        String year = getAppointmentYear(date);
+        String month = getAppointmentMonth(date);
+        String day = getAppointmentDay(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
+        try {
+            Date varDate = dateFormat.parse(year + "-" + month + "-" + day);
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            selectedDay = dateFormat.format(varDate);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        txtDate.setText(day + " " + month);
+    }
+
+    private void setOneTimePeriod(Date date, Date endDate) {
+        startTime = getTimePeriodString(date);
+        startOn = date;
+        if (endDate != null) {
+            endTime = getTimePeriodString(endDate);
+            endOn = endDate;
+            txtTime.setText(startTime + " - " + endTime);
+        } else {
+            txtTime.setText(startTime);
+        }
+    }
+
     private void onShowAddTimeClickDialog() {
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(mContext, Global.AppointmentType.GOCLUB, null, null);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {
@@ -222,15 +249,8 @@ public class GcTimeFragment extends Fragment implements
                     alertDialog.dismiss();
                 } else if (view.getId() == R.id.btn_add_time_ok) {
                     alertDialog.dismiss();
-                    startTime = getTimePeriodString(start);
-                    startOn = start;
-                    if (end != null) {
-                        endTime = getTimePeriodString(end);
-                        endOn = end;
-                        txtTime.setText(startTime + " - " + endTime);
-                    } else {
-                        txtTime.setText(startTime);
-                    }
+                    // Todo - set Period time
+                    setOneTimePeriod(start, end);
                     if (txtTime.getText().length() > 0 && txtDate.getText().length() > 0)
                         onNextButtonEnable();
                 }
@@ -250,9 +270,11 @@ public class GcTimeFragment extends Fragment implements
             for (int i=0;i<slotModels.size(); i++) {
                 JGGTimeSlotModel slotModel = slotModels.get(i);
                 Date endSlotDate = appointmentMonthDate(slotModel.getEndOn());
-                if (endSlotDate.after(newDate) || endSlotDate.equals(newDate)) {
-                    return false;
-                }
+                if (endSlotDate == null) {}
+                else
+                    if (endSlotDate.after(newDate) || endSlotDate.equals(newDate)) {
+                        return false;
+                    }
             }
 
         }
@@ -270,9 +292,11 @@ public class GcTimeFragment extends Fragment implements
             for (int i=0;i<slotModels.size(); i++) {
                 JGGTimeSlotModel slotModel = slotModels.get(i);
                 Date endSlotDate = appointmentMonthDate(slotModel.getEndOn());
-                if (endSlotDate.before(newDate) || endSlotDate.equals(newDate)) {
-                    return false;
-                }
+                if (endSlotDate == null) {}
+                else
+                    if (endSlotDate.before(newDate) || endSlotDate.equals(newDate)) {
+                        return false;
+                    }
             }
 
         }
@@ -301,7 +325,9 @@ public class GcTimeFragment extends Fragment implements
 
                             JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
                             timeSlotModel.setStartOn(yearMonthDay + "T" + getTimeString(start));
-                            timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
+                            if (end == null) {}
+                            else
+                                timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
 
                             timeSlotModel.setPeoples(number);   // Multi person
 
@@ -323,7 +349,9 @@ public class GcTimeFragment extends Fragment implements
 
                             JGGTimeSlotModel timeSlotModel = new JGGTimeSlotModel();
                             timeSlotModel.setStartOn(yearMonthDay + "T" + getTimeString(start));
-                            timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
+                            if (end == null) {}
+                            else
+                                timeSlotModel.setEndOn(yearMonthDay + "T" + getTimeString(end));
 
                             timeSlotModel.setPeoples(number); // Multi person
 
@@ -389,7 +417,10 @@ public class GcTimeFragment extends Fragment implements
                             // add selected timeSlot for n times
                             JGGTimeSlotModel tmpTimeSlot = new JGGTimeSlotModel();
                             String ymdStart = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getStartOn()));
-                            String ymdEnd = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getEndOn()));
+                            String ymdEnd = null;
+                            if (mSelectedTimeSlot.getEndOn() == null) {}
+                            else
+                                ymdEnd = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getEndOn()));
                             tmpTimeSlot.setStartOn(ymdStart);
                             tmpTimeSlot.setEndOn(ymdEnd);
                             tmpTimeSlot.setPeoples(mSelectedTimeSlot.getPeoples());
@@ -424,11 +455,11 @@ public class GcTimeFragment extends Fragment implements
         calendarView.addDecorator(new JGGCalendarDecorator(mContext, selectedDateList, Global.AppointmentType.GOCLUB));
     }
 
-    private ArrayList<JGGTimeSlotModel> getSelectedDateTimeSlot(Date seletedDate) {
-        ArrayList<JGGTimeSlotModel> slotModels = new ArrayList<JGGTimeSlotModel>();
+    private ArrayList<JGGTimeSlotModel> getSelectedDateTimeSlot(Date selectedDate) {
+        ArrayList<JGGTimeSlotModel> slotModels = new ArrayList<>();
         for (int i=0;i<mTimeSlots.size(); i++) {
             JGGTimeSlotModel slotModel = mTimeSlots.get(i);
-            if (slotModel.isEqualSlotDate(seletedDate)) {
+            if (slotModel.isEqualSlotDate(selectedDate)) {
                 slotModels.add(slotModel);
             }
         }
@@ -559,6 +590,8 @@ public class GcTimeFragment extends Fragment implements
         } else {
             btnOneTimeEvent.setVisibility(View.VISIBLE);
             this.onPurpleButtonColor(btnRepeatingEvent);
+            btnViewTimeSlot.setVisibility(View.GONE);
+            btnNext.setVisibility(View.GONE);
             txtWhen.setVisibility(View.GONE);
             btnNow.setVisibility(View.GONE);
             btnLater.setVisibility(View.GONE);
@@ -611,6 +644,7 @@ public class GcTimeFragment extends Fragment implements
         btnDone.setVisibility(View.GONE);
         btnViewTimeSlot.setVisibility(View.VISIBLE);
 
+        btnOneTimeEvent.setVisibility(View.GONE);
         ll_calendar_bg.setVisibility(View.GONE);
         ll_schedule_bg.setVisibility(View.GONE);
         ll_set_time.setVisibility(View.GONE);
