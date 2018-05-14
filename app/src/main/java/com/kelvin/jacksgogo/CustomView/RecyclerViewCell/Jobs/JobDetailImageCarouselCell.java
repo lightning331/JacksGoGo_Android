@@ -34,7 +34,7 @@ public class JobDetailImageCarouselCell extends RecyclerView.ViewHolder {
         public void setImageForPosition(int position, ImageView imageView) {
             Picasso.with(mContext)
                     .load(imageArray.get(position))
-                    .placeholder(R.mipmap.appointment_placeholder)
+                    .placeholder(R.mipmap.placeholder)
                     .into(imageView);
         }
     };

@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:background="@color/JGGWhite">
         <ImageView
-            android:src="@mipmap/appointment_placeholder"
+            android:src="@mipmap/placeholder"
             android:id="@+id/img_go_club"
             android:layout_width="match_parent"
             android:layout_height="128dp"

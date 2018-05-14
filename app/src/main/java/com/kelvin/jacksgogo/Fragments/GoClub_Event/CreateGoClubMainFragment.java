@@ -38,6 +38,7 @@ public class CreateGoClubMainFragment extends Fragment {
 
     private String tabName;
     private String postStatus;
+    private int tabIndex = 0;
 
     public CreateGoClubMainFragment() {
         // Required empty public constructor
@@ -78,42 +79,61 @@ public class CreateGoClubMainFragment extends Fragment {
                 .into(imgCategory);
         lblCategory.setText(selectedCategory.getName());
 
-        initTabView(view);
-
-        return view;
-    }
-
-    private void initTabView(View view) {
-
         tabView = new PostGoClubTabView(mContext);
         LinearLayout tabViewLayout = view.findViewById(R.id.post_go_club_tab_view);
         tabViewLayout.addView(tabView);
-        if (tabName.equals("DESCRIBE")) {
-            tabView.setTabName(GoClubTabName.DESCRIBE, true);
-        } else if (tabName.equals("LIMIT")) {
-            tabView.setTabName(GoClubTabName.LIMIT, true);
-        } else if (tabName.equals("ADMIN")) {
-            tabView.setTabName(GoClubTabName.ADMIN, true);
-        }
         tabView.setTabItemClickListener(new PostGoClubTabView.OnTabItemClickListener() {
             @Override
             public void onTabItemClick(View view) {
                 onTabViewClick(view);
             }
         });
+
+        initTabView(view);
+
+        return view;
+    }
+
+    public int getTabIndex() {
+        return this.tabIndex;
+    }
+
+    public void setTabIndex(int index) {
+        this.tabIndex = index;
+        switch (index) {
+            case 0:
+                tabView.setTabName(GoClubTabName.DESCRIBE, true);
+                break;
+            case 1:
+                tabView.setTabName(GoClubTabName.LIMIT, true);
+                break;
+            case 2:
+                tabView.setTabName(GoClubTabName.ADMIN, true);
+                break;
+        }
+
         refreshFragment();
+    }
+
+    private void initTabView(View view) {
+        if (tabName.equals("DESCRIBE")) {
+            setTabIndex(0);
+        } else if (tabName.equals("LIMIT")) {
+            setTabIndex(1);
+        } else if (tabName.equals("ADMIN")) {
+            setTabIndex(2);
+        }
     }
 
     private void onTabViewClick(View view) {
 
         if (view.getId() == R.id.btn_describe) {
-            tabView.setTabName(GoClubTabName.DESCRIBE, true);
+            setTabIndex(0);
         } else if (view.getId() == R.id.btn_time) {
-            tabView.setTabName(GoClubTabName.LIMIT, true);
+            setTabIndex(1);
         } else if (view.getId() == R.id.btn_address) {
-            tabView.setTabName(GoClubTabName.ADMIN, true);
+            setTabIndex(2);
         }
-        refreshFragment();
     }
 
     private void refreshFragment() {
@@ -124,8 +144,7 @@ public class CreateGoClubMainFragment extends Fragment {
             frag.setOnItemClickListener(new PostServiceDescribeFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(GoClubTabName.LIMIT, true);
-                    refreshFragment();
+                    setTabIndex(1);
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());
@@ -134,8 +153,7 @@ public class CreateGoClubMainFragment extends Fragment {
             frag.setOnItemClickListener(new GcLimitFragment.OnItemClickListener() {
                 @Override
                 public void onNextButtonClick() {
-                    tabView.setTabName(GoClubTabName.ADMIN, true);
-                    refreshFragment();
+                    setTabIndex(2);
                 }
             });
             ft.replace(R.id.go_club_main_tab_container, frag, frag.getTag());

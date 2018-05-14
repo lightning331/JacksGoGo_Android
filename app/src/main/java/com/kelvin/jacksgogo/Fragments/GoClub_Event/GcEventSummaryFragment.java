@@ -33,7 +33,6 @@ import com.yanzhenjie.album.AlbumFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +52,6 @@ import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabNam
 import static com.kelvin.jacksgogo.CustomView.Views.PostEventTabView.EventTabName.TIME;
 import static com.kelvin.jacksgogo.Utils.Global.PostStatus.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.PostStatus.POST;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,8 +93,8 @@ public class GcEventSummaryFragment extends Fragment {
     private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
     private ArrayList<String> attachmentURLs = new ArrayList<>();
 
-    public void setEditStatus(PostStatus editStatus) {
-        this.editStatus = editStatus;
+    public void setEditStatus(PostStatus status) {
+        this.editStatus = status;
     }
 
 
@@ -110,9 +108,6 @@ public class GcEventSummaryFragment extends Fragment {
         if (getArguments() != null) {
 
         }
-        String postTime = appointmentNewDate(new Date());
-//        selectedAppointment.setPostOn(postTime);
-//        mAlbumFiles = selectedAppointment.getAlbumFiles();
     }
 
 
@@ -359,7 +354,8 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_main_describe)
     public void onClickDescribe() {
-        fragment = CreateEventMainFragment.newInstance(DESCRIBE, POST);
+        fragment = CreateEventMainFragment.newInstance(DESCRIBE);
+        fragment.setPostStatus(editStatus);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -368,7 +364,8 @@ public class GcEventSummaryFragment extends Fragment {
     }
     @OnClick(R.id.ll_time_schedule)
     public void onClickViewSchedule() {
-        fragment = CreateEventMainFragment.newInstance(TIME, POST);
+        fragment = CreateEventMainFragment.newInstance(TIME);
+        fragment.setPostStatus(editStatus);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -378,7 +375,8 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_address)
     public void onClickAddress() {
-        fragment = CreateEventMainFragment.newInstance(ADDRESS, POST);
+        fragment = CreateEventMainFragment.newInstance(ADDRESS);
+        fragment.setPostStatus(editStatus);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -388,7 +386,8 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_limit)
     public void onClickLimit() {
-        fragment = CreateEventMainFragment.newInstance(LIMIT, POST);
+        fragment = CreateEventMainFragment.newInstance(LIMIT);
+        fragment.setPostStatus(editStatus);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -398,7 +397,8 @@ public class GcEventSummaryFragment extends Fragment {
 
     @OnClick(R.id.ll_cost)
     public void onClickCost() {
-        fragment = CreateEventMainFragment.newInstance(COST, POST);
+        fragment = CreateEventMainFragment.newInstance(COST);
+        fragment.setPostStatus(editStatus);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.post_go_club_container, fragment)
@@ -421,8 +421,6 @@ public class GcEventSummaryFragment extends Fragment {
             default:
                 break;
         }
-
-        this.showAlertDialog();
     }
 
     @Override

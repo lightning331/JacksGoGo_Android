@@ -2,10 +2,10 @@ package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,9 +16,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
-import com.kelvin.jacksgogo.Activities.Search.PostServiceActivity;
-import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
-import com.kelvin.jacksgogo.Activities.Search.ServiceListingDetailActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
@@ -36,7 +33,6 @@ import static com.kelvin.jacksgogo.Utils.Global.DUPLICATE;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT;
 import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
-import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 
 public class GcPostedEventActivity extends AppCompatActivity {
 
@@ -80,13 +76,13 @@ public class GcPostedEventActivity extends AppCompatActivity {
     }
 
     private void onBackClick() {
-        if (isPost) {
-            Intent intent = new Intent(this, ServiceListingDetailActivity.class);
-            intent.putExtra("is_post", true);
-            startActivity(intent);
-        } else {
+//        if (isPost) {
+//            Intent intent = new Intent(this, ServiceListingDetailActivity.class);
+//            intent.putExtra("is_post", true);
+//            startActivity(intent);
+//        } else {
             onBackPressed();
-        }
+//        }
     }
 
     private void onWithdrawEvent() {

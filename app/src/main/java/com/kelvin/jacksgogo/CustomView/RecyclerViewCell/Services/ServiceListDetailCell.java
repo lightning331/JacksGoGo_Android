@@ -12,8 +12,6 @@ import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.squareup.picasso.Picasso;
-import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
 
@@ -67,11 +65,11 @@ public class ServiceListDetailCell extends RecyclerView.ViewHolder {
         if (service.getAttachmentURLs().size() > 0)
             Picasso.with(mContext)
                     .load(service.getAttachmentURLs().get(0))
-                    .placeholder(R.mipmap.appointment_placeholder)
+                    .placeholder(R.mipmap.placeholder)
                     .into(carouselView);
         else
             Picasso.with(mContext)
-                    .load(R.mipmap.appointment_placeholder)
+                    .load(R.mipmap.placeholder)
                     .placeholder(null)
                     .into(carouselView);
 
