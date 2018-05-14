@@ -159,21 +159,26 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         call.enqueue(new Callback<JGGGetGoClubResponse>() {
             @Override
             public void onResponse(Call<JGGGetGoClubResponse> call, Response<JGGGetGoClubResponse> response) {
+                swipeContainer.setRefreshing(false);
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         // Todo - Set GoClub Data
                         mClub = response.body().getValue();
                         groupOwner = mClub.getUserProfile();
                         clubUsers = mClub.getClubUsers();
+                        JGGAppManager.getInstance().setSelectedClub(mClub);
+
+                        // Todo - Update Detail RecyclerView
+                        updateRecyclerView();
 
                         // Todo - Get Events of the GoCLub
-                        getEventsByClub();
+                        //getEventsByClub();
 
                         // Todo - Set Bottom View
                         setJoinToGoClubStatus();
 
                     } else {
-                        swipeContainer.setRefreshing(false);
+                        //swipeContainer.setRefreshing(false);
                         Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -233,7 +238,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
         alertDialog.dismiss();
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGPostAppResponse> call = apiManager.sendJoinRequestToClub(mClub.getID(), currentUser.getID());
+        Call<JGGPostAppResponse> call = apiManager.sendClubJoinRequest(mClub.getID(), currentUser.getID());
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {

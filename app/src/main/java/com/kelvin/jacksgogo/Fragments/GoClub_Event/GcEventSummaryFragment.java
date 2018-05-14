@@ -152,12 +152,12 @@ public class GcEventSummaryFragment extends Fragment {
                 describeTagView.setTags(Arrays.asList(strings));
             }
             // Place Name
-            if (mEvent.getAddress().getPlaceName() == null)
+            if (mEvent.getAddress().get(0).getPlaceName() == null)
                 txtPlaceName.setVisibility(View.GONE);
             else
-                txtPlaceName.setText(mEvent.getAddress().getPlaceName());
+                txtPlaceName.setText(mEvent.getAddress().get(0).getPlaceName());
             // Address
-            txtAddress.setText(mEvent.getAddress().getFullAddress());
+            txtAddress.setText(mEvent.getAddress().get(0).getFullAddress());
             // Limit
             if (mEvent.getLimit() == null)
                 txtPax.setText("No pax Limit");

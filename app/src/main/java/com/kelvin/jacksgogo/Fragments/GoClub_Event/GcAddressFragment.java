@@ -24,6 +24,8 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,6 +60,7 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
 
     private JGGEventModel creatingEvent;
     private JGGAddressModel mAddress;
+    private ArrayList<JGGAddressModel> address = new ArrayList<>();
 
     private boolean isTypeAddress = false;
 
@@ -91,7 +94,7 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         ButterKnife.bind(this, view);
 
         creatingEvent = JGGAppManager.getInstance().getSelectedEvent();
-        mAddress = creatingEvent.getAddress();
+        address = creatingEvent.getAddress();
 
         initView();
         setData();
@@ -121,6 +124,7 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         else {
             isTypeAddress = false;
             onClickTypeAddress();
+            mAddress = address.get(0);
             txtPlaceName.setText(mAddress.getPlaceName());
             txtUnit.setText(mAddress.getUnit());
             txtStreet.setText(mAddress.getStreet());
@@ -186,7 +190,9 @@ public class GcAddressFragment extends Fragment implements TextWatcher {
         mAddress.setStreet(txtStreet.getText().toString());
         mAddress.setPostalCode(txtPostCode.getText().toString());
 
-        creatingEvent.setAddress(mAddress);
+        address.add(mAddress);
+
+        creatingEvent.setAddress(address);
         JGGAppManager.getInstance().setSelectedEvent(creatingEvent);
 
         listener.onNextButtonClick();

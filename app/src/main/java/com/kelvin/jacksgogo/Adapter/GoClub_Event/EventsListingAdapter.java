@@ -40,6 +40,7 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         EventListDetailCell cell = (EventListDetailCell) holder;
+        cell.setEvent(mEvents.get(position));
         cell.itemView.setOnClickListener(this);
     }
 

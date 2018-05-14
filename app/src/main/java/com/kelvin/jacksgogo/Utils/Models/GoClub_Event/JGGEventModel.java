@@ -1,11 +1,12 @@
 package com.kelvin.jacksgogo.Utils.Models.GoClub_Event;
 
-import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Global.EventStatus;
+import com.kelvin.jacksgogo.Utils.Global.TimeSlotSelectionStatus;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGRegionModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
+import com.kelvin.jacksgogo.Utils.Models.User.JGGEventUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.yanzhenjie.album.AlbumFile;
 
@@ -30,9 +31,10 @@ public class JGGEventModel {
     private String CurrencyCode;
     private String CreatedOn;
     private Integer Status;
-    private JGGAddressModel Address;
+    private ArrayList<JGGAddressModel> Address = new ArrayList<>();
     private ArrayList<String> AttachmentURLs = new ArrayList<>();
     private ArrayList<JGGTimeSlotModel> Sessions = new ArrayList<>();
+    private ArrayList<JGGEventUserModel> JoinedUsers = new ArrayList<>();
 
     private JGGCategoryModel Category = new JGGCategoryModel();
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
@@ -179,11 +181,11 @@ public class JGGEventModel {
         Status = status.getValue();
     }
 
-    public JGGAddressModel getAddress() {
+    public ArrayList<JGGAddressModel> getAddress() {
         return Address;
     }
 
-    public void setAddress(JGGAddressModel address) {
+    public void setAddress(ArrayList<JGGAddressModel> address) {
         Address = address;
     }
 
@@ -242,6 +244,14 @@ public class JGGEventModel {
 
     public void setUserProfile(JGGUserProfileModel userProfile) {
         UserProfile = userProfile;
+    }
+
+    public ArrayList<JGGEventUserModel> getJoinedUsers() {
+        return JoinedUsers;
+    }
+
+    public void setJoinedUsers(ArrayList<JGGEventUserModel> joinedUsers) {
+        JoinedUsers = joinedUsers;
     }
 
     public JGGRegionModel getRegion() {
