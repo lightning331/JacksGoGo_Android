@@ -114,6 +114,8 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                 default:
                     break;
             }
+        } else if (view.getId() == R.id.btn_back) {
+            onBack();
         }
     }
 
@@ -327,23 +329,27 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
                     break;
             }
         } else if (view.getId() == R.id.btn_back) {
-            if (actionbarView.getEditStatus() == null) {
-                FragmentManager manager = getSupportFragmentManager();
-                if (manager.getBackStackEntryCount() == 0)
-                    onBackPressed();
+            onBack();
+        }
+    }
+
+    private void onBack() {
+        if (actionbarView.getEditStatus() == null) {
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager.getBackStackEntryCount() == 0)
+                onBackPressed();
+            else
+                manager.popBackStack();
+        } else {
+            if (actionbarView.getEditStatus() == JOB_DETAILS) {
+                JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
+                if (mJob.getUserProfileID().equals(currentUser.getID()))
+                    actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
                 else
-                    manager.popBackStack();
-            } else {
-                if (actionbarView.getEditStatus() == JOB_DETAILS) {
-                    JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
-                    if (mJob.getUserProfileID().equals(currentUser.getID()))
-                        actionbarView.setStatus(JGGActionbarView.EditStatus.APPOINTMENT, AppointmentType.UNKNOWN);
-                    else
-                        actionbarView.setDeleteJobStatus();
-                    onBackPressed();
-                } else if (actionbarView.getEditStatus() == APPOINTMENT)
-                    finish();
-            }
+                    actionbarView.setDeleteJobStatus();
+                onBackPressed();
+            } else if (actionbarView.getEditStatus() == APPOINTMENT)
+                finish();
         }
     }
 
