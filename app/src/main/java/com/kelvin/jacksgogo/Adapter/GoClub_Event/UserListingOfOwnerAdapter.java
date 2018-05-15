@@ -104,13 +104,13 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
             viewHolder.lblDecline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    approveListener.onItemClick(v, user.getUserProfileID());
+                    approveListener.onItemClick(v, user);
                 }
             });
             viewHolder.lblReviews.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    approveListener.onItemClick(v, user.getUserProfileID());
+                    approveListener.onItemClick(v, user);
                 }
             });
         }
@@ -138,7 +138,7 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnApproveItemClickListener {
-        void onItemClick(View view, String userID);
+        void onItemClick(View view, JGGGoClubUserModel user);
     }
 
     public void setApproveItemClickListener(OnApproveItemClickListener listener) {

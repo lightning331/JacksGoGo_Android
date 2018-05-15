@@ -17,11 +17,11 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGoclubusersResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
 
@@ -33,6 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.EventUserType.admin;
 import static com.kelvin.jacksgogo.Utils.Global.getClubAllUsers;
 
 public class GoClubMembersActivity extends AppCompatActivity {
@@ -83,7 +84,15 @@ public class GoClubMembersActivity extends AppCompatActivity {
                 swipeContainer.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            getGoClubUsersByClub();
+                                            if (mClub.getClubUsers().size() > 0) {
+                                                swipeContainer.setRefreshing(false);
+                                                if (mClub.getUserProfileID().equals(currentUser.getID())) {
+                                                    updateOwnersAdapter(mClub.getClubUsers());
+                                                } else {
+                                                    updateMembersAdapter(mClub.getClubUsers());
+                                                }
+                                            } else
+                                                getGoClubUsersByClub();
                                         }
                                     }
                 );
@@ -93,7 +102,15 @@ public class GoClubMembersActivity extends AppCompatActivity {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
-        getGoClubUsersByClub();
+        if (mClub.getClubUsers().size() > 0) {
+            swipeContainer.setRefreshing(false);
+            if (mClub.getUserProfileID().equals(currentUser.getID())) {
+                updateOwnersAdapter(mClub.getClubUsers());
+            } else {
+                updateMembersAdapter(mClub.getClubUsers());
+            }
+        } else
+            getGoClubUsersByClub();
     }
 
     private void getGoClubUsersByClub() {
@@ -107,6 +124,8 @@ public class GoClubMembersActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         ArrayList<JGGGoClubUserModel> users = response.body().getValue();
+                        mClub.setClubUsers(users);
+                        JGGAppManager.getInstance().setSelectedClub(mClub);
 
                         if (mClub.getUserProfileID().equals(currentUser.getID())) {
                             updateOwnersAdapter(users);
@@ -151,12 +170,16 @@ public class GoClubMembersActivity extends AppCompatActivity {
         });
         ownerAdapter.setApproveItemClickListener(new UserListingOfOwnerAdapter.OnApproveItemClickListener() {
             @Override
-            public void onItemClick(View view, String userID) {
-                selectedUserID = userID;
-                if (view.getId() == R.id.lbl_reviews)
-                    onPromoteRequest();
-                else
+            public void onItemClick(View view, JGGGoClubUserModel user) {
+                selectedUserID = user.getUserProfileID();
+                if (user.getUserType() == admin)
                     onDemoteRequest();
+                else {
+                    if (view.getId() == R.id.lbl_reviews)
+                        onPromoteRequest();
+                    else
+                        onRemove();
+                }
             }
         });
         recyclerView.setAdapter(ownerAdapter);
@@ -198,21 +221,127 @@ public class GoClubMembersActivity extends AppCompatActivity {
      * Owner decline user's join request
      **/
     private void onDeclineRequest() {
+        swipeContainer.setRefreshing(true);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGPostAppResponse> call = apiManager.declineClubJoinRequest(mClub.getID(), selectedUserID);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        String clubUserID = response.body().getValue();
+                        getGoClubUsersByClub();
+                    } else {
+                        Toast.makeText(GoClubMembersActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubMembersActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(GoClubMembersActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
      * Owner demote admin to general user
      **/
     private void onDemoteRequest() {
+        swipeContainer.setRefreshing(true);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGPostAppResponse> call = apiManager.demotAdminToUserInClub(mClub.getID(), selectedUserID);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        String clubUserID = response.body().getValue();
+                        getGoClubUsersByClub();
+                    } else {
+                        Toast.makeText(GoClubMembersActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubMembersActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(GoClubMembersActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
      * Owner promote general user to admin
      **/
     private void onPromoteRequest() {
+        swipeContainer.setRefreshing(true);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGPostAppResponse> call = apiManager.promotUserToAdminInClub(mClub.getID(), selectedUserID);
+        call.enqueue(new Callback<JGGPostAppResponse>() {
+            @Override
+            public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        String clubUserID = response.body().getValue();
+                        getGoClubUsersByClub();
+                    } else {
+                        Toast.makeText(GoClubMembersActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubMembersActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<JGGPostAppResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(GoClubMembersActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Owner remove general user from GoClub
+     **/
+    private void onRemove() {
+        swipeContainer.setRefreshing(true);
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = apiManager.deleteUserFromClub(mClub.getID(), selectedUserID, null);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
+                        getGoClubUsersByClub();
+                    } else {
+                        Toast.makeText(GoClubMembersActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GoClubMembersActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(GoClubMembersActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Todo - Sort Admin and General Users
@@ -221,7 +350,7 @@ public class GoClubMembersActivity extends AppCompatActivity {
         ArrayList<JGGGoClubUserModel> adminUsers = new ArrayList<>();
         ArrayList<JGGGoClubUserModel> generalUsers = new ArrayList<>();
         for (JGGGoClubUserModel user : users) {
-            if (user.getUserType() == Global.EventUserType.admin)
+            if (user.getUserType() == admin)
                 adminUsers.add(user);
             else
                 generalUsers.add(user);
