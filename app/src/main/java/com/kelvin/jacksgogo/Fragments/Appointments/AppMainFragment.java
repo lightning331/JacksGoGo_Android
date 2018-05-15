@@ -22,6 +22,7 @@ import com.kelvin.jacksgogo.Activities.Jobs.IncomingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.OutgoingJobActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
+import com.kelvin.jacksgogo.Activities.Service.BookedServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
@@ -402,7 +403,10 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                 mContext.startActivity(intent);
             } else {
                 // TODO - The job which I sent proposal or get invited
-                Intent intent = new Intent(mContext, IncomingJobActivity.class);
+//                Intent intent = new Intent(mContext, IncomingJobActivity.class);
+//                mContext.startActivity(intent);
+
+                Intent intent = new Intent(mContext, BookedServiceActivity.class);
                 mContext.startActivity(intent);
             }
         } else { // TODO - Service case

@@ -39,9 +39,11 @@ public class EditJobTimeSlotsCell extends RecyclerView.ViewHolder {
         } else {
             lblSlots.setText(startTime);
         }
-        if (slotModel.getPeoples() > 1) {
-            lblPax.setVisibility(View.VISIBLE);
-            lblPax.setText(slotModel.getPeoples() + " pax");
+        if (slotModel.getPeoples() != null) {
+            if (slotModel.getPeoples() > 1) {
+                lblPax.setVisibility(View.VISIBLE);
+                lblPax.setText(slotModel.getPeoples() + " pax");
+            }
         }
     }
 }

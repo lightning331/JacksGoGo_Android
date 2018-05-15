@@ -83,7 +83,8 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
         GO_CLUB_POST_UPDATE,
         GO_CLUB_SCHEDULE,
         REVIEW,
-        RESCHEDULE
+        RESCHEDULE,
+        PACKAGE_SERVICE_TIME_SLOT
     }
 
     public JGGActionbarView(Context context) {
@@ -360,6 +361,13 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
             case RESCHEDULE:
                 mTitleTextView.setText("Reschedule");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+                break;
+            case PACKAGE_SERVICE_TIME_SLOT:
+                mTitleTextView.setText(R.string.title_time_slots);
+                mBackButtonTitleTextView.setText("");
+                mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
+                mMoreButtonImage.setImageResource(R.mipmap.button_reschedule_orange);
+                break;
             default:
                 break;
         }
