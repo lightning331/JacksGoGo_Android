@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Adapter.Services;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kelvin.jacksgogo.Activities.Service.PackageServiceTimeSlotActivity;
 import com.kelvin.jacksgogo.R;
 
 import java.util.ArrayList;
@@ -36,6 +38,15 @@ public class BookedServiceAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         BookingViewHolder bookingViewHolder = (BookingViewHolder) holder;
+        if (position == 2) {
+            bookingViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PackageServiceTimeSlotActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

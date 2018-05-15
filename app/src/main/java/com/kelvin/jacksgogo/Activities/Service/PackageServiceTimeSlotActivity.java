@@ -9,7 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,6 +24,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGBookAlertView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import com.prolificinteractive.jggcalendarview.CalendarDay;
 import com.prolificinteractive.jggcalendarview.MaterialCalendarView;
@@ -52,7 +57,6 @@ public class PackageServiceTimeSlotActivity extends AppCompatActivity implements
     private PackageServiceTimeSlotAdapter adapter;
     private ArrayList<JGGTimeSlotModel> mTimeSlots = new ArrayList<>();
     private CalendarDay mSelectedCaledarDay;
-    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,8 @@ public class PackageServiceTimeSlotActivity extends AppCompatActivity implements
             }
         });
 
+        mTimeSlots = JGGAppManager.getInstance().getSelectedAppointment().getSessions();
+
         initRecyclerView();
     }
 
@@ -87,20 +93,21 @@ public class PackageServiceTimeSlotActivity extends AppCompatActivity implements
         adapter.setOnItemClickListener(new PackageServiceTimeSlotAdapter.OnPackageServiceTimeSlotItemClickListener() {
             @Override
             public void onPackageServiceTimeSlotClick(boolean isDelete, int position) {
-                JGGBookAlertView builder = new JGGBookAlertView(mContext);
-                alertDialog = builder.create();
-                builder.setOnItemClickListener(new JGGBookAlertView.OnItemClickListener() {
+                final JGGBookAlertView alertView = new JGGBookAlertView(mContext);
+
+                alertView.setOnItemClickListener(new JGGBookAlertView.OnItemClickListener() {
                     @Override
                     public void onDoneButtonClick(View view) {
                         if (view.getId() == R.id.btn_book) {
                             Toast.makeText(mContext, "Book button clicked.", Toast.LENGTH_SHORT).show();
-                            alertDialog.dismiss();
+                            alertView.dismiss();
                             finish();
                         } else if (view.getId() == R.id.btn_cancel) {
-                            alertDialog.dismiss();
+                            alertView.dismiss();
                         }
                     }
                 });
+                alertView.show();
             }
         });
         recyclerView.setAdapter(adapter);
