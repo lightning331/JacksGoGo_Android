@@ -323,13 +323,31 @@ public interface JGGAPIManager {
     @GET("api/Event/GetClubByID")
     Call<JGGGetGoClubResponse> getClubByID(@Query("ClubID") String clubID);
 
-    @GET("api/Event/SendJoinRequestToClub")
-    Call<JGGPostAppResponse> sendJoinRequestToClub(@Query("ClubID") String clubID,
-                                                   @Query("UserProfileID") String userProfileID);
+    @GET("api/Event/SendClubJoinRequest")
+    Call<JGGPostAppResponse> sendClubJoinRequest(@Query("ClubID") String clubID,
+                                                 @Query("UserProfileID") String userProfileID);
 
-    @GET("api/Event/ApproveJoinRequestInClub")
+    @GET("api/Event/ApproveClubJoinRequest")
     Call<JGGPostAppResponse> approveJoinRequestInClub(@Query("ClubID") String clubID,
                                                       @Query("UserProfileID") String userProfileID);
+
+    @GET("api/Event/DeclineClubJoinRequest")
+    Call<JGGPostAppResponse> declineClubJoinRequest(@Query("ClubID") String clubID,
+                                                    @Query("UserProfileID") String userProfileID);
+
+    @GET("api/Event/PromotUserToAdminInClub")
+    Call<JGGPostAppResponse> promotUserToAdminInClub(@Query("ClubID") String clubID,
+                                                     @Query("UserProfileID") String userProfileID);
+
+    @GET("api/Event/DemotAdminToUserInClub")
+    Call<JGGPostAppResponse> demotAdminToUserInClub(@Query("ClubID") String clubID,
+                                                    @Query("UserProfileID") String userProfileID);
+
+    @FormUrlEncoded
+    @POST("api/Event/DeleteUserFromClub")
+    Call<JGGBaseResponse> deleteUserFromClub(@Field("ClubID") String clubID,
+                                             @Field("UserProfileID") String userProfileID,
+                                             @Field("Reason") String reason);
 
     @FormUrlEncoded
     @POST("api/Event/LeaveGoClub")

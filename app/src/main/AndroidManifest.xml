@@ -233,7 +233,9 @@
         <activity android:name=".Activities.Jobs.JobTipActivity" />
         <activity android:name=".Activities.Jobs.PostReviewActivity" />
         <activity android:name=".Activities.GoClub_Event.AllEventsActivity" />
-        <activity android:name=".Activities.Jobs.RescheduleActivity"></activity>
+        <activity android:name=".Activities.Jobs.RescheduleActivity" />
+        <activity android:name=".Activities.Service.BookedServiceActivity" />
+        <activity android:name=".Activities.Service.PackageServiceTimeSlotActivity"></activity>
     </application>
 
 </manifest>

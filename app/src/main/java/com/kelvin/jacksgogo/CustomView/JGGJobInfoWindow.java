@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -55,7 +54,7 @@ public class JGGJobInfoWindow implements GoogleMap.InfoWindowAdapter {
         if (job.getAttachmentURLs().size() != 0) {
             Picasso.with(mContext)
                     .load(job.getAttachmentURLs().get(0))
-                    .placeholder(R.mipmap.appointment_placeholder)
+                    .placeholder(R.mipmap.placeholder)
                     .into(imgPhoto);
         }
         // Category

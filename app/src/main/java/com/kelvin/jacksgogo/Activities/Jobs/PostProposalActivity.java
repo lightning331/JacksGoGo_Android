@@ -2,6 +2,7 @@ package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,11 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.PostProposalTabView;
+import com.kelvin.jacksgogo.Fragments.Jobs.PostJobMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalMainTabFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostProposalSummaryFragment;
 import com.kelvin.jacksgogo.Fragments.Jobs.PostedProposalFragment;
+import com.kelvin.jacksgogo.Fragments.Search.PostServiceMainTabFragment;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
@@ -184,7 +187,19 @@ public class PostProposalActivity extends AppCompatActivity {
             } else {
                 actionbarView.setStatus(JGGActionbarView.EditStatus.POST_PROPOSAL, AppointmentType.UNKNOWN);
                 actionbarView.mMoreButton.setVisibility(View.GONE);
-                manager.popBackStack();
+
+                Fragment fragment = manager.findFragmentById(R.id.post_proposal_container);
+                if (fragment instanceof PostProposalMainTabFragment) {
+                    PostProposalMainTabFragment frag = (PostProposalMainTabFragment) fragment;
+                    if (frag.getTabIndex() > 0) {
+                        frag.setTabIndex(frag.getTabIndex() - 1);
+                    } else {
+                        manager.popBackStack();
+                    }
+                }
+                else {
+                    manager.popBackStack();
+                }
             }
         } else if (view.getId() == R.id.btn_more) {
             if (isEdit) {

@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Utils;
 
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Proposal.JGGProposalModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
@@ -335,6 +336,30 @@ public class JGGTimeManager {
                 }
             }
         }
+        return time;
+    }
+
+    public static String getEventTime(JGGEventModel event) {
+        String time = "";
+
+        //if (event.getOnetime() == null) {
+
+            // Todo - Repeating Event
+
+            if (event.getSessions().get(0).getEndOn() == null)
+                time = getDayMonthYear(appointmentMonthDate(event.getSessions().get(0).getStartOn()))
+                        + " " + getTimePeriodString(appointmentMonthDate(event.getSessions().get(0).getStartOn()));
+            else
+                time = getDayMonthYear(appointmentMonthDate(event.getSessions().get(0).getStartOn()))
+                        + " " + getTimePeriodString(appointmentMonthDate(event.getSessions().get(0).getStartOn()))
+                        + " - "
+                        + getTimePeriodString(appointmentMonthDate(event.getSessions().get(0).getEndOn()));
+        //} else {
+
+            // Todo - One-time Event
+
+        //}
+
         return time;
     }
 
