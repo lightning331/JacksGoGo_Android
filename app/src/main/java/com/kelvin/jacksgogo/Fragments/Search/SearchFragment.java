@@ -431,10 +431,9 @@ public class SearchFragment extends Fragment {
                         List<JGGAppointmentModel> result = response.body().getValue();
                         if (result.size() > 0) {
                             mServices.addAll(result);
-                        } else { //result size 0 means there is no more data available at server
+                        } else {
+                            //result size 0 means there is no more data available at server
                             serviceAdapter.setMoreDataAvailable(false);
-                            //telling adapter to stop calling load more as no more server data available
-                            Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
                         serviceAdapter.notifyDataChanged(mServices);
                         serviceAdapter.notifyDataSetChanged();
@@ -509,10 +508,9 @@ public class SearchFragment extends Fragment {
                         List<JGGAppointmentModel> result = response.body().getValue();
                         if (result.size() > 0) {
                             mJobs.addAll(result);
-                        } else { //result size 0 means there is no more data available at server
+                        } else {
+                            //result size 0 means there is no more data available at server
                             jobAdapter.setMoreDataAvailable(false);
-                            //telling adapter to stop calling load more as no more server data available
-                            Toast.makeText(mContext,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
                         jobAdapter.notifyDataChanged(mJobs);
                         jobAdapter.notifyDataSetChanged();
