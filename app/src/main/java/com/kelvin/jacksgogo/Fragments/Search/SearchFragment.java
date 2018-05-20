@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -146,14 +147,14 @@ public class SearchFragment extends Fragment {
         this.refreshFragment(this.appType);
     }
 
-    public void refreshFragment(final String textView) {
-
+    public void refreshFragment(final String typeStr) {
+        ((MainActivity)mContext).setClickableSearchMainTabView(false);
         swipeContainer.post(new Runnable() {
                 @Override
                 public void run() {
                     swipeContainer.setRefreshing(true);
 
-                    fetchData(textView);
+                    fetchData(typeStr);
                 }
             }
         );
@@ -228,6 +229,15 @@ public class SearchFragment extends Fragment {
             onLoadServices();
         //}
         recyclerView.setAdapter(serviceAdapter);
+
+        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //At this point the layout is complete and the
+                //dimensions of recyclerView and any child views are known.
+                ((MainActivity)mContext).setClickableSearchMainTabView(true);
+            }
+        });
     }
 
     // TODO : Job search Adapter
@@ -266,6 +276,16 @@ public class SearchFragment extends Fragment {
             onLoadJobs();
         //}
         recyclerView.setAdapter(jobAdapter);
+
+        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //At this point the layout is complete and the
+                //dimensions of recyclerView and any child views are known.
+                ((MainActivity)mContext).setClickableSearchMainTabView(true);
+            }
+        });
+
     }
 
     // TODO : GoClub & Event search Adapter
@@ -348,6 +368,15 @@ public class SearchFragment extends Fragment {
         onLoadEvents();
         recyclerView.setAdapter(goClubAdapter);
         swipeContainer.setRefreshing(false);
+
+        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //At this point the layout is complete and the
+                //dimensions of recyclerView and any child views are known.
+                ((MainActivity)mContext).setClickableSearchMainTabView(true);
+            }
+        });
     }
 
     // TODO : Get Total Appointment Count

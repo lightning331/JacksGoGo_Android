@@ -1,9 +1,7 @@
 package com.kelvin.jacksgogo.Adapter.GoClub_Event;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class GoClubHorizontalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<JGGGoClubModel> mClubs = new ArrayList<>();
 
-    public GoClubMainAdapter(Context context, ArrayList<JGGGoClubModel> clubs) {
+    public GoClubHorizontalAdapter(Context context, ArrayList<JGGGoClubModel> clubs) {
         mContext = context;
         mClubs = clubs;
     }
@@ -33,7 +31,8 @@ public class GoClubMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_goclub_list_detail, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_goclub_horizontal_detail, parent, false);
+
         GoClubListViewHolder goClubView = new GoClubListViewHolder(view, mContext);
         return goClubView;
     }

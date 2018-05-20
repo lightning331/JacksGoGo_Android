@@ -56,6 +56,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (viewType == HEADER_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.SERVICES, mContext);
+            headerView.setData(mServices.size());
             headerView.setOnClickListener(this);
             return headerView;
         } else if (viewType == VIEW_TYPE_CATEGORY) {

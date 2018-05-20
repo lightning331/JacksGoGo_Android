@@ -2,8 +2,10 @@ package com.kelvin.jacksgogo.Adapter.GoClub_Event;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
@@ -35,6 +38,14 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mGoClubs = goClubs;
 
         sortCategory();
+        notifyDataSetChanged();
+    }
+
+    public void refresh(ArrayList<JGGGoClubModel> goClubs) {
+        mGoClubs = goClubs;
+
+        sortCategory();
+        notifyDataSetChanged();
     }
 
     private void sortCategory() {
@@ -51,12 +62,15 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 clubs.add(club);
             }
             filteredCategoryClubs = categories;
+        } else {
+            filteredCategoryClubs = null;
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_joined_go_clubs, parent, false);
+
         JoinedGoClubViewHolder joined = new JoinedGoClubViewHolder(view);
         return joined;
     }
@@ -83,8 +97,12 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        int count = filteredCategoryClubs.size();
-        return count;
+        if (filteredCategoryClubs != null) {
+            int count = filteredCategoryClubs.size();
+            return count;
+        } else {
+            return 0;
+        }
     }
 
     public class JoinedGoClubViewHolder extends RecyclerView.ViewHolder {
@@ -105,14 +123,14 @@ public class JoinedGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
 
-        public void setClubs(ArrayList<JGGGoClubModel> clubs) {
-            GoClubMainAdapter adapter = new GoClubMainAdapter(mContext, clubs);
-            adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
+        public void setClubs(final ArrayList<JGGGoClubModel> clubs) {
+            GoClubHorizontalAdapter adapter = new GoClubHorizontalAdapter(mContext, clubs);
+            adapter.setOnItemClickListener(new GoClubHorizontalAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    // TODO - Need to fix
-                    JGGAppManager.getInstance().setSelectedClub(filteredClubs.get(position));
-                    mContext.startActivity(new Intent(mContext, GoClubDetailActivity.class));
+                    JGGAppManager.getInstance().setSelectedClub(clubs.get(position));
+                    Intent intent = new Intent(mContext, GoClubDetailActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
             mRecyclerView.setAdapter(adapter);

@@ -21,6 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubDetailAdapter;
@@ -84,7 +85,7 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
     private JGGUserProfileModel groupOwner;
     private EventUserStatus joinGoClubStatus;
     private ArrayList<JGGGoClubUserModel> clubUsers;
-    private ArrayList<JGGEventModel> clubEvents;
+
     private JGGUserProfileModel currentUser;
 
     @Override
@@ -189,42 +190,6 @@ public class GoClubDetailActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onFailure(Call<JGGGetGoClubResponse> call, Throwable t) {
-                swipeContainer.setRefreshing(false);
-                Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /**
-     * Get GoClub events by ClubID
-     */
-    private void getEventsByClub() {
-        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGGetEventsResponse> call = manager.getEventsByClub(mClub.getID(), 0, 30);
-        call.enqueue(new Callback<JGGGetEventsResponse>() {
-            @Override
-            public void onResponse(Call<JGGGetEventsResponse> call, Response<JGGGetEventsResponse> response) {
-                swipeContainer.setRefreshing(false);
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        // Todo - Set Events Data
-                        clubEvents = response.body().getValue();
-                        mClub.setEvents(clubEvents);
-                        JGGAppManager.getInstance().setSelectedClub(mClub);
-
-                        // Todo - Update Detail RecyclerView
-                        updateRecyclerView();
-
-                    } else {
-                        Toast.makeText(GoClubDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(GoClubDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGGetEventsResponse> call, Throwable t) {
                 swipeContainer.setRefreshing(false);
                 Toast.makeText(GoClubDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }

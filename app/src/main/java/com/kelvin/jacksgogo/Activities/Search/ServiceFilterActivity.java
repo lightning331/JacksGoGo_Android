@@ -1,5 +1,7 @@
 package com.kelvin.jacksgogo.Activities.Search;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,10 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kelvin.jacksgogo.Adapter.CategoryAdapter;
+import com.google.gson.Gson;
+import com.kelvin.jacksgogo.Adapter.CategoryMultiSelectionAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.FilterCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 
 import java.util.ArrayList;
@@ -39,9 +43,11 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.location_layout) LinearLayout locationLayout;
     @BindView(R.id.category_recycler_view) RecyclerView recyclerView;
 
-    private CategoryAdapter adapter;
+    private CategoryMultiSelectionAdapter adapter;
     private ArrayList<JGGCategoryModel> mCategories;
     private AppointmentType mType;
+
+    private ArrayList<FilterCategoryModel> filterCategoryModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,19 +96,27 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
         }
 
         mCategories = JGGAppManager.getInstance().getCategories();
+        if (mCategories != null) {
+            for (JGGCategoryModel categoryModel : mCategories) {
+                FilterCategoryModel filterCategoryModel = new FilterCategoryModel();
+                filterCategoryModel.setCategoryName(categoryModel.getName());
+                filterCategoryModel.setSelected(false);
+                filterCategoryModels.add(filterCategoryModel);
+            }
+        }
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        adapter = new CategoryAdapter(this, mCategories, mType);
-        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
+        adapter = new CategoryMultiSelectionAdapter(this, mCategories, mType, filterCategoryModels);
+        adapter.setOnItemClickListener(new CategoryMultiSelectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (mType == AppointmentType.SERVICES) {
+                if (mType == AppointmentType.SERVICES
+                        || mType == AppointmentType.GOCLUB
+                        || mType == AppointmentType.EVENTS) {
                     if (mCategories != null) {
                         String name = mCategories.get(position).getName();
-                        Toast.makeText(ServiceFilterActivity.this, name,
-                                Toast.LENGTH_LONG).show();
                     }
                 } else if (mType == AppointmentType.JOBS) {
                     if (mCategories != null) {
@@ -124,7 +138,14 @@ public class ServiceFilterActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_filter_close) {
-            onBackPressed();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("keyword", txtKeyword.getText().toString());
+
+            Gson gson = new Gson();
+            String categoriesStr = gson.toJson(filterCategoryModels);
+            returnIntent.putExtra("categories", categoriesStr);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
         }
     }
 }

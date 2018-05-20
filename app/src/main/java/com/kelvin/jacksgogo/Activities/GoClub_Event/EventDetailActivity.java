@@ -14,8 +14,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
@@ -27,20 +30,42 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
 import com.kelvin.jacksgogo.Utils.Global.EventUserStatus;
+import com.synnapps.carouselview.CarouselView;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
-    @BindView(R.id.event_detail_actionbar) Toolbar mToolbar;
-    @BindView(R.id.event_detail_recycler_view) RecyclerView mRecyclerView;
-    @BindView(R.id.btn_join_event) TextView btnJoinGoClub;
-    @BindView(R.id.lbl_joined_count) TextView lblJoinedCount;
-    @BindView(R.id.lbl_viewing_count) TextView lblViewingCount;
-    @BindView(R.id.owner_layout) LinearLayout ownerLayout;
+    @BindView(R.id.event_detail_actionbar)      Toolbar mToolbar;
+
+    @BindView(R.id.detail_images_carousel_view) CarouselView carouselView;
+    @BindView(R.id.txt_event_type)              TextView txtEventType;
+    @BindView(R.id.txt_event_description)       TextView txtEventDescription;
+    @BindView(R.id.txt_info)                    TextView txtInfo;
+
+    @BindView(R.id.txt_location)                TextView txtLocation;
+    @BindView(R.id.txt_location_description)    TextView txtLocationDescription;
+    @BindView(R.id.img_location_right)          ImageView imgLocation;
+
+    @BindView(R.id.txt_group_type)              TextView txtGroupType;
+    @BindView(R.id.txt_username)                TextView txtUsername;
+    @BindView(R.id.user_ratingbar)              MaterialRatingBar userRatingBar;
+
+    @BindView(R.id.rl_progress)                 RelativeLayout progressLayout;
+    @BindView(R.id.btn_view_attendees)          Button btnViewAttendees;
+    @BindView(R.id.updates_event_recycler_view) RecyclerView updateEvetnRecyclerView;
+    @BindView(R.id.txt_response)                TextView txtResponse;
+    @BindView(R.id.txt_latest_response)         TextView txtLatestResponse;
+
+    // bottom view
+    @BindView(R.id.btn_join_event)              TextView btnJoinGoClub;
+    @BindView(R.id.lbl_joined_count)            TextView lblJoinedCount;
+    @BindView(R.id.lbl_viewing_count)           TextView lblViewingCount;
+    @BindView(R.id.owner_layout)                LinearLayout ownerLayout;
 
     private JGGActionbarView actionbarView;
     private BottomNavigationView mbtmView;
@@ -82,11 +107,11 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        if (mRecyclerView != null) {
+        /*if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
         EventDetailAdapter adapter = new EventDetailAdapter(this);
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);*/
     }
 
     public void setJoinToGoClubStatus(EventUserStatus status) {

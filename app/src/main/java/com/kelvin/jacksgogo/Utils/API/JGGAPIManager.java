@@ -370,4 +370,13 @@ public interface JGGAPIManager {
     Call<JGGGetEventsResponse> getEventsByClub(@Query("ClubID") String clubID,
                                                @Query("PageIndex") Integer pageIndex,
                                                @Query("PageSize") Integer pageSize);
+    @GET("api/Event/GetEventsByUser")
+    Call<JGGGetEventsResponse> getEventsByUser(@Query("UserProfileID") String userProfileID,
+                                               @Query("PageIndex") Integer pageIndex,
+                                               @Query("PageSize") Integer pageSize);
+
+    @GET("api/Event/GetEventsByCategory")
+    Call<JGGGetEventsResponse> getEventsByCategory(@Query("CategoryID") String categoryID,
+                                               @Query("PageIndex") Integer pageIndex,
+                                               @Query("PageSize") Integer pageSize);
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.kelvin.jacksgogo.Activities.GoClub_Event.GoClubDetailActivity;
+import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubHorizontalAdapter;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.GoClubMainAdapter;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
@@ -20,7 +21,7 @@ public class GoClubRecyclerView extends RecyclerView.ViewHolder {
     private Context mContext;
 
     private RecyclerView recyclerView;
-    private GoClubMainAdapter adapter;
+    private GoClubHorizontalAdapter adapter;
 
     private ArrayList<JGGGoClubModel> mClubs = new ArrayList<>();
     private JGGGoClubModel mClub;
@@ -33,8 +34,8 @@ public class GoClubRecyclerView extends RecyclerView.ViewHolder {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
         }
-        adapter = new GoClubMainAdapter(context, mClubs);
-        adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
+        adapter = new GoClubHorizontalAdapter(context, mClubs);
+        adapter.setOnItemClickListener(new GoClubHorizontalAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
 
@@ -49,6 +50,6 @@ public class GoClubRecyclerView extends RecyclerView.ViewHolder {
 
     public void setGoClubs(ArrayList<JGGGoClubModel> clubs) {
         this.mClubs = clubs;
-        adapter.notifyDataChanged(mClubs);
+        adapter.refresh(mClubs);
     }
 }

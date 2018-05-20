@@ -108,6 +108,10 @@ public class SearchHomeHeaderView extends RecyclerView.ViewHolder {
         totalServiceCountTitle.setText(title);
     }
 
+    public void setData(int count) {
+        totalServiceCount.setText(String.valueOf(count));
+    }
+
     public void setOnClickListener(View.OnClickListener listener) {
         viewMyServiceButton.setOnClickListener(listener);
         viewAllServiceButton.setOnClickListener(listener);

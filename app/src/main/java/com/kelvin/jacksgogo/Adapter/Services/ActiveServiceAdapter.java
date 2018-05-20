@@ -27,6 +27,7 @@ public class ActiveServiceAdapter extends RecyclerView.Adapter {
 
     public void notifyDataChanged(ArrayList<JGGAppointmentModel> jobs) {
         mServices = jobs;
+        notifyDataSetChanged();
     }
 
     @Override

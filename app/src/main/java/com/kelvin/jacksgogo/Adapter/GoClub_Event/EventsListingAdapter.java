@@ -26,6 +26,11 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
         mEvents = events;
     }
 
+    public void refresh(ArrayList<JGGEventModel> events) {
+        mEvents = events;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

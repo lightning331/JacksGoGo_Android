@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
+import com.kelvin.jacksgogo.Activities.Profile.PublickProfileActivity;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.Jobs.UserNameRatingCell;
 import com.kelvin.jacksgogo.R;
@@ -84,7 +85,9 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
         btnViewPastEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, PastEventsActivity.class));
+                Intent intent = new Intent(mContext, PastEventsActivity.class);
+                intent.putExtra("clubID", mClub.getID());
+                mContext.startActivity(intent);
             }
         });
 
@@ -138,8 +141,16 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             UserNameRatingCell viewHolder = (UserNameRatingCell) holder;
-            JGGGoClubUserModel userProfileModel = adminUsers.get(position);
+            final JGGGoClubUserModel userProfileModel = adminUsers.get(position);
             viewHolder.setClubAdminUser(userProfileModel);
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JGGAppManager.getInstance().setCurrentUser(userProfileModel.getUserProfile());
+                    Intent intent = new Intent(mContext, PublickProfileActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         @Override

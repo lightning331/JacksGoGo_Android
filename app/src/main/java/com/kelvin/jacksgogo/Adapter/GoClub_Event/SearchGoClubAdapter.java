@@ -49,6 +49,7 @@ public class SearchGoClubAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_search_home_header, parent, false);
             SearchHomeHeaderView headerView = new SearchHomeHeaderView(view, AppointmentType.GOCLUB, mContext);
+            headerView.setData(mClubs.size());
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

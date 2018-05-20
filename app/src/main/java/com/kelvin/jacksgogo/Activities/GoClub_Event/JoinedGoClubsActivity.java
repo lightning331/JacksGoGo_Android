@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JoinedGoClubsActivity extends AppCompatActivity {
+public class JoinedGoClubsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     @BindView(R.id.joined_go_club_actionbar) Toolbar mToolbar;
     @BindView(R.id.swipeSearchContainer) SwipeRefreshLayout swipeContainer;
@@ -36,8 +40,9 @@ public class JoinedGoClubsActivity extends AppCompatActivity {
     @BindView(R.id.search_bar) SearchView searchView;
 
     private JGGActionbarView actionbarView;
-
+    private JoinedGoClubAdapter adapter;
     private ArrayList<JGGGoClubModel> mGoClubs = new ArrayList<>();
+    private String searchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class JoinedGoClubsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        this.searchText = "";
 
         // Setup refresh listener which triggers new data loading
         swipeContainer.setColorSchemeResources(R.color.JGGPurple,
@@ -79,7 +86,35 @@ public class JoinedGoClubsActivity extends AppCompatActivity {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
+
+        adapter = new JoinedGoClubAdapter(this, mGoClubs);
+        recyclerView.setAdapter(adapter);
+
+        searchView.setOnQueryTextListener(this);
+        ImageView mCloseButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setQuery("", false);
+                hideKeyboard();
+                adapter.refresh(mGoClubs);
+            }
+        });
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                hideKeyboard();
+//                adapter.refresh(mGoClubs);
+//                return true;
+//            }
+//        });
+
         getJoinedGoClub();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.searchView.getWindowToken(), 0);
     }
 
     private void getJoinedGoClub() {
@@ -96,7 +131,7 @@ public class JoinedGoClubsActivity extends AppCompatActivity {
 
                         mGoClubs = response.body().getValue();
 
-                        updateClubRecyclerView();
+                        adapter.refresh(filter(mGoClubs, searchText));
 
                     } else {
                         Toast.makeText(JoinedGoClubsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -114,8 +149,35 @@ public class JoinedGoClubsActivity extends AppCompatActivity {
         });
     }
 
-    private void updateClubRecyclerView() {
-        JoinedGoClubAdapter adapter = new JoinedGoClubAdapter(this, mGoClubs);
-        recyclerView.setAdapter(adapter);
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        hideKeyboard();
+        this.searchText = query;
+        final ArrayList<JGGGoClubModel> filteredModelList = filter(mGoClubs, query);
+        adapter.refresh(filteredModelList);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    private ArrayList<JGGGoClubModel> filter(ArrayList<JGGGoClubModel> models, String query) {
+        final String lowerCaseQuery = query.toLowerCase();
+
+        final ArrayList<JGGGoClubModel> filteredModelList = new ArrayList<>();
+        for (JGGGoClubModel model : models) {
+            String name = "";
+            if (model.getName() != null)
+                name = model.getName().toLowerCase();
+            String description = "";
+            if (model.getDescription() != null)
+                description = model.getDescription().toLowerCase();
+            if (name.contains(lowerCaseQuery) || description.contains(lowerCaseQuery)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
     }
 }

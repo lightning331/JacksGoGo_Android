@@ -32,6 +32,7 @@ import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventsResponse;
 
 import java.util.ArrayList;
 
@@ -64,6 +65,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
     private JGGCategoryModel selectedCategory;
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
+    private ArrayList<JGGEventModel> clubEvents = new ArrayList<>();
     private String appType;
     private String mCategoryID;
 
@@ -203,8 +205,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                     );
                 }
             });
-            eventAdapter = new EventsListingAdapter(mContext, new ArrayList<JGGEventModel>());
-            getEvents();
+            eventAdapter = new EventsListingAdapter(mContext, clubEvents);
             eventAdapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
@@ -214,6 +215,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                 }
             });
             recyclerView.setAdapter(eventAdapter);
+
+            getEvents();
         }
     }
 
@@ -227,7 +230,7 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
             getAllEvent();
         else
             // Get Events by User
-            getEventsByUser();
+            getJoinedEvents();
     }
 
     private void searchJobs() {
@@ -277,7 +280,6 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                         mServices = response.body().getValue();
 
                         serviceAdapter.notifyDataChanged(mServices);
-                        serviceAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -292,18 +294,6 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                 Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void getEventsByCategory() {
-
-    }
-
-    private void getAllEvent() {
-
-    }
-
-    private void getEventsByUser() {
-
     }
 
     private void initTabView(View view) {
@@ -322,6 +312,8 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
                     ActiveServiceMapFragment mapFragment = ActiveServiceMapFragment.newInstance(appType);
                     if (appType.equals(SERVICES))
                         mapFragment.setAppointment(mServices);
+                    else if (appType.equals(EVENTS))
+                        mapFragment.setEvents(clubEvents);
                     else
                         mapFragment.setAppointment(mJobs);
                     mapFragment.setOnFragmentInteractionListener(ActiveServiceMainFragment.this);
@@ -336,6 +328,78 @@ public class ActiveServiceMainFragment extends Fragment implements ActiveService
 
                     }
                 }
+            }
+        });
+    }
+
+    private void getEventsByCategory() {
+        String categoryId = mCategoryID;
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetEventsResponse> call = manager.getEventsByCategory(categoryId, 0, 30);
+        call.enqueue(new Callback<JGGGetEventsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetEventsResponse> call, Response<JGGGetEventsResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Set Events Data
+                        clubEvents = response.body().getValue();
+
+                        // Todo - Update Detail RecyclerView
+                        eventAdapter.refresh(clubEvents);
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetEventsResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getAllEvent() {
+
+    }
+
+    /**
+     * Get GoClub events by ClubID
+     */
+    private void getJoinedEvents() {
+        String userProfileID = JGGAppManager.getInstance().getCurrentUser().getID();
+
+        JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
+        Call<JGGGetEventsResponse> call = manager.getEventsByUser(userProfileID, 0, 30);
+        call.enqueue(new Callback<JGGGetEventsResponse>() {
+            @Override
+            public void onResponse(Call<JGGGetEventsResponse> call, Response<JGGGetEventsResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Set Events Data
+                        clubEvents = response.body().getValue();
+
+                        // Todo - Update Detail RecyclerView
+                        eventAdapter.refresh(clubEvents);
+
+                    } else {
+                        Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGGetEventsResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(mContext, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
     }

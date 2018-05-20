@@ -98,25 +98,37 @@ public class SearchMainTabView extends RelativeLayout implements View.OnClickLis
             goClubTextView.setTextColor(getResources().getColor(R.color.JGGGrey1));
 
             if (view.getId() == R.id.services_layout) {
-                servicesTextView.setTextColor(getResources().getColor(R.color.JGGGreen));
-                searchButton.setImageResource(R.mipmap.button_search_green);
-                servicesDotImageView.setVisibility(View.VISIBLE);
+//                setActiveService();
                 listener.onTabbarItemClick(servicesTextView);
-                type = AppointmentType.SERVICES;
             } else if (view.getId() == R.id.jobs_layout) {
-                jobsTextView.setTextColor(getResources().getColor(R.color.JGGCyan));
-                searchButton.setImageResource(R.mipmap.button_search_cyan);
-                jobsDotImageView.setVisibility(View.VISIBLE);
+//                setActiveJob();
                 listener.onTabbarItemClick(jobsTextView);
-                type = AppointmentType.JOBS;
             } else if (view.getId() == R.id.go_club_layout) {
-                goClubTextView.setTextColor(getResources().getColor(R.color.JGGPurple));
-                searchButton.setImageResource(R.mipmap.button_search_purple);
-                goClubDotImageView.setVisibility(View.VISIBLE);
+//                setActiveGoClub();
                 listener.onTabbarItemClick(goClubTextView);
-                type = AppointmentType.GOCLUB;
             }
         }
+    }
+
+    public void setActiveService() {
+        servicesTextView.setTextColor(getResources().getColor(R.color.JGGGreen));
+        searchButton.setImageResource(R.mipmap.button_search_green);
+        servicesDotImageView.setVisibility(View.VISIBLE);
+        type = AppointmentType.SERVICES;
+    }
+
+    public void setActiveJob() {
+        jobsTextView.setTextColor(getResources().getColor(R.color.JGGCyan));
+        searchButton.setImageResource(R.mipmap.button_search_cyan);
+        jobsDotImageView.setVisibility(View.VISIBLE);
+        type = AppointmentType.JOBS;
+    }
+
+    public void setActiveGoClub() {
+        goClubTextView.setTextColor(getResources().getColor(R.color.JGGPurple));
+        searchButton.setImageResource(R.mipmap.button_search_purple);
+        goClubDotImageView.setVisibility(View.VISIBLE);
+        type = AppointmentType.GOCLUB;
     }
 
     private OnTabbarItemClickListener listener;

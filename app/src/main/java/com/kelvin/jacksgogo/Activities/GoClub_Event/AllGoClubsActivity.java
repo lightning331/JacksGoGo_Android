@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewBehavior;
 import com.kelvin.jacksgogo.Activities.BottomNavigation.BottomNavigationViewHelper;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
@@ -26,11 +29,14 @@ import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
 import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.FilterCategoryModel;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGGoClubModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGCategoryModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,8 +64,11 @@ public class AllGoClubsActivity extends AppCompatActivity {
 
     private JGGCategoryModel selectedCategory;
     private ArrayList<JGGGoClubModel> mClubs = new ArrayList<>();
+    private ArrayList<JGGGoClubModel> mFiltedClubs = new ArrayList<>();
     private String categoryID;
     private boolean isCategory;
+
+    private static final int REQUEST_CODE = 10051;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +121,20 @@ public class AllGoClubsActivity extends AppCompatActivity {
         });
 
         if (recyclerView != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new MarginDecoration(this));
+
+        adapter = new GoClubMainAdapter(this, mClubs);
+        adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                JGGGoClubModel club = mFiltedClubs.get(position);
+                JGGAppManager.getInstance().setSelectedClub(club);
+                startActivity(new Intent(AllGoClubsActivity.this, GoClubDetailActivity.class));
+            }
+        });
+        recyclerView.setAdapter(adapter);
 
         onLoadGoClubs();
     }
@@ -133,7 +152,8 @@ public class AllGoClubsActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mClubs = response.body().getValue();
-                        updateRecyclerView();
+                        mFiltedClubs = mClubs;
+                        adapter.refresh(mFiltedClubs);
                     } else {
                         Toast.makeText(AllGoClubsActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -150,19 +170,6 @@ public class AllGoClubsActivity extends AppCompatActivity {
         });
     }
 
-    private void updateRecyclerView() {
-        adapter = new GoClubMainAdapter(this, mClubs);
-        adapter.setOnItemClickListener(new GoClubMainAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                JGGGoClubModel club = mClubs.get(position);
-                JGGAppManager.getInstance().setSelectedClub(club);
-                startActivity(new Intent(AllGoClubsActivity.this, GoClubDetailActivity.class));
-            }
-        });
-        recyclerView.setAdapter(adapter);
-    }
-
     @OnClick(R.id.post_go_club_bottom)
     public void onCreateGoClubClick() {
         Intent mIntent = new Intent(this, CreateGoClubActivity.class);
@@ -175,6 +182,75 @@ public class AllGoClubsActivity extends AppCompatActivity {
     public void onFilterClick() {
         Intent intent = new Intent(AllGoClubsActivity.this, ServiceFilterActivity.class);
         intent.putExtra(APPOINTMENT_TYPE, GOCLUB);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    private ArrayList<JGGGoClubModel> filter(ArrayList<JGGGoClubModel> models, String query) {
+        final String lowerCaseQuery = query.toLowerCase();
+
+        final ArrayList<JGGGoClubModel> filteredModelList = new ArrayList<>();
+        for (JGGGoClubModel model : models) {
+            String name = "";
+            if (model.getName() != null)
+                name = model.getName().toLowerCase();
+            String description = "";
+            if (model.getDescription() != null)
+                description = model.getDescription().toLowerCase();
+            if (name.contains(lowerCaseQuery) || description.contains(lowerCaseQuery)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CODE) {
+            if(resultCode == Activity.RESULT_OK){
+                String categoriesStr = data.getStringExtra("categories");
+                String keyword = data.getStringExtra("keyword");
+
+                Type listType = new TypeToken<ArrayList<FilterCategoryModel>>() {}.getType();
+                Gson gson = new Gson();
+                ArrayList<FilterCategoryModel> filterCategoryModels = gson.fromJson(categoriesStr, listType);
+
+                // get only selected models
+                ArrayList<String> filtered = new ArrayList<>();
+                for (FilterCategoryModel categoryModel : filterCategoryModels) {
+                    if (categoryModel.isSelected()) {
+                        filtered.add(categoryModel.getCategoryName());
+                    }
+                }
+
+                // filter by category names
+                ArrayList<JGGGoClubModel> filteredClubs = new ArrayList<>();
+                if (filtered.size() > 0) {
+                    for (JGGGoClubModel clubModel : mClubs) {
+                        if (filtered.contains(clubModel.getCategory().getName())) {
+                            filteredClubs.add(clubModel);
+                        }
+                    }
+                    if (keyword.equals("")) {
+                        mFiltedClubs = filteredClubs;
+                        adapter.refresh(mFiltedClubs);
+                    } else {
+                        mFiltedClubs = filter(filteredClubs, keyword);
+                        adapter.refresh(mFiltedClubs);
+                    }
+                } else {
+                    if (keyword.equals("")) {
+                        mFiltedClubs = mClubs;
+                        adapter.refresh(mFiltedClubs);
+                    } else {
+                        mFiltedClubs = filter(mClubs, keyword);
+                        adapter.refresh(mFiltedClubs);
+                    }
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }

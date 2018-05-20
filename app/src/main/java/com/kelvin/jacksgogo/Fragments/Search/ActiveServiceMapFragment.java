@@ -38,15 +38,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ActiveServiceActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceDetailActivity;
 import com.kelvin.jacksgogo.Activities.Search.ServiceFilterActivity;
+import com.kelvin.jacksgogo.CustomView.JGGEventInfoWindow;
 import com.kelvin.jacksgogo.CustomView.JGGJobInfoWindow;
 import com.kelvin.jacksgogo.CustomView.JGGServiceInfoWindow;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 
 import java.util.ArrayList;
 
@@ -71,6 +75,7 @@ public class ActiveServiceMapFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private JGGServiceInfoWindow serviceinfoWindow;
     private JGGJobInfoWindow jobInfoWindow;
+    private JGGEventInfoWindow eventInfoWindow;
 
     private SeekBar seekBar;
     private TextView lblServiceCount;
@@ -83,6 +88,7 @@ public class ActiveServiceMapFragment extends Fragment implements
     private ImageView imgListView;
 
     private ArrayList<JGGAppointmentModel> mAppointments = new ArrayList<>();
+    private ArrayList<JGGEventModel> mEvents = new ArrayList<>();
     private String appType;
     private int mColor;
 
@@ -104,6 +110,10 @@ public class ActiveServiceMapFragment extends Fragment implements
 
     public void setAppointment(ArrayList<JGGAppointmentModel> appointments) {
         mAppointments = appointments;
+    }
+
+    public void setEvents(ArrayList<JGGEventModel> events) {
+        mEvents = events;
     }
 
     @Override
@@ -160,7 +170,7 @@ public class ActiveServiceMapFragment extends Fragment implements
                 imgListView.setImageResource(R.mipmap.button_listview_purple);
                 imgFilter.setImageResource(R.mipmap.button_filter_purple);
                 imgUserLocation.setImageResource(R.mipmap.button_location_purple);
-                lblServiceCount.setText(mAppointments.size() + " Events");
+                lblServiceCount.setText(mEvents.size() + " Events");
                 break;
         }
         seekBar.getProgressDrawable().setColorFilter(mColor, PorterDuff.Mode.SRC_ATOP);
@@ -264,7 +274,47 @@ public class ActiveServiceMapFragment extends Fragment implements
                     }
                 }
             }
-        });}
+        });
+    }
+
+    private void addEventMarker() {
+        eventInfoWindow = new JGGEventInfoWindow(mContext, mEvents);
+        mGoogleMap.setInfoWindowAdapter(eventInfoWindow);
+
+        MarkerOptions markerOpt = new MarkerOptions();
+        for (int i = 0 ; i < mEvents.size() ; i++ ) {
+            JGGEventModel eventModel = mEvents.get(i);
+
+            ArrayList<JGGAddressModel> addressModels = eventModel.getAddress();
+            for (JGGAddressModel address : addressModels) {
+                LatLng marker = new LatLng(address.getLat(), address.getLon());
+                String pinSnippet = String.valueOf(i);
+                markerOpt.position(marker)
+                        .snippet(pinSnippet)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_pin));
+                mGoogleMap.addMarker(markerOpt);
+            }
+
+
+        }
+
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if (marker.getSnippet() != null) {
+                    int index = Integer.parseInt(marker.getSnippet());
+
+                    JGGAppManager.getInstance().setSelectedEvent(mEvents.get(index));
+                    if (appType.equals(SERVICES)) {
+                        Intent intent = new Intent(mContext, EventDetailActivity.class);
+                        mContext.startActivity(intent);
+                    } else if (appType.equals(JOBS)) {
+                        mContext.startActivity(new Intent(getContext(), JobDetailActivity.class));
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void onPause() {
@@ -282,7 +332,11 @@ public class ActiveServiceMapFragment extends Fragment implements
         // and move the map's camera to the same location.
         mGoogleMap = googleMap;
 
-        addAppointmentMarker();
+        if (appType.equals(SERVICES) || appType.equals(JOBS)) {
+            addAppointmentMarker();
+        } else if (appType.equals(EVENTS)) {
+            addEventMarker();
+        }
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

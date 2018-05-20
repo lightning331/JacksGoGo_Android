@@ -403,11 +403,11 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                 mContext.startActivity(intent);
             } else {
                 // TODO - The job which I sent proposal or get invited
-//                Intent intent = new Intent(mContext, IncomingJobActivity.class);
-//                mContext.startActivity(intent);
-
-                Intent intent = new Intent(mContext, BookedServiceActivity.class);
+                Intent intent = new Intent(mContext, IncomingJobActivity.class);
                 mContext.startActivity(intent);
+
+//                Intent intent = new Intent(mContext, BookedServiceActivity.class);
+//                mContext.startActivity(intent);
             }
         } else { // TODO - Service case
             if (appointment.getUserProfileID().equals(currentUser.getID())) {

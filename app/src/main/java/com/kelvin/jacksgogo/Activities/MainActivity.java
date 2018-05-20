@@ -34,8 +34,11 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import io.fabric.sdk.android.Fabric;
 
 import static com.kelvin.jacksgogo.Utils.Global.CONFIRMED;
+import static com.kelvin.jacksgogo.Utils.Global.GOCLUB;
 import static com.kelvin.jacksgogo.Utils.Global.HISTORY;
+import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.PENDING;
+import static com.kelvin.jacksgogo.Utils.Global.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.SIGNUP_FINISHED;
 
 public class MainActivity extends AppCompatActivity implements AppMainFragment.OnFragmentInteractionListener {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
     private MenuItem mItem;
 
     private JGGUserProfileModel currentUser;
+    private boolean isClickableSearchMainTabView = false;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -192,15 +196,31 @@ public class MainActivity extends AppCompatActivity implements AppMainFragment.O
         });
     }
 
+    public void setClickableSearchMainTabView(boolean isClickable) {
+        isClickableSearchMainTabView = isClickable;
+    }
+
     private void addTopActionBarForSearch(final Fragment frag) {
         mToolbar.removeAllViews();
         searchTabView = new SearchMainTabView(this);
         mToolbar.addView(searchTabView);
+
         searchTabView.setTabbarItemClickListener(new SearchMainTabView.OnTabbarItemClickListener() {
             @Override
             public void onTabbarItemClick(TextView item) {
                 if (frag instanceof SearchFragment) {
-                    ((SearchFragment)frag).refreshFragment(item.getTag().toString());
+                    if (!isClickableSearchMainTabView)
+                        return;
+
+                    String type = item.getTag().toString();
+                    if (type.equals(SERVICES)) {
+                        searchTabView.setActiveService();
+                    } else if (type.equals(JOBS)) {
+                        searchTabView.setActiveJob();
+                    } else if (type.equals(GOCLUB)) {
+                        searchTabView.setActiveGoClub();
+                    }
+                    ((SearchFragment)frag).refreshFragment(type);
                 }
             }
         });

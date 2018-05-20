@@ -40,6 +40,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:maxLines="1"
+            android:inputType="textPersonName"
             android:padding="@dimen/edit_text_padding_size"
             android:fontFamily="@font/muliregular"
             android:textSize="@dimen/body_font_size"
