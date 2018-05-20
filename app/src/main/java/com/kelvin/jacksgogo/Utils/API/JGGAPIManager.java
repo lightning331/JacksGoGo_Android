@@ -343,10 +343,11 @@ public interface JGGAPIManager {
     Call<JGGPostAppResponse> demotAdminToUserInClub(@Query("ClubID") String clubID,
                                                     @Query("UserProfileID") String userProfileID);
 
-    @DELETE("api/Event/DeleteUserFromClub")
-    Call<JGGBaseResponse> deleteUserFromClub(@Query("ClubID") String clubID,
-                                             @Query("UserProfileID") String userProfileID,
-                                             @Query("Reason") String reason);
+    @FormUrlEncoded
+    @POST("api/Event/DeleteUserFromClub")
+    Call<JGGBaseResponse> deleteUserFromClub(@Field("ClubID") String clubID,
+                                             @Field("UserProfileID") String userProfileID,
+                                             @Field("Reason") String reason);
 
     @FormUrlEncoded
     @POST("api/Event/LeaveGoClub")
