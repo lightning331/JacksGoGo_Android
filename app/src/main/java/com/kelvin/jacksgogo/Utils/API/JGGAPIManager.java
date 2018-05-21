@@ -130,10 +130,22 @@ public interface JGGAPIManager {
                                                    @Query("PageSize") Integer pageSize);
 
     /**
-     *  Appointment Quotation
+     *
+     * @param quotation
+     * @return
      */
     @POST("api/Appointment/SendQuotation")
     Call<JGGPostAppResponse> sendQuotation(@Body JGGQuotationModel quotation);
+
+    /**
+     *  Bought Service
+     * @param serviceID
+     * @param clientProfileID
+     * @return
+     */
+    @GET("api/Appointment/BuyService")
+    Call<JGGPostAppResponse> buyService(@Query("ServiceID") String serviceID,
+                                        @Query("ClientProfileID") String clientProfileID);
 
     /**
      *  Appointment

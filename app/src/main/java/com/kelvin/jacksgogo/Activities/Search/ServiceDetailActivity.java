@@ -68,7 +68,7 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
         } else {
             onShowBottomView();
             if (selectedAppointment.getBudgetFrom() == null)
-                bottomTitle.setText("Buy Service");
+                bottomTitle.setText(R.string.buy_service);
             else
                 bottomTitle.setText(R.string.title_request_quotation);
             bottomTitle.setOnClickListener(new View.OnClickListener() {
