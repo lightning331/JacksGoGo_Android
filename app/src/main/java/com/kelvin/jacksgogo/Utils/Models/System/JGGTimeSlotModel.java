@@ -2,7 +2,8 @@ package com.kelvin.jacksgogo.Utils.Models.System;
 
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.kelvin.jacksgogo.Utils.Global.JGGTimeSlotBookedStatus;
+
 import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
@@ -14,10 +15,20 @@ import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 
 public class JGGTimeSlotModel {
 
+    private String ID;
     private String StartOn;
     private String EndOn;
     private Boolean IsSpecific;
     private Integer Peoples;
+    private Integer Status;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getStartOn() {
         return StartOn;
@@ -49,6 +60,14 @@ public class JGGTimeSlotModel {
 
     public Boolean getSpecific() {
         return IsSpecific;
+    }
+
+    public JGGTimeSlotBookedStatus getStatus() {
+        return JGGTimeSlotBookedStatus.valueOf(Status);
+    }
+
+    public void setStatus(JGGTimeSlotBookedStatus status) {
+        Status = status.getValue();
     }
 
     public boolean isEqualSlotDate (Date date) {

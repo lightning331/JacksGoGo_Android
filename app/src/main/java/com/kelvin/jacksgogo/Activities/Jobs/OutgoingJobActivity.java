@@ -64,7 +64,6 @@ public class OutgoingJobActivity extends AppCompatActivity implements TextWatche
     @BindView(R.id.progress_bar) ProgressBar progressBar;
 
     public JGGActionbarView actionbarView;
-    //private ProgressDialog progressDialog;
 
     private JGGAppointmentModel mJob;
     private JGGContractModel mContract;
