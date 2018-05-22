@@ -1,20 +1,21 @@
 package com.kelvin.jacksgogo.Activities.Service;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.kelvin.jacksgogo.Adapter.Services.BookedServiceAdapter;
 import com.kelvin.jacksgogo.CustomView.RecyclerViewCell.MarginDecoration;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global;
-
-import java.util.ArrayList;
-import java.util.Date;
+import com.kelvin.jacksgogo.Utils.JGGAppManager;
+import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,9 +24,15 @@ public class BookedServiceActivity extends AppCompatActivity {
 
     @BindView(R.id.book_actionbar)              Toolbar mToolbar;
     @BindView(R.id.booking_recycler_view)       RecyclerView bookingRecyclerView;
+    @BindView(R.id.img_category)                ImageView img_category;
+    @BindView(R.id.lbl_title)                   TextView lbl_title;
+    @BindView(R.id.lbl_posted_time)             TextView lbl_posted_time;
+    @BindView(R.id.btn_bought_service)          LinearLayout btn_bought_service;
 
     private BookedServiceAdapter adapter;
     public JGGActionbarView actionbarView;
+
+    private JGGAppointmentModel mJob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,8 @@ public class BookedServiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booked_service);
 
         ButterKnife.bind(this);
+
+        mJob = JGGAppManager.getInstance().getSelectedAppointment();
 
         actionbarView = new JGGActionbarView(this);
         mToolbar.addView(actionbarView);
@@ -50,13 +59,12 @@ public class BookedServiceActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-        bookingRecyclerView.setLayoutManager(layoutManager);
+        if (bookingRecyclerView != null) {
+            bookingRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        }
         bookingRecyclerView.addItemDecoration(new MarginDecoration(this));
 
-        adapter = new BookedServiceAdapter(this, new ArrayList<Date>());
+        adapter = new BookedServiceAdapter(this, mJob.getSessions());
         bookingRecyclerView.setAdapter(adapter);
     }
 

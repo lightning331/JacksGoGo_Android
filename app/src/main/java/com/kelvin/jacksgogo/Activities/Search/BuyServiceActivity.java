@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kelvin.jacksgogo.Activities.MainActivity;
@@ -19,6 +21,7 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGPostAppResponse;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +34,10 @@ import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 public class BuyServiceActivity extends AppCompatActivity {
 
     @BindView(R.id.service_buy_actionbar) Toolbar mToolbar;
+    @BindView(R.id.img_category) ImageView img_category;
+    @BindView(R.id.lbl_title) TextView lbl_title;
+    @BindView(R.id.lbl_budget) TextView lbl_budget;
+    @BindView(R.id.btn_jacks_credit_card) TextView btn_jacks_credit_card;
 
     private JGGActionbarView actionbarView;
     private android.app.AlertDialog alertDialog;
@@ -62,12 +69,25 @@ public class BuyServiceActivity extends AppCompatActivity {
                 }
             }
         });
+        setData();
+    }
+
+    private void setData() {
+        // Category
+        Picasso.with(this)
+                .load(selectedAppointment.getCategory().getImage())
+                .placeholder(null)
+                .into(img_category);
+        lbl_title.setText(selectedAppointment.getTitle());
+        lbl_budget.setText("$ " + String.valueOf(selectedAppointment.getBudget()));
+        String balance = "Pay by Jacks Credit - balance $ " + String.valueOf(selectedAppointment.getBudget());
+        btn_jacks_credit_card.setText(balance);
     }
 
     private void onBuyServiceRequest() {
         progressDialog = createProgressDialog(this);
         JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGPostAppResponse> call = apiManager.buyService(selectedAppointment.getID(), selectedAppointment.getUserProfileID());
+        Call<JGGPostAppResponse> call = apiManager.buyService(selectedAppointment.getID(), currentUser.getID());
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -75,7 +95,7 @@ public class BuyServiceActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         // Todo - Refresh View
-                        String clubUserID = response.body().getValue();
+                        String jobID = response.body().getValue();
                         showAlertDialog();
                     } else {
                         Toast.makeText(BuyServiceActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
