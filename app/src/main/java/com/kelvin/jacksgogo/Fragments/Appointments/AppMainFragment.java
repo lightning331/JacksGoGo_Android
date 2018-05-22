@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.kelvin.jacksgogo.Activities.Jobs.IncomingJobActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.OutgoingJobActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
-import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.Activities.Service.BookedServiceActivity;
 import com.kelvin.jacksgogo.Adapter.Appointment.AppointmentMainAdapter;
 import com.kelvin.jacksgogo.R;
@@ -178,7 +177,7 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         for (JGGAppointmentModel job : jobs) {
             if (job.isQuickJob()) {
                 arrayLoadedQuickAppointments.add(job);
-            } else if (!job.isRequest() && job.getAppointmentType() > 1) {
+            } else if (job.isRequest() && job.getAppointmentType() > 1) {
                 arrayLoadedServicePackages.add(job);
             } else {
                 arrayLoadedPendingAppointments.add(job);
@@ -396,7 +395,11 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
         JGGAppManager.getInstance().setSelectedCategory(appointment.getCategory());
         JGGAppManager.getInstance().setSelectedAppointment(appointment);
 
-        if (appointment.isRequest()) { // TODO - Job Case
+        if (appointment.isQuickJob()) {
+
+        } else if (appointment.isRequest() && appointment.getAppointmentType() > 1) {
+            mContext.startActivity(new Intent(mContext, BookedServiceActivity.class));
+        } else {
             if (appointment.getUserProfileID().equals(currentUser.getID())) {
                 // TODO - The job which I posted
                 Intent intent = new Intent(mContext, OutgoingJobActivity.class);
@@ -405,18 +408,6 @@ public class AppMainFragment extends Fragment implements SearchView.OnQueryTextL
                 // TODO - The job which I sent proposal or get invited
                 Intent intent = new Intent(mContext, IncomingJobActivity.class);
                 mContext.startActivity(intent);
-
-//                Intent intent = new Intent(mContext, BookedServiceActivity.class);
-//                mContext.startActivity(intent);
-            }
-        } else { // TODO - Service case
-            if (appointment.getUserProfileID().equals(currentUser.getID())) {
-                Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
-                intent.putExtra("is_post", false);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(getActivity(), PostedServiceActivity.class);
-                startActivity(intent);
             }
         }
 

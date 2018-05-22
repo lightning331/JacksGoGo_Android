@@ -211,6 +211,34 @@ public class Global {
         }
     }
 
+    public static enum JGGTimeSlotBookedStatus {
+        none(null),
+        not_booked(0),
+        booking(1),
+        booked(2);
+
+        private Integer value;
+        private static Map map = new HashMap<>();
+
+        JGGTimeSlotBookedStatus(final Integer value) {
+            this.value = value;
+        }
+
+        static {
+            for (JGGTimeSlotBookedStatus jobType : JGGTimeSlotBookedStatus.values()) {
+                map.put(jobType.value, jobType);
+            }
+        }
+
+        public static JGGTimeSlotBookedStatus valueOf(Integer jobType) {
+            return (JGGTimeSlotBookedStatus) map.get(jobType);
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+    }
+
     public static enum JGGRepetitionType {
         none(null),
         weekly(0),

@@ -366,7 +366,7 @@ public class JGGActionbarView extends RelativeLayout implements View.OnClickList
                 mTitleTextView.setText(R.string.title_time_slots);
                 mBackButtonTitleTextView.setText("");
                 mBackButtonImage.setImageResource(R.mipmap.button_backarrow_orange);
-                mMoreButtonImage.setImageResource(R.mipmap.button_reschedule_orange);
+                mMoreButtonImage.setImageResource(R.mipmap.button_today_orange);
                 break;
             default:
                 break;

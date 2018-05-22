@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Adapter.GoClub_Event.EventsListingAdapter;
 import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
@@ -90,8 +91,13 @@ public class PastEventsActivity extends AppCompatActivity implements View.OnClic
         adapter = new EventsListingAdapter(this, clubEvents);
         adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick() {
+            public void onItemClick(int position) {
+                Gson gson = new Gson();
+                JGGEventModel eventModel = clubEvents.get(position);
+                String jsonEvent = gson.toJson(eventModel);
+
                 Intent intent = new Intent(PastEventsActivity.this, EventDetailActivity.class);
+                intent.putExtra("clubEventModel", jsonEvent);
                 startActivity(intent);
             }
         });

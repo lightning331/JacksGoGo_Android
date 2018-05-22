@@ -8,21 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/green_border_background"
+        android:background="@drawable/book_border_background"
         android:gravity="center">
         <TextView
             android:id="@+id/txt_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/mulibold"
             android:textSize="@dimen/title2_font_size"
-            android:textColor="@color/JGGGrey2"
+            android:textColor="@color/JGGBlack"
             android:text="6/7"/>
         <TextView
             android:id="@+id/txt_weekday"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/muliregular"
             android:textSize="@dimen/list_text_font_size"
-            android:textColor="@color/JGGGrey2"
-            android:text="Fri"/>
+            android:textAlignment="center"
+            android:textColor="@color/JGGBlack"
+            android:text="Thu"/>
     </LinearLayout>
 </LinearLayout>
