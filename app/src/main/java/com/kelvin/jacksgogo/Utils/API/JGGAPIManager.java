@@ -15,6 +15,7 @@ import com.kelvin.jacksgogo.Utils.Responses.JGGCategoryResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetAppsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetContractResponse;
+import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubsResponse;
@@ -380,4 +381,6 @@ public interface JGGAPIManager {
     Call<JGGGetEventsResponse> getEventsByCategory(@Query("CategoryID") String categoryID,
                                                @Query("PageIndex") Integer pageIndex,
                                                @Query("PageSize") Integer pageSize);
+    @GET("api/Event/GetEventsByID")
+    Call<JGGGetEventResponse> getEventsByID(@Query("EventID") String EventID);
 }

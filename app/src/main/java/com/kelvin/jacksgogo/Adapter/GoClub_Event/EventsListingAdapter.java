@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by PUMA on 12/18/2017.
  */
 
-public class EventsListingAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class EventsListingAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private ArrayList<JGGEventModel> mEvents;
@@ -43,10 +43,15 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         EventListDetailCell cell = (EventListDetailCell) holder;
         cell.setEvent(mEvents.get(position));
-        cell.itemView.setOnClickListener(this);
+        cell.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -54,15 +59,10 @@ public class EventsListingAdapter extends RecyclerView.Adapter implements View.O
         return mEvents.size();
     }
 
-    @Override
-    public void onClick(View view) {
-        listener.onItemClick();
-    }
-
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick();
+        void onItemClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

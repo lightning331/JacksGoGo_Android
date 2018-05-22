@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.Jobs.JobDetailActivity;
 import com.kelvin.jacksgogo.Activities.MainActivity;
@@ -59,6 +60,7 @@ public class FavouriteFragment extends Fragment {
 
     private ArrayList<JGGAppointmentModel> mServices = new ArrayList<>();
     private ArrayList<JGGAppointmentModel> mJobs = new ArrayList<>();
+    private ArrayList<JGGEventModel> clubEvents = new ArrayList<JGGEventModel>();
     private String appType = SERVICES;
 
     public FavouriteFragment() {
@@ -166,11 +168,17 @@ public class FavouriteFragment extends Fragment {
     }
 
     private void updateEventsAdapter() {
-        EventsListingAdapter adapter = new EventsListingAdapter(mContext, new ArrayList<JGGEventModel>());
+        EventsListingAdapter adapter = new EventsListingAdapter(mContext, clubEvents);
         adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick() {
-                mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+            public void onItemClick(int position) {
+                Gson gson = new Gson();
+                JGGEventModel eventModel = clubEvents.get(position);
+                String jsonEvent = gson.toJson(eventModel);
+
+                Intent intent = new Intent(mContext, EventDetailActivity.class);
+                intent.putExtra("clubEventModel", jsonEvent);
+                mContext.startActivity(intent);
             }
         });
         recyclerView.setAdapter(adapter);

@@ -39,6 +39,7 @@ public class JGGEventModel {
     private JGGCategoryModel Category = new JGGCategoryModel();
     private JGGUserProfileModel UserProfile = new JGGUserProfileModel();
     private JGGRegionModel Region = new JGGRegionModel();
+    private JGGGoClubModel Club = new JGGGoClubModel();
 
     // Dummy data
     private ArrayList<JGGUserProfileModel> Users = new ArrayList<>();
@@ -260,5 +261,13 @@ public class JGGEventModel {
 
     public void setRegion(JGGRegionModel region) {
         Region = region;
+    }
+
+    public JGGGoClubModel getClub() {
+        return Club;
+    }
+
+    public void setClub(JGGGoClubModel club) {
+        Club = club;
     }
 }

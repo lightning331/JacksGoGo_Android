@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.CreateGoClubActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.EventDetailActivity;
 import com.kelvin.jacksgogo.Activities.GoClub_Event.PastEventsActivity;
@@ -67,8 +68,14 @@ public class GoClubDetailEventView extends RecyclerView.ViewHolder {
         EventsListingAdapter adapter = new EventsListingAdapter(mContext, mClub.getEvents());
         adapter.setOnItemClickListener(new EventsListingAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick() {
-                mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+            public void onItemClick(int position) {
+                Gson gson = new Gson();
+                JGGEventModel eventModel = mClub.getEvents().get(position);
+                String jsonEvent = gson.toJson(eventModel);
+
+                Intent intent = new Intent(mContext, EventDetailActivity.class);
+                intent.putExtra("clubEventModel", jsonEvent);
+                mContext.startActivity(intent);
             }
         });
         eventRecyclerView.setAdapter(adapter);
