@@ -359,6 +359,9 @@ public class IncomingJobFragment extends Fragment {
                             setReadyToStartStatus(activity);
                             break;
 
+                        case result_created:
+                            showTipView();
+                            break;
                         case result_reported:  // 600
                             if (mContract.getReportStatus() != null) {
                                 if (mContract.getReportStatus() == pending) {
@@ -378,9 +381,6 @@ public class IncomingJobFragment extends Fragment {
                         case invoice_sent:
                             break;
                         case invoice_approved:
-                            break;
-                        case give_tip:
-                            showTipView();
                             break;
 
                         case client_feedback:
