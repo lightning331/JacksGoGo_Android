@@ -16,6 +16,7 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +56,7 @@ public class BookedServiceActivity extends AppCompatActivity {
             }
         });
 
+        setData();
         initRecyclerView();
     }
 
@@ -66,6 +68,15 @@ public class BookedServiceActivity extends AppCompatActivity {
 
         adapter = new BookedServiceAdapter(this, mJob.getSessions());
         bookingRecyclerView.setAdapter(adapter);
+    }
+
+    private void setData() {
+        // Category
+        Picasso.with(this)
+                .load(mJob.getCategory().getImage())
+                .placeholder(null)
+                .into(img_category);
+        lbl_title.setText(mJob.getTitle());
     }
 
     private void actionbarViewItemClick(View view) {

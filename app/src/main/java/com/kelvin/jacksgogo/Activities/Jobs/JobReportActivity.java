@@ -109,16 +109,17 @@ public class JobReportActivity extends AppCompatActivity {
         call.enqueue(new Callback<JGGGetReportResponse>() {
             @Override
             public void onResponse(Call<JGGGetReportResponse> call, Response<JGGGetReportResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         mReportResult = response.body().getValue();
-                        getReportByContract();
+                        //getReportByContract();
                     } else {
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
                         Toast.makeText(JobReportActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
                     Toast.makeText(JobReportActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
