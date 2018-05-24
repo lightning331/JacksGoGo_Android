@@ -1,6 +1,7 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,11 +39,10 @@ import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.GoClub_Event.JGGEventModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGAddressModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGEventUserModel;
-import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserBaseModel;
 import com.kelvin.jacksgogo.Utils.Models.User.JGGUserProfileModel;
+import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGGetEventsResponse;
 import com.kelvin.jacksgogo.Utils.Responses.JGGGetGoClubResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -55,12 +56,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getEventTime;
@@ -92,6 +95,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.rl_progress)                 RelativeLayout progressLayout;
     @BindView(R.id.btn_view_attendees)          Button btnViewAttendees;
     @BindView(R.id.txt_joined_count)            TextView txtJoinedCount;
+    @BindView(R.id.pb_drawable)                 ProgressBar pbDrawable;
 
     @BindView(R.id.updates_event_recycler_view) RecyclerView updateEvetnRecyclerView;
     @BindView(R.id.original_post_tag_list)      TagContainerLayout tagContainerLayout;
@@ -116,6 +120,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private EventUserStatus joinGoClubStatus;
     private JGGEventModel eventModel;
     private JGGUserProfileModel currentUser;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,11 +170,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getEventDetail(final String eventId) {
+        progressDialog = createProgressDialog(this);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGGetEventResponse> call = manager.getEventsByID(eventId);
         call.enqueue(new Callback<JGGGetEventResponse>() {
             @Override
             public void onResponse(Call<JGGGetEventResponse> call, Response<JGGGetEventResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         // Todo - Set Events Data
@@ -185,6 +192,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<JGGGetEventResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(EventDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -194,11 +202,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
      * Get GoClub detail by ClubID
      */
     private void getClubByID(String clubId) {
+        progressDialog = createProgressDialog(this);
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, this);
         Call<JGGGetGoClubResponse> call = manager.getClubByID(clubId);
         call.enqueue(new Callback<JGGGetGoClubResponse>() {
             @Override
             public void onResponse(Call<JGGGetGoClubResponse> call, Response<JGGGetGoClubResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getSuccess()) {
                         // Todo - Set GoClub Data
@@ -219,6 +229,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<JGGGetGoClubResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(EventDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -294,6 +305,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             Integer totalCount = event.getClub().getLimit();
             Integer joindCount = event.getClub().getClubUsers().size();
             txtJoinedCount.setText(joindCount + "/" + totalCount + " people have joined!");
+
+            pbDrawable.setProgress(joindCount/totalCount * 100);
         }
 
         this.setTagList(event.getTags());
@@ -302,6 +315,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         // TODO - Need to fix server time response
         String created = getDayMonthYear(appointmentDate(event.getCreatedOn()));
         txtCreatedTime.setText(created);
+
     }
 
     public void showJoinToGoClubStatus() {
@@ -325,7 +339,37 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             btnViewAttendees.setVisibility(View.VISIBLE);
         }
     }
+    /**
+     * Request to join GoClub
+     **/
+    private void requestJoinEvent() {
+        progressDialog = createProgressDialog(this);
+        String userProfileID = currentUser.getID();
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGBaseResponse> call = apiManager.sendEventJoinRequest(this.eventModel.getID(), userProfileID);
+        call.enqueue(new Callback<JGGBaseResponse>() {
+            @Override
+            public void onResponse(Call<JGGBaseResponse> call, Response<JGGBaseResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        // Todo - Refresh View
 
+                    } else {
+                        Toast.makeText(EventDetailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EventDetailActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGBaseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EventDetailActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     // Todo - Send Report request
     private void onSendReport() {
@@ -501,6 +545,10 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         shareDialog.show();
     }
 
+    @OnClick(R.id.btn_join_event)
+    public void onClickRequestJoinEvent(){
+        requestJoinEvent();
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_alert_cancel) {
