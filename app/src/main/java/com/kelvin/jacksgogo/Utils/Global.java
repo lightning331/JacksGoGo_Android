@@ -554,13 +554,13 @@ public class Global {
         contract_award(506),
         contract_confirmed(507),
 
+        result_created(605),
         result_reported(600),
         result_accepted(601),
         result_rejected(602),
 
         invoice_sent(603),
         invoice_approved(604),
-        give_tip(605),
 
         client_feedback(620),
         provider_feedback(621);
