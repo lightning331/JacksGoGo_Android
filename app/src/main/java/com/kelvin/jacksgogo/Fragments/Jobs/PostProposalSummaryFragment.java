@@ -166,12 +166,12 @@ public class PostProposalSummaryFragment extends Fragment implements View.OnClic
             else
                 lblBreakdown.setText(breakdown);
             // Rescheduling
-            if (selectedProposal.isRescheduleAllowed() == null)
+            if (!selectedProposal.isRescheduleAllowed())
                 lblRescheduling.setText("No rescheduling allowed.");
             else
                 lblRescheduling.setText(getDaysString(Long.valueOf(selectedProposal.getRescheduleTime())));
             // Cancellation
-            if (selectedProposal.isCancellationAllowed() == null)
+            if (!selectedProposal.isCancellationAllowed())
                 lblCancellation.setText("No cancellation allowed.");
             else
                 lblCancellation.setText(getDaysString(Long.valueOf(selectedProposal.getCancellationTime())));

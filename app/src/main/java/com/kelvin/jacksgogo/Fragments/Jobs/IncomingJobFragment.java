@@ -321,12 +321,15 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case invite_sent: // 407
-                            if (activity.getReferenceID().equals(currentUser.getID()))
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
                                 showInvited(activity);
+                            }
                             break;
                         case invite_accepted: // 408
-                            if (activity.getReferenceID().equals(currentUser.getID()))
+                            if (activity.getReferenceID().equals(currentUser.getID())) {
+                                setClientData();
                                 setWaitingClientDecision();
+                            }
                             break;
                         case invite_rejected:
                             if (activity.getReferenceID().equals(currentUser.getID()))
