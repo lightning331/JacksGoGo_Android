@@ -395,4 +395,9 @@ public interface JGGAPIManager {
                                                @Query("PageSize") Integer pageSize);
     @GET("api/Event/GetEventsByID")
     Call<JGGGetEventResponse> getEventsByID(@Query("EventID") String EventID);
+
+    @GET("api/Event/SendEventJoinRequest")
+    Call<JGGBaseResponse> sendEventJoinRequest(@Query("EventID") String EventID,
+                                               @Query("UserProfileID") String userProfileID);
+
 }

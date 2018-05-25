@@ -41,6 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.award;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
@@ -89,9 +90,10 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
         mbtmView.setOnClickListener(this);
         btnRejectBid.setOnClickListener(this);
         btnAcceptBid.setOnClickListener(this);
-        if (mProposal.getStatus() == rejected) {      // Rejected
+        if (mProposal.getStatus() == rejected) {            // Rejected
             btnRejectBid.setVisibility(View.GONE);
-        } else if (mProposal.getStatus() == confirmed)      // Accepted
+        } else if (mProposal.getStatus() == confirmed ||
+                mProposal.getStatus() == award)             // Accepted
             btnAcceptBid.setVisibility(View.GONE);
 
         // Top Navigationbar View
@@ -124,7 +126,7 @@ public class BidDetailActivity extends AppCompatActivity implements View.OnClick
                 .into(imgCategory);
         lblCategory.setText(selectedAppointment.getCategory().getName());
         // Time
-        lblTime.setText(getAppointmentTime(mProposal.getAppointment()));
+        lblTime.setText(getAppointmentTime(JGGAppManager.getInstance().getSelectedAppointment()));
     }
 
     private void rejectProposal() {

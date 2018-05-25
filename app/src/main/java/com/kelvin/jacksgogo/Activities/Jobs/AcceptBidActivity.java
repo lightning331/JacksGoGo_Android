@@ -96,6 +96,8 @@ public class AcceptBidActivity extends AppCompatActivity implements View.OnClick
             ratingBar.setRating(0);
         else
             ratingBar.setRating(rating.floatValue());
+        lblBudget.setText("$ " + String.valueOf(mProposal.getBudget()));
+        btnCredit.setText("Pay by Jacks Credit - balance $ " + String.valueOf(mProposal.getBudget()));
     }
 
     private void approveProposal() {

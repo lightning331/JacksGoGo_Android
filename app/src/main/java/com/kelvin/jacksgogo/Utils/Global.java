@@ -156,10 +156,11 @@ public class Global {
     public static enum JGGProposalStatus {
 
         open(0),        // Posted
-        rejected(1),    // Client rejected provider's proposal
-        confirmed(2),   // Client accepted provider's proposal
-        withdrawn(3),   //
-        declined(4);    // Provider declined Client's invite
+        award(1),       // Client accepted provider's proposal
+        rejected(2),    // Client rejected provider's proposal
+        confirmed(3),   // Provider accepted Client's award
+        withdrawn(4),   //
+        flagged(5);     // Provider declined Client's invite
 
         private Integer value;
         private static Map map = new HashMap<>();
@@ -595,7 +596,7 @@ public class Global {
                 return "Confirmed";
             case withdrawn:
                 return "Withdrawn";
-            case declined:
+            case flagged:
                 return "Declined";
             default:
                 return "";

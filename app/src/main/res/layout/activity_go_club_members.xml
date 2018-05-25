@@ -47,6 +47,8 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:textAlignment="center"
+                    app:iconifiedByDefault="false"
+                    android:background="@drawable/grey_border_background"
                     app:queryHint="@string/go_club_members_search_placeholder">
                 </android.support.v7.widget.SearchView>
                 <android.support.v4.widget.SwipeRefreshLayout

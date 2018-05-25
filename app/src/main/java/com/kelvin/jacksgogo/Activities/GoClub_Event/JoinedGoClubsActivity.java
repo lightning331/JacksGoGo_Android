@@ -90,6 +90,7 @@ public class JoinedGoClubsActivity extends AppCompatActivity implements SearchVi
         adapter = new JoinedGoClubAdapter(this, mGoClubs);
         recyclerView.setAdapter(adapter);
 
+        // Search View
         searchView.setOnQueryTextListener(this);
         ImageView mCloseButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         mCloseButton.setOnClickListener(new View.OnClickListener() {
@@ -100,14 +101,6 @@ public class JoinedGoClubsActivity extends AppCompatActivity implements SearchVi
                 adapter.refresh(mGoClubs);
             }
         });
-//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-//            @Override
-//            public boolean onClose() {
-//                hideKeyboard();
-//                adapter.refresh(mGoClubs);
-//                return true;
-//            }
-//        });
 
         getJoinedGoClub();
     }

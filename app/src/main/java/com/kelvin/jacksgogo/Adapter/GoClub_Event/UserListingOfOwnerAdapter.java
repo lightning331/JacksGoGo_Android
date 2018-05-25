@@ -16,7 +16,6 @@ import com.kelvin.jacksgogo.Utils.Models.User.JGGGoClubUserModel;
 
 import java.util.ArrayList;
 
-import static com.kelvin.jacksgogo.Utils.Global.getClubAllUsers;
 
 public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
 
@@ -63,7 +62,6 @@ public class UserListingOfOwnerAdapter extends RecyclerView.Adapter {
             else
                 generalUsers.add(user);
         }
-        approvedUsers = getClubAllUsers(approvedUsers);
         approvedUsers.addAll(adminUsers);
         approvedUsers.addAll(generalUsers);
     }
