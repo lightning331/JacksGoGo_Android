@@ -1,5 +1,6 @@
 package com.kelvin.jacksgogo.Activities.GoClub_Event;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,7 +39,7 @@ import retrofit2.Response;
 import static com.kelvin.jacksgogo.Utils.Global.EventUserType.admin;
 import static com.kelvin.jacksgogo.Utils.Global.getClubAllUsers;
 
-public class GoClubMembersActivity extends AppCompatActivity {
+public class GoClubMembersActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     @BindView(R.id.go_club_members_actionbar) Toolbar mToolbar;
     @BindView(R.id.swipeSearchContainer) SwipeRefreshLayout swipeContainer;
@@ -51,6 +54,8 @@ public class GoClubMembersActivity extends AppCompatActivity {
     private JGGUserProfileModel currentUser;
     private ArrayList<JGGGoClubUserModel> allClubUsers = new ArrayList<>();
     private String selectedUserID;
+
+    private String searchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,8 @@ public class GoClubMembersActivity extends AppCompatActivity {
             }
         });
 
+        this.searchText = "";
+
         // Setup refresh listener which triggers new data loading
         swipeContainer.setColorSchemeResources(R.color.JGGPurple,
                 R.color.JGGPurple,
@@ -86,10 +93,10 @@ public class GoClubMembersActivity extends AppCompatActivity {
                                         public void run() {
                                             if (mClub.getClubUsers().size() > 0) {
                                                 swipeContainer.setRefreshing(false);
-                                                if (mClub.getUserProfileID().equals(currentUser.getID())) {
+                                                if (isOwner()) {
                                                     updateOwnersAdapter(mClub.getClubUsers());
                                                 } else {
-                                                    updateMembersAdapter(mClub.getClubUsers());
+                                                    addOwnerToUsers();
                                                 }
                                             } else
                                                 getGoClubUsersByClub();
@@ -102,15 +109,49 @@ public class GoClubMembersActivity extends AppCompatActivity {
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         }
+
+        // Search View
+        searchView.setOnQueryTextListener(this);
+        ImageView mCloseButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setQuery("", false);
+                hideKeyboard();
+
+                if (isOwner()) {
+                    updateOwnersAdapter(mClub.getClubUsers());
+                } else {
+                    addOwnerToUsers();
+                }
+            }
+        });
+
         if (mClub.getClubUsers().size() > 0) {
             swipeContainer.setRefreshing(false);
-            if (mClub.getUserProfileID().equals(currentUser.getID())) {
+            if (isOwner()) {
                 updateOwnersAdapter(mClub.getClubUsers());
             } else {
-                updateMembersAdapter(mClub.getClubUsers());
+                addOwnerToUsers();
             }
         } else
             getGoClubUsersByClub();
+    }
+
+    // reason - mClub.getClubUsers() does not contain owner
+    private void addOwnerToUsers() {
+        allClubUsers.clear();
+        allClubUsers = sortClubUserByUserType(mClub.getClubUsers()); // add owner to allClubUsers array
+        updateMembersAdapter(allClubUsers);
+    }
+
+    private boolean isOwner() {
+        return mClub.getUserProfileID().equals(currentUser.getID());
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.searchView.getWindowToken(), 0);
     }
 
     private void getGoClubUsersByClub() {
@@ -127,7 +168,7 @@ public class GoClubMembersActivity extends AppCompatActivity {
                         mClub.setClubUsers(users);
                         JGGAppManager.getInstance().setSelectedClub(mClub);
 
-                        if (mClub.getUserProfileID().equals(currentUser.getID())) {
+                        if (isOwner()) {
                             updateOwnersAdapter(users);
                         } else {
                             updateMembersAdapter(users);
@@ -150,8 +191,7 @@ public class GoClubMembersActivity extends AppCompatActivity {
     }
 
     private void updateMembersAdapter(ArrayList<JGGGoClubUserModel> users) {
-        sortClubUserByUserType(users);
-        membersAdapter = new UserListingAdapter(this, allClubUsers);
+        membersAdapter = new UserListingAdapter(this, users);
         recyclerView.setAdapter(membersAdapter);
     }
 
@@ -344,9 +384,9 @@ public class GoClubMembersActivity extends AppCompatActivity {
         });
     }
 
-    // Todo - Sort Admin and General Users
-    private void sortClubUserByUserType(ArrayList<JGGGoClubUserModel> users) {
-        allClubUsers.clear();
+    // Todo - Sort Admin and General Users - always included owner
+    private ArrayList<JGGGoClubUserModel> sortClubUserByUserType(ArrayList<JGGGoClubUserModel> users) {
+        ArrayList<JGGGoClubUserModel> tmpUsers = new ArrayList<>();
         ArrayList<JGGGoClubUserModel> adminUsers = new ArrayList<>();
         ArrayList<JGGGoClubUserModel> generalUsers = new ArrayList<>();
         for (JGGGoClubUserModel user : users) {
@@ -355,8 +395,48 @@ public class GoClubMembersActivity extends AppCompatActivity {
             else
                 generalUsers.add(user);
         }
-        allClubUsers = getClubAllUsers(allClubUsers);
-        allClubUsers.addAll(adminUsers);
-        allClubUsers.addAll(generalUsers);
+        tmpUsers = getClubAllUsers(allClubUsers);
+        tmpUsers.addAll(adminUsers);
+        tmpUsers.addAll(generalUsers);
+        return tmpUsers;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        hideKeyboard();
+        this.searchText = query;
+
+
+        final ArrayList<JGGGoClubUserModel> filteredModelList = filter(mClub.getClubUsers(), query);
+        if (isOwner()) {
+            updateOwnersAdapter(filteredModelList);
+        } else {
+            updateMembersAdapter(filteredModelList);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    private ArrayList<JGGGoClubUserModel> filter(ArrayList<JGGGoClubUserModel> models, String query) {
+        final String lowerCaseQuery = query.toLowerCase();
+
+
+        final ArrayList<JGGGoClubUserModel> filteredModelList = new ArrayList<>();
+        for (JGGGoClubUserModel model : models) {
+            String name = "";
+            if (model.getUserProfile().getUser().getGivenName() == null)
+                name = model.getUserProfile().getUser().getUserName().toLowerCase();
+            else
+                name = model.getUserProfile().getUser().getFullName().toLowerCase();
+
+            if (name.contains(lowerCaseQuery)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
     }
 }

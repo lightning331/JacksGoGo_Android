@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -39,6 +41,9 @@ public class GcAddAdminActivity extends AppCompatActivity {
     @BindView(R.id.admin_actionbar) Toolbar mToolbar;
     @BindView(R.id.added_recycler_view) RecyclerView addedRecyclerView;
     @BindView(R.id.user_recycler_view) RecyclerView userRecyclerView;
+
+    @BindView(R.id.txt_search)    EditText editSearch;
+    @BindView(R.id.btn_search)    ImageView imgSearch;
 
     private JGGActionbarView actionbarView;
     private SwipeRefreshLayout swipeContainer;
@@ -122,38 +127,6 @@ public class GcAddAdminActivity extends AppCompatActivity {
         );
     }
 
-    private void getInviteUsers() {
-        swipeContainer.setRefreshing(true);
-
-        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
-        if (currentUser == null) return;
-        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
-        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(null, null, null, null, 0, 50);
-        call.enqueue(new Callback<JGGInviteUsersResponse>() {
-            @Override
-            public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {
-                swipeContainer.setRefreshing(false);
-                if (response.isSuccessful()) {
-                    if (response.body().getSuccess()) {
-                        allUsers = response.body().getValue();
-                        updateInviteUserRecyclerView();
-                    } else {
-                        Toast.makeText(GcAddAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    Toast.makeText(GcAddAdminActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JGGInviteUsersResponse> call, Throwable t) {
-                swipeContainer.setRefreshing(false);
-                Toast.makeText(GcAddAdminActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void getInviteUsersMore(int index) {
         //add loading progress view
         allUsers.add(new JGGUserProfileModel());
@@ -180,7 +153,7 @@ public class GcAddAdminActivity extends AppCompatActivity {
                             //telling adapter to stop calling load more as no more server data available
                             Toast.makeText(GcAddAdminActivity.this,"No More Data Available",Toast.LENGTH_SHORT).show();
                         }
-                        updateInviteUserRecyclerView();
+                        updateUserRecyclerView();
                     } else {
                         Toast.makeText(GcAddAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -198,7 +171,7 @@ public class GcAddAdminActivity extends AppCompatActivity {
     }
 
     // TODO : User list for invite to the GoClub
-    private void updateInviteUserRecyclerView() {
+    private void updateUserRecyclerView() {
         adminAdapter = new GcAdminAdapter(this, allUsers);
         adminAdapter.setOnItemClickListener(new GcAdminAdapter.OnItemClickListener() {
             @Override
@@ -236,7 +209,7 @@ public class GcAddAdminActivity extends AppCompatActivity {
     private void setUserRecyclerViewLayout() {
         ViewGroup.LayoutParams params = addedRecyclerView.getLayoutParams();
         if (invitedUsers.size() >= 2) {
-            params.height = 700;
+            params.height = 640;
         } else {
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
@@ -254,7 +227,7 @@ public class GcAddAdminActivity extends AppCompatActivity {
                 ArrayList<JGGUserProfileModel> removedInviteUser = new ArrayList<>();
                 removedInviteUser.add(invitedUsers.get(position));
                 allUsers.addAll(removedInviteUser);
-                updateInviteUserRecyclerView();
+                updateUserRecyclerView();
 
                 // Remove the User from Invited Users
                 invitedUsers.remove(position);
@@ -266,6 +239,39 @@ public class GcAddAdminActivity extends AppCompatActivity {
         });
         setUserRecyclerViewLayout();
         addedRecyclerView.setAdapter(adapter);
+    }
+
+
+    private void getInviteUsers() {
+        swipeContainer.setRefreshing(true);
+
+        JGGUserProfileModel currentUser = JGGAppManager.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+        JGGAPIManager apiManager = JGGURLManager.createService(JGGAPIManager.class, this);
+        Call<JGGInviteUsersResponse> call = apiManager.getUsersForInvite(null, null, null, null, 0, 50);
+        call.enqueue(new Callback<JGGInviteUsersResponse>() {
+            @Override
+            public void onResponse(Call<JGGInviteUsersResponse> call, Response<JGGInviteUsersResponse> response) {
+                swipeContainer.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    if (response.body().getSuccess()) {
+                        allUsers = response.body().getValue();
+                        updateUserRecyclerView();
+                    } else {
+                        Toast.makeText(GcAddAdminActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(GcAddAdminActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JGGInviteUsersResponse> call, Throwable t) {
+                swipeContainer.setRefreshing(false);
+                Toast.makeText(GcAddAdminActivity.this, "Request time out!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick(R.id.btn_add_as_admin)
@@ -284,5 +290,46 @@ public class GcAddAdminActivity extends AppCompatActivity {
         if (view.getId() == R.id.btn_back) {
             finish();
         }
+    }
+    private ArrayList<JGGUserProfileModel> getNotAddedUsers(ArrayList<JGGUserProfileModel> users) {
+        if (invitedUsers.size() == 0)
+            return allUsers;
+        ArrayList<JGGUserProfileModel> tmpList = users;
+        for (JGGUserProfileModel user : invitedUsers) {
+            if(allUsers.indexOf(user) != -1) {
+                int index = allUsers.indexOf(user);
+                tmpList.remove(index);
+            }
+        }
+        return tmpList;
+    }
+    @OnClick(R.id.btn_search)
+    public void searchUsers() {
+        String query = editSearch.getText().toString();
+        if (query.equals("")) {
+            adminAdapter.notifyDataChanged(getNotAddedUsers(allUsers));
+        } else {
+            final ArrayList<JGGUserProfileModel> filteredModelList = filter(getNotAddedUsers(allUsers), query);
+            adminAdapter.notifyDataChanged(filteredModelList);
+        }
+    }
+
+    private ArrayList<JGGUserProfileModel> filter(ArrayList<JGGUserProfileModel> models, String query) {
+        final String lowerCaseQuery = query.toLowerCase();
+
+
+        final ArrayList<JGGUserProfileModel> filteredModelList = new ArrayList<>();
+        for (JGGUserProfileModel model : models) {
+            String name = "";
+            if (model.getUser().getGivenName() == null)
+                name = model.getUser().getUserName().toLowerCase();
+            else
+                name = model.getUser().getFullName().toLowerCase();
+
+            if (name.contains(lowerCaseQuery)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
     }
 }
