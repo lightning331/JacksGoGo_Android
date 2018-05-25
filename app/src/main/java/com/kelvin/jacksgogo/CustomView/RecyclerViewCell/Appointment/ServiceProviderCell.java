@@ -76,6 +76,13 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
                     lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
                 }
                 break;
+            case award:
+                lblStatus.setVisibility(View.VISIBLE);
+                lblStatus.setText("Awarded");
+                imgProposal.setVisibility(View.VISIBLE);
+                lblPrice.setVisibility(View.VISIBLE);
+                lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
+                break;
             case rejected:
                 lblStatus.setVisibility(View.VISIBLE);
                 lblStatus.setText("Rejected");
@@ -93,11 +100,6 @@ public class ServiceProviderCell extends RecyclerView.ViewHolder {
                 lblPrice.setText("$" + String.valueOf(proposal.getBudget()));
                 break;
             case withdrawn:
-                break;
-            case declined:
-                lblStatus.setVisibility(View.VISIBLE);
-                lblStatus.setText("Declined");
-                itemView.setAlpha(.5f);
                 break;
         }
 

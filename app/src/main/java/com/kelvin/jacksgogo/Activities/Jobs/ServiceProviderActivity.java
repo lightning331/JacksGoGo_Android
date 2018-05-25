@@ -34,9 +34,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.award;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.confirmed;
-import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.declined;
 import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.rejected;
+import static com.kelvin.jacksgogo.Utils.Global.JGGProposalStatus.withdrawn;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 
 public class ServiceProviderActivity extends AppCompatActivity {
@@ -128,7 +129,8 @@ public class ServiceProviderActivity extends AppCompatActivity {
                         ArrayList<JGGProposalModel> openProposal = new ArrayList<>();
                         ArrayList<JGGProposalModel> invitedProposal = new ArrayList<>();
                         ArrayList<JGGProposalModel> confirmedProposal = new ArrayList<>();
-                        ArrayList<JGGProposalModel> declinedProposal = new ArrayList<>();
+                        ArrayList<JGGProposalModel> awaredProposal = new ArrayList<>();
+                        ArrayList<JGGProposalModel> withdrawnProposal = new ArrayList<>();
                         ArrayList<JGGProposalModel> rejectedProposal = new ArrayList<>();
 
                         for (JGGProposalModel p: response.body().getValue()) {
@@ -141,17 +143,20 @@ public class ServiceProviderActivity extends AppCompatActivity {
                                 } else
                                     openProposal.add(p);
                             }
+                            else if (p.getStatus() == award)
+                                awaredProposal.add(p);
                             else if (p.getStatus() == confirmed)
                                 confirmedProposal.add(p);
-                            else if (p.getStatus() == declined)
-                                declinedProposal.add(p);
+                            else if (p.getStatus() == withdrawn)
+                                withdrawnProposal.add(p);
                             else if (p.getStatus() == rejected)
                                 rejectedProposal.add(p);
                         }
                         proposals.addAll(confirmedProposal);
+                        proposals.addAll(awaredProposal);
                         proposals.addAll(openProposal);
                         proposals.addAll(invitedProposal);
-                        proposals.addAll(declinedProposal);
+                        proposals.addAll(withdrawnProposal);
                         proposals.addAll(rejectedProposal);
 
                         updateRecyclerView();
