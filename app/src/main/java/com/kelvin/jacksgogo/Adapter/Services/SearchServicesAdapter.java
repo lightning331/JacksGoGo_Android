@@ -140,7 +140,7 @@ public class SearchServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void notifyDataChanged(ArrayList<JGGAppointmentModel> services) {
         mServices = services;
 
-        super.notifyDataSetChanged();
+        notifyDataSetChanged();
         isLoading = false;
     }
 

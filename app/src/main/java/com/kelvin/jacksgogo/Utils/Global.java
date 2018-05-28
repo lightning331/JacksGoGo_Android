@@ -53,6 +53,7 @@ public class Global {
     public static final int MINUTES_IN_AN_HOUR = 60;
     public static final int SECONDS_IN_A_MINUTE = 60;
     public static final int REQUEST_CODE = 1;
+    public static final int LIMIT = 20;
 
 
     private static String uniqueID = null;
@@ -562,6 +563,7 @@ public class Global {
 
         invoice_sent(603),
         invoice_approved(604),
+        give_tip(606),
 
         client_feedback(620),
         provider_feedback(621);

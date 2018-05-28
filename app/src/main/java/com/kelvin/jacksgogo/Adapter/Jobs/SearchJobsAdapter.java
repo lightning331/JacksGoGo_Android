@@ -131,7 +131,7 @@ public class SearchJobsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void notifyDataChanged(ArrayList<JGGAppointmentModel> jobs) {
         mJobs = jobs;
 
-        super.notifyDataSetChanged();
+        notifyDataSetChanged();
         isLoading = false;
     }
 

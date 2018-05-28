@@ -324,6 +324,8 @@ public class OutgoingJobFragment extends Fragment {
                     case invoice_sent:
                     case invoice_approved:
                     case result_created:
+                        break;
+                    case give_tip:
                         showTipView();
                         break;
 
