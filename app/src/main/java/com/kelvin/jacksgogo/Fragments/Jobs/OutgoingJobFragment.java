@@ -355,7 +355,6 @@ public class OutgoingJobFragment extends Fragment {
                 .into(imgProvider);
     }
 
-
     // TODO - 1.1
     private void showNewJobRequest(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
@@ -364,6 +363,7 @@ public class OutgoingJobFragment extends Fragment {
         lblPostedJob.setText(R.string.job_request_posted);
         lblPostedTime.setText(postedTime);
     }
+
     // TODO - 1.2
     // TODO - 2.1 - You have awarded catherin the job
     private void showAwardQuotation(JGGAppointmentActivityModel activity) {
@@ -403,6 +403,7 @@ public class OutgoingJobFragment extends Fragment {
         quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
+
     // TODO - 2.2 - Waiting for service provider's to respond...
     private void showWaitingProvidersResponse() {
         quotationLayout.removeAllViews();
@@ -429,6 +430,7 @@ public class OutgoingJobFragment extends Fragment {
         quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
+
     // TODO - 2.3 - You have received 1 new quotation
     private void showNewQuotations() {
         quotationLayout.removeAllViews();
@@ -456,6 +458,7 @@ public class OutgoingJobFragment extends Fragment {
         quotationView.ll_award.setVisibility(View.GONE);
         quotationLayout.addView(quotationView);
     }
+
     // TODO - 3.1 - Appointment confirmed
     private void showAppointmentConfirmed(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
@@ -477,6 +480,7 @@ public class OutgoingJobFragment extends Fragment {
 
         confirmedLayout.addView(confirmedView);
     }
+
     // TODO - 3.2 - Appointment to be set
     private void showUpdateAppointment(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
@@ -506,6 +510,7 @@ public class OutgoingJobFragment extends Fragment {
 
         confirmedLayout.addView(confirmedView);
     }
+
     // TODO - 3.3 - Pending Setting Appointment...
     private void showPendingAppointment(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
@@ -581,6 +586,7 @@ public class OutgoingJobFragment extends Fragment {
 
         confirmedLayout.addView(confirmedView);
     }
+
     // TODO - 4.1 - Job Cancelled
     private void showCancelled() {
         cancelledLayout.removeAllViews();
@@ -594,6 +600,7 @@ public class OutgoingJobFragment extends Fragment {
 
         cancelledLayout.addView(cancelledView);
     }
+
     // TODO - 4.2
     // TODO - 5.1 - catherin has started the work.(progress-view)
     private void showStartedWork(JGGAppointmentActivityModel activity) {
@@ -624,6 +631,7 @@ public class OutgoingJobFragment extends Fragment {
 
         progressLayout.addView(progressView);
     }
+
     // TODO - 5.2 - show billable layout
     private void showStartedWorkBillable(JGGAppointmentActivityModel activity) {
         Date postOn = activity.getActiveOn();
@@ -889,6 +897,7 @@ public class OutgoingJobFragment extends Fragment {
 
         givenReviewLayout.addView(givenReviewView);
     }
+
     // TODO - show tip view
     private void showTipView() {
         tipLayout.removeAllViews();
