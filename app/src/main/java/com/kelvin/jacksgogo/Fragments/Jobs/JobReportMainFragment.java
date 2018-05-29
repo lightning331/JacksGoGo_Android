@@ -214,11 +214,11 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
     }
 
     private void initView() {
-        if (isReportBeforeAfterPhoto) {
+        //if (isReportBeforeAfterPhoto) {
             beforeLayout.setVisibility(View.VISIBLE);
-        } else {
-            beforeLayout.setVisibility(View.GONE);
-        }
+        //} else {
+            //beforeLayout.setVisibility(View.GONE);
+        //}
         endLayout.setVisibility(View.GONE);
 
         editBeforeComment.addTextChangedListener(this);
@@ -305,7 +305,6 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
             llTakeBeforePhoto.setVisibility(View.VISIBLE);
         }
 
-
         afterRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         afterPhotoAdapter = new JGGImageGalleryAdapter(mContext, itemSize, false, new OnItemClickListener() {
             @Override
@@ -383,6 +382,7 @@ public class JobReportMainFragment extends Fragment implements TextWatcher {
                 })
                 .start();
     }
+
     private void selectAfterImage() {
         int mColor = ContextCompat.getColor(mContext, R.color.JGGCyan);
         ArrayList<AlbumFile> mAlbumFiles;

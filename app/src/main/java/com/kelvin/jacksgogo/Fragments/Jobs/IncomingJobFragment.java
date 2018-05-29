@@ -363,7 +363,6 @@ public class IncomingJobFragment extends Fragment {
                             break;
 
                         case result_created:
-                            showTipView();
                             break;
                         case result_reported:  // 600
                             if (mContract.getReportStatus() != null) {
@@ -384,6 +383,9 @@ public class IncomingJobFragment extends Fragment {
                         case invoice_sent:
                             break;
                         case invoice_approved:
+                            break;
+                        case give_tip:
+                            showTipView();
                             break;
 
                         case client_feedback:
@@ -739,8 +741,9 @@ public class IncomingJobFragment extends Fragment {
         progressView.startWorkLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.JGGCyan));
 
         progressView.lblStartTime.setText(submitTime);
-        progressView.lblStartedWork.setText(R.string.work_in_progress);
+        progressView.lblStartedWork.setText(setBoldText("Work is in progress..."));
         progressView.lblReportDesc.setText(R.string.report_description);
+        progressView.lblReportDesc.setVisibility(View.VISIBLE);
 
         progressView.btnStart.setVisibility(View.VISIBLE);
         progressView.btnStart.setText(R.string.job_report);
