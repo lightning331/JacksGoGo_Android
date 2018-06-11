@@ -60,24 +60,30 @@ public class ServiceDetailActivity extends AppCompatActivity implements View.OnC
 
         /*
          *  Service BudgetType
-         *  If Fixed Budget, Can buy Service
-         *  If Package Budget, Can Request to Service
+         *  If Fixed or Package Budget, Can buy Service
+         *  If Amount Budget, Can Request to Service
          */
         if (selectedAppointment.getUserProfileID().equals(currentUser.getID())) {
             mbtmView.setVisibility(View.GONE);
         } else {
             onShowBottomView();
-            if (selectedAppointment.getBudgetFrom() == null)
-                bottomTitle.setText(R.string.buy_service);
-            else
+            if (selectedAppointment.getBudget() == null)
                 bottomTitle.setText(R.string.title_request_quotation);
+            else
+                bottomTitle.setText(R.string.buy_service);
             bottomTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (selectedAppointment.getBudget() == null) {
                         startActivity(new Intent(ServiceDetailActivity.this, PostQuotationActivity.class));
                     } else {
-                        startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
+                        if (selectedAppointment.getAppointmentType() == 1) {
+                            Intent intent = new Intent(ServiceDetailActivity.this, ServiceTimeSlotsActivity.class);
+                            intent.putExtra("is_bought_service", true);
+                            startActivity(intent);
+                        } else if (selectedAppointment.getAppointmentType() >= 2) {
+                            startActivity(new Intent(ServiceDetailActivity.this, BuyServiceActivity.class));
+                        }
                     }
                 }
             });

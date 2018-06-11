@@ -20,8 +20,8 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGAddTimeSlotDialog;
 import com.kelvin.jacksgogo.CustomView.Views.JGGCalendarDialog;
 import com.kelvin.jacksgogo.CustomView.Views.RepeatingDayDialog;
 import com.kelvin.jacksgogo.R;
-import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentYear;
@@ -149,18 +148,17 @@ public class PostJobTimeFragment extends Fragment implements View.OnClickListene
             if (mJob.getSessions().get(0).getStartOn() == null) {
 
             } else {
-                String strDate = mJob.getSessions().get(0).getStartOn();
-                Date date = appointmentMonthDate(strDate);
+                Date date = mJob.getSessions().get(0).getStartOn();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 selectedDay = dateFormat.format(date);
                 lblDate.setText(getDayMonthString(date));
-                startOn = appointmentMonthDate(mJob.getSessions().get(0).getStartOn());
+                startOn = mJob.getSessions().get(0).getStartOn();
                 startTime = getTimePeriodString(startOn);
                 lblTime.setText(startTime);
                 if (mJob.getSessions().get(0).getEndOn() == null) {
 
                 } else {
-                    endOn = appointmentMonthDate(mJob.getSessions().get(0).getEndOn());
+                    endOn = mJob.getSessions().get(0).getEndOn();
                     endTime = getTimePeriodString(endOn);
                     lblTime.setText(startTime + " - " + endTime);
                 }

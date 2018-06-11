@@ -2,8 +2,8 @@ package com.kelvin.jacksgogo.Activities.Jobs;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -21,12 +21,10 @@ import com.kelvin.jacksgogo.Utils.Global;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
-import com.kelvin.jacksgogo.Utils.Responses.JGGProposalResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,6 +37,7 @@ import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.SERVICES;
 import static com.kelvin.jacksgogo.Utils.Global.AppointmentType.UNKNOWN;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDateString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentTime;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
@@ -103,8 +102,8 @@ public class RescheduleActivity extends AppCompatActivity {
             type = JOBS;
         }
 
-        String startStr = mJob.getSessions().get(0).getStartOn();
-        String endStr = mJob.getSessions().get(0).getEndOn();
+        String startStr = appointmentMonthDateString(mJob.getSessions().get(0).getStartOn());
+        String endStr = appointmentMonthDateString(mJob.getSessions().get(0).getEndOn());
 
         JGGAddTimeSlotDialog builder = new JGGAddTimeSlotDialog(this, type, startStr, endStr);
         builder.setOnItemClickListener(new JGGAddTimeSlotDialog.OnItemClickListener() {

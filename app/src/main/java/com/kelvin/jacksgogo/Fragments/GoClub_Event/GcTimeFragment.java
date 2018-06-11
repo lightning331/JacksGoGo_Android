@@ -43,6 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentDateString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
@@ -139,8 +140,8 @@ public class GcTimeFragment extends Fragment implements
             mTimeSlots = mEvent.getSessions();
             mSelectedTimeSlot = mEvent.getSessions().get(0);
             bOneTime = mEvent.getOnetime();
-            Date date = appointmentMonthDate(mSelectedTimeSlot.getStartOn());
-            Date endDate = appointmentMonthDate(mSelectedTimeSlot.getEndOn());
+            Date date = mSelectedTimeSlot.getStartOn();
+            Date endDate = mSelectedTimeSlot.getEndOn();
 
             if (bOneTime) {
                 bOneTime = false;
@@ -269,7 +270,7 @@ public class GcTimeFragment extends Fragment implements
         if (slotModels.size() > 0) {
             for (int i=0;i<slotModels.size(); i++) {
                 JGGTimeSlotModel slotModel = slotModels.get(i);
-                Date endSlotDate = appointmentMonthDate(slotModel.getEndOn());
+                Date endSlotDate = slotModel.getEndOn();
                 if (endSlotDate == null) {}
                 else
                     if (endSlotDate.after(newDate) || endSlotDate.equals(newDate)) {
@@ -291,7 +292,7 @@ public class GcTimeFragment extends Fragment implements
         if (slotModels.size() > 0) {
             for (int i=0;i<slotModels.size(); i++) {
                 JGGTimeSlotModel slotModel = slotModels.get(i);
-                Date endSlotDate = appointmentMonthDate(slotModel.getEndOn());
+                Date endSlotDate = slotModel.getEndOn();
                 if (endSlotDate == null) {}
                 else
                     if (endSlotDate.before(newDate) || endSlotDate.equals(newDate)) {
@@ -416,11 +417,11 @@ public class GcTimeFragment extends Fragment implements
 
                             // add selected timeSlot for n times
                             JGGTimeSlotModel tmpTimeSlot = new JGGTimeSlotModel();
-                            String ymdStart = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getStartOn()));
+                            String ymdStart = convertCalendarDate(duplicateDate) + "T" + getTimeString(mSelectedTimeSlot.getStartOn());
                             String ymdEnd = null;
                             if (mSelectedTimeSlot.getEndOn() == null) {}
                             else
-                                ymdEnd = convertCalendarDate(duplicateDate) + "T" + getTimeString(appointmentMonthDate(mSelectedTimeSlot.getEndOn()));
+                                ymdEnd = convertCalendarDate(duplicateDate) + "T" + getTimeString(mSelectedTimeSlot.getEndOn());
                             tmpTimeSlot.setStartOn(ymdStart);
                             tmpTimeSlot.setEndOn(ymdEnd);
                             tmpTimeSlot.setPeoples(mSelectedTimeSlot.getPeoples());
@@ -512,8 +513,8 @@ public class GcTimeFragment extends Fragment implements
                     // TODO - show dialog to confirm delete
                     isEditTimeSlot = true;
                     mEditingTimeSlot = selectedTimeSlot;
-                    String startStr = selectedTimeSlot.getStartOn();
-                    String endStr = selectedTimeSlot.getEndOn();
+                    String startStr = appointmentDateString(selectedTimeSlot.getStartOn());
+                    String endStr = appointmentDateString(selectedTimeSlot.getEndOn());
                     onAddTimeClick(startStr, endStr);
                 }
             }

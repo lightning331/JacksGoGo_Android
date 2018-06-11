@@ -38,7 +38,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentNewDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
@@ -114,9 +113,9 @@ public class PostQuotationSummaryFragment extends Fragment implements PostQuotat
         // Quotation Time
         LinearLayout timeLayout = (LinearLayout)view.findViewById(R.id.job_type_layout);
         EditJobMainListCell timeView = new EditJobMainListCell(mContext);
-        String day = getDayMonthYear(appointmentMonthDate(mQuotation.getSessions().get(0).getStartOn()));
-        String startTime = getTimePeriodString(appointmentMonthDate(mQuotation.getSessions().get(0).getStartOn()));
-        String endTime = getTimePeriodString(appointmentMonthDate(mQuotation.getSessions().get(0).getEndOn()));
+        String day = getDayMonthYear(mQuotation.getSessions().get(0).getStartOn());
+        String startTime = getTimePeriodString(mQuotation.getSessions().get(0).getStartOn());
+        String endTime = getTimePeriodString(mQuotation.getSessions().get(0).getEndOn());
         String date = day + " " + startTime + " - " + endTime;
         timeView.setData("Time", "One-time Job", date);
         timeView.setOnItemClickListener(new EditJobMainListCell.OnItemClickListener() {

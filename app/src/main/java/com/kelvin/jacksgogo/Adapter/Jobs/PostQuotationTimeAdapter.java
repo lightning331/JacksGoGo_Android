@@ -17,7 +17,6 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeSlot;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimeSlotPosition;
 
@@ -66,8 +65,7 @@ public class PostQuotationTimeAdapter extends RecyclerView.Adapter<RecyclerView.
             calendarViewCell = (CalendarCell)holder;
             if (mQuotation.getSessions() != null
                     && mQuotation.getSessions().size() > 0) {
-                String startOn = mQuotation.getSessions().get(position).getStartOn();
-                Date date = appointmentMonthDate(startOn);
+                Date date = mQuotation.getSessions().get(position).getStartOn();
                 calendarViewCell.calendarView.setSelectedDate(date);
             } else
                 calendarViewCell.calendarView.setSelectedDate(new Date());

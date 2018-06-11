@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import java.util.Date;
 
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.closed;
 import static com.kelvin.jacksgogo.Utils.Global.JGGJobStatus.flagged;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentMonth;
 
@@ -60,8 +58,7 @@ public class AppointmentMainCell extends RecyclerView.ViewHolder {
             lbl_Day.setText("");
             lbl_Month.setText("");
         } else {
-            String dateString = appointment.getSessions().get(0).getStartOn();
-            Date appDay = appointmentMonthDate(dateString);
+            Date appDay = appointment.getSessions().get(0).getStartOn();
             lbl_Day.setText(getAppointmentDay(appDay));
             lbl_Month.setText(getAppointmentMonth(appDay));
         }

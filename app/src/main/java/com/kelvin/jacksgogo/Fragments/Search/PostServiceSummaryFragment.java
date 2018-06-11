@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kelvin.jacksgogo.Activities.Search.PostedServiceActivity;
 import com.kelvin.jacksgogo.CustomView.Views.JGGAlertView;
 import com.kelvin.jacksgogo.CustomView.Views.PostServiceTabView;
@@ -267,7 +268,11 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
         JGGAppManager.getInstance().setSelectedAppointment(appointmentModel);
 
         JGGAPIManager manager = JGGURLManager.createService(JGGAPIManager.class, mContext);
-        Call<JGGPostAppResponse> call = manager.postNewService(JGGAppManager.getInstance().getSelectedAppointment());
+        Call<JGGPostAppResponse> call = manager.postNewService(appointmentModel);
+
+        Gson gson = new Gson();
+        String str = gson.toJson(appointmentModel);
+
         call.enqueue(new Callback<JGGPostAppResponse>() {
             @Override
             public void onResponse(Call<JGGPostAppResponse> call, Response<JGGPostAppResponse> response) {
@@ -285,7 +290,6 @@ public class PostServiceSummaryFragment extends Fragment implements View.OnClick
                         Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    int statusCode = response.code();
                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }

@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
 /**
@@ -31,10 +30,10 @@ public class EditJobTimeSlotsCell extends RecyclerView.ViewHolder {
     }
 
     public void setData(JGGTimeSlotModel slotModel) {
-        String startTime = getTimePeriodString(appointmentMonthDate(slotModel.getStartOn()));
+        String startTime = getTimePeriodString(slotModel.getStartOn());
         String endTime = "";
         if (slotModel.getEndOn() != null) {
-            endTime = getTimePeriodString(appointmentMonthDate(slotModel.getEndOn()));
+            endTime = getTimePeriodString(slotModel.getEndOn());
             lblSlots.setText(startTime + " - " + endTime);
         } else {
             lblSlots.setText(startTime);

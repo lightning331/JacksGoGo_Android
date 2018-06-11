@@ -1,19 +1,14 @@
 package com.kelvin.jacksgogo.Activities.Service;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -41,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kelvin.jacksgogo.CustomView.Views.JGGActionbarView.EditStatus.PACKAGE_SERVICE_TIME_SLOT;
+import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDateString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.convertCalendarDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentDay;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentYear;
@@ -169,7 +165,7 @@ public class PackageServiceTimeSlotActivity extends AppCompatActivity implements
         ArrayList<Date> slotDays = new ArrayList<Date>();
         for (int i=0; i<mTimeSlots.size(); i++) {
             JGGTimeSlotModel timeSlotModel = mTimeSlots.get(i);
-            String startOn = timeSlotModel.getStartOn();
+            String startOn = appointmentMonthDateString(timeSlotModel.getStartOn());
             String startDateStr = startOn.substring(0, 10);
             Date startDate = this.getSlotDate(startDateStr);
             if (!slotDays.contains(startDate)) {

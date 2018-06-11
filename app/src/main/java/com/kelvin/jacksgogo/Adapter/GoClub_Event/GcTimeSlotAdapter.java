@@ -93,12 +93,12 @@ public class GcTimeSlotAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(JGGTimeSlotModel slotModel) {
-            String startTime = getTimePeriodString(appointmentMonthDate(slotModel.getStartOn()));
+            String startTime = getTimePeriodString(slotModel.getStartOn());
             String endTime;
             if (slotModel.getEndOn() == null) {
                 lblTime.setText(startTime);
             } else {
-                endTime = getTimePeriodString(appointmentMonthDate(slotModel.getEndOn()));
+                endTime = getTimePeriodString(slotModel.getEndOn());
                 lblTime.setText(startTime + " - " + endTime);
             }
         }

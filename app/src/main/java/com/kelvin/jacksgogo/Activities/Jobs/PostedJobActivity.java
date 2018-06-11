@@ -23,8 +23,8 @@ import com.kelvin.jacksgogo.CustomView.Views.JGGShareIntentDialog;
 import com.kelvin.jacksgogo.R;
 import com.kelvin.jacksgogo.Utils.API.JGGAPIManager;
 import com.kelvin.jacksgogo.Utils.API.JGGURLManager;
-import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.Global.AppointmentType;
+import com.kelvin.jacksgogo.Utils.Global.JGGRepetitionType;
 import com.kelvin.jacksgogo.Utils.JGGAppManager;
 import com.kelvin.jacksgogo.Utils.Models.Jobs_Services_Events.JGGAppointmentModel;
 import com.kelvin.jacksgogo.Utils.Responses.JGGBaseResponse;
@@ -49,7 +49,6 @@ import static com.kelvin.jacksgogo.Utils.Global.EDIT_STATUS;
 import static com.kelvin.jacksgogo.Utils.Global.JOBS;
 import static com.kelvin.jacksgogo.Utils.Global.createProgressDialog;
 import static com.kelvin.jacksgogo.Utils.Global.reportTypeName;
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getAppointmentBudgetWithString;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayMonthYear;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getDayName;
@@ -120,34 +119,34 @@ public class PostedJobActivity extends AppCompatActivity {
                 if (mJob.getSessions().get(0).getSpecific() == null) {
                     type = "on";
                     if (mJob.getSessions().get(0).getEndOn() != null)
-                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                        time = getDayMonthYear(mJob.getSessions().get(0).getStartOn())
+                                + " " + getTimePeriodString(mJob.getSessions().get(0).getStartOn())
                                 + " - "
-                                + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                                + getTimePeriodString(mJob.getSessions().get(0).getEndOn());
                     else
-                        time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                        time = getDayMonthYear(mJob.getSessions().get(0).getStartOn())
+                                + " " + getTimePeriodString(mJob.getSessions().get(0).getStartOn());
                 } else {
                     if (mJob.getSessions().get(0).getSpecific()) {
                         type = "on";
                         if (mJob.getSessions().get(0).getEndOn() != null)
-                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                            time = getDayMonthYear(mJob.getSessions().get(0).getStartOn())
+                                    + " " + getTimePeriodString(mJob.getSessions().get(0).getStartOn())
                                     + " - "
-                                    + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                                    + getTimePeriodString(mJob.getSessions().get(0).getEndOn());
                         else
-                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                            time = getDayMonthYear(mJob.getSessions().get(0).getStartOn())
+                                    + " " + getTimePeriodString(mJob.getSessions().get(0).getStartOn());
                     } else {
                         type = "any time until";
                         if (mJob.getSessions().get(0).getEndOn() != null)
-                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
+                            time = getDayMonthYear(mJob.getSessions().get(0).getStartOn())
+                                    + " " + getTimePeriodString(mJob.getSessions().get(0).getStartOn())
                                     + " - "
-                                    + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getEndOn()));
+                                    + getTimePeriodString(mJob.getSessions().get(0).getEndOn());
                         else
-                            time = getDayMonthYear(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(mJob.getSessions().get(0).getStartOn()));
+                            time = getDayMonthYear(mJob.getSessions().get(0).getStartOn())
+                                    + " " + getTimePeriodString(mJob.getSessions().get(0).getStartOn());
                     }
                 }
             }

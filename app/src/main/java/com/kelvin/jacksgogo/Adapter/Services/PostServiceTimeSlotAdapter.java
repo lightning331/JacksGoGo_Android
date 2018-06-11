@@ -13,7 +13,6 @@ import com.kelvin.jacksgogo.Utils.Models.System.JGGTimeSlotModel;
 
 import java.util.List;
 
-import static com.kelvin.jacksgogo.Utils.JGGTimeManager.appointmentMonthDate;
 import static com.kelvin.jacksgogo.Utils.JGGTimeManager.getTimePeriodString;
 
 /**
@@ -88,10 +87,10 @@ public class PostServiceTimeSlotAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(JGGTimeSlotModel slotModel) {
-            String startTime = getTimePeriodString(appointmentMonthDate(slotModel.getStartOn()));
+            String startTime = getTimePeriodString(slotModel.getStartOn());
             String endTime = "";
             if (slotModel.getEndOn() != null) {
-                endTime = getTimePeriodString(appointmentMonthDate(slotModel.getEndOn()));
+                endTime = getTimePeriodString(slotModel.getEndOn());
                 lblTime.setText(startTime + " - " + endTime);
             } else {
                 lblTime.setText(startTime);

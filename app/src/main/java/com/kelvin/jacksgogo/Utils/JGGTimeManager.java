@@ -25,7 +25,6 @@ public class JGGTimeManager {
     public static String getAppointmentDay(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            //dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String day = dayFormat.format(date);
             return day;
         }
@@ -35,7 +34,6 @@ public class JGGTimeManager {
     public static String getAppointmentMonth(Date date) {
         if (date != null) {
             SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
-            //monthFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String month = monthFormat.format(date);
             return month;
         }
@@ -45,7 +43,6 @@ public class JGGTimeManager {
     public static String getAppointmentYear(Date date) {
         if (date != null) {
             SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-            //yearFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String year = yearFormat.format(date);
             return year;
         }
@@ -54,7 +51,6 @@ public class JGGTimeManager {
 
     public static Date appointmentDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
 
             if (dateString != null) {
@@ -70,6 +66,21 @@ public class JGGTimeManager {
 
     public static Date appointmentMonthDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        try {
+
+            if (dateString != null) {
+                Date date = formatter.parse(dateString);
+                return date;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Date convertUTCTimeToLocalTime(String dateString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
 
@@ -84,9 +95,37 @@ public class JGGTimeManager {
         return null;
     }
 
+    public static String convertUTCTimeString(String dateString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+
+            if (dateString != null) {
+                Date date = formatter.parse(dateString);
+                String timeString = appointmentMonthDateString(date);
+                return timeString;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String convertUTCTimeString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        if (date != null) {
+            String timeString = formatter.format(date);
+            return timeString;
+        }
+
+        return null;
+    }
+
     public static String appointmentDateString(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd'T'HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (date != null) {
             String dateString = dateFormat.format(date);
             return dateString;
@@ -96,7 +135,6 @@ public class JGGTimeManager {
 
     public static String appointmentMonthDateString(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (date != null) {
             String dateString = dateFormat.format(date);
             return dateString;
@@ -106,7 +144,6 @@ public class JGGTimeManager {
 
     public static String appointmentNewDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String newTime = "";
         try {
             Date varDate = dateFormat.parse(appointmentDateString(date));
@@ -123,7 +160,6 @@ public class JGGTimeManager {
 
     public static String convertCalendarDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String month = "";
         try {
             Date varDate = dateFormat.parse(appointmentDateString(date));
@@ -139,9 +175,7 @@ public class JGGTimeManager {
     public static String getDayMonthString(Date date) {
         if (date != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-            dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-            monthFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String day = dayFormat.format(date);
             String month = monthFormat.format(date);
             try {
@@ -161,7 +195,6 @@ public class JGGTimeManager {
     public static String getDayMonthYear(Date date) {
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             String dateString = dateFormat.format(date);
             return dateString;
         }
@@ -171,9 +204,7 @@ public class JGGTimeManager {
     public static String getTimePeriodString(Date date) {
         if (date != null) {
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
-            hourFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
-            minuteFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             boolean period = true;
             String hour = hourFormat.format(date);
             if (Integer.parseInt(hour) > 12) {
@@ -196,16 +227,11 @@ public class JGGTimeManager {
     public static String getTimeString(Date date) {
         if (date != null) {
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
-            hourFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
-            minuteFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat secondFormat = new SimpleDateFormat("ss");
-            secondFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            //SimpleDateFormat mSecondFormat = new SimpleDateFormat("SSS");
             String hour = hourFormat.format(date);
             String minute = minuteFormat.format(date);
             String second = secondFormat.format(date);
-            //String mSecond = mSecondFormat.format(date);
             String time = hour + ":" + minute + ":" + second;// + "." + mSecond;
             return time;
         }
@@ -256,7 +282,7 @@ public class JGGTimeManager {
     }
 
     public static int getTimeSlotPosition(JGGTimeSlotModel time) {
-        String period = getTimePeriodString(appointmentMonthDate(time.getStartOn()));
+        String period = getTimePeriodString(time.getStartOn());
         if (period.equals(TIMESLOT_MORNING))
             return 1;
         else if (period.equals((TIMESLOT_AFTERNOON)))
@@ -275,26 +301,26 @@ public class JGGTimeManager {
                 if (job.getSessions().get(0).getSpecific() == null) {
                     if (job.getSessions().get(0).getEndOn() != null)
                         time = "on "
-                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                + getDayMonthYear(job.getSessions().get(0).getStartOn())
+                                + " " + getTimePeriodString(job.getSessions().get(0).getStartOn())
                                 + " - "
-                                + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                                + getTimePeriodString(job.getSessions().get(0).getEndOn());
                     else
                         time = "on "
-                                + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                                + getDayMonthYear(job.getSessions().get(0).getStartOn())
+                                + " " + getTimePeriodString(job.getSessions().get(0).getStartOn());
                 } else {
                     if (job.getSessions().get(0).getSpecific()) {
                         if (job.getSessions().get(0).getEndOn() != null)
                             time = "on "
-                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                    + getDayMonthYear(job.getSessions().get(0).getStartOn())
+                                    + " " + getTimePeriodString(job.getSessions().get(0).getStartOn())
                                     + " - "
-                                    + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                                    + getTimePeriodString(job.getSessions().get(0).getEndOn());
                         else
                             time = "on "
-                                    + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                    + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                                    + getDayMonthYear(job.getSessions().get(0).getStartOn())
+                                    + " " + getTimePeriodString(job.getSessions().get(0).getStartOn());
                     } else {
                         if (job.getSessions().get(0).getEndOn() == null
                                 && job.getSessions().get(0).getStartOn() == null)
@@ -302,14 +328,14 @@ public class JGGTimeManager {
                         else {
                             if (job.getSessions().get(0).getEndOn() == null)
                                 time = "any time until "
-                                        + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                        + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()));
+                                        + getDayMonthYear(job.getSessions().get(0).getStartOn())
+                                        + " " + getTimePeriodString(job.getSessions().get(0).getStartOn());
                             else
                                 time = "any time until "
-                                        + getDayMonthYear(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
-                                        + " " + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getStartOn()))
+                                        + getDayMonthYear(job.getSessions().get(0).getStartOn())
+                                        + " " + getTimePeriodString(job.getSessions().get(0).getStartOn())
                                         + " - "
-                                        + getTimePeriodString(appointmentMonthDate(job.getSessions().get(0).getEndOn()));
+                                        + getTimePeriodString(job.getSessions().get(0).getEndOn());
                         }
                     }
                 }
@@ -347,13 +373,13 @@ public class JGGTimeManager {
             // Todo - Repeating Event
 
             if (event.getSessions().get(0).getEndOn() == null)
-                time = getDayMonthYear(appointmentMonthDate(event.getSessions().get(0).getStartOn()))
-                        + " " + getTimePeriodString(appointmentMonthDate(event.getSessions().get(0).getStartOn()));
+                time = getDayMonthYear(event.getSessions().get(0).getStartOn())
+                        + " " + getTimePeriodString(event.getSessions().get(0).getStartOn());
             else
-                time = getDayMonthYear(appointmentMonthDate(event.getSessions().get(0).getStartOn()))
-                        + " " + getTimePeriodString(appointmentMonthDate(event.getSessions().get(0).getStartOn()))
+                time = getDayMonthYear(event.getSessions().get(0).getStartOn())
+                        + " " + getTimePeriodString(event.getSessions().get(0).getStartOn())
                         + " - "
-                        + getTimePeriodString(appointmentMonthDate(event.getSessions().get(0).getEndOn()));
+                        + getTimePeriodString(event.getSessions().get(0).getEndOn());
         //} else {
 
             // Todo - One-time Event
@@ -382,10 +408,17 @@ public class JGGTimeManager {
             budget =  "No limit";
         else {
             if (app.getBudget() != null) {
-                budget = "$ " + app.getBudget().toString();
+                if (app.getAppointmentType() == null) {
+                    budget = "$ " + app.getBudget().toString();
+                } else {
+                    if (app.getAppointmentType() == 1)
+                        budget = "$ " + app.getBudget().toString();
+                    else if (app.getAppointmentType() >= 2)
+                        budget = "$ " + app.getBudget().toString() + " for " + String.valueOf(app.getAppointmentType() + " sessions");
+                }
             } else if (app.getBudgetFrom() != null && app.getBudgetTo() != null) {
                 budget = ("$ " + app.getBudgetFrom().toString()
-                        + "-"
+                        + " - "
                         + "$ " + app.getBudgetTo().toString());
             }
         }
@@ -401,7 +434,7 @@ public class JGGTimeManager {
                 budget = "$ " + proposal.getBudget().toString();
             } else if (proposal.getBudgetFrom() != null && proposal.getBudgetTo() != null) {
                 budget = ("$ " + proposal.getBudgetFrom().toString()
-                        + "-"
+                        + " - "
                         + "$ " + proposal.getBudgetTo().toString());
             }
         }
